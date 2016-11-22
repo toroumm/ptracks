@@ -1,0 +1,1 @@
+../piloto/strip_table_model.py
