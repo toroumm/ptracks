@@ -28,9 +28,9 @@ import math
 # from PyQt4 import QtCore, QtGui
 
 # model
-import model.coords.coord_defs as cdefs
-import model.coords.pos_lat_lng as pll
-import model.coords.pos_xy as pxy
+import libs.coords.coord_defs as cdefs
+import libs.coords.pos_lat_lng as pll
+import libs.coords.pos_xy as pxy
 
 # < module data >----------------------------------------------------------------------------------
 

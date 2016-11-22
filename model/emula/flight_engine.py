@@ -28,7 +28,7 @@ import time
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_defs as cdefs
 
 import model.emula.cine.abort_prc as abnd
 import model.emula.cine.cine_data as cindata

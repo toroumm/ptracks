@@ -28,9 +28,10 @@ import sys
 from PyQt4 import QtCore
 from PyQt4 import QtXml
 
-# model
-import model.coords.pos_lat_lng as pll
+# libs
+import libs.coords.pos_lat_lng as pll
 
+# model
 import model.stock.landscape_basic as land
 import model.stock.fix as cfix
 

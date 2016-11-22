@@ -24,7 +24,7 @@ import logging
 import math
 
 # model
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_defs as cdefs
 import model.newton.defs_newton as ldefs
 
 import model.emula.cine.abort_prc as abnd

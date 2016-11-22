@@ -25,10 +25,12 @@ import random
 import sys
 import time
 
+# libs
+import libs.coords.pos_lat_lng as pll
+
 # model
 import model.tMath as tmath
 
-import model.coords.pos_lat_lng as pll
 import model.stock.aircraft as sanv
 
 # < module data >----------------------------------------------------------------------------------

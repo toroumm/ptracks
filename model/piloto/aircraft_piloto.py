@@ -28,7 +28,7 @@ import time
 # model
 import model.tMath as tmath
 
-import model.coords.pos_lat_lng as pll
+import libs.coords.pos_lat_lng as pll
 import model.stock.aircraft_basic as sanv
 
 import model.piloto.strip_model as mstp

@@ -32,8 +32,8 @@ import logging
 from PyQt4 import QtCore
 
 # model
-import model.coords.coord_conv as cconv
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_conv as cconv
+import libs.coords.coord_defs as cdefs
 
 #import model.glb_data as gdata
 import model.piloto.defs_piloto as ldefs

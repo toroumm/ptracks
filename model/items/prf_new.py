@@ -24,7 +24,7 @@ import logging
 import sys
 
 # model
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_defs as cdefs
 import model.items.prf_model as model
 
 # control

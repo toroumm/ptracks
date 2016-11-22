@@ -26,7 +26,7 @@ import math
 # model
 import model.glb_defs as gdefs
 import model.newton.defs_newton as ldefs
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_defs as cdefs
 
 # import model.items.esp_trk as esptrk
 import model.items.trj_new as trjnew
@@ -92,7 +92,7 @@ class CCineModel(object):
         assert l_model
 
         # obtém o coordinate system
-        self.__coords = l_model.coords
+        self.__coords = l_libs.coords
         assert self.__coords
 
         # dicionário de aeródromos

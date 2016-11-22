@@ -34,8 +34,8 @@ import model.glb_data as gdata
 import model.newton.defs_newton as ldefs
 import model.tMath as tMath
 
-import model.coords.pos_lat_lng as pll
-import model.coords.pos_xy as pxy
+import libs.coords.pos_lat_lng as pll
+import libs.coords.pos_xy as pxy
 #import model.visil.clsAircraft as clsAircraft
 
 # view

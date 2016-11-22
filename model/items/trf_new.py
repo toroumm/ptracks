@@ -24,7 +24,7 @@ import logging
 import sys
 
 # model
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_defs as cdefs
 import model.items.trf_model as model
 import model.newton.defs_newton as ldefs
 

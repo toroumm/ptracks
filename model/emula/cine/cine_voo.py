@@ -25,7 +25,7 @@ import math
 
 # model
 import model.newton.defs_newton as ldefs
-import model.coords.coord_defs as cdefs
+import libs.coords.coord_defs as cdefs
 
 import model.emula.cine.cine_calc as cincalc
 import model.emula.cine.cine_model as cinmodel
