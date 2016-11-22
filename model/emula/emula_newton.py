@@ -79,8 +79,8 @@ class CEmulaNewton(model.CEmulaModel):
         # self.model         # model manager
 
         # obtém o MPI Comm World
-        # self.__mpi_comm = f_control.mpi_comm
-        # assert self.__mpi_comm
+        self.__mpi_comm = f_control.mpi_comm
+        assert self.__mpi_comm
 
         # obtém o MPI rank
         self.__mpi_rank = f_control.mpi_rank
@@ -399,6 +399,7 @@ class CEmulaNewton(model.CEmulaModel):
                 if self.__mpi_rank == l_trf.i_trf_id % self.__mpi_size:
                     # tráfego não está pendente ?
                     # if ldefs.E_PENDENTE != l_trf.en_trf_est_atv:
+
                         # próximo tráfego
                         # continue
 

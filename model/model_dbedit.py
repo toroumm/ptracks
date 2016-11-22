@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-model_dbedit.
+model_dbedit
 
-model manager do editor da base de dados.
+model manager do editor da base de dados
 
 revision 0.2  2015/nov  mlabru
 pep8 style conventions
@@ -24,11 +24,12 @@ import logging
 import os
 import sys
 
+# libs
+import libs.coords.coord_sys as coords
+
 # model
 import model.model_manager as model
-import model.airspace_newton as airs
-
-import model.coords.coord_sys as coords
+import model.newton.airspace_newton as airs
 
 import model.items.aer_data as aerdata
 import model.items.exe_data as exedata
@@ -51,10 +52,9 @@ M_LOG.setLevel(logging.DEBUG)
 
 class CModelDBEdit(model.CModelManager):
     """
-    DBEdit model object. Views and controllers interact with this.
+    DBEdit model object. Views and controllers interact with this
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control):
         """
         constructor.
@@ -114,7 +114,6 @@ class CModelDBEdit(model.CModelManager):
 
         # houve erro em alguma fase ?
         if not lv_ok:
-
             # logger
             l_log = logging.getLogger("CModelDBEdit::__init__")
             l_log.setLevel(logging.NOTSET)
@@ -131,7 +130,6 @@ class CModelDBEdit(model.CModelManager):
             sys.exit(1)
 
     # ---------------------------------------------------------------------------------------------
-
     def get_ptr_prc(self, fs_prc):
         """
         DOCUMENT ME!
@@ -139,22 +137,20 @@ class CModelDBEdit(model.CModelManager):
         return None, 0
 
     # ---------------------------------------------------------------------------------------------
-
     def __load_airs(self):
         """
-        faz a carga do airspace.
+        faz a carga do airspace
 
-        @return flag e mensagem.
+        @return flag e mensagem
         """
         # logger
         # M_LOG.info("__load_airs:>>")
-
+        '''
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
 
         # nome do diretório vazio ?
         if ls_dir is None:
-
             # diretório padrão de airspaces
             self.dct_config["dir.air"] = gdefs.D_DIR_AIR
 
@@ -166,10 +162,9 @@ class CModelDBEdit(model.CModelManager):
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
-
             # cria o diretório
             os.mkdir(ls_dir)
-
+        '''
         # create airspace
         self.__airspace = airs.CAirspaceNewton(self)
         assert self.__airspace
@@ -184,12 +179,11 @@ class CModelDBEdit(model.CModelManager):
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-
     def __load_tables(self):
         """
-        abre/cria as tabelas do sistema.
+        abre/cria as tabelas do sistema
 
-        @return flag e mensagem.
+        @return flag e mensagem
         """
         # monta o nome da tabela de performances
         ls_path = os.path.join(self.dct_config["dir.tab"], self.dct_config["tab.prf"])
@@ -244,7 +238,6 @@ class CModelDBEdit(model.CModelManager):
         return True  # lv_ok
 
     # ---------------------------------------------------------------------------------------------
-
     def load_exes(self):
         """
         faz a carga da tabela de exercícios.
@@ -255,13 +248,11 @@ class CModelDBEdit(model.CModelManager):
 
         # nome do diretório vazio ?
         if ls_dir is None:
-
             # diretório padrão de tabelas
             ls_dir = self.dct_config["dir.exe"] = "exes"
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
-
             # cria o diretório
             os.mkdir(ls_dir)
 
@@ -270,14 +261,12 @@ class CModelDBEdit(model.CModelManager):
 
         # percorre o diretório
         for ls_file in os.listdir(ls_dir):
-
             # monta o path completo do arquivo de exercício
             ls_path = os.path.join(ls_dir, ls_file)
             # M_LOG.debug("ls_path: " + str(ls_path))
 
             # não é um arquivo ?
             if not os.path.isfile(ls_path):
-
                 # passa ao próximo
                 continue
 
@@ -288,7 +277,6 @@ class CModelDBEdit(model.CModelManager):
 
             # não é um arquivo XML ?
             if ".xml" != l_fext:
-
                 # passa ao próximo
                 continue
 
@@ -297,7 +285,6 @@ class CModelDBEdit(model.CModelManager):
             # M_LOG.debug("dct_exe: " + str(ldct_exe))
 
             if ldct_exe is None:
-
                 # logger
                 l_log = logging.getLogger("CModelDBEdit::load_exes")
                 l_log.setLevel(logging.NOTSET)
@@ -313,85 +300,71 @@ class CModelDBEdit(model.CModelManager):
         return True
 
     # ---------------------------------------------------------------------------------------------
-
     def notify(self, f_event):
         """
-        callback de tratamento de eventos recebidos.
+        callback de tratamento de eventos recebidos
 
-        @param f_event: evento recebido.
+        @param f_event: evento recebido
         """
         # recebeu um evento de "save to disk" ?
         if isinstance(f_event, events.CSave2Disk):
-
             # salvar tabela de aeródromos ?
             if "AER" == f_event.table.upper():
-
                 # salva a tabela de aeródromos
                 self.dct_aer.save2disk()
 
             # salvar tabela de fixos ?
             elif "FIX" == f_event.table.upper():
-
                 # salva a tabela de fixos
                 self.dct_fix.save2disk()
 
             # salvar tabela de performances ?
             elif "PRF" == f_event.table.upper():
-
                 # salva a tabela de performances
                 self.__dct_prf.save2disk()
         '''
             # salvar tabela de aeronaves ?
             elif "ANV" == f_event.table.upper():
-
                 # salva a tabela de aeronaves
                 self.dct_anv.save2disk()
 
             # salvar tabela de esperas ?
             elif "ESP" == f_event.table.upper():
-
                 # salva a tabela de esperas
                 self.dct_esp.save2disk()
 
             # salvar tabela de exercícios ?
             elif "EXE" == f_event.table.upper():
-
                 # salva a tabela de exercícios
                 self.__dct_exe.save2disk()
 
             # salvar tabela de figuras ?
             elif "FIG" == f_event.table.upper():
-
                 # salva a tabela de figuras
                 self.dct_fig.save2disk()
 
             # salvar tabela de navegações ?
             elif "NAV" == f_event.table.upper():
-
                 # salva a tabela de navegações
                 self.dct_Nav.save2disk()
 
             # salvar tabela de pontos no solo ?
             elif "PNS" == f_event.table.upper():
-
                 # salva a tabela de pontos no solo
                 self.dct_pNS.save2disk()
 
             # salvar tabela de procedimentos ?
             elif "PRC" == f_event.table.upper():
-
                 # salva a tabela de procedimentos
                 self.dct_prc.save2disk()
 
             # salvar tabela de pistas ?
             elif "PST" == f_event.table.upper():
-
                 # salva a tabela de pistas
                 self.dct_pst.save2disk()
 
             # salvar tabela de trajetórias ?
             elif "TRJ" == f_event.table.upper():
-
                 # salva a tabela de trajetórias
                 self.__dct_trj.save2disk()
         '''
@@ -400,7 +373,6 @@ class CModelDBEdit(model.CModelManager):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def airspace(self):
         """
@@ -409,7 +381,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__airspace
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def coords(self):
         """
@@ -425,7 +396,6 @@ class CModelDBEdit(model.CModelManager):
         self.__coords = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def exe(self):
         """
@@ -434,7 +404,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__exe
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_esp(self):
         """
@@ -443,7 +412,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__airspace.dct_esp
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_exe(self):
         """
@@ -452,7 +420,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__dct_exe
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_prf(self):
         """
@@ -461,7 +428,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__dct_prf
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_sen(self):
         """
@@ -470,7 +436,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__dct_sen
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_sub(self):
         """
@@ -479,7 +444,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__airspace.dct_sub
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_trf(self):
         """
@@ -488,7 +452,6 @@ class CModelDBEdit(model.CModelManager):
         return self.__dct_trf
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_trj(self):
         """

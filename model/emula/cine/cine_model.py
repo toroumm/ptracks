@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-cine_model
+cine_model.
 
-the flight class. It holds information about a flight and the commands the flight has been given
+the flight class. It holds information about a flight and the commands the flight has been given.
 
 revision 0.2  2015/nov  mlabru
 pep8 style conventions
@@ -43,9 +43,10 @@ M_LOG.setLevel(logging.DEBUG)
 
 class CCineModel(object):
     """
-    the object holding all information concerning a flight
+    the object holding all information concerning a flight.
     """
     # ---------------------------------------------------------------------------------------------
+
     def __init__(self, f_engine, f_control):
         """
         @param f_engine: flight engine da aeronave.
@@ -124,6 +125,7 @@ class CCineModel(object):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
+
     def send_trks(self):
         """
         DOCUMENT ME!
@@ -138,6 +140,7 @@ class CCineModel(object):
 
         # verifica condições de execução
         if ldefs.E_ATIVA != self.__atv.en_trf_est_atv:
+
             # cai fora...
             return
 
@@ -188,6 +191,7 @@ class CCineModel(object):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def atv(self):
         """
@@ -196,6 +200,7 @@ class CCineModel(object):
         return self.__atv
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def cine_data(self):
         """
@@ -204,6 +209,7 @@ class CCineModel(object):
         return self.__cine_data
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def coords(self):
         """
@@ -212,6 +218,7 @@ class CCineModel(object):
         return self.__coords
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def dct_aer(self):
         """
@@ -220,6 +227,7 @@ class CCineModel(object):
         return self.__dct_aer
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def dct_fix(self):
         """
@@ -228,6 +236,7 @@ class CCineModel(object):
         return self.__dct_fix
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def dct_prc(self):
         """
@@ -236,6 +245,7 @@ class CCineModel(object):
         return self.__dct_prc
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def dct_prf(self):
         """
@@ -244,6 +254,7 @@ class CCineModel(object):
         return self.__dct_prf
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def dct_trf(self):
         """
@@ -252,6 +263,7 @@ class CCineModel(object):
         return self.__dct_trf
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def engine(self):
         """
@@ -260,6 +272,7 @@ class CCineModel(object):
         return self.__engine
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def exe(self):
         """
@@ -268,6 +281,7 @@ class CCineModel(object):
         return self.__exe
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def sim_time(self):
         """
@@ -276,6 +290,7 @@ class CCineModel(object):
         return self.__sim_time
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def sck_snd_cnfg(self):
         """
@@ -284,6 +299,7 @@ class CCineModel(object):
         return self.__sck_snd_cnfg
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def sck_snd_trks(self):
         """
@@ -292,6 +308,7 @@ class CCineModel(object):
         return self.__sck_snd_trks
 
     # ---------------------------------------------------------------------------------------------
+
     @property
     def stk_context(self):
         """

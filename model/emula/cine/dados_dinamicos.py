@@ -23,10 +23,12 @@ __date__ = "2015/11"
 import logging
 import math
 
+# libs
+import libs.coords.coord_defs as cdefs
+
 # model
 import model.glb_data as gdata
 import model.newton.defs_newton as ldefs
-import libs.coords.coord_defs as cdefs
 
 import model.emula.cine.calc_proa_demanda as cpd
 

@@ -23,8 +23,8 @@ __date__ = "2016/01"
 import copy
 # import logging
 
-# model
-import libs.coords.pos_lat_lng as pll
+# libs
+import model.coords.pos_lat_lng as pll
 
 # < module data >----------------------------------------------------------------------------------
 

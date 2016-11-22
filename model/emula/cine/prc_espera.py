@@ -23,8 +23,10 @@ __date__ = "2015/11"
 import logging
 import math
 
-# model
+# libs
 import libs.coords.coord_defs as cdefs
+
+# model
 import model.newton.defs_newton as ldefs
 
 import model.emula.cine.abort_prc as abnd

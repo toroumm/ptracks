@@ -31,7 +31,7 @@ import logging
 #from PyQt4 import QtGui
 from PyQt4 import QtCore
 
-# model
+# libs
 import libs.coords.coord_conv as cconv
 import libs.coords.coord_defs as cdefs
 

@@ -23,8 +23,10 @@ __date__ = "2015/11"
 import copy
 # import logging
 
+# libs
+import model.coords.pos_lat_lng as pll
+
 # model
-import libs.coords.pos_lat_lng as pll
 import model.stock.adiru as cadi
 
 # < module data >----------------------------------------------------------------------------------

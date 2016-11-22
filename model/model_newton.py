@@ -120,7 +120,7 @@ class CModelNewton(model.CModelManager):
         """
         # logger
         # M_LOG.info("__load_air:>>")
-
+        '''
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
 
@@ -139,7 +139,7 @@ class CModelNewton(model.CModelManager):
         if not os.path.exists(ls_dir):
             # cria o diretório
             os.mkdir(ls_dir)
-
+        '''
         # create airspace
         self.__airspace = airs.CAirspaceNewton(self)
         assert self.__airspace

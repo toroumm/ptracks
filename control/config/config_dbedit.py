@@ -45,7 +45,7 @@ class CConfigDBEdit(config.CConfigManager):
     __CFG_DBEDIT = {"glb.exe": None,    # exercício
 
                     "tab.aer": "tabAer",    # tabela de aeródromos
-                    "tab.aer": "tabApx",    # tabela de aproximações
+                    "tab.apx": "tabApx",    # tabela de aproximações
                     "tab.esp": "tabEsp",    # tabela de procedimentos de espera
                     "tab.fix": "tabFix",    # tabela de fixos
                     "tab.prf": "tabPrf",    # tabela de performances

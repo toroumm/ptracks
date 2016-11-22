@@ -24,11 +24,12 @@ import logging
 import threading
 import time
 
+# libs
+import model.coords.coord_defs as cdefs
+
 # model
 import model.glb_data as gdata
 import model.glb_defs as gdefs
-
-import libs.coords.coord_defs as cdefs
 
 import model.emula.cine.abort_prc as abnd
 import model.emula.cine.cine_data as cindata

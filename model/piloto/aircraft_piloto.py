@@ -25,12 +25,12 @@ import random
 import sys
 import time
 
+# libs
+import libs.coords.pos_lat_lng as pll
+
 # model
 import model.tMath as tmath
-
-import libs.coords.pos_lat_lng as pll
 import model.stock.aircraft_basic as sanv
-
 import model.piloto.strip_model as mstp
 
 #import model.visadsb.auto_pilot as CAutoPilot

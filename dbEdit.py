@@ -23,6 +23,9 @@ __date__ = "2015/11"
 import logging
 import sys
 
+import sip
+sip.setapi('QString', 2)
+
 # control
 import control.control_dbedit as control
 

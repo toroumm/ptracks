@@ -22,10 +22,12 @@ __date__ = "2015/11"
 # python library
 import logging
 
+# libs
+import libs.coords.coord_defs as cdefs
+
 # model
 import model.newton.defs_newton as ldefs
 
-import libs.coords.coord_defs as cdefs
 import model.emula.cine.abort_prc as abnd
 import model.emula.cine.calc_proa_demanda as cpd
 import model.emula.cine.trata_associado as tass
