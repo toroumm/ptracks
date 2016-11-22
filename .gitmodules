@@ -1,0 +1,3 @@
+[submodule "libs/coords"]
+	path = libs/coords
+	url = https://github.com/mlabru/coords
