@@ -1,4 +1,6 @@
 .pycheckrc
 *.pyc
 *.out
+*.log
+*.err
 *~

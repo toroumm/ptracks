@@ -1,27 +1,20 @@
 #!/bin/bash
 
-## -----------------------------------------------------------------------
-#  desabilita o proxy
-#
-source ./x_proxy.sh
+# desabilita o proxy
+if [ -e ./x_proxy.sh ]
+then
+    source ./x_proxy.sh
+fi
 
-## -----------------------------------------------------------------------
-#  nome do computador
-#
+# nome do computador
 HOST=`hostname`
 
-## -----------------------------------------------------------------------
-#  diretório da aplicação
-#
+# diretório da aplicação
 # cd ~/Public/wrk.srce/pTrack/atual
 
-## -----------------------------------------------------------------------
 #  executa a aplicação
-#
 # /usr/bin/env python -OO ./visil.py 2> ./visil.$HOST.log
 /usr/bin/env python ./visil.py 2> ./visil.$HOST.log
 
-## -----------------------------------------------------------------------
-#  diretório raiz
-#
+# diretório raiz
 # cd ~

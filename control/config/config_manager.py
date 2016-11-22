@@ -30,12 +30,13 @@ import ConfigParser
 # import logging
 import os
 
+# from ...libs.coords 
+import libs.coords.coord_defs as cdefs
+
 # from ...model 
 import model.glb_data as gdata
 # from ...model 
 import model.glb_defs as gdefs
-# from ...model.coords 
-import model.coords.coord_defs as cdefs
 
 # < module data >----------------------------------------------------------------------------------
 

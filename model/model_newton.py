@@ -23,10 +23,12 @@ __date__ = "2015/11"
 import logging
 import os.path
 
+# libs
+import libs.coords.coord_sys as coords
+
 # model
 import model.model_manager as model
 
-import model.coords.coord_sys as coords
 import model.emula.emula_newton as emula
 
 #import model.items.aer_data as aerdata
