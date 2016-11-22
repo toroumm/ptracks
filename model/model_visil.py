@@ -27,13 +27,11 @@ import sys
 # PyQt library
 from PyQt4 import QtCore
 
-# libs
-import libs.coords.coord_sys as coords
-
 # model
 import model.glb_defs as gdefs
 import model.model_manager as model
 
+import model.coords.coord_sys as coords
 import model.emula.emula_visil as emula
 import model.visil.airspace_visil as airs
 import model.visil.landscape_visil as lands
