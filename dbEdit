@@ -10,4 +10,4 @@ fi
 HOST=`hostname`
 
 # executa o editor da base de dados
-/usr/bin/env python -OO ./dbEdit.py 2> ./dbEdit.$HOST.log
+/usr/bin/env python -OO ./dbEdit.py "$@" 2> ./dbEdit.$HOST.log

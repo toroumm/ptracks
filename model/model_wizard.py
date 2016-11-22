@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-model_wizard.
+model_wizard
 
 DOCUMENT ME!
 
@@ -45,10 +45,9 @@ class CModelWizard(model.CModelManager):
     modelo do wizard.
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control):
         """
-        @param f_control: control manager.
+        @param f_control: control manager
         """
         # logger
         # M_LOG.info("__init__:>>")
@@ -79,10 +78,9 @@ class CModelWizard(model.CModelManager):
 
         # houve erro em alguma fase ?
         if not lv_ok:
-
             # logger
             l_log = logging.getLogger("CModelWizard::__init__")
-            l_log.setLevel(logging.NOTSET)
+            l_log.setLevel(logging.DEBUG)
             l_log.critical(u"<E01: Erro na carga da base de dados.")
 
             # cria um evento de quit
@@ -99,12 +97,11 @@ class CModelWizard(model.CModelManager):
         # M_LOG.info("__init__:<<")
                 
     # ---------------------------------------------------------------------------------------------
-
     def __load_tables(self):
         """
-        abre/cria as tabelas do sistema.
+        abre/cria as tabelas do sistema
 
-        @return flag e mensagem.
+        @return flag e mensagem
         """
         # logger
         # M_LOG.info("__load_tables:>>")
@@ -113,7 +110,6 @@ class CModelWizard(model.CModelManager):
         lv_ok = self.load_table_exe()
 
         if lv_ok:
-
             # carrega a tabela de tráfegos
             # lv_ok = self.load_table_anv()
             pass
@@ -125,10 +121,9 @@ class CModelWizard(model.CModelManager):
         return True
 
     # ---------------------------------------------------------------------------------------------
-
     def load_table_exe(self):
         """
-        faz a carga da tabela de exercícios.
+        faz a carga da tabela de exercícios
         """
         # logger
         # M_LOG.info("load_table_exe:>>")
@@ -139,13 +134,11 @@ class CModelWizard(model.CModelManager):
 
         # nome do diretório vazio ?
         if ls_dir is None:
-
             # diretório padrão de exercícios
             ls_dir = self.dct_config["dir.exe"] = gdefs.D_DIR_EXE
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
-
             # cria o diretório
             os.mkdir(ls_dir)
 
@@ -154,14 +147,12 @@ class CModelWizard(model.CModelManager):
 
         # percorre o diretório
         for ls_file in os.listdir(ls_dir):
-
             # monta o path completo do arquivo de exercício
             ls_path = os.path.join(ls_dir, ls_file)
             # M_LOG.debug("ls_path:[{}]".format(ls_path))
 
             # não é um arquivo ?
             if not os.path.isfile(ls_path):
-
                 # passa ao próximo
                 continue
 
@@ -171,7 +162,6 @@ class CModelWizard(model.CModelManager):
 
             # não é um arquivo XML ?
             if ".xml" != l_fext:
-
                 # passa ao próximo
                 continue
 
@@ -180,10 +170,9 @@ class CModelWizard(model.CModelManager):
             # M_LOG.debug("ldct_exe:[{}]".format(ldct_exe))
 
             if ldct_exe is None:
-
                 # logger
                 l_log = logging.getLogger("CModelWizard::load_table_exe")
-                l_log.setLevel(logging.NOTSET)
+                l_log.setLevel(logging.DEBUG)
                 l_log.warning(u"<E01: tabela de exercícios não existe.")
 
                 # cai fora...
@@ -199,12 +188,11 @@ class CModelWizard(model.CModelManager):
         return True
 
     # ---------------------------------------------------------------------------------------------
-
     def notify(self, f_event):
         """
-        callback de tratamento de eventos recebidos.
+        callback de tratamento de eventos recebidos
 
-        @param f_event: evento recebido.
+        @param f_event: evento recebido
         """
         # logger
         # M_LOG.info("notify:>>")
@@ -221,7 +209,6 @@ class CModelWizard(model.CModelManager):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_exe(self):
         """

@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-wpg_config_canal.
+wpg_config_canal
+
 DOCUMENT ME!
 
 revision 0.2  2015/nov  mlabru
@@ -22,33 +23,29 @@ __date__ = "2015/12"
 # import logging
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
-# view / wizard
+# wizard
 import view.wizard.wizard_page_model as wpm
 import view.wizard.wpg_config_canal_ui as wcanal_ui
 
 # < module data >----------------------------------------------------------------------------------
 
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
 # logger
 # M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
+# M_LOG.setLevel(logging.DEBUG)
 
 # < class CWPagConfigCanal >-----------------------------------------------------------------------
-
 
 class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
     """
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_dlg_wizard=None):
         """
-        initializes the wizard.
+        initializes the wizard
         """
         # logger
         # M_LOG.info("__init__:>>")
@@ -78,22 +75,20 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-
     def is_complete(self):
         """
-        verifica se a form está aceitável.
+        verifica se a form está aceitável
         """
         # logger
         # M_LOG.info("is_complete:><")
 
         # retorna
-        return not self.qsbCanal.cleanText().isEmpty()
+        return not "" == self.qsbCanal.cleanText()
 
     # ---------------------------------------------------------------------------------------------
-
     def next_page(self):
         """
-        próxima página na seqüência do wizard.
+        próxima página na seqüência do wizard
         """
         # logger
         # M_LOG.info("next_page:><")
@@ -105,10 +100,9 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         return self.dlg_wizard._pagTermina
 
     # ---------------------------------------------------------------------------------------------
-
     def reset_page(self):
         """
-        reseta os campos da form.
+        reseta os campos da form
         """
         # logger
         # M_LOG.info("reset_page:><")
@@ -117,10 +111,9 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         self.qsbCanal.setValue(int(self.dct_config["glb.canal"]))
 
     # ---------------------------------------------------------------------------------------------
-
     def setup_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
         # logger
         # M_LOG.info("setup_connects:>>")

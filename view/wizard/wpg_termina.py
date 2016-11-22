@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-wpg_termina.
+wpg_termina
+
 DOCUMENT ME!
 
 revision 0.2  2015/dez  mlabru
@@ -22,33 +23,29 @@ __date__ = "2016/01"
 # import logging
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
-# view / wizard
+# wizard
 import view.wizard.wizard_page_model as wpm
 import view.wizard.wpg_termina_ui as wterm_ui
 
 # < module data >----------------------------------------------------------------------------------
 
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
 # logger
 # M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
+# M_LOG.setLevel(logging.DEBUG)
 
 # < class CWPagTermina >---------------------------------------------------------------------------
-
 
 class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
 
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_dlg_wizard=None):
         """
-        initializes the wizard.
+        initializes the wizard
 
-        @param  f_dlg_wizard : DOCUMENT ME!
+        @param f_dlg_wizard: DOCUMENT ME!
         """
         # logger
         # M_LOG.info("__init__:>>")
@@ -78,10 +75,9 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-
     def is_complete(self):
         """
-        verifica se a form está aceitável.
+        verifica se a form está aceitável
         """
         # logger
         # M_LOG.info("is_complete:><")
@@ -91,7 +87,6 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         return self.ckbAgree.isChecked()
 
     # ---------------------------------------------------------------------------------------------
-
     def is_last_page(self):
 
         # logger
@@ -100,10 +95,9 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         return True
 
     # ---------------------------------------------------------------------------------------------
-
     def reset_page(self):
         """
-        reseta os campos da form.
+        reseta os campos da form
         """
         # logger
         # M_LOG.info("reset_page:>>")
@@ -121,10 +115,9 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         # M_LOG.info("reset_page:<<")
 
     # ---------------------------------------------------------------------------------------------
-
     def setup_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
         # logger
         # M_LOG.info("setup_connects:>>")

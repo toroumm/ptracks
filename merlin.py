@@ -22,7 +22,10 @@ __date__ = "2016/01"
 # python library
 import logging
 import sys
-sys.path.insert(1, ".")
+sys.path.insert(0, ".")
+
+import sip
+sip.setapi('QString', 2)
 
 # control
 import control.control_wizard as control

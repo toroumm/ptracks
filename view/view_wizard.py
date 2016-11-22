@@ -170,7 +170,6 @@ class CViewWizard(view.CViewManager):
 
         # simulate something that takes time
         while (time.time() - ll_start) < 2:
-
             # trata os eventos(antes do loop principal)
             self._app.processEvents()
 

@@ -10,4 +10,4 @@ fi
 HOST=`hostname`
 
 # executa o editor da base de dados
-/usr/bin/env python -OO ./merlin.py 2> ./merlin.$HOST.log
+/usr/bin/env python -OO ./merlin.py "$@" 2> ./merlin.$HOST.log

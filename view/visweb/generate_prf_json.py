@@ -24,8 +24,8 @@ import json
 import logging
 import time
 
-# model
-import model.coords.coord_defs as cdefs
+# libs
+import libs.coords.coord_defs as cdefs
 
 # < module data >----------------------------------------------------------------------------------
 
