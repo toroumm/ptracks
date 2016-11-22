@@ -9,14 +9,5 @@ fi
 # nome do computador
 HOST=`hostname`
 
-# diretório da aplicação
-# cd ~/Public/wrk.srce/pTrack/atual
-
 # executa a aplicação
-# /usr/bin/env python -OO ./newton.py "$@" 2> ./newton.$HOST.log
-# /usr/bin/env python -OO ./newton.py "$@" 2> /dev/null
-# /usr/bin/env python ./newton.py "$@" 2> ./newton.$HOST.$BASHPID.log
-/usr/bin/env python ./newton.py "$@" 2> ./newton.$HOST.log
-
-# volta ao diretório raiz
-# cd ~
+/usr/bin/env python -OO ./newton.py "$@" 2> ./newton.$HOST.log

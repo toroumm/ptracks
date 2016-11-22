@@ -30,7 +30,7 @@ import ConfigParser
 # import logging
 import os
 
-# from ...libs.coords 
+# libs
 import libs.coords.coord_defs as cdefs
 
 # from ...model 

@@ -26,7 +26,7 @@ import Queue
 import time
 
 # mpi4py
-# from mpi4py import MPI
+from mpi4py import MPI
 # import mpi4py
 
 # from ..model 
@@ -89,8 +89,8 @@ class CControlNewton(control.CControlBasic):
         # self.sim_time      # simulation timer
 
         # init MPI
-        # self.__mpi_comm = MPI.COMM_WORLD
-        # assert self.__mpi_comm
+        self.__mpi_comm = MPI.COMM_WORLD
+        assert self.__mpi_comm
 
         # carrega as opções de configuração
         self.config = config.CConfigNewton(gdefs.D_CFG_FILE)
@@ -397,7 +397,7 @@ class CControlNewton(control.CControlBasic):
         """
         get MPI Comm
         """
-        return None  # self.__mpi_comm
+        return self.__mpi_comm
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -405,7 +405,7 @@ class CControlNewton(control.CControlBasic):
         """
         get MPI rank
         """
-        return 0  # self.__mpi_comm.rank
+        return self.__mpi_comm.rank
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -413,7 +413,7 @@ class CControlNewton(control.CControlBasic):
         """
         get MPI size
         """
-        return 1  # self.__mpi_comm.size
+        return self.__mpi_comm.size
 
     # ---------------------------------------------------------------------------------------------
     @property
