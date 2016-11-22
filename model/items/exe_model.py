@@ -116,8 +116,7 @@ class CExeModel(object):
         """
         set descrição do exercício
         """
-        # self.__s_exe_desc = f_val.encode("utf-8").strip()
-        self.__s_exe_desc = unicode(f_val.strip())
+        self.__s_exe_desc = f_val.strip()  # encode("utf-8").strip()
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -133,8 +132,7 @@ class CExeModel(object):
         """
         set ID do exercício
         """
-        # self.__s_exe_id = f_val.encode("utf-8").strip().upper()
-        self.__s_exe_id = unicode(f_val.strip().upper())
+        self.__s_exe_id = f_val.strip().upper()  # encode("utf-8").strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     @property

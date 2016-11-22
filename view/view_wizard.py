@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-view_wizard.
+view_wizard
 
 DOCUMENT ME!
 
@@ -30,7 +30,7 @@ from PyQt4 import QtCore, QtGui
 
 # view
 import view.view_manager as view
-import view.wizard.dlg_wizard as wizard
+import view.wizard.dlg_wizard as wzd
 
 # control
 import control.events.events_basic as events
@@ -45,13 +45,12 @@ import control.events.events_basic as events
 
 class CViewWizard(view.CViewManager):
     """
-    the interface to configuration wizard. Handles all interaction with user.
+    the interface to configuration wizard. Handles all interaction with user
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control):
         """
-        initializes the display.
+        initializes the display
         """
         # logger
         # M_LOG.info("__init__:>>")
@@ -107,10 +106,9 @@ class CViewWizard(view.CViewManager):
         # M_LOG.info("__init__:<<")
                 
     # ---------------------------------------------------------------------------------------------
-
     def notify(self, f_event):
         """
-        callback de recebimento de eventos.
+        callback de recebimento de eventos
 
         @param f_event: event
         """
@@ -127,10 +125,9 @@ class CViewWizard(view.CViewManager):
         # M_LOG.info("notify:<<")
                 
     # ---------------------------------------------------------------------------------------------
-
     def run(self):
         """
-        executa a aplicação.
+        executa a aplicação
         """
         # logger
         # M_LOG.info("run:>>")
@@ -188,7 +185,7 @@ class CViewWizard(view.CViewManager):
             time.sleep(0.001)
 
         # cria o configurador de simulação
-        l_wzd = wizard.CDlgWizard(self.control)
+        l_wzd = wzd.CDlgWizard(self.control)
         assert l_wzd
 
         # exibe o configurador de simulação

@@ -512,11 +512,11 @@ def parse_exercicio(f_element):
 
     # handle descrição
     if "descricao" == f_element.tagName():
-        ldct_tmp["descricao"] = f_element.text()
+        ldct_tmp["descricao"] = unicode(f_element.text().toUtf8(), encoding="UTF-8")
 
     # handle hora início
     elif "horainicio" == f_element.tagName():
-        ldct_tmp["horainicio"] = f_element.text()
+        ldct_tmp["horainicio"] = unicode(f_element.text().toUtf8(), encoding="UTF-8")
 
     # handle meteorologia
     elif "meteorologia" == f_element.tagName():

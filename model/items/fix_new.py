@@ -23,8 +23,10 @@ __date__ = "2015/11"
 # import logging
 import sys
 
-# model
+# libs
 import libs.coords.coord_defs as cdefs
+
+# model
 import model.items.fix_model as model
 import model.newton.defs_newton as ldefs
 

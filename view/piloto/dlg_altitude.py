@@ -3,7 +3,8 @@
 """
 ---------------------------------------------------------------------------------------------------
 dlg_altitude
-mantém as informações sobre a dialog de altitude.
+
+mantém as informações sobre a dialog de altitude
 
 revision 0.2  2015/nov  mlabru
 pep8 style conventions
@@ -25,8 +26,8 @@ import os
 # PyQt library
 from PyQt4 import QtCore, QtGui
 
-# model
-import model.coords.coord_defs as cdefs
+# libs
+import libs.coords.coord_defs as cdefs
 
 # view
 import view.piloto.dlg_altitude_ui as dlg

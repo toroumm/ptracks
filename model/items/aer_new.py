@@ -23,8 +23,10 @@ __date__ = "2015/11"
 import logging
 import sys
 
-# model
+# libs
 import libs.coords.coord_defs as cdefs
+
+# model
 import model.items.aer_model as model
 import model.items.pst_new as pstnew
 
