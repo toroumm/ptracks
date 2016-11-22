@@ -31,7 +31,7 @@ import model.glb_data as gdata
 import model.newton.defs_newton as ldefs
 import model.tMath as tMath
 
-import libs.coords.pos_lat_lng as pll
+import model.coords.pos_lat_lng as pll
 import model.stock.fix as cfix
 
 # < module data >----------------------------------------------------------------------------------

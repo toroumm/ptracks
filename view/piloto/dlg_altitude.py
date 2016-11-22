@@ -26,7 +26,7 @@ import os
 from PyQt4 import QtCore, QtGui
 
 # model
-import libs.coords.coord_defs as cdefs
+import model.coords.coord_defs as cdefs
 
 # view
 import view.piloto.dlg_altitude_ui as dlg

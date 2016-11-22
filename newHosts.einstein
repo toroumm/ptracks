@@ -1,0 +1,9 @@
+einstein slots=2 max-slots=4
+icaro slots=3 max-slots=4
+isis slots=3 max-slots=4
+pegasus slots=6 max-slots=8
+
+# einstein (i5) ~400/core - ~1300/3 cores
+# pegasus (i7) ~490/core - ~1350/3 cores - ~2000/6 cores
+
+# einstein (2) + pegasus (6) - 2600/8 cores

@@ -45,7 +45,6 @@ class CViewNewton(threading.Thread):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_control):
         """
         init newton view manager
@@ -84,7 +83,6 @@ class CViewNewton(threading.Thread):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-
     def run(self):
         """
         thread that runs the web server
@@ -94,7 +92,6 @@ class CViewNewton(threading.Thread):
 
         # wait loop
         while not gdata.G_KEEP_RUN:
-
             # wait...
             time.sleep(1)
 
@@ -139,12 +136,11 @@ class CViewNewton(threading.Thread):
 class CViewServer(SocketServer.TCPServer):
     
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_model, f_control, f_server_address, f_handler_class=vhnd.CViewHandler):
         """
         init newton web server
 
-        @param f_control: control manager
+        @param f_control: control manager.
         """
         # logger
         # M_LOG.info("__init__:>>")
@@ -170,7 +166,6 @@ class CViewServer(SocketServer.TCPServer):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def control(self):
         """
@@ -179,7 +174,6 @@ class CViewServer(SocketServer.TCPServer):
         return self.__control 
                                             
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def coords(self):
         """
@@ -188,7 +182,6 @@ class CViewServer(SocketServer.TCPServer):
         return self.__model.coords
                                             
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def model(self):
         """
@@ -197,7 +190,6 @@ class CViewServer(SocketServer.TCPServer):
         return self.__model 
                                             
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def dct_flight(self):
         """
@@ -206,7 +198,6 @@ class CViewServer(SocketServer.TCPServer):
         return self.__model.emula_model.dct_flight 
                                             
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def dct_prf(self):
         """
