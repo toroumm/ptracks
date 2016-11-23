@@ -5,7 +5,7 @@
   <trajetoria nTrj="200">
     <descricao>Circuito I-1</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -38,7 +38,7 @@
   <trajetoria nTrj="202">
     <descricao>Circuito I-2</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -70,7 +70,7 @@
   <trajetoria nTrj="204">
     <descricao>Circuito I-3</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -102,7 +102,7 @@
   <trajetoria nTrj="206">
     <descricao>Circuito I-4</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -134,7 +134,7 @@
   <trajetoria nTrj="208">
     <descricao>Circuito I-5</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -166,7 +166,7 @@
   <trajetoria nTrj="300">
     <descricao>Circuito II-1</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -199,7 +199,7 @@
   <trajetoria nTrj="302">
     <descricao>Circuito II-2</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -231,7 +231,7 @@
   <trajetoria nTrj="304">
     <descricao>Circuito II-3</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -263,7 +263,7 @@
   <trajetoria nTrj="306">
     <descricao>Circuito II-4</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -286,7 +286,7 @@
   <trajetoria nTrj="400">
     <descricao>Circuito III-1</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -319,7 +319,7 @@
   <trajetoria nTrj="402">
     <descricao>Circuito III-2</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -351,7 +351,7 @@
   <trajetoria nTrj="404">
     <descricao>Circuito III-3</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -383,7 +383,7 @@
   <trajetoria nTrj="406">
     <descricao>Circuito III-4</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -415,7 +415,7 @@
   <trajetoria nTrj="408">
     <descricao>Circuito III-5</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -447,7 +447,7 @@
   <trajetoria nTrj="418">
     <descricao>Circuito III-6</descricao>
     <star>N</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -471,7 +471,7 @@
   <trajetoria nTrj="1004">
     <descricao>STAR MUMOP2 RWY35L A PARTIR DE MUMOP</descricao>
     <star>S</star>
-    
+
     <breakpoint nBrk="1">
       <coord>
         <tipo>F</tipo>
@@ -533,6 +533,49 @@
       </coord>
       <altitude>2631</altitude>
       <velocidade>140</velocidade>
+    </breakpoint>
+  </trajetoria>
+
+  <!-- Exercicio Operacional -->
+  <trajetoria nTrj="1100">
+    <descricao>SBBR-SBGR</descricao>
+    <star>N</star>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>NITBU</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>ARAXA</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>NIMPU</cpoA>
+      </coord>
+      <altitude>29000</altitude>
+      <velocidade>300</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="4">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>PIR</cpoA>
+      </coord>
+      <altitude>19000</altitude>
+      <velocidade>200</velocidade>
+      <procedimento>APX005</procedimento>
     </breakpoint>
   </trajetoria>
 

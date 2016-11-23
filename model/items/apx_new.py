@@ -46,8 +46,8 @@ import control.events.events_basic as events
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # < class CApxNEW >--------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ class CApxNEW(model.CPrcModel):
     </aproximacao>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
+    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
         @param f_model: model manager
@@ -130,7 +130,7 @@ class CApxNEW(model.CPrcModel):
         # M_LOG.info("__init__:<<")
                 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
+    # void (?)
     def copy_apx(self, f_apx):
         """
         copy constructor
@@ -168,7 +168,7 @@ class CApxNEW(model.CPrcModel):
         # M_LOG.info("copy_apx:<<")
                 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
+    # void (?)
     def __load_apx(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados de procedimento de aproximação a partir de um dicionário
@@ -205,7 +205,7 @@ class CApxNEW(model.CPrcModel):
         # M_LOG.info("__load_apx:<<")
                 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
+    # void (?)
     def __make_apx(self, fdct_data):
         """
         carrega os dados de procedimento de aproximação a partir de um dicionário (formato 0001)
@@ -231,18 +231,18 @@ class CApxNEW(model.CPrcModel):
             ldct_aer = self.__model.airspace.dct_aer
 
             # obtém o indicativo do aeródromo
-            ls_aer_id = fdct_data["aerodromo"]
-            # M_LOG.debug("ls_aer_id: " + str(ls_aer_id))
+            ls_aer_indc = fdct_data["aerodromo"]
+            # M_LOG.debug("ls_aer_indc: " + str(ls_aer_indc))
 
             # obtém o aeródromo de aproximação
-            self.__ptr_apx_aer = ldct_aer.get(ls_aer_id, None)
+            self.__ptr_apx_aer = ldct_aer.get(ls_aer_indc, None)
 
             # não existe o aeródromo no dicionário ?
             if self.__ptr_apx_aer is None:
                 # logger
                 l_log = logging.getLogger("CSubNEW::__make_apx")
                 l_log.setLevel(logging.WARNING)
-                l_log.warning(u"<E01: aerodromo [{}] não existe no dicionário.".format(ls_aer_id))
+                l_log.warning(u"<E01: aeródromo [{}] não existe.".format(ls_aer_indc))
 
         # pista de aproximação
         if "pista" in fdct_data:
@@ -252,18 +252,18 @@ class CApxNEW(model.CPrcModel):
                 ldct_pis = self.__ptr_apx_aer.dct_aer_pistas
 
                 # obtém o indicativo do aeródromo
-                ls_pis_id = fdct_data["pista"]
-                # M_LOG.debug("ls_pis_id: " + str(ls_pis_id))
+                ls_pst_indc = fdct_data["pista"]
+                # M_LOG.debug("ls_pst_indc: " + str(ls_pst_indc))
 
                 # obtém o pista de subida
-                self.__ptr_apx_pis = ldct_pis.get(ls_pis_id, None)
+                self.__ptr_apx_pis = ldct_pis.get(ls_pst_indc, None)
 
                 # não existe a pista no dicionário ?
                 if self.__ptr_apx_pis is None:
                     # logger
                     l_log = logging.getLogger("CApxNEW::__make_apx")
                     l_log.setLevel(logging.WARNING)
-                    l_log.warning(u"<E02: pista [{}] não existe no dicionário.".format(ls_pis_id))
+                    l_log.warning(u"<E02: aeródromo [{}]/pista [{}] não existe.".format(self.__ptr_apx_aer.s_aer_indc, ls_pst_indc))
 
         # flag ILS
         if "ils" in fdct_data:

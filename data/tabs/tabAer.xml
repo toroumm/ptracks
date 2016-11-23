@@ -113,15 +113,16 @@
       <cpoB>4756.14W</cpoB>
     </coord>
 
-    <pista nPis="11L">
+    <pista nPst="11R">
       <rumo>106</rumo>
       <coord>
-        <tipo>F</tipo>
-        <cpoA>WPZ40</cpoA>
+        <tipo>G</tipo>
+        <cpoA>1552.84S</cpoA>
+        <cpoB>04756.40W</cpoB>
       </coord>
     </pista>
 
-    <pista nPis="11R">
+    <pista nPst="11L">
       <rumo>111</rumo>
       <coord>
         <tipo>G</tipo>
@@ -130,20 +131,67 @@
       </coord>
     </pista>
 
-    <pista nPis="29L">
+    <pista nPst="29L">
       <rumo>287</rumo>
       <coord>
-        <tipo>F</tipo>
-        <cpoA>FRM</cpoA>
+        <tipo>G</tipo>
+        <cpoA>1552.72S</cpoA>
+        <cpoB>04754.55S</cpoB>
       </coord>
     </pista>
 
-    <pista nPis="29R">
+    <pista nPst="29R">
       <rumo>287</rumo>
       <coord>
         <tipo>G</tipo>
         <cpoA>1551.25S</cpoA>
         <cpoB>4753.31W</cpoB>
+      </coord>
+    </pista>
+  </aerodromo>
+
+  <aerodromo nAer="SBGR">
+    <nome>GUARULHOS</nome>
+    <elevacao>2459</elevacao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>1552.3S</cpoA>
+      <cpoB>4756.14W</cpoB>
+    </coord>
+
+    <pista nPst="09L">
+      <rumo>93</rumo>
+      <coord>
+        <tipo>G</tipo>
+        <cpoA>2326.050S</cpoA>
+        <cpoB>04628.950W</cpoB>
+      </coord>
+    </pista>
+
+    <pista nPst="09R">
+      <rumo>93</rumo>
+      <coord>
+        <tipo>G</tipo>
+        <cpoA>2326.333S</cpoA>
+        <cpoB>04629.217W</cpoB>
+      </coord>
+    </pista>
+
+    <pista nPst="27L">
+      <rumo>273</rumo>
+      <coord>
+        <tipo>G</tipo>
+        <cpoA>2325.900S</cpoA>
+        <cpoB>04627.833W</cpoB>
+      </coord>
+    </pista>
+
+    <pista nPst="27R">
+      <rumo>273</rumo>
+      <coord>
+        <tipo>G</tipo>
+        <cpoA>2325.600S</cpoA>
+        <cpoB>04627.500W</cpoB>
       </coord>
     </pista>
   </aerodromo>

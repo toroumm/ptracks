@@ -104,4 +104,52 @@
     </breakpoint>
   </aproximacao>
 
+  <!-- Operacional -->
+  <aproximacao nApx="5">
+    <aerodromo>SBGR</aerodromo>
+    <nome>C1 09R</nome>
+    <pista>09R</pista>
+    <ils>N</ils>
+    <aproxperd>N</aproxperd>
+    <espera>70</espera>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>CAST</cpoA>
+        <cpoB>4</cpoB>
+        <cpoC>273</cpoC>
+      </coord>
+      <altitude>5200</altitude>
+      <razdes>750</razdes>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>CAST</cpoA>
+      </coord>
+      <altitude>4700</altitude>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>TUCA</cpoA>
+      </coord>
+      <altitude>4100</altitude>
+    </breakpoint>
+
+    <breakpoint nBrk="4">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>TUCA</cpoA>
+        <cpoB>4</cpoB>
+        <cpoC>93</cpoC>
+      </coord>
+      <altitude>2660</altitude>
+    </breakpoint>
+
+  </aproximacao>
+
 </aproximacoes>

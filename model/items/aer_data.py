@@ -37,7 +37,8 @@ import logging
 import sys
 
 # PyQt library
-from PyQt4 import QtCore, QtXml
+from PyQt4 import QtCore
+from PyQt4 import QtXml
 
 # model
 import model.items.aer_new as model

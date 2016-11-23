@@ -20,4 +20,10 @@
     <rumo>72</rumo>
   </espera>
 
+  <espera nEsp="70">
+    <fixo>BCO</fixo>
+    <sentido>E</sentido>
+    <rumo>270</rumo>
+  </espera>
+
 </esperas>

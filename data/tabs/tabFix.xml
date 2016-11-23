@@ -419,4 +419,76 @@
     </coord>
   </fixo>
 
+  <fixo nFix="NITBU">
+    <descricao>NITBU</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>1851.560S</cpoA>
+      <cpoB>04711.870W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="COCHO">
+    <descricao>COCHO</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>1551.650S</cpoA>
+      <cpoB>04753.120W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="LUZIANIA">
+    <descricao>LUZIANIA</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>1615.650S</cpoA>
+      <cpoB>04758.260W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="ARAXA">
+    <descricao>ARAXA</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>1941.340S</cpoA>
+      <cpoB>04703.630W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="NIMPU">
+    <descricao>NIMPU</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>2126.810S</cpoA>
+      <cpoB>04714.930W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="CAST">
+    <descricao>CAST</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>2328.320S</cpoA>
+      <cpoB>04636.590W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="TUCA">
+    <descricao>TUCA</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>2327.730S</cpoA>
+      <cpoB>04634.400W</cpoB>
+    </coord>
+  </fixo>
+
+  <fixo nFix="BCO">
+    <descricao>BONSUCESSO</descricao>
+    <coord>
+      <tipo>G</tipo>
+      <cpoA>2324.380S</cpoA>
+      <cpoB>04623.130W</cpoB>
+    </coord>
+  </fixo>
+
 </fixos>
