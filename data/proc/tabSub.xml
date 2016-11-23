@@ -1,1 +1,200 @@
-tabSub.DEMO1970.xml
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE subidas>
+<subidas VERSION="0001" CODE="1961" FORMAT="NEWTON">
+
+  <subida nSub="53">
+    <nome>MOXEP 1B</nome>
+    <aerodromo>SBSJ</aerodromo>
+    <pista>33</pista>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>SCP</cpoA>
+        <cpoB>8</cpoB>
+        <cpoC>333</cpoC>
+      </coord>
+      <altitude>8000</altitude>
+      <velocidade>250</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>SUNBU</cpoA>
+      </coord>
+      <altitude>10000</altitude>
+      <velocidade>300</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MOXEP</cpoA>
+      </coord>
+      <altitude>32000</altitude>
+      <velocidade>300</velocidade>
+      <procedimento>ESP002</procedimento>
+    </breakpoint>
+  </subida>
+
+  <subida nSub="55">
+    <nome>MOXEP 1B</nome>
+    <aerodromo>SBSJ</aerodromo>
+    <pista>15</pista>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>SOTPI</cpoA>
+      </coord>
+      <altitude>8000</altitude>
+      <velocidade>250</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>SUNBU</cpoA>
+      </coord>
+      <altitude>10000</altitude>
+      <velocidade>300</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MOXEP</cpoA>
+      </coord>
+      <altitude>18000</altitude>
+      <velocidade>300</velocidade>
+      <procedimento>ESP002</procedimento>
+    </breakpoint>
+  </subida>
+
+  <subida nSub="57">
+    <nome>KOTRU 1B</nome>
+    <aerodromo>SBSJ</aerodromo>
+    <pista>33</pista>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>SCP</cpoA>
+        <cpoB>8</cpoB>
+        <cpoC>333</cpoC>
+      </coord>
+      <altitude>8000</altitude>
+      <velocidade>250</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>SCP</cpoA>
+        <cpoB>18</cpoB>
+        <cpoC>333</cpoC>
+      </coord>
+      <altitude>10000</altitude>
+      <velocidade>300</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>KOTRU</cpoA>
+      </coord>
+      <altitude>32000</altitude>
+      <velocidade>300</velocidade>
+    </breakpoint>
+  </subida>
+
+  <subida nSub="79">
+    <nome>NISTO 1A LITUK</nome>
+    <aerodromo>SBSP</aerodromo>
+    <pista>17R</pista>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>OPSIT</cpoA>
+      </coord>
+      <altitude>4000</altitude>
+      <velocidade>150</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MOSRA</cpoA>
+      </coord>
+      <altitude>6000</altitude>
+      <velocidade>230</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>MOSRA</cpoA>
+        <cpoB>8</cpoB>
+        <cpoC>94</cpoC>
+      </coord>
+      <altitude>14000</altitude>
+      <velocidade>230</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="4">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>IMBID</cpoA>
+      </coord>
+      <altitude>19000</altitude>
+      <velocidade>230</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="5">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>VUMEV</cpoA>
+      </coord>
+      <altitude>37000</altitude>
+      <velocidade>300</velocidade>
+      <procedimento>TRJ1005</procedimento>
+    </breakpoint>
+  </subida>
+
+  <subida nSub="381">
+    <nome>PBN ANDOR</nome>
+    <aerodromo>SBSP</aerodromo>
+    <pista>17L</pista>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>SP021</cpoA>
+      </coord>
+      <altitude>5500</altitude>
+      <razsub>5.2</razsub>
+      <velocidade>180</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>SP022</cpoA>
+      </coord>
+      <altitude>7000</altitude>
+      <velocidade>230</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>ANDOR</cpoA>
+      </coord>
+      <altitude>28000</altitude>
+      <velocidade>400</velocidade>
+    </breakpoint>
+  </subida>
+
+</subidas>

@@ -50,8 +50,8 @@ import model.emula.cine.sentido_curva as scrv
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # nível 140 = 14000FT
 M_14000FT = 14000 * cdefs.D_CNV_FT2M
@@ -63,7 +63,6 @@ M_VEL_MAX = 230. * cdefs.D_CNV_KT2MS
 M_RAZ_SUB = (1000. * cdefs.D_CNV_FT2M) / 60.
 
 # -------------------------------------------------------------------------------------------------
-
 def __check_cancel_espera(f_atv, f_esp):
     """
     checa condições de abandonar a espera. A condição é executada pelo comando de pilotagem
@@ -113,7 +112,6 @@ def __check_cancel_espera(f_atv, f_esp):
     return False
 
 # -------------------------------------------------------------------------------------------------
-
 def __setor_entrada(f_atv, f_esp):
     """
     determina o setor de entrada na espera
@@ -230,7 +228,6 @@ def __setor_entrada(f_atv, f_esp):
     return -1
 
 # -------------------------------------------------------------------------------------------------
-
 def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
     """
     DOCUMENT ME!
@@ -287,13 +284,13 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # velocidade máxima é de 230KT
         f_atv.f_atv_vel_dem = M_VEL_MAX
 
-    M_LOG.debug("prc_espera:fase [{}/{}] da espera.".format(f_atv.en_atv_fase, ldefs.DCT_FASE[f_atv.en_atv_fase]))
+    # M_LOG.debug("prc_espera:fase [{}/{}] da espera.".format(f_atv.en_atv_fase, ldefs.DCT_FASE[f_atv.en_atv_fase]))
 
     # preparação de dados ?
     if ldefs.E_FASE_ZERO == f_atv.en_atv_fase:
         # obtém dados do fixo de espera e valida pointer
         l_fix = l_esp.ptr_esp_fix
-        M_LOG.debug("prc_espera:ptr_atv_fix_prc:[{}/{}]".format(l_fix.i_fix_id, l_fix.s_fix_desc))
+        # M_LOG.debug("prc_espera:ptr_atv_fix_prc:[{}/{}]".format(l_fix.i_fix_id, l_fix.s_fix_desc))
 
         if (l_fix is None) or (not l_fix.v_fix_ok):
             # logger
@@ -360,7 +357,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # sinaliza nova fase
         f_atv.en_atv_fase = ldefs.E_FASE_TEMPO
 
-        M_LOG.debug("prc_espera:E_FASE_SETOR1:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
+        # M_LOG.debug("prc_espera:E_FASE_SETOR1:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
 
     # seguir no rumo perna de afastamento defasado de 30 graus
     elif ldefs.E_FASE_SETOR2 == f_atv.en_atv_fase:
@@ -391,7 +388,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # sinaliza nova fase
         f_atv.en_atv_fase = ldefs.E_FASE_TEMPOSETOR
 
-        M_LOG.debug("prc_espera:E_FASE_SETOR2:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
+        # M_LOG.debug("prc_espera:E_FASE_SETOR2:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
 
     # entrada pelo setor 3
     elif ldefs.E_FASE_SETOR3 == f_atv.en_atv_fase:
@@ -411,7 +408,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # curva pela direita (positiva)
             f_atv.f_atv_raz_crv = abs(f_atv.f_atv_raz_crv)
 
-        M_LOG.debug("prc_espera:E_FASE_SETOR2:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
+        # M_LOG.debug("prc_espera:E_FASE_SETOR2:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
 
     # permanência na perna de aproximação
     elif ldefs.E_FASE_TEMPO == f_atv.en_atv_fase:
@@ -425,7 +422,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # nova fase
             f_atv.en_atv_fase = ldefs.E_FASE_VOLTA
 
-        M_LOG.debug("prc_espera:E_FASE_TEMPO:[{}]".format(f_cine_data.h_tempo))
+        # M_LOG.debug("prc_espera:E_FASE_TEMPO:[{}]".format(f_cine_data.h_tempo))
 
     # permanência nos 30 graus do rumo para o setor 2
     elif ldefs.E_FASE_TEMPOSETOR == f_atv.en_atv_fase:
@@ -439,7 +436,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # nova fase
             f_atv.en_atv_fase = ldefs.E_FASE_VOLTA
 
-        M_LOG.debug("prc_espera:E_FASE_TEMPOSETOR:[{}]".format(f_cine_data.h_tempo))
+        # M_LOG.debug("prc_espera:E_FASE_TEMPOSETOR:[{}]".format(f_cine_data.h_tempo))
 
     # fase volta ?
     elif ldefs.E_FASE_VOLTA == f_atv.en_atv_fase:

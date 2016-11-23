@@ -1,1 +1,5 @@
-tabILS.DEMO1970.xml
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE ILSs>
+<ILSs VERSION="0001" CODE="1961" FORMAT="NEWTON">
+
+</ILSs>
