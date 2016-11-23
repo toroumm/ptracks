@@ -1,15 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# -----------------------------------------------------------------------------------------------
-# TrackS
-# Copyright (c) 2008-2011, Instituto de Controle do Espaço Aéreo
-# -----------------------------------------------------------------------------------------------
-# dlgPrfEditNEW
-# mantém as informações sobre a dialog de edição de performances.
-#
-# revision 0.1  2014/nov  mlabru
-# initial release (Linux/Python)
-# -----------------------------------------------------------------------------------------------
+"""
+-------------------------------------------------------------------------------------------------
+dlgPrfEditNEW
+
+mantém as informações sobre a dialog de edição de performances
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+revision 0.1  2014/nov  mlabru
+initial release (Linux/Python)
+-------------------------------------------------------------------------------------------------
+"""
 __version__ = "$revision: 0.01$"
 __author__ = "mlabru, ICEA"
 __date__ = "2014/11"
@@ -23,10 +36,10 @@ import os
 # PyQt library
 from PyQt4 import QtCore, QtGui
 
-# model / items
+# model
 import model.items.prf_new as dctPrf
 
-# view / dialog / Qt
+# view
 import view.dbedit.dlg_prf_edit_new_ui as dlgPrfEditNEW_ui
 
 # < variáveis globais >--------------------------------------------------------------------------
@@ -42,7 +55,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
     mantém as informações sobre a dialog de edição de performances.
     """
     # -------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_oPrf=None, f_parent=None):
         """
         constructor.
@@ -111,7 +123,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def accept(self):
 
         # logger
@@ -136,7 +147,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def acceptEdit(self):
 
         # logger
@@ -226,7 +236,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def acceptNew(self):
 
         # logger
@@ -283,7 +292,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def configConnects(self):
         """
         configura as conexões slot/signal.
@@ -311,7 +319,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def configTexts(self):
 
         # logger
@@ -360,7 +367,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def getData(self):
 
         # logger
@@ -369,7 +375,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         return self._oPrf
 
     # -------------------------------------------------------------------------------------------
-
     def reject(self):
 
         # logger
@@ -384,7 +389,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-
     def restoreSettings(self):
         """
         restaura as configurações salvas para esta janela
@@ -406,7 +410,6 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         return True
 
     # -------------------------------------------------------------------------------------------
-
     def updatePrfData(self):
         """
         atualiza na tela os a área de dados da performance selecionado.
@@ -459,8 +462,7 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
     # rotinas de tratamento de edição de campos
     # ===========================================================================================
 
-    # -------------------------------------------------------------------------------------------
-
+    # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSignature("QString")
     def on_qleInd_textEdited(self, f_qszVal):
 
@@ -470,4 +472,4 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         # habilita / desabilita os botões
         self.bbxEditPrf.button(QtGui.QDialogButtonBox.Ok).setEnabled(not self.qleInd.text().isEmpty())
 
-# < the end >-------------------------------------------------------------------------------------- #
+# < the end >--------------------------------------------------------------------------------------

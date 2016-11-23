@@ -1,15 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# -----------------------------------------------------------------------------------------------
-# TrackS
-# Copyright (c) 2008-2011, Instituto de Controle do Espaço Aéreo
-# -----------------------------------------------------------------------------------------------
-# dlgExeEditNEW
-# mantém as informações sobre a dialog de edição de exercícios.
-#
-# revision 0.1  2014/nov  mlabru
-# initial release (Linux/Python)
-# -----------------------------------------------------------------------------------------------
+"""
+-------------------------------------------------------------------------------------------------
+dlgExeEditNEW
+
+mantém as informações sobre a dialog de edição de exercícios
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+revision 0.1  2014/nov  mlabru
+initial release (Linux/Python)
+-------------------------------------------------------------------------------------------------
+"""
 __version__ = "$revision: 0.1$"
 __author__ = "mlabru, ICEA"
 __date__ = "2014/11"
@@ -23,10 +36,10 @@ import os
 # PyQt library
 from PyQt4 import QtCore, QtGui
 
-# model / items
+# model
 import model.items.exe_new as clsExe
 
-# view / dialog / Qt
+# view
 import view.dbedit.dlg_exe_edit_new_ui as dlgExeEditNEW_ui
 
 # < variáveis globais >--------------------------------------------------------------------------
@@ -36,7 +49,6 @@ w_logLvl = logging.DEBUG
 
 # < class dlgExeEditNEW >------------------------------------------------------------------------
 
-
 class dlgExeEditNEW (QtGui.QDialog, dlgExeEditNEW_ui.Ui_dlgExeEditNEW):
 
     """
@@ -44,17 +56,14 @@ class dlgExeEditNEW (QtGui.QDialog, dlgExeEditNEW_ui.Ui_dlgExeEditNEW):
     """
 
     # -------------------------------------------------------------------------------------------
-    # dlgExeEditNEW::__init__
-    # -------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_oExe=None, f_parent=None):
         """
-        constructor.
-        cria uma dialog de edição de exercícios.
+        constructor
+        cria uma dialog de edição de exercícios
 
-        @param  f_control : control manager do editor da base de dados do TrackS.
-        @param  f_oExe    : exercício a editar.
-        @param  f_parent  : janela vinculada.
+        @param  f_control : control manager do editor da base de dados
+        @param  f_oExe    : exercício a editar
+        @param  f_parent  : janela vinculada
         """
 
         # logger
@@ -115,8 +124,6 @@ class dlgExeEditNEW (QtGui.QDialog, dlgExeEditNEW_ui.Ui_dlgExeEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-    # dlgExeEditNEW::accept
-    # -------------------------------------------------------------------------------------------
     def accept(self):
 
         # logger
@@ -140,8 +147,6 @@ class dlgExeEditNEW (QtGui.QDialog, dlgExeEditNEW_ui.Ui_dlgExeEditNEW):
         # logger
         l_log.info("__init__:<<")
 
-    # -------------------------------------------------------------------------------------------
-    # dlgExeEditNEW::acceptEdit
     # -------------------------------------------------------------------------------------------
     def acceptEdit(self):
 

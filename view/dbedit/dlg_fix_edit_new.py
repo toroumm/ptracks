@@ -1,15 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# -----------------------------------------------------------------------------------------------
-# TrackS
-# Copyright (c) 2008-2011, Instituto de Controle do Espaço Aéreo
-# -----------------------------------------------------------------------------------------------
-# dlgFixEditNEW
-# mantém as informações sobre a dialog de edição de fixos.
-#
-# revision 0.1  2014/nov  mlabru
-# initial release (Linux/Python)
-# -----------------------------------------------------------------------------------------------
+"""
+-------------------------------------------------------------------------------------------------
+dlgFixEditNEW
+
+mantém as informações sobre a dialog de edição de fixos
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+revision 0.1  2014/nov  mlabru
+initial release (Linux/Python)
+-------------------------------------------------------------------------------------------------
+"""
 __version__ = "$revision: 0.1$"
 __author__ = "mlabru, ICEA"
 __date__ = "2014/11"
@@ -23,10 +36,10 @@ import os
 # PyQt library
 from PyQt4 import QtCore, QtGui
 
-# model / items
+# model
 import model.items.fix_new as clsFix
 
-# view / dialog / Qt
+# view
 import view.dbedit.dlg_fix_edit_new_ui as dlgFixEditNEW_ui
 
 # < variáveis globais >--------------------------------------------------------------------------
@@ -36,15 +49,11 @@ w_logLvl = logging.DEBUG
 
 # < class dlgFixEditNEW >------------------------------------------------------------------------
 
-
 class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
     """
     mantém as informações sobre a dialog de edição de fixos.
     """
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::__init__
-    # -------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_oFix=None, f_parent=None):
         """
         constructor.
@@ -113,8 +122,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::accept
-    # -------------------------------------------------------------------------------------------
     def accept(self):
 
         # logger
@@ -138,8 +145,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         # logger
         l_log.info("__init__:<<")
 
-    # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::acceptEdit
     # -------------------------------------------------------------------------------------------
     def acceptEdit(self):
 
@@ -230,8 +235,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::acceptNew
-    # -------------------------------------------------------------------------------------------
     def acceptNew(self):
 
         # logger
@@ -288,8 +291,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::configConnects
-    # -------------------------------------------------------------------------------------------
     def configConnects(self):
         """
         configura as conexões slot/signal.
@@ -317,8 +318,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::configTexts
-    # -------------------------------------------------------------------------------------------
     def configTexts(self):
 
         # logger
@@ -327,8 +326,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         # configura títulos e mensagens
         self._txtSettings = "dlgFixEditNEW"
 
-    # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::editingFinished
     # -------------------------------------------------------------------------------------------
     def editingFinished(self):
 
@@ -368,20 +365,13 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         l_log.info("__init__:<<")
 
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::getData
-    # -------------------------------------------------------------------------------------------
     def getData(self):
 
         # logger
-        l_log.info("__init__:>>")
-
-        # logger
-        l_log.info("__init__:<<")
+        l_log.info("__init__:><")
 
         return (self._oFix)
 
-    # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::reject
     # -------------------------------------------------------------------------------------------
     def reject(self):
 
@@ -396,8 +386,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         # logger
         l_log.info("__init__:<<")
 
-    # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::restoreSettings
     # -------------------------------------------------------------------------------------------
     def restoreSettings(self):
         """
@@ -419,8 +407,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
 
         return (True)
 
-    # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::updateFixData
     # -------------------------------------------------------------------------------------------
     def updateFixData(self):
         """
@@ -475,8 +461,6 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
     # ===========================================================================================
 
     # -------------------------------------------------------------------------------------------
-    # dlgFixEditNEW::on_qleInd_textEdited
-    # -------------------------------------------------------------------------------------------
     @QtCore.pyqtSignature("QString")
     def on_qleInd_textEdited(self, f_qszVal):
 
@@ -486,4 +470,4 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         # habilita / desabilita os botões
         self.bbxEditFix.button(QtGui.QDialogButtonBox.Ok).setEnabled(not self.qleInd.text().isEmpty())
 
-# < the end >-------------------------------------------------------------------------------------- #
+# < the end >--------------------------------------------------------------------------------------
