@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-generate_anv_json.
+generate_anv_json
 
 DOCUMENT ME!
 
@@ -49,7 +49,6 @@ import libs.coords.coord_defs as cdefs
 M_MSG = 0
 
 # ------------------------------------------------------------------------------------------------
-
 def generate_anv_json(fdct_flight, f_coords):
     """
     DOCUMENT ME!
@@ -57,9 +56,6 @@ def generate_anv_json(fdct_flight, f_coords):
     @param fdct_flight: dicionário de flight engines
     @param f_coords: coordinate system
     """
-    # logger
-    # M_LOG.info("generate_anv_json:>>")
-
     # globals
     global M_MSG
 
@@ -76,7 +72,7 @@ def generate_anv_json(fdct_flight, f_coords):
     lv_first = True
 
     # first aircraft
-    l_anv = None # f_setup.aircrafts
+    l_anv = None  # f_setup.aircrafts
 
     for l_anv in fdct_flight.values():  # while l_anv is not None:
 
@@ -90,7 +86,6 @@ def generate_anv_json(fdct_flight, f_coords):
 
         # primeira aeronave ?
         if lv_first:
-
             # reset flag
             lv_first = False
 
@@ -110,8 +105,11 @@ def generate_anv_json(fdct_flight, f_coords):
         # monta o callsign
         ls_buf += ",\"flight\":\"{}\"".format(l_anv.s_trf_ind)  # , jsonEscapeString(l_anv.flight));
 
-        # converte para lat/long
-        lf_lat, lf_lng, lf_alt = f_coords.xyz2geo(l_anv.f_trf_x, l_anv.f_trf_y, l_anv.f_trf_z)
+        # declina o ponto em ~ -21° 
+        lf_x, lf_y, lf_z = f_coords.decl_xyz(l_anv.f_trf_x, l_anv.f_trf_y, l_anv.f_trf_z, cdefs.M_DCL_MAG)
+        
+        # converte para lat/lng
+        lf_lat, lf_lng, lf_alt = f_coords.xyz2geo(lf_x, lf_y, lf_z)
         # # M_LOG.debug("coords:lat:[{}] / lng:[{}] / alt:[{}]".format(lf_lat, lf_lng, lf_alt))
 
         # if (l_anv.bFlags & MODES_ACFLAGS_LATLON_VALID) 23°06′03″S 45°42′25″W
@@ -147,34 +145,34 @@ def generate_anv_json(fdct_flight, f_coords):
 
         #    ls_buf += snprintf(l_p, l_end-l_p, ",\"mlat\":[");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_SQUAWK_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"squawk\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_SQUAWK_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"squawk\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_CALLSIGN_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"callsign\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_CALLSIGN_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"callsign\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_LATLON_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"lat\",\"lon\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_LATLON_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"lat\",\"lon\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_ALTITUDE_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"altitude\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_ALTITUDE_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"altitude\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_HEADING_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"track\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_HEADING_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"track\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_SPEED_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"speed\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_SPEED_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"speed\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_VERTRATE_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"vert_rate\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_VERTRATE_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"vert_rate\",");
 
-        #    if (l_anv.mlatFlags & MODES_ACFLAGS_CATEGORY_VALID)
-        #        ls_buf += snprintf(l_p, l_end-l_p, "\"category\",");
+        #    if l_anv.mlatFlags & MODES_ACFLAGS_CATEGORY_VALID:
+        #        ls_buf += str(l_p, l_end-l_p, "\"category\",");
 
-        #    if (ls_buf[-1] != '[')
+        #    if ls_buf[-1] != '[':
         #        --ls_buf;
 
-        #    ls_buf += snprintf(l_p, l_end-l_p, "]");
+        #    ls_buf += str(l_p, l_end-l_p, "]");
 
         ls_buf += ",\"messages\":%ld,\"seen\":%.1f}" % (M_MSG, 1.)  # ,
         #              l_anv.messages, (l_now - l_anv.seen)/1000.0,
@@ -186,9 +184,6 @@ def generate_anv_json(fdct_flight, f_coords):
 
     # incrementa contador de mensagens
     M_MSG += 1
-
-    # logger
-    # M_LOG.info("generate_anv_json:<<")
 
     # return
     return ls_buf

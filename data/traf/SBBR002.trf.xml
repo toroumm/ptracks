@@ -27,14 +27,6 @@
         <origem>SBBR</origem>
         <destino>SBGR</destino>
         <temptrafego>0</temptrafego>
-        <!--
-        <coord>
-            <tipo>D</tipo>
-            <cpoA>NITBU</cpoA>
-            <cpoB>2</cpoB>
-            <cpoC>180</cpoC>
-        </coord>
-        -->
         <procedimento>SUB1100</procedimento>
     </trafego>
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-view_handler.
+view_handler
 
 DOCUMENT ME!
 
@@ -52,12 +52,6 @@ D_MODES_CONTENT_TYPE_JPG  = "image/jpg"
 D_MODES_CONTENT_TYPE_JS   = "application/javascript;charset=utf-8"
 D_MODES_CONTENT_TYPE_JSON = "application/json;charset=utf-8"
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CViewHandler >---------------------------------------------------------------------------
 
 class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
@@ -65,24 +59,17 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     handles any incoming request from the browser
     """
     # ---------------------------------------------------------------------------------------------
-
     def do_GET(self):
         """
         handler for the GET requests
         """
-        # logger
-        # M_LOG.info("do_GET:>>")
-
         # default path ?
         if "/" == self.path:
             self.path = "/index.html"
 
         # ditch any trailing query part (AJAX might add one to avoid caching)
         llst_path = self.path.split('?')
-        # M_LOG.debug("do_GET:llst_path:[{}]".format(llst_path))
-
         self.path = llst_path[0]
-        # M_LOG.debug("do_GET:path:[{}]".format(self.path))
 
         # check the file extension required and set the right mime type
         try:
@@ -90,10 +77,8 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
             # json file ?
             if self.path.endswith(".json"):
-
                 # aircraft ?
                 if "/data/aircraft.json" == self.path:
-
                     self.send_response(200)
                     self.send_header("Content-type", D_MODES_CONTENT_TYPE_JSON)
                     self.end_headers()
@@ -103,7 +88,6 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
                 # performance ?
                 elif "/data/prf.json" == self.path:
-
                     # create and send headers
                     self.send_response(200)
                     self.send_header("Content-type", D_MODES_CONTENT_TYPE_JSON)
@@ -114,7 +98,6 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
                 # status ?
                 elif "/data/status.json" == self.path:
-
                     # create and send headers
                     self.send_response(200)
                     self.send_header("Content-type", D_MODES_CONTENT_TYPE_JSON)
@@ -154,7 +137,6 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                 lv_send_reply = True
 
             if lv_send_reply:
-
                 # open the static file requested and send it
                 f = open(os.curdir + os.sep + "public_html" + self.path)
 
@@ -171,11 +153,7 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
         # em caso de erro...
         except IOError:
-
             # send error
             self.send_error(404, "File Not Found:[{}]".format(self.path))
-
-        # logger
-        # M_LOG.info("do_GET:<<")
 
 # < the end >--------------------------------------------------------------------------------------

@@ -45,12 +45,6 @@ import model.glb_data as gdata
 # view
 import view.visweb.view_handler as vhnd
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CViewNewton >----------------------------------------------------------------------------
 
 class CViewNewton(threading.Thread):
@@ -65,20 +59,17 @@ class CViewNewton(threading.Thread):
         @param f_model: model manager
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
+        # check input
         assert f_model
         assert f_control
                 
         # init super class
         super(CViewNewton, self).__init__()
 
-        # save model manager
+        # model manager
         self.__model = f_model
 
-        # save control manager
+        # control manager
         self.__control = f_control
 
         # obtém o MPI rank
@@ -92,17 +83,11 @@ class CViewNewton(threading.Thread):
         # configura a porta do servidor
         self.__i_port = int(ldct_config["srv.port"]) + self.__mpi_rank
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         thread that runs the web server
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # wait loop
         while not gdata.G_KEEP_RUN:
             # wait...
@@ -118,7 +103,7 @@ class CViewNewton(threading.Thread):
 
             # logger
             l_log = logging.getLogger("CViewNewton::run")
-            l_log.setLevel(logging.NOTSET)
+            l_log.setLevel(logging.INFO)
             l_log.info(u"E01: started http server on port {}.".format(self.__i_port))
 
             # wait forever for incoming http requests
@@ -126,10 +111,9 @@ class CViewNewton(threading.Thread):
 
         # em caso de erro...
         except KeyboardInterrupt:
-
             # logger
             l_log = logging.getLogger("CViewNewton::run")
-            l_log.setLevel(logging.NOTSET)
+            l_log.setLevel(logging.WARNING)
             l_log.warning(u"E02: ^C received, shutting down the web server.")
 
             # close socket
@@ -137,12 +121,8 @@ class CViewNewton(threading.Thread):
 
         # server loop
         while gdata.G_KEEP_RUN:
-
             # generate aircraft JSON
             time.sleep(.5)
-
-        # logger
-        # M_LOG.info("run:<<")
 
 # < class CViewServer >----------------------------------------------------------------------------
 
@@ -153,12 +133,9 @@ class CViewServer(SocketServer.TCPServer):
         """
         init newton web server
 
-        @param f_control: control manager.
+        @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
+        # check input
         assert f_model
         assert f_control
                 
@@ -174,9 +151,6 @@ class CViewServer(SocketServer.TCPServer):
         # dicionário de performances
         self.__dct_prf = f_model.dct_prf
         assert self.__dct_prf is not None                
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
     @property

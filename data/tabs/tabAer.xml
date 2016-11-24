@@ -110,15 +110,15 @@
     <coord>
       <tipo>G</tipo>
       <cpoA>1552.3S</cpoA>
-      <cpoB>4756.14W</cpoB>
+      <cpoB>4755.12W</cpoB>
     </coord>
 
     <pista nPst="11R">
       <rumo>106</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>1552.84S</cpoA>
-        <cpoB>04756.40W</cpoB>
+        <cpoA>1552.83S</cpoA>
+        <cpoB>4756.40W</cpoB>
       </coord>
     </pista>
 
@@ -126,8 +126,8 @@
       <rumo>111</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>1552.3S</cpoA>
-        <cpoB>4756.14W</cpoB>
+        <cpoA>1551.82S</cpoA>
+        <cpoB>4755.65W</cpoB>
       </coord>
     </pista>
 
@@ -136,7 +136,7 @@
       <coord>
         <tipo>G</tipo>
         <cpoA>1552.72S</cpoA>
-        <cpoB>04754.55S</cpoB>
+        <cpoB>4754.55S</cpoB>
       </coord>
     </pista>
 
@@ -144,8 +144,8 @@
       <rumo>287</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>1551.25S</cpoA>
-        <cpoB>4753.31W</cpoB>
+        <cpoA>1551.70S</cpoA>
+        <cpoB>4753.87W</cpoB>
       </coord>
     </pista>
   </aerodromo>
@@ -164,7 +164,7 @@
       <coord>
         <tipo>G</tipo>
         <cpoA>2326.050S</cpoA>
-        <cpoB>04628.950W</cpoB>
+        <cpoB>4628.950W</cpoB>
       </coord>
     </pista>
 
@@ -173,7 +173,7 @@
       <coord>
         <tipo>G</tipo>
         <cpoA>2326.333S</cpoA>
-        <cpoB>04629.217W</cpoB>
+        <cpoB>4629.217W</cpoB>
       </coord>
     </pista>
 
@@ -182,7 +182,7 @@
       <coord>
         <tipo>G</tipo>
         <cpoA>2325.900S</cpoA>
-        <cpoB>04627.833W</cpoB>
+        <cpoB>4627.833W</cpoB>
       </coord>
     </pista>
 
@@ -191,7 +191,7 @@
       <coord>
         <tipo>G</tipo>
         <cpoA>2325.600S</cpoA>
-        <cpoB>04627.500W</cpoB>
+        <cpoB>4627.500W</cpoB>
       </coord>
     </pista>
   </aerodromo>
