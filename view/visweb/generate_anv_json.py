@@ -33,7 +33,7 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
+# import logging
 import time
 
 # libs
@@ -42,8 +42,8 @@ import libs.coords.coord_defs as cdefs
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # message count
 M_MSG = 0
@@ -107,7 +107,7 @@ def generate_anv_json(fdct_flight, f_coords):
 
         # converte para lat/lng
         lf_lat, lf_lng, lf_alt = f_coords.xyz2geo(l_anv.f_trf_x, l_anv.f_trf_y, l_anv.f_trf_z)
-        M_LOG.debug("coords (A):lat:[{}] / lng:[{}] / alt:[{}]".format(lf_lat, lf_lng, lf_alt))
+        # M_LOG.debug("coords (A):lat:[{}] / lng:[{}] / alt:[{}]".format(lf_lat, lf_lng, lf_alt))
 
         # declina o ponto em ~ -21° 
         # lf_x, lf_y, lf_z = f_coords.decl_xyz(l_anv.f_trf_x, l_anv.f_trf_y, l_anv.f_trf_z, cdefs.M_DCL_MAG)
