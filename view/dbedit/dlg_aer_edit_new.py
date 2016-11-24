@@ -357,7 +357,7 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         restaura as configurações salvas para esta janela
         """
         # obtém os settings
-        l_set = QtCore.QSettings("ICEA", "dbedit")
+        l_set = QtCore.QSettings("sophosoft", "dbedit")
         assert l_set
 
         # restaura geometria da janela

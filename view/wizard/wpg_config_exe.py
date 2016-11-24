@@ -131,7 +131,7 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         # M_LOG.info("closeEvent:>>")
 
         # obtém os settings
-        l_set = QtCore.QSettings("ICEA", "Merlin")
+        l_set = QtCore.QSettings("sophosoft", "merlin")
         assert l_set
 
         # salva geometria da janela
@@ -504,7 +504,7 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         # M_LOG.info("restore_settings:>>")
 
         # obtém os settings
-        l_set = QtCore.QSettings("ICEA", "Merlin")
+        l_set = QtCore.QSettings("sophosoft", "merlin")
         assert l_set
 
         # restaura geometria da janela

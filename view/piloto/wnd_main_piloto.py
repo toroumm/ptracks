@@ -831,7 +831,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # logger
         # M_LOG.info("__read_settings:>>")
 
-        l_settings = QtCore.QSettings("ICEA", "piloto")
+        l_settings = QtCore.QSettings("sophosoft", "piloto")
 
         l_pos = l_settings.value("pos", QtCore.QPoint(200, 200)).toPoint()
         l_size = l_settings.value("size", QtCore.QSize(400, 400)).toSize()
@@ -928,7 +928,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # logger
         # M_LOG.info("__write_settings:>>")
 
-        l_settings = QtCore.QSettings("ICEA", "piloto")
+        l_settings = QtCore.QSettings("sophosoft", "piloto")
 
         l_settings.setValue("pos", self.pos())
         l_settings.setValue("size", self.size())

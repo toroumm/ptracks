@@ -109,8 +109,8 @@ class CViewWizard(view.CViewManager):
         assert self._app
 
         # configura alguns parâmetros da aplicação
-        self._app.setOrganizationName("ICEA")
-        self._app.setOrganizationDomain("icea.br")
+        self._app.setOrganizationName("sophosoft")
+        self._app.setOrganizationDomain("sophosoft.com.br")
         self._app.setApplicationName("Merlin")
 
         self._app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))

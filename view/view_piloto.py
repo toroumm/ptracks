@@ -91,8 +91,8 @@ class CViewPiloto(view.CViewManager):
         assert self.__app
 
         # configura alguns parâmetros da aplicação
-        self.__app.setOrganizationName("ICEA")
-        self.__app.setOrganizationDomain("pbcp.icea.br")
+        self.__app.setOrganizationName("sophosoft")
+        self.__app.setOrganizationDomain("sophosoft.com.br")
         self.__app.setApplicationName("piloto")
 
         self.__app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))

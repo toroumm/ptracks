@@ -219,8 +219,8 @@ class CControlNewton(control.CControlBasic):
         # M_LOG.debug("currentThread:{}".format(threading.currentThread()))
 
         # setup application parameters
-        # self.app.setOrganizationName("ICEA")
-        # self.app.setOrganizationDomain("pbcp.icea.br")
+        # self.app.setOrganizationName("sophosoft")
+        # self.app.setOrganizationDomain("sophosoft.com.br")
         # self.app.setApplicationName("newton")
 
         # self.app.setWindowIcon(QtGui.QIcon(os.path.join(self.__dct_config["dir.img"], "icon_app.png")))

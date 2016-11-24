@@ -29,7 +29,7 @@ revision 0.1  2014/nov  mlabru
 initial release (Linux/Python)
 ---------------------------------------------------------------------------------------------------
 """
-__version__ = "$revision: 0.2$"
+__version__ = "$revision: 0.3$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
@@ -37,21 +37,14 @@ __date__ = "2015/11"
 
 # python library
 import argparse
-import logging
 import os
 import socket
 
-# from ...model 
+# model 
 import model.data as data
 
-# from ...control.config 
+# from control.config 
 import control.config.config_manager as config
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CConfigNewton >--------------------------------------------------------------------------
 
@@ -76,16 +69,12 @@ class CConfigNewton(config.CConfigManager):
                    }  # __CFG_NEWTON
 
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_config):
         """
         inicia o gerente de configuração
 
         @param fs_config: full path do arquivo de configuração
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CConfigNewton, self).__init__(fs_config)
 
@@ -101,7 +90,7 @@ class CConfigNewton(config.CConfigManager):
         self.dct_config["srv.addr"] = str(socket.gethostbyname(socket.getfqdn()))
 
         # cria um parser para os argumentos
-        l_parser = argparse.ArgumentParser(description="Newton (C) ICEA 2014-2016.")
+        l_parser = argparse.ArgumentParser(description="newton (C) 2014-2016.")
         assert l_parser
 
         # argumento: canal de comunicação
@@ -127,18 +116,11 @@ class CConfigNewton(config.CConfigManager):
         # load dirs section
         self.__load_dirs()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __load_dirs(self):
         """
         carrega as configurações de diretórios
         """
-        # logger
-        # M_LOG.info("__load_dirs:>>")
-
         # monta o diretório de airspaces
         self.dct_config["dir.air"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
                                                                 self.dct_config["dir.air"]))
@@ -158,8 +140,5 @@ class CConfigNewton(config.CConfigManager):
         # monta o diretório de tráfegos
         self.dct_config["dir.trf"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
                                                                 self.dct_config["dir.trf"]))
-
-        # logger
-        # M_LOG.info("__load_dirs:<<")
 
 # < the end >--------------------------------------------------------------------------------------

@@ -90,7 +90,7 @@ class CConfigPiloto(config.CConfigManager):
         # l_log.info("self.dct_config: " + str ( self.dct_config ))
 
         # cria um parser para os argumentos
-        l_parser = argparse.ArgumentParser(description="Piloto (C) ICEA 2014-2016.")
+        l_parser = argparse.ArgumentParser(description="Piloto (C) 2014-2016.")
         assert l_parser
 
         # argumento: canal de comunicação

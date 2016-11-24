@@ -759,7 +759,7 @@ class CWndMainVisil(QtGui.QMainWindow, wndmain_ui.Ui_wndMainVisil):
         # logger
         # M_LOG.info("__read_settings:>>")
 
-        l_settings = QtCore.QSettings("ICEA", "visil")
+        l_settings = QtCore.QSettings("sophosoft", "visil")
 
         l_pos = l_settings.value("pos", QtCore.QPoint(200, 200)).toPoint()
         l_size = l_settings.value("size", QtCore.QSize(400, 400)).toSize()
@@ -1007,7 +1007,7 @@ class CWndMainVisil(QtGui.QMainWindow, wndmain_ui.Ui_wndMainVisil):
         # logger
         # M_LOG.info("__write_settings:>>")
 
-        l_settings = QtCore.QSettings("ICEA", "visil")
+        l_settings = QtCore.QSettings("sophosoft", "visil")
 
         l_settings.setValue("pos", self.pos())
         l_settings.setValue("size", self.size())

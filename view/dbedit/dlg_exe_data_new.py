@@ -797,7 +797,7 @@ class CDlgExeDataNEW (QtGui.QDialog, dlgData_ui.Ui_DlgExeDataNEW):
         M_LOG.info("restoreSettings:>>")
 
         # obtém os settings
-        l_set = QtCore.QSettings("ICEA", "dbEdit")
+        l_set = QtCore.QSettings("sophosoft", "dbEdit")
         assert l_set
 
         # restaura geometria da janela

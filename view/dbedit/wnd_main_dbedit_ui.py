@@ -137,7 +137,7 @@ class Ui_wndMainDBEdit(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans\'; font-size:16pt; font-weight:600; color:#00007f;\">(C) 2014  ICEA - GMU </span></p></body></html>", None))
+"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Sans\'; font-size:16pt; font-weight:600; color:#00007f;\">(C) 2014-2016 </span></p></body></html>", None))
         self.btnAer.setText(_translate("wndMainDBEdit", "Aeródromos", None))
         self.btnPrf.setText(_translate("wndMainDBEdit", "Performances", None))
         self.btnPrc.setText(_translate("wndMainDBEdit", "Procedimentos", None))

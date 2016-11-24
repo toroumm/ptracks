@@ -92,8 +92,8 @@ class CViewDBEdit(view.CViewManager):
         assert self.__app
 
         # parâmetros
-        self.__app.setOrganizationName("ICEA")
-        self.__app.setOrganizationDomain("pbca.icea.br")
+        self.__app.setOrganizationName("sophosoft")
+        self.__app.setOrganizationDomain("sophosoft.com.br")
         self.__app.setApplicationName("dbEdit")
         self.__app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))
 

@@ -88,7 +88,7 @@ class CConfigVisil(config.CConfigManager):
                 self.dct_config[l_key] = self.__CFG_VISIL[l_key]
 
         # cria um parser para os argumentos
-        l_parser = argparse.ArgumentParser(description="VisIL (C) ICEA 2014-2016.")
+        l_parser = argparse.ArgumentParser(description="VisIL (C) 2014-2016.")
         assert l_parser
 
         # argumento: canal de comunicação
