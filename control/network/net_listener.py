@@ -43,14 +43,14 @@ import socket
 import struct
 import time
 
-# from ...model 
+# model 
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-# M_LOG = multiprocessing.get_logger()
+# M_LOG = logging.getLogger(__name__)
 # M_LOG.setLevel(logging.DEBUG)
 
 # < class CNetListener >---------------------------------------------------------------------------
@@ -60,7 +60,6 @@ class CNetListener(multiprocessing.Process):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, ft_ifce, fs_addr, fi_port, f_queue):
         """
         initializes network listener
@@ -70,9 +69,6 @@ class CNetListener(multiprocessing.Process):
         @param fi_port: porta. (1970)
         @param f_queue: queue de dados
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert fs_addr
         assert fi_port
@@ -103,7 +99,7 @@ class CNetListener(multiprocessing.Process):
         # em caso de erro...
         except AttributeError as ls_err:
             # logger
-            l_log = multiprocessing.getLogger("CNetListener::__init__")
+            l_log = logging.getLogger("CNetListener::__init__")
             l_log.setLevel(logging.WARNING)
             l_log.warning("<E01: some systems don't support SO_REUSEPORT:[{}]".format(ls_err))
 
@@ -125,18 +121,11 @@ class CNetListener(multiprocessing.Process):
         # set some more multicast options
         self.__fd_recv.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, l_mreq)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def run(self):
         """
         drive application
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # check requirements
         assert self.__fd_recv
 
@@ -170,26 +159,19 @@ class CNetListener(multiprocessing.Process):
             # otherwise, mensagem não reconhecida ou inválida
             else:
                 # logger
-                l_log = multiprocessing.getLogger("CNetListener::run")
+                l_log = logging.getLogger("CNetListener::run")
                 l_log.setLevel(logging.WARNING)
                 l_log.warning("<E01: Unknow:[{}].".format(llst_data[2:]))
-
-        # logger
-        # M_LOG.info("run:<<")
 
     # =============================================================================================
     # data
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def get_data(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("get_data:>>")
-
         # return list
         llst_data = []
 
@@ -198,9 +180,6 @@ class CNetListener(multiprocessing.Process):
             # obtém o primeiro item da fila
             llst_data = self.__q_queue.pop(0)
             # M_LOG.debug("llst_data: " + str(llst_data))
-
-        # logger
-        # M_LOG.info("get_data:<<")
 
         # retorna o dado recebido
         return llst_data

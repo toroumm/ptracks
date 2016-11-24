@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-model_piloto.
+model_piloto
 
-model manager da pilotagem.
+model manager da pilotagem
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -53,13 +53,12 @@ import control.events.events_basic as events
 
 class CModelPiloto(model.CModelManager):
     """
-    piloto model object.
+    piloto model object
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control):
         """
-        @param f_control: control manager.
+        @param f_control: control manager
         """
         # logger
         # M_LOG.info("__init__:>>")
@@ -94,7 +93,6 @@ class CModelPiloto(model.CModelManager):
         # M_LOG.info("__init__:<<")
                 
     # ---------------------------------------------------------------------------------------------
-
     def load_tables(self, ls_cena):
         """
         abre/cria as tabelas do sistema.
@@ -118,7 +116,6 @@ class CModelPiloto(model.CModelManager):
 
         # houve erro em alguma fase ?
         if not lv_ok:
-
             # logger
             l_log = logging.getLogger("CModelPiloto::load_tables")
             l_log.setLevel(M_LOG_LVL)
@@ -173,7 +170,6 @@ class CModelPiloto(model.CModelManager):
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-
     def load_land(self, fs_land):
         """
         faz a carga do landscape.
@@ -211,7 +207,6 @@ class CModelPiloto(model.CModelManager):
         return True, None
     '''
     # ---------------------------------------------------------------------------------------------
-
     def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos.
@@ -225,7 +220,6 @@ class CModelPiloto(model.CModelManager):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def airspace(self):
         """
@@ -243,7 +237,6 @@ class CModelPiloto(model.CModelManager):
         return self.__landscape
     '''
     # ---------------------------------------------------------------------------------------------
-
     @property
     def emula_model(self):
         """
@@ -252,7 +245,6 @@ class CModelPiloto(model.CModelManager):
         return self.__emula_model
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def dct_prf(self):
         """

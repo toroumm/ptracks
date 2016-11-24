@@ -88,9 +88,9 @@ class CModelVisil(model.CModelManager):
         self.control.splash.showMessage("creating coordinate system...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
         
         # obtém as coordenadas de referência
-        lf_ref_lat = self.dct_config["map.lat"]
-        lf_ref_lng = self.dct_config["map.lng"]
-        lf_dcl_mag = self.dct_config["map.dcl"]
+        lf_ref_lat = float(self.dct_config["map.lat"])
+        lf_ref_lng = float(self.dct_config["map.lng"])
+        lf_dcl_mag = float(self.dct_config["map.dcl"])
 
         # coordinate system
         self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)

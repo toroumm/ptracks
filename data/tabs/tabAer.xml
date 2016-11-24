@@ -109,8 +109,8 @@
     <elevacao>3479</elevacao>
     <coord>
       <tipo>G</tipo>
-      <cpoA>1552.3S</cpoA>
-      <cpoB>4755.12W</cpoB>
+      <cpoA>1552.267S</cpoA>
+      <cpoB>4755.117W</cpoB>
     </coord>
 
     <pista nPst="11R">
@@ -155,16 +155,16 @@
     <elevacao>2459</elevacao>
     <coord>
       <tipo>G</tipo>
-      <cpoA>1552.3S</cpoA>
-      <cpoB>4756.14W</cpoB>
+      <cpoA>2326.133S</cpoA>
+      <cpoB>4628.383W</cpoB>
     </coord>
 
     <pista nPst="09L">
       <rumo>93</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>2326.050S</cpoA>
-        <cpoB>4628.950W</cpoB>
+        <cpoA>2326.05S</cpoA>
+        <cpoB>4629.00W</cpoB>
       </coord>
     </pista>
 
@@ -172,7 +172,7 @@
       <rumo>93</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>2326.333S</cpoA>
+        <cpoA>2326.500S</cpoA>
         <cpoB>4629.217W</cpoB>
       </coord>
     </pista>
@@ -181,8 +181,8 @@
       <rumo>273</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>2325.900S</cpoA>
-        <cpoB>4627.833W</cpoB>
+        <cpoA>2325.867S</cpoA>
+        <cpoB>4627.533W</cpoB>
       </coord>
     </pista>
 
@@ -190,8 +190,8 @@
       <rumo>273</rumo>
       <coord>
         <tipo>G</tipo>
-        <cpoA>2325.600S</cpoA>
-        <cpoB>4627.500W</cpoB>
+        <cpoA>2325.500S</cpoA>
+        <cpoB>4625.917W</cpoB>
       </coord>
     </pista>
   </aerodromo>

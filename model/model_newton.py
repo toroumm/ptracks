@@ -66,7 +66,6 @@ class CModelNewton(model.CModelManager):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_control):
         """
         @param  f_control: control manager
@@ -87,9 +86,9 @@ class CModelNewton(model.CModelManager):
         # self.event         # event manager
 
         # obtém as coordenadas de referência
-        lf_ref_lat = self.dct_config["map.lat"]
-        lf_ref_lng = self.dct_config["map.lng"]
-        lf_dcl_mag = self.dct_config["map.dcl"]
+        lf_ref_lat = float(self.dct_config["map.lat"])
+        lf_ref_lng = float(self.dct_config["map.lng"])
+        lf_dcl_mag = float(self.dct_config["map.dcl"])
                                 
         # coordinate system
         self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)
@@ -124,7 +123,6 @@ class CModelNewton(model.CModelManager):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_air(self):
         """
         faz a carga do airspace
@@ -167,7 +165,6 @@ class CModelNewton(model.CModelManager):
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_cenario(self):
         """
         abre/cria as tabelas do sistema
@@ -201,7 +198,6 @@ class CModelNewton(model.CModelManager):
         # M_LOG.info("__load_cenario:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_dicts(self):
         """
         DOCUMENT ME!
