@@ -45,7 +45,6 @@ import model.newton.defs_newton as ldefs
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-
 def sent_crv(ff_proa_atu, ff_proa_dem):
     """
     rotina para calcular o sentido da curva pelo "menor ângulo"
@@ -91,7 +90,6 @@ def sent_crv(ff_proa_atu, ff_proa_dem):
     return ldefs.E_ESQUERDA
 
 # -------------------------------------------------------------------------------------------------
-
 def sentido_curva(f_atv):
     """
     rotina para calcular o sentido da "curva pelo menor caminho"

@@ -46,11 +46,10 @@ import model.emula.cine.sentido_curva as scrv
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def obtem_brk(f_atv, f_brk, f_cine_data):
     """
     @param f_atv: pointer to struct aeronaves

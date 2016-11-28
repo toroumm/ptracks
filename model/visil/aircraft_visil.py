@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-aircraft_visil.
+aircraft_visil
 
 DOCUMENT ME!
 
@@ -64,7 +64,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_emula, f_data=None):
         """
         constructor
@@ -137,7 +136,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def fly(self, t):
         """
         do periodic updates (position, altitude, speed,...) variable t specifies time in microseconds
@@ -184,7 +182,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("fly:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def init_position(self, f_oPos):
         """
         set initial position and radar position
@@ -199,7 +196,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("init_position:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instructAltitude(self, f_fAlt):
         """
         give instruction for an altitude
@@ -211,7 +207,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # TODO
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instructApproach(self, f_appName):
         """
         give instruction for an approach procedure
@@ -245,7 +240,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("instructApproach:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instructDirect(self, f_ptName):
         """
         give instruction for a direct (or shortcut)
@@ -280,7 +274,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("instructDirect:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instructHeading(self, f_hdg):
         """
         give instruction for a heading
@@ -312,7 +305,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("instructHeading:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instructRoute(self, f_sRtName):
         """
         give instruction for a standard route
@@ -347,7 +339,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("instructRoute:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instructSpeed(self, ff_ias):
         """
         give instruction for a speed
@@ -358,7 +349,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # TODO
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def isClimbing(self):
         """
         is the aircraft climbing ?
@@ -370,7 +360,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         return False
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def isDescending(self):
         """
         is the aircraft descending ?
@@ -382,7 +371,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         return False
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __make_aircraft(self, f_data, fv_initial=False):
         """
         create an aircraft from list
@@ -487,7 +475,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("__make_aircraft:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def radar_ground_speed(self):
         """
         determine groundspeed from radar history
@@ -512,7 +499,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         return l_gs
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def radar_magnetic_track(self):
         """
         determine magnetic track from radar history
@@ -542,7 +528,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         return l_tr
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def trail(self, fi_ndx):
         """
         get position of radar history point #n
@@ -573,7 +558,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         return self.__lst_trail[len(self.__lst_trail) - 1 - fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def update_data(self, f_data):
         """
         update data
@@ -588,7 +572,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # M_LOG.info("update_data:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def update_radar_position(self, ff_tim):
         """
         get new radar position, and push old one into history

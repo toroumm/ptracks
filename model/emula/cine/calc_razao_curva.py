@@ -46,7 +46,6 @@ import model.newton.defs_newton as ldefs
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-
 def calc_razao_curva(f_atv, ff_pto_x, ff_pto_y, f_cine_data):
     """
     ajusta a razão de curva da aeronave

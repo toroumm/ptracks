@@ -69,7 +69,6 @@ class CCineVoo(cinmodel.CCineModel):
     the object holding all information concerning a flight
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self, f_engine, f_control):
         """
         @param f_engine: flight engine
@@ -107,7 +106,6 @@ class CCineVoo(cinmodel.CCineModel):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def update_cinematica(self):
         """
         atualiza os dados cinemáticos da aeronave
@@ -161,7 +159,6 @@ class CCineVoo(cinmodel.CCineModel):
         # M_LOG.info("update_cinematica:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_aproximacao(self):
         """
         procedimento de aproximação
@@ -178,7 +175,6 @@ class CCineVoo(cinmodel.CCineModel):
         apx.prc_aproximacao(self.atv, self.cine_data, self.stk_context)
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_apx_perdida(self):
         """
         procedimento de aproximação perdida
@@ -195,7 +191,6 @@ class CCineVoo(cinmodel.CCineModel):
             return False
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_decolagem(self):
         """
         procedimento de decolagem
@@ -212,7 +207,6 @@ class CCineVoo(cinmodel.CCineModel):
         dep.prc_decolagem(self.atv, self.cine_data, self.stk_context)
 
     # ---------------------------------------------------------------------------------------------
-
     def prc_dir_fixo(self):
         """
         procedimento de direcionamento a fixo
@@ -229,7 +223,6 @@ class CCineVoo(cinmodel.CCineModel):
         dfix.prc_dir_fixo(self.atv, self.cine_data)
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_espera(self):
         """
         procedimento de espera
@@ -246,7 +239,6 @@ class CCineVoo(cinmodel.CCineModel):
         esp.prc_espera(self.atv, self.cine_data, self.stk_context, self.__f_delta_t)
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_pouso(self):
         """
         procedimento de pouso
@@ -263,7 +255,6 @@ class CCineVoo(cinmodel.CCineModel):
         arr.prc_pouso(self.atv)  # , self.cine_data, self.stk_context)
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_subida(self):
         """
         realiza o procedimento de subida após o procedimento de decolagem
@@ -280,7 +271,6 @@ class CCineVoo(cinmodel.CCineModel):
         sub.prc_subida(self.atv, self.cine_data, self.stk_context)
 
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def prc_trajetoria(self):
         """
         procedimento de trajetória

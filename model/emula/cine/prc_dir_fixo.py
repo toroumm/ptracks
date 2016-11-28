@@ -47,11 +47,10 @@ import model.emula.cine.sentido_curva as scrv
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def __ckeck_ok(f_atv, f_cine_data):
     """
     verifica condições da aeronave para o direcionamento ao fixo
@@ -78,7 +77,7 @@ def __ckeck_ok(f_atv, f_cine_data):
 
     # aponta para o fixo a ser interceptado e valida ponteiro
     l_fix = f_atv.ptr_atv_fix_prc 
-    M_LOG.debug("prc_dir_fixo::ptr_atv_fix_prc:[{}/{}].".format(f_atv.ptr_atv_fix_prc.i_fix_id, f_atv.ptr_atv_fix_prc.s_fix_desc))
+    # M_LOG.debug("prc_dir_fixo::ptr_atv_fix_prc:[{}/{}].".format(f_atv.ptr_atv_fix_prc.i_fix_id, f_atv.ptr_atv_fix_prc.s_fix_desc))
 
     if (l_fix is None) or (not l_fix.v_fix_ok):
         # logger
@@ -160,7 +159,6 @@ def __ckeck_ok(f_atv, f_cine_data):
     # M_LOG.info("__ckeck_ok:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def __direciona(f_atv, f_cine_data):
     """
     direcionar a aeronave a um fixo específico
@@ -264,7 +262,6 @@ def __direciona(f_atv, f_cine_data):
     # M_LOG.info("__direciona:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def prc_dir_fixo(f_atv, f_cine_data):
     """
     procedimento de direcionamento a fixo

@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-cine_calc.
+cine_calc
+
 DOCUMENT ME!
 
 This program is free software: you can redistribute it and/or modify
@@ -37,16 +38,11 @@ import math
 
 # < module data >----------------------------------------------------------------------------------
 
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
 # logger
 # M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
+# M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-
-
 def calc_direcao(ft_pto1, ft_pto2):
     """
     DOCUMENT ME!
@@ -60,28 +56,23 @@ def calc_direcao(ft_pto1, ft_pto2):
 
     # os pontos estão na mesma coluna ?
     if 0. == lf_dlt_x:
-
         # os pontos estão na mesma linha ?
         if 0. == lf_dlt_y:
-
             # X e Y são o mesmo ponto, ângulo zero entre eles
             lf_ang = 0.
 
         # y2 > y1 ?
         elif lf_dlt_y > 0.:
-
             # y2 > y1, logo 180 graus entre eles (pi)
             lf_ang = math.pi / 2.
 
         # senão, y2 < y1
         else:
-
             # y2 < y1, logo -180 graus entre eles (3pi)
             lf_ang = 3. * math.pi / 2.
 
     # senão, não estão na mesma coluna
     else:
-
         # calcula o ângulo entre eles
         lf_ang = math.atan(lf_dlt_y / lf_dlt_x)
 
@@ -94,7 +85,6 @@ def calc_direcao(ft_pto1, ft_pto2):
         lf_deg += math.degrees(math.pi)
 
     else:
-
         # x2 > x1 ?
         if lf_deg < 0.:
             lf_deg += math.degrees(2. * math.pi)
@@ -103,8 +93,6 @@ def calc_direcao(ft_pto1, ft_pto2):
     return lf_deg
 
 # -------------------------------------------------------------------------------------------------
-
-
 def conv_proa2direcao(ff_proa):
     """
     converte uma proa para um ângulo nos eixos cartesianos.
@@ -132,12 +120,10 @@ def conv_proa2direcao(ff_proa):
 
     if lf_proa_x > 0.:
         if lf_proa_y > 0.:
-
             # direção
             lf_dir = math.asin(lf_proa_x)
 
         else:
-
             # componentes da direção
             lf_x_d = lf_proa_x
             lf_y_d = lf_proa_y
@@ -146,7 +132,6 @@ def conv_proa2direcao(ff_proa):
             lf_dir = math.atan2(lf_x_d, lf_y_d)
 
     elif lf_proa_y > 0.:
-
         # componentes da direção
         lf_x_d = lf_proa_x
         lf_y_d = lf_proa_y
@@ -155,7 +140,6 @@ def conv_proa2direcao(ff_proa):
         lf_dir = math.atan2(lf_x_d, lf_y_d) + (2. * math.pi)
 
     else:
-
         # direção
         lf_dir = math.pi + math.fabs(math.asin(lf_proa_x))
 
@@ -181,8 +165,6 @@ def conv_proa2direcao(ff_proa):
     return lf_dir
 
 # -------------------------------------------------------------------------------------------------
-
-
 def distancia_aleatoria_pouso(fui_pst_comp):
     """
     @return a distância retornada refere-se a distância até ao início da cabeceira.
@@ -190,7 +172,6 @@ def distancia_aleatoria_pouso(fui_pst_comp):
     # não está sendo considerada a aleatoreidade no pouso para que todas as aeronaves do
     # PeelOff pousem no mesmo ponto e saiam na mesma posição da pista principal para o taxi.
     if 0:
-
         lf_media = fui_pst_comp / 10.
         '''
         l_sigma = lf_media / 3.26
@@ -203,15 +184,12 @@ def distancia_aleatoria_pouso(fui_pst_comp):
         X = lf_media + ( X1 * l_sigma )
         '''
     else:
-
         lf_media = fui_pst_comp / 15.
 
     # retorna a distância
     return lf_media
 
 # -------------------------------------------------------------------------------------------------
-
-
 def distancia_direcao(ft_pto1, ft_pto2):
     """
     calcula a distância e direção entre dois pontos.
@@ -226,8 +204,6 @@ def distancia_direcao(ft_pto1, ft_pto2):
     return lf_dist, lf_deg
 
 # -------------------------------------------------------------------------------------------------
-
-
 def distancia_entre_pontos(ft_pto1, ft_pto2):
     """
     calcula a distância euclidiana entre os pontos
@@ -244,8 +220,6 @@ def distancia_entre_pontos(ft_pto1, ft_pto2):
     return math.sqrt((lf_dlt_x ** 2) + (lf_dlt_y ** 2))
 
 # -------------------------------------------------------------------------------------------------
-
-
 def distancia_inicio_curva(ff_dir_atu, ff_dir_reta, fd_raio):
     """
     calcula a distância entre o ponto de inicio da curva ate a reta em questão.
@@ -260,8 +234,6 @@ def distancia_inicio_curva(ff_dir_atu, ff_dir_reta, fd_raio):
     return lf_dist
 
 # -------------------------------------------------------------------------------------------------
-
-
 def distancia_ponto_reta(ft_pto, ft_reta):
     """
     calcula a distância (com sinal) de um ponto a uma reta no plano.
@@ -279,8 +251,6 @@ def distancia_ponto_reta(ft_pto, ft_reta):
     return lf_val / lf_sqrt
 
 # -------------------------------------------------------------------------------------------------
-
-
 def distancia_ponto_reta_abs(ft_pto, ft_reta):
     """
     calcula a distância de um ponto a uma reta no plano
@@ -292,8 +262,6 @@ def distancia_ponto_reta_abs(ft_pto, ft_reta):
     return math.fabs(distancia_ponto_reta(ft_pto, ft_reta))
 
 # -------------------------------------------------------------------------------------------------
-
-
 def sentido_rotacao(ff_dir, fd_dem):
     """
     verifica se a aeronave deve girar para a esquerda, direita ou manter a direção atual.
@@ -308,26 +276,21 @@ def sentido_rotacao(ff_dir, fd_dem):
 
     # direção atual = demanda ?
     if li_dem == li_dir:
-
         # se for, mantem o sentido
         lc_sentido = 'I'
 
     # senão, direção atual != demanda
     else:
-
         # direção demanda < atual ?
         if li_dem < li_dir:
-
             # ajusta a demanda
             li_dem += 360
 
         if (li_dem - li_dir) > 180:
-
             # se for, sentido horário
             lc_sentido = 'H'
 
         else:
-
             # se não, sentido anti-horário
             lc_sentido = 'A'
 

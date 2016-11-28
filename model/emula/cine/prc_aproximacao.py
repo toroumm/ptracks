@@ -52,7 +52,6 @@ import model.emula.cine.sentido_curva as scrv
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# static BOOL (AERONAVE *, PROAPROXIMACAO *)
 def __obtem_apx_per(f_atv, f_apx):
     """
     obtém a aproximação perdida
@@ -89,7 +88,6 @@ def __obtem_apx_per(f_atv, f_apx):
     return False
 
 # ------------------------------------------------------------------------------------------------
-# static BOOL (AERONAVE *, PROAPROXIMACAO *)
 def __obtem_ils(f_atv, f_apx):
     """
     o procedimento ILS
@@ -126,7 +124,6 @@ def __obtem_ils(f_atv, f_apx):
     return False
 
 # ------------------------------------------------------------------------------------------------
-# static int (AERONAVE *, PROAPROXIMACAO *)
 def __obtem_pouso(f_atv, f_apx):
     """
     obtém o Pouso
@@ -186,7 +183,6 @@ def __obtem_pouso(f_atv, f_apx):
     return False
 
 # -------------------------------------------------------------------------------------------------
-# void (AERONAVE *, ATRIBPERF *, PERFORMANCE *, tCINDATA *)  # f_atv, f_pAtr, f_pPrf, f_pStk):
 def prc_aproximacao(f_atv, f_cine_data, f_stk_context):
     """
     realiza o procedimento de aproximação

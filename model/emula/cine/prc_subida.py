@@ -51,7 +51,6 @@ import model.emula.cine.trata_associado as tass
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def prc_subida(f_atv, f_cine_data, f_stk_context):
     """
     realiza o procedimento de subida após o procedimento de decolagem

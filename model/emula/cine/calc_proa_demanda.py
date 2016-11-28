@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-calc_proa_demanda.
+calc_proa_demanda
 
-calcula a proa de demanda da aeronave.
+calcula a proa de demanda da aeronave
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,7 +46,6 @@ import model.newton.defs_newton as ldefs
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-
 def calc_proa_demanda(ff_pnt_delt_x, ff_pnt_delt_y):
     """
     calcula a proa de demanda da aeronave
@@ -61,7 +60,6 @@ def calc_proa_demanda(ff_pnt_delt_x, ff_pnt_delt_y):
         
     # verifica coordenada x
     if ff_pnt_delt_x > 0.:
-
         # logger
         # M_LOG.info("calc_proa_demanda:<E01: ff_pnt_delt_x > 0.")
 
@@ -70,11 +68,9 @@ def calc_proa_demanda(ff_pnt_delt_x, ff_pnt_delt_y):
 
     # verifica coordenada x
     if ff_pnt_delt_x < 0.:
-
         lf_ang_temp = 270. - math.degrees(math.atan(ff_pnt_delt_y / ff_pnt_delt_x))
 
         if lf_ang_temp >= 360.:
-
             # logger
             # M_LOG.info("calc_proa_demanda:<E02: lf_ang_temp >= 360.<")
 
@@ -89,7 +85,6 @@ def calc_proa_demanda(ff_pnt_delt_x, ff_pnt_delt_y):
 
     # verifica coordenada y
     if ff_pnt_delt_y >= 0.:
-
         # logger
         # M_LOG.info("calc_proa_demanda:<E04: ff_pnt_delt_y > 0.")
 

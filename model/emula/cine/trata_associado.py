@@ -46,7 +46,6 @@ import model.emula.cine.abort_prc as abnd
 # M_LOG.setLevel(logging.DEBUG)
 
 # ---------------------------------------------------------------------------------------------
-# void (?)
 def restaura_associado(f_atv, f_cine_data, f_stk_context):
     """
     restaura o procedimento associado e o contexto da pilha
@@ -102,7 +101,6 @@ def restaura_associado(f_atv, f_cine_data, f_stk_context):
     return False
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def trata_associado(f_atv, f_brk, fi_brk_ndx, f_stk_context):
     """
     armazena na pilha o procedimento associado

@@ -52,7 +52,6 @@ import model.emula.cine.calc_proa_demanda as cpd
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
     """
     atualiza a altitude da aeronave
@@ -207,7 +206,6 @@ def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
     return lf_alfa, lv_flag
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def __atualiza_mach(f_atv):
     """
     atualiza a velocidade MACH atual da aeronave
@@ -281,7 +279,6 @@ def __atualiza_mach(f_atv):
     # M_LOG.info("__atualiza_mach:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
     """
     DOCUMENT ME!
@@ -378,7 +375,6 @@ def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
     # M_LOG.info("__atualiza_posicao:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def __atualiza_proa(f_atv, ff_delta_t):
     """
     atualiza a proa da aeronave
@@ -525,7 +521,6 @@ def __atualiza_proa(f_atv, ff_delta_t):
     return True
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def __atualiza_velocidade(f_atv, ff_delta_t):
     """
     atualiza a velocidade atual da aeronave
@@ -613,7 +608,6 @@ def __atualiza_velocidade(f_atv, ff_delta_t):
     return lf_vel_med, lv_flag
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def __calcula_tod(f_atv):
     """
     calcular o Ponto Ideal de Descida (Top of Decent - TOD)
@@ -739,7 +733,6 @@ def __calcula_tod(f_atv):
     # M_LOG.info("__calcula_tod:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def dados_dinamicos(f_atv, f_cine_data, ff_delta_t, f_stime):
     """
     atualiza os dados dinâmicos da aeronave

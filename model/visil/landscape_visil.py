@@ -61,7 +61,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
     represent an landscape
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_model, fs_dir, fs_location):
         """
         read datafile for specified location (airport)
@@ -96,7 +95,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def dme(self, fi_ndx):
         """
         return a pointer to the DME with specified index
@@ -114,7 +112,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         return self.__dct_dme[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def getPosition(self, fs_indc):
         """
         get position of a waypoint/vor/ndb/... named as specified
@@ -161,7 +158,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         return None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def load_dicts(self):
         """
         DOCUMENT ME!
@@ -180,7 +176,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         # M_LOG.info("load_dicts:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def load_xml(self, fs_filename):
         """
         load xml landscape file
@@ -248,7 +243,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         # M_LOG.info("load_xml:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def ndb(self, fi_ndx):
         """
         return a pointer to the NDB with specified index
@@ -266,7 +260,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         return self.__dct_ndb[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __parse_dom_element(self, f_element):
         """
         helper function to the constructor, parses xml entries
@@ -328,7 +321,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         # M_LOG.info("__parse_dom_element:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def vor(self, fi_ndx):
         """
         return a pointer to the VOR with specified index
@@ -346,7 +338,6 @@ class CLandscapeVisil(land.CLandscapeBasic):
         return self.__dct_vor[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def waypoint(self, fi_ndx):
         """
         return a pointer to the waypoint with specified index

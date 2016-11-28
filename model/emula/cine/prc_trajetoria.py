@@ -48,11 +48,10 @@ import model.emula.cine.sentido_curva as scrv
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def prc_trajetoria(f_atv, f_cine_data, f_stk_context):
     """
     @param f_atv: pointer to struct aeronave

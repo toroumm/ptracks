@@ -51,7 +51,6 @@ import model.emula.cine.sentido_curva as scrv
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (?)
 def prc_dir_ponto(f_atv, ff_pto_lng, ff_pto_lat, f_cine_data):
     """
     procedimento de direcionamento a ponto

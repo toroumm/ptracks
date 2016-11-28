@@ -60,8 +60,8 @@ import model.items.trj_data as trjdata
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# M_LOG = logging.getLogger(__name__)
+# M_LOG.setLevel(logging.DEBUG)
 
 # < class CAirspaceVisil >------------------------------------------------------------------------------
 
@@ -75,7 +75,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
     C_DEPARTURE = 1
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_model, fs_dir, fs_location):
         """
         read datafile for specified location (airport)
@@ -123,7 +122,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def activateRunway(self, fs_indc, fi_mode):
         """
         add a runway for arrivals or departures
@@ -158,7 +156,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # M_LOG.info("activateRunway:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def arrival(self, fi_ndx):
         """
         return a pointer to the arrival route with specified index
@@ -176,7 +173,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_pso[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def arrivalRunway(self, fi_ndx):
         """
         return a pointer to a string naming the arrival runway of specified index
@@ -194,7 +190,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_arr_runways[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def deactivateRunway(self, fs_indc, fi_mode):
         """
         remove a runway from available departure or arrival runways
@@ -219,7 +214,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # M_LOG.info("deactivateRunway:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def departure(self, fi_ndx):
         """
         return a pointer to the departure route with specified index
@@ -237,7 +231,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.___dep[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def departureRunway(self, fi_ndx):
         """
         return a pointer to a string naming the departure runway of specified index
@@ -255,7 +248,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_dep_runways[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def dme(self, fi_ndx):
         """
         return a pointer to the DME with specified index
@@ -273,7 +265,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_dme[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def getPosition(self, fs_indc):
         """
         get position of a waypoint/vor/ndb/... named as specified
@@ -286,11 +277,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
 
         # pesquisa aeródromos
         l_aer = self.dct_aer.get(fs_indc, None)
-        M_LOG.debug("getPosition:aer:[{}]".format(l_aer))
+        # M_LOG.debug("getPosition:aer:[{}]".format(l_aer))
 
         if l_aer is not None:
 
-            M_LOG.debug("getPosition:aer:[{}]/[{}]".format(l_aer.f_aer_lat, l_aer.f_aer_lng))
+            # M_LOG.debug("getPosition:aer:[{}]/[{}]".format(l_aer.f_aer_lat, l_aer.f_aer_lng))
 
             # logger
             # M_LOG.info("getPosition:<E01")
@@ -330,7 +321,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def holding(self, f_val):
         """
         return a pointer to the holding with specified index
@@ -351,7 +341,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def load_dicts(self):
         """
         DOCUMENT ME!
@@ -391,7 +380,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # M_LOG.info("load_dicts:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def load_xml(self, fs_filename):
         """
         load xml airspace file
@@ -404,7 +392,7 @@ class CAirspaceVisil(airs.CAirspaceBasic):
 
         # read coordinates
         ls_filename = ":/data/" + fs_filename + ".xml"
-        M_LOG.debug("ls_filename: " + str(ls_filename))
+        # M_LOG.debug("ls_filename: " + str(ls_filename))
 
         l_data_file = QtCore.QFile(ls_filename)
         assert l_data_file is not None
@@ -460,7 +448,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # M_LOG.info("load_xml:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def ndb(self, fi_ndx):
         """
         return a pointer to the NDB with specified index
@@ -478,7 +465,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_ndb[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __parse_dom_element(self, f_element):
         """
         helper function to the constructor, parses xml entries
@@ -635,7 +621,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # M_LOG.info("__parse_dom_element:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def route(self, fs_indc):
         """
         return a pointer to the standard route with specified name
@@ -674,7 +659,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def runway(self, f_val):
         """
         return a pointer to the runway with specified index
@@ -695,7 +679,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __runway_by_no(self, fi_ndx):
         """
         return a pointer to the runway with specified index
@@ -713,7 +696,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_rwy[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __runway_by_indc(self, fs_indc):
         """
         return a pointer to the runway with specified indc
@@ -742,7 +724,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def transition(self, fi_ndx):
         """
         return a pointer to the transition with specified index
@@ -760,7 +741,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_transitions[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def vor(self, fi_ndx):
         """
         return a pointer to the VOR with specified index
@@ -778,7 +758,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_vor[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def waypoint(self, fi_ndx):
         """
         return a pointer to the waypoint with specified index

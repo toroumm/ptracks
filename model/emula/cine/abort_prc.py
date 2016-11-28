@@ -33,26 +33,16 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
+# import logging
 
 # model
 import model.newton.defs_newton as ldefs
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # -------------------------------------------------------------------------------------------------
-# void (CAtvNEW)
 def abort_prc(f_atv):
     """
     abort procedure
     """
-    # logger
-    # M_LOG.info("abort_prc:>>")
-
     # check input
     assert f_atv
 
@@ -68,8 +58,5 @@ def abort_prc(f_atv):
 
     f_atv.en_trf_fnc_ope = ldefs.E_MANUAL
     f_atv.en_atv_fase    = ldefs.E_FASE_ZERO
-
-    # logger
-    # M_LOG.info("abort_prc:<<")
 
 # < the end >--------------------------------------------------------------------------------------

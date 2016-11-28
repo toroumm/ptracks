@@ -52,7 +52,6 @@ class CCineData(object):
     mantém as informações específicas sobre dados para cinemática da aeronave
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self):
         """
         constructor

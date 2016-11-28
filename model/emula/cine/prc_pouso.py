@@ -64,7 +64,6 @@ glb_f_dst_rampa     = 0.    # distância da rampa
 glb_f_raio_curva    = 0.    # raio de curvatura
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def prc_pouso(f_atv):
     """
     @param f_atv: ponteiro para struct aeronaves

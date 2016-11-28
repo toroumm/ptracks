@@ -52,7 +52,6 @@ import model.emula.cine.trata_associado as tass
 # M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def __check_ok(f_atv, f_cine_data):
     """
     preparar a aeronave para decolagem
@@ -159,7 +158,6 @@ def __check_ok(f_atv, f_cine_data):
     # M_LOG.info("__check_ok:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def __do_dep(f_atv, f_cine_data, fstk_context):
     """
     realizar o procedimento de decolagem
@@ -376,7 +374,6 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
     # M_LOG.info("__do_dep:<<")
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def prc_decolagem(f_atv, f_cine_data, fstk_context):
     """
     @param f_atv: ponteiro para struct aeronaves
