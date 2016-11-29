@@ -40,35 +40,28 @@ import time
 
 # mpi4py
 from mpi4py import MPI
-# import mpi4py
 
-# from ..model 
+# model 
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 
 import model.model_newton as model
 
-# from ..view 
+# view 
 import view.view_newton as view
 
-# from ..control 
+# control 
 import control.control_basic as control
-# from ..control.config 
+
 import control.config.config_newton as config
-# from ..control.events 
+
 import control.events.events_basic as events
-# from ..control.network 
+
 import control.network.get_address as gaddr
 import control.network.net_listener as listener
 import control.network.net_sender as sender
-# from ..control.simula 
+
 import control.simula.sim_time as stime
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CControlNewton >-------------------------------------------------------------------------
 
@@ -77,14 +70,10 @@ class CControlNewton(control.CControlBasic):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CControlNewton, self).__init__()
 
@@ -178,18 +167,11 @@ class CControlNewton(control.CControlBasic):
         self.view = view.CViewNewton(self.model, self)
         assert self.view
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def cbk_termina(self):
         """
         termina a aplicação
         """
-        # logger
-        # M_LOG.info("cbk_termina:>>")
-
         # checks
         assert self.event
 
@@ -200,23 +182,14 @@ class CControlNewton(control.CControlBasic):
         # dissemina o evento
         self.event.post(l_evt)
 
-        # logger
-        # M_LOG.info("cbk_termina:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __create_app(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__create_app:>>")
-
         # create application
         # self.app = QtCore.QCoreApplication(sys.argv)
         # assert self.app
-
-        # M_LOG.debug("currentThread:{}".format(threading.currentThread()))
 
         # setup application parameters
         # self.app.setOrganizationName("sophosoft")
@@ -254,18 +227,11 @@ class CControlNewton(control.CControlBasic):
         # process events (before main loop)
         # self.app.processEvents()
 
-        # logger
-        # M_LOG.info("__create_app:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def run(self):
         """
         drive application
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # checks
         assert self.event
         assert self.__q_rcv_cnfg
@@ -298,7 +264,6 @@ class CControlNewton(control.CControlBasic):
             try:
                 # obtém um item da queue de mensagens de comando/controle/configuração (nowait)
                 llst_data = self.__q_rcv_cnfg.get(False)
-                # M_LOG.debug("llst_data:[{}]".format(llst_data))
 
                 # queue tem dados ?
                 if llst_data:
@@ -356,18 +321,11 @@ class CControlNewton(control.CControlBasic):
         # self.sim_stat.noProcFlights = fe.flightsProcessed
         # self.sim_stat.printScore()
 
-        # logger
-        # M_LOG.info("run:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def start_time(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("start_time:>>")
-
         # checks
         assert self.model
         assert self.sim_time
@@ -381,9 +339,6 @@ class CControlNewton(control.CControlBasic):
 
         # inicia o relógio da simulação
         self.sim_time.set_hora(lt_hora)
-
-        # logger
-        # M_LOG.info("start_time:<<")
 
     # =============================================================================================
     # data

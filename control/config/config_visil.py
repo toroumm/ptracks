@@ -34,20 +34,13 @@ __date__ = "2015/12"
 
 # python library
 import argparse
-# import logging
 import os
 
-# from ...model 
+# model 
 import model.data as data
 
-# from ...control.config 
+# control
 import control.config.config_manager as config
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CConfigVisil >---------------------------------------------------------------------------
 
@@ -65,7 +58,6 @@ class CConfigVisil(config.CConfigManager):
                   }  # __CFG_VISIL
 
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_cnfg):
         """
         constructor
@@ -73,9 +65,6 @@ class CConfigVisil(config.CConfigManager):
 
         @param fs_cnfg: full path do arquivo de configuração
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # inicia a super class
         super(CConfigVisil, self).__init__(fs_cnfg)
 
@@ -88,7 +77,7 @@ class CConfigVisil(config.CConfigManager):
                 self.dct_config[l_key] = self.__CFG_VISIL[l_key]
 
         # cria um parser para os argumentos
-        l_parser = argparse.ArgumentParser(description="VisIL (C) 2014-2016.")
+        l_parser = argparse.ArgumentParser(description="ViSIL (C) 2014-2016.")
         assert l_parser
 
         # argumento: canal de comunicação
@@ -107,18 +96,11 @@ class CConfigVisil(config.CConfigManager):
         # load dirs section
         self.__load_dirs()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __load_dirs(self):
         """
         carrega as configurações de diretórios
         """
-        # logger
-        # M_LOG.info("__load_dirs:>>")
-
         # monta o diretório de airspaces
         self.dct_config["dir.air"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
                                                                 self.dct_config["dir.air"]))
@@ -142,8 +124,5 @@ class CConfigVisil(config.CConfigManager):
         # monta o diretório de tabelas
         self.dct_config["dir.tab"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
                                                                 self.dct_config["dir.tab"]))
-
-        # logger
-        # M_LOG.info("__load_dirs:<<")
 
 # < the end >--------------------------------------------------------------------------------------

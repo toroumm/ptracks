@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CAerModel >------------------------------------------------------------------------------
 
 class CAerModel(object):
@@ -48,12 +37,10 @@ class CAerModel(object):
     mantém as informações específicas sobre aeródromo
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
+        """
+        constructor
+        """
         # flag ok (bool)
         self.__v_aer_ok = False
 
@@ -66,11 +53,7 @@ class CAerModel(object):
         # elevação do aeródromo (m)
         self.__f_aer_elev = 0
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_aer(self, f_aer):
         """
         copy constructor
@@ -78,9 +61,6 @@ class CAerModel(object):
 
         @param f_aer: aeródromo a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_aer:>>")
-
         # check input
         assert f_aer
 
@@ -95,9 +75,6 @@ class CAerModel(object):
 
         # flag ok (bool)
         self.__v_aer_ok = f_aer.v_aer_ok
-
-        # logger
-        # M_LOG.info("copy_aer:<<")
 
     # =============================================================================================
     # data

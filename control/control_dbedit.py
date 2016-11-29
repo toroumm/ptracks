@@ -32,16 +32,15 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# from ..model 
+# model 
 import model.model_dbedit as model
 
-# from ..view 
+# view 
 import view.view_dbedit as view
 
-# from ..control 
+# control 
 import control.control_manager as control
 
-# from ..control.config 
 import control.config.config_dbedit as config
 
 # < class CControlDBEdit >--------------------------------------------------------------------------
@@ -52,7 +51,6 @@ class CControlDBEdit(control.CControlManager):
     coordinates communications between the model, views and controllers through the use of events
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         inicia o módulo controller do editor da base de dados

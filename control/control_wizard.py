@@ -33,15 +33,15 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# from ..model 
+# model 
 import model.model_wizard as model
 
-# from ..view 
+# view 
 import view.view_wizard as view
 
-# from ..control 
+# control 
 import control.control_manager as control
-# from ..control.config 
+
 import control.config.config_wizard as config
 
 # < class CControlWizard >-------------------------------------------------------------------------
@@ -52,7 +52,6 @@ class CControlWizard(control.CControlManager):
     coordena as comunicações entre o modelo, as views e controle usando eventos
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         inicia o módulo controller do configuration wizard

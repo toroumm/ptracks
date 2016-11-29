@@ -33,7 +33,7 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# from . 
+# control
 import control.events.events_model as model
 
 # < class CFlight >--------------------------------------------------------------------------------
@@ -43,7 +43,6 @@ class CFlight(model.CEventsModel):
     CFlight event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_callsign):
         """
         contructor
@@ -75,7 +74,6 @@ class CFlightExplode(CFlight):
     CFlightExplode event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_callsign):
         """
         contructor
@@ -97,7 +95,6 @@ class CFlightKill(CFlight):
     CFlightKill event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_callsign):
         """
         contructor
@@ -119,7 +116,6 @@ class CFlightUpdate(CFlight):
     CFlightUpdate event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_callsign):
         """
         contructor

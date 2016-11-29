@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CPrfModel >------------------------------------------------------------------------------
 
 class CPrfModel(object):
@@ -48,12 +37,10 @@ class CPrfModel(object):
     mantém as informações específicas sobre performance
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
+        """
+        constructor
+        """
         # flag ok (bool)
         self.__v_prf_ok = False
 
@@ -63,11 +50,7 @@ class CPrfModel(object):
         # descrição da performance
         self.__s_prf_desc = ""
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_prf(self, f_prf):
         """
         copy constructor
@@ -75,9 +58,6 @@ class CPrfModel(object):
 
         @param f_prf: performance a ser copiada
         """
-        # logger
-        # M_LOG.info("copy_prf:>>")
-
         # check input
         assert f_prf
 
@@ -89,9 +69,6 @@ class CPrfModel(object):
 
         # flag ok (bool)
         self.__v_prf_ok = f_prf.v_prf_ok
-
-        # logger
-        # M_LOG.info("copy_prf:<<")
 
     # =============================================================================================
     # data

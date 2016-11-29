@@ -43,7 +43,7 @@ import socket
 # model 
 import model.data as data
 
-# from control.config 
+# control
 import control.config.config_manager as config
 
 # < class CConfigNewton >--------------------------------------------------------------------------

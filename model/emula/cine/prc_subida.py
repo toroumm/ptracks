@@ -34,7 +34,6 @@ __date__ = "2015/11"
 
 # python library
 import logging
-# import math
 
 # model
 import model.newton.defs_newton as ldefs
@@ -43,12 +42,6 @@ import model.emula.cine.abort_prc as abnd
 import model.emula.cine.obtem_brk as obrk
 import model.emula.cine.prc_dir_ponto as dp
 import model.emula.cine.trata_associado as tass
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
 def prc_subida(f_atv, f_cine_data, f_stk_context):
@@ -59,9 +52,6 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
     @param f_cine_data: dados da cinemática
     @param f_stk_context: pointer to stack
     """
-    # logger
-    # M_LOG.info("prc_subida:>>")
-                            
     # check input
     assert f_atv
     assert f_stk_context is not None
@@ -76,15 +66,14 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
         # abort procedure
         abnd.abort_prc(f_atv)
                                                 
-        # cai fora...
+        # aeronave não ativa. cai fora...
         return False
 
     # pointer to subida
     l_sub = f_atv.ptr_trf_prc
-    # M_LOG.debug("prc_subida:ptr_trf_prc:[{}]".format(f_atv.ptr_trf_prc))
 
     # subida ok ?
-    if (l_sub is None) or not l_sub.v_prc_ok:
+    if (l_sub is None) or (not l_sub.v_prc_ok):
         # logger
         l_log = logging.getLogger("prc_subida")
         l_log.setLevel(logging.ERROR)
@@ -93,10 +82,8 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
         # abort procedure
         abnd.abort_prc(f_atv)
 
-        # return
+        # subida inexistente. cai fora...
         return
-
-    # M_LOG.debug("prc_subida:fase:[{}]".format(ldefs.DCT_FASE[f_atv.en_atv_fase]))
 
     # fase de iniciação ?
     if ldefs.E_FASE_ZERO == f_atv.en_atv_fase:
@@ -108,7 +95,6 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
 
         # salva a subida
         f_cine_data.ptr_sub = l_sub
-        # M_LOG.debug("ptr_sub:[{}]".format(f_cine_data.ptr_sub))
 
         # obtém o aeródromo e pista da subida
         f_cine_data.ptr_aer = l_sub.ptr_sub_aer
@@ -126,7 +112,7 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
         l_brk = f_atv.ptr_atv_brk = l_sub.lst_sub_brk[f_cine_data.i_brk_ndx]
 
         # breakpoint ok ?
-        if (l_brk is None) or not l_brk.v_brk_ok:
+        if (l_brk is None) or (not l_brk.v_brk_ok):
             # logger
             l_log = logging.getLogger("prc_subida")
             l_log.setLevel(logging.ERROR)
@@ -135,7 +121,7 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
             # abort procedure
             abnd.abort_prc(f_atv)
 
-            # return
+            # subida/breakpoint inexistente. cai fora...
             return
 
         # obtém dados do breakpoint da subida
@@ -152,7 +138,7 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
             l_brk = f_atv.ptr_atv_brk
 
             # breakpoint ok ?
-            if (l_brk is None) or not l_brk.v_brk_ok:
+            if (l_brk is None) or (not l_brk.v_brk_ok):
                 # logger
                 l_log = logging.getLogger("prc_subida")
                 l_log.setLevel(logging.ERROR)
@@ -161,7 +147,7 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
                 # abort procedure
                 abnd.abort_prc(f_atv)
 
-                # return
+                # subida/breakpoint inexistente. cai fora...
                 return
 
             # trata o procedimento associado
@@ -184,9 +170,6 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
 
     # fase breakpoints ?
     elif ldefs.E_FASE_BREAKPOINT == f_atv.en_atv_fase:
-        # M_LOG.debug("prc_subida:ptr_atv_brk:[{}]".format(f_atv.ptr_atv_brk))
-        # M_LOG.debug("prc_subida:lst_sub_brk:[{}]".format(l_sub.lst_sub_brk))
-
         # é o último breakpoint da subida ?
         if f_atv.ptr_atv_brk == l_sub.lst_sub_brk[-1]:
             # reseta o flag altitude/velocidade
@@ -204,7 +187,7 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
             l_brk = f_atv.ptr_atv_brk = l_sub.lst_sub_brk[f_cine_data.i_brk_ndx]
                                                                     
             # breakpoint ok ?
-            if (l_brk is None) or not l_brk.v_brk_ok:
+            if (l_brk is None) or (not l_brk.v_brk_ok):
                 # logger
                 l_log = logging.getLogger("prc_subida")
                 l_log.setLevel(logging.ERROR)
@@ -213,7 +196,7 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
                 # abort procedure
                 abnd.abort_prc(f_atv)
 
-                # return
+                # subida/breakpoint inexistente. cai fora...
                 return
 
             # obtém dados do breakpoint atual
@@ -229,7 +212,4 @@ def prc_subida(f_atv, f_cine_data, f_stk_context):
         # abort procedure
         abnd.abort_prc(f_atv)
 
-    # logger
-    # M_LOG.info("prc_subida:<<")
-                            
 # < the end >--------------------------------------------------------------------------------------

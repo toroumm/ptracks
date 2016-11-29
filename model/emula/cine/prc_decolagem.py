@@ -45,12 +45,6 @@ import model.emula.cine.abort_prc as abnd
 import model.emula.cine.calc_proa_demanda as cpd
 import model.emula.cine.trata_associado as tass
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # -------------------------------------------------------------------------------------------------
 def __check_ok(f_atv, f_cine_data):
     """
@@ -59,47 +53,18 @@ def __check_ok(f_atv, f_cine_data):
     @param f_atv: pointer to struct aeronaves
     @param f_cine_data: dados da cinemática
     """
-    # logger
-    # M_LOG.info("__check_ok:>>")
-
     # check input
     assert f_atv
-
-    # active flight ?
-    # if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-        # logger
-        # l_log = logging.getLogger("__check_ok")
-        # l_log.setLevel(logging.ERROR)
-        # l_log.error("<E01: aeronave não ativa.")
-
-        # abort procedure
-        # abnd.abort_prc(f_atv)
-
-        # cai fora...
-        # return
-
-    # performance ok ?
-    # if (f_atv.ptr_trf_prf is None) or (not f_atv.ptr_trf_prf.v_prf_ok):
-        # logger
-        # l_log = logging.getLogger("__check_ok")
-        # l_log.setLevel(logging.ERROR)
-        # l_log.error("<E02: performance não existe.")
-
-        # abort procedure
-        # abnd.abort_prc(f_atv)
-
-        # cai fora...
-        # return
 
     # pointer to aerodrome
     l_aer = f_cine_data.ptr_aer
 
     # aerodrome ok ?
-    if (l_aer is None) or not l_aer.v_aer_ok:
+    if (l_aer is None) or (not l_aer.v_aer_ok):
         # logger
         l_log = logging.getLogger("__check_ok")
         l_log.setLevel(logging.ERROR)
-        l_log.error("<E03: aeródromo de decolagem inexistente.")
+        l_log.error("<E01: aeródromo de decolagem inexistente.")
 
         # abort procedure
         abnd.abort_prc(f_atv)
@@ -107,18 +72,18 @@ def __check_ok(f_atv, f_cine_data):
         # cancel flight 
         f_atv.en_atv_est_atv = ldefs.E_CANCELADA
 
-        # return
+        # aeródromo de decolagem inexistente. cai fora...
         return
 
     # pointer to runway
     l_pst = f_cine_data.ptr_pis
 
     # runway ok ?
-    if (l_pst is None) or not l_pst.v_pst_ok:
+    if (l_pst is None) or (not l_pst.v_pst_ok):
         # logger
         l_log = logging.getLogger("__check_ok")
         l_log.setLevel(logging.ERROR)
-        l_log.error("<E04: pista de decolagem inexistente.")
+        l_log.error("<E02: pista de decolagem inexistente.")
 
         # abort procedure
         abnd.abort_prc(f_atv)
@@ -126,7 +91,7 @@ def __check_ok(f_atv, f_cine_data):
         # cancel flight 
         f_atv.en_atv_est_atv = ldefs.E_CANCELADA
 
-        # return
+        # pista de decolagem inexistente. cai fora...
         return
 
     # aceleração
@@ -145,7 +110,6 @@ def __check_ok(f_atv, f_cine_data):
     # elevação do aeródromo
     f_atv.f_trf_alt_atu = \
     f_atv.f_atv_alt_dem = l_aer.f_aer_elev
-    # M_LOG.debug("f_trf_alt_atu:[{}]".format(f_atv.f_trf_alt_atu))
 
     # posiciona aeronave na cabeceira da pista em x/y
     f_atv.f_trf_x = l_pst.f_pst_x
@@ -153,9 +117,6 @@ def __check_ok(f_atv, f_cine_data):
 
     # sinaliza a fase de processamento de decolagem
     f_atv.en_atv_fase = ldefs.E_FASE_DECOLAGEM
-
-    # logger
-    # M_LOG.info("__check_ok:<<")
 
 # -------------------------------------------------------------------------------------------------
 def __do_dep(f_atv, f_cine_data, fstk_context):
@@ -166,57 +127,28 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
     @param f_cine_data: dados de cinemática
     @param fstk_context: ponteiro para pilha
     """
-    # logger
-    # M_LOG.info("__do_dep:>>")
-
     # check input
     assert f_atv
     assert f_cine_data
     assert fstk_context
-
-    # active flight ?
-    # if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-        # logger
-        # l_log = logging.getLogger("__do_dep")
-        # l_log.setLevel(logging.ERROR)
-        # l_log.error("<E01: aeronave não ativa.")
-
-        # abort procedure
-        # abnd.abort_prc(f_atv)
-
-        # cai fora...
-        # return
-
-    # performance ok ?
-    # if (f_atv.ptr_trf_prf is None) or (not f_atv.ptr_trf_prf.v_prf_ok):
-        # logger
-        # l_log = logging.getLogger("__do_dep")
-        # l_log.setLevel(logging.ERROR)
-        # l_log.error("<E02: performance não existe.")
-
-        # abort procedure
-        # abnd.abort_prc(f_atv)
-
-        # cai fora...
-        # return
 
     # obtém do contexto a função operacional anterior
     len_fnc_ope_tmp, _, _, _, _ = fstk_context[-1]
 
     # atingiu a velocidade de decolagem ?
     if f_atv.f_trf_vel_atu != f_atv.ptr_trf_prf.f_prf_vel_dec:
-        # não atingiu a velocidade de decolagem, return
+        # não atingiu a velocidade de decolagem, cai fora...
         return
 
     # pointer aerodrome
     l_aer = f_cine_data.ptr_aer
 
     # aerodrome ok ?
-    if (l_aer is None) or not l_aer.v_aer_ok:
+    if (l_aer is None) or (not l_aer.v_aer_ok):
         # logger
         l_log = logging.getLogger("__do_dep")
         l_log.setLevel(logging.ERROR)
-        l_log.error("<E03: aeródromo de decolagem inexistente.")
+        l_log.error("<E01: aeródromo de decolagem inexistente.")
 
         # abort procedure
         abnd.abort_prc(f_atv)
@@ -224,21 +156,20 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
         # cancel flight 
         f_atv.en_atv_est_atv = ldefs.E_CANCELADA
 
-        # return
+        # aeródromo de decolagem inexistente. cai fora...
         return
 
     # verifica se é uma decolagem com subida ou decolagem pura
     if (ldefs.E_SUBIDA == f_atv.en_trf_fnc_ope_ant) or (ldefs.E_SUBIDA == len_fnc_ope_tmp):
         # pointer to subida
         l_sub = f_cine_data.ptr_sub
-        # M_LOG.debug("__do_dep:l_sub:[{}]".format(l_sub))
 
         # subida ok ?
-        if (l_sub is None) or not l_sub.v_prc_ok:
+        if (l_sub is None) or (not l_sub.v_prc_ok):
             # logger
             l_log = logging.getLogger("__do_dep")
             l_log.setLevel(logging.ERROR)
-            l_log.error("<E04: decolagem/subida inexistente.")
+            l_log.error("<E02: decolagem/subida inexistente.")
 
             # abort procedure
             abnd.abort_prc(f_atv)
@@ -246,19 +177,18 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
             # cancel flight 
             f_atv.en_atv_est_atv = ldefs.E_CANCELADA
 
-            # return
+            # decolagem/subida inexistente. cai fora...
             return
 
         # pointer to first climb breakpoint
         l_brk = l_sub.lst_sub_brk[0]
-        # M_LOG.debug("__do_dep:l_brk:[{}]".format(l_brk))
 
         # breakpoint ok ?
-        if (l_brk is None) or not l_brk.v_brk_ok:
+        if (l_brk is None) or (not l_brk.v_brk_ok):
             # logger
             l_log = logging.getLogger("__do_dep")
             l_log.setLevel(logging.ERROR)
-            l_log.error("<E05: decolagem/subida breakpoint inexistente.")
+            l_log.error("<E03: decolagem/subida breakpoint inexistente.")
 
             # abort procedure
             abnd.abort_prc(f_atv)
@@ -266,18 +196,18 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
             # cancel flight 
             f_atv.en_atv_est_atv = ldefs.E_CANCELADA
 
-            # return
+            # decolagem/subida breakpoint inexistente. cai fora...
             return
 
         # pointer to runway
         l_pst = f_cine_data.ptr_pis
 
         # runway ok ?
-        if (l_pst is None) or not l_pst.v_pst_ok:
+        if (l_pst is None) or (not l_pst.v_pst_ok):
             # logger
             l_log = logging.getLogger("__do_dep")
             l_log.setLevel(logging.ERROR)
-            l_log.error("<E06: pista de decolagem inexistente.")
+            l_log.error("<E04: pista de decolagem inexistente.")
 
             # abort procedure
             abnd.abort_prc(f_atv)
@@ -285,7 +215,7 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
             # cancel flight 
             f_atv.en_atv_est_atv = ldefs.E_CANCELADA
 
-            # return
+            # pista de decolagem inexistente. cai fora...
             return
 
         # calcula a radial entre o 1*brk da subida e a pista
@@ -297,15 +227,14 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
         # calcula o ângulo entre o rumo da pista e o 1*brk da subida
         lf_ang_pista_brk = abs(l_pst.i_pst_rumo - lf_radial_pstta_brk)
 
-        # -----------------------------------------------------------------------------------------
-        # regra de cálculo da altitude na decolagem com Subida
-        # objetivo: livrar obstáculos na decolagem (montanhas, prédios, ...)
+        # regra de cálculo da altitude na decolagem com Subida:
+        # livrar obstáculos na decolagem (montanhas, prédios, ...)
         # limites: ângulo limite de 15 graus entre rumo da pista e o primeiro ponto da subida
         # se a diferença dos ângulos (fAngPistaBkp) for maior que 15 graus, então a altitude
         # de demanda será 400ft (não é nível) acima da elevação do aeródromo
         # se a diferença dos ângulos (fAngPistaBkp) for menor ou igual a 15 graus, a altitude
         # de demanda será 50ft acima da elevação do aeródromo
-        # -----------------------------------------------------------------------------------------
+
         if lf_ang_pista_brk > 15.:
             # calcula 400ft acima da altitude da pista (converte ft -> m)
             f_atv.f_atv_alt_dem = (400. * cdefs.D_CNV_FT2M) + l_aer.f_aer_elev
@@ -315,7 +244,6 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
             # calcula 50ft acima da altitude da pista (converte ft -> m)
             f_atv.f_atv_alt_dem = (50. * cdefs.D_CNV_FT2M) + l_aer.f_aer_elev
 
-        # -----------------------------------------------------------------------------------------
         # determina a razão máxima de subida na decolagem para todos os casos
         #
         # PBN (casos de DEP no SBGL e SBRJ)
@@ -329,7 +257,7 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
         #        em pistas longas chegassem a subir como se fossem foguetes devido ao uso
         #        generalizado da prf_raz_max_sub_dec para todos os casos.
         # Obs_2: Ambos casos a aceleração na DEP tem que ser 4 vezes (campo do arquivo ".ini")
-        # -----------------------------------------------------------------------------------------
+
         if 0. == l_brk.f_brk_raz_vel:
             # razão de subida é a razão máxima de subida na decolagem
             f_atv.f_atv_raz_sub = f_atv.ptr_trf_prf.f_prf_raz_max_sub_dec
@@ -341,11 +269,9 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
 
     # decolagem pura, sem subida
     else:
-        # -----------------------------------------------------------------------------------------
-        # regra de cálculo da altitude na decolagem pura
-        # objetivo: livrar obstáculos na decolagem (montanhas, prédios, ...)
-        # a altitude de demanda será igual a 50ft acima da elevação do aeródromo
-        # -----------------------------------------------------------------------------------------
+        # regra de cálculo da altitude na decolagem pura:
+        # livrar obstáculos na decolagem (montanhas, prédios, ...). A altitude de demanda será
+        # 50ft acima da elevação do aeródromo
 
         # calcula 50ft acima da altitude da pista
         f_atv.f_atv_alt_dem = (50. * cdefs.D_CNV_FT2M) + l_aer.f_aer_elev
@@ -353,11 +279,8 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
         # razão de subida é a razão máxima de subida na decolagem
         f_atv.f_atv_raz_sub = f_atv.ptr_trf_prf.f_prf_raz_max_sub_dec
 
-    # ---------------------------------------------------------------------------------------------
-    # regra da velocidade na decolagem
-    # objetivo: estabelecer a velocidade limite de 250kt para as aeronaves que estiverem
-    # voando abaixo de 10000ft (FL100)
-    # ---------------------------------------------------------------------------------------------
+    # regra da velocidade na decolagem:
+    # velocidade limite de 250kt para as aeronaves que estiverem voando abaixo de 10000ft (FL100)
 
     # verifica a altitude atual da aeronave
     if (f_atv.f_trf_alt_atu * cdefs.D_CNV_M2FT) < ldefs.D_ALT_MAX_TMA:
@@ -370,9 +293,6 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
     # determina fase final da decolagem
     f_atv.en_atv_fase = ldefs.E_FASE_ESTABILIZADA
 
-    # logger
-    # M_LOG.info("__do_dep:<<")
-
 # -------------------------------------------------------------------------------------------------
 def prc_decolagem(f_atv, f_cine_data, fstk_context):
     """
@@ -380,9 +300,6 @@ def prc_decolagem(f_atv, f_cine_data, fstk_context):
     @param f_cine_data: ponteiro para pilha
     @param fstk_context: pilha de contexto
     """
-    # logger
-    # M_LOG.info("prc_decolagem:>>")
-
     # check input
     assert f_atv
     assert f_cine_data
@@ -398,7 +315,7 @@ def prc_decolagem(f_atv, f_cine_data, fstk_context):
         # abort procedure
         abnd.abort_prc(f_atv)
 
-        # cai fora...
+        # aeronave não ativa. cai fora...
         return
 
     # performance ok ?
@@ -411,7 +328,7 @@ def prc_decolagem(f_atv, f_cine_data, fstk_context):
         # abort procedure
         abnd.abort_prc(f_atv)
 
-        # cai fora...
+        # performance não existe. cai fora...
         return
 
     # processa as fases
@@ -453,8 +370,5 @@ def prc_decolagem(f_atv, f_cine_data, fstk_context):
 
         # abort procedure
         abnd.abort_prc(f_atv)
-
-    # logger
-    # M_LOG.info("prc_decolagem:<<")
 
 # < the end >--------------------------------------------------------------------------------------

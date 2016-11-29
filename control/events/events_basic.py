@@ -33,33 +33,20 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
-# from . 
+# control
 import control.events.events_model as model
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
-# < class CChange >----------------------------------------------------------------------------------
+# < class CChange >--------------------------------------------------------------------------------
 
 class CChange(model.CEventsModel):
     """
     data changed event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CChange, self).__init__()
 
@@ -68,9 +55,6 @@ class CChange(model.CEventsModel):
 
         self.s_name = "Data Changed event"
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
 # < class CFreeze >--------------------------------------------------------------------------------
 
 class CFreeze(model.CEventsModel):
@@ -78,14 +62,10 @@ class CFreeze(model.CEventsModel):
     freeze event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, fv_freeze):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CFreeze, self).__init__()
 
@@ -96,9 +76,6 @@ class CFreeze(model.CEventsModel):
 
         # freeze flag
         self.__v_freeze = fv_freeze
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -115,14 +92,10 @@ class CIdle(model.CEventsModel):
     idle event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CIdle, self).__init__()
 
@@ -131,9 +104,6 @@ class CIdle(model.CEventsModel):
 
         self.s_name = "Idle event"
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
 # < class CQuit >----------------------------------------------------------------------------------
 
 class CQuit(model.CEventsModel):
@@ -141,14 +111,10 @@ class CQuit(model.CEventsModel):
     program quit event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CQuit, self).__init__()
 
@@ -157,9 +123,6 @@ class CQuit(model.CEventsModel):
 
         self.s_name = "Program Quit event"
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
 # < class CSave2Disk >-----------------------------------------------------------------------------
 
 class CSave2Disk(model.CEventsModel):
@@ -167,14 +130,10 @@ class CSave2Disk(model.CEventsModel):
     program save to disk event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, fs_table):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CSave2Disk, self).__init__()
 
@@ -185,9 +144,6 @@ class CSave2Disk(model.CEventsModel):
 
         # save table name
         self.__s_table = fs_table
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -204,14 +160,10 @@ class CTick(model.CEventsModel):
     CPU tick event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CTick, self).__init__()
 
@@ -219,8 +171,5 @@ class CTick(model.CEventsModel):
         # self.s_name    # event name
 
         self.s_name = "CPU Tick event"
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
 # < the end >--------------------------------------------------------------------------------------

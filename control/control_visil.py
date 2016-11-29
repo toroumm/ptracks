@@ -47,30 +47,24 @@ sip.setapi('QString', 2)
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 
-# from ..model 
+# model 
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 
 import model.model_visil as model
 
-# from ..view 
+# view 
 import view.view_visil as view
 
-# from ..control 
+# control 
 import control.control_basic as control
-# from ..control.config 
+
 import control.config.config_visil as config
-# from ..control.network 
+
 import control.network.get_address as gaddr
 import control.network.net_listener as listener
-# from ..control.simula 
+
 import control.simula.sim_time as stime
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CControlVisil >--------------------------------------------------------------------------
 
@@ -79,14 +73,10 @@ class CControlVisil(control.CControlBasic):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # inicia a super classe
         super(CControlVisil, self).__init__()
 
@@ -157,18 +147,11 @@ class CControlVisil(control.CControlBasic):
         self.view = view.CViewVisil(self, self.model)
         assert self.view
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void ()
     def __create_app(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__create_app:>>")
-
         # create application
         self.app = QtGui.QApplication(sys.argv)
         assert self.app
@@ -211,18 +194,11 @@ class CControlVisil(control.CControlBasic):
         # process events (before main loop)
         self.app.processEvents()
 
-        # logger
-        # M_LOG.info("__create_app:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def run(self):
         """
         drive application
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # verifica condições de execução (I)
         assert self.__emula_model
         assert self.__q_rcv_cnfg
@@ -313,7 +289,7 @@ class CControlVisil(control.CControlBasic):
                     else:
                         # logger
                         l_log = logging.getLogger("CControlVisil::run")
-                        l_log.setLevel(logging.NOTSET)
+                        l_log.setLevel(logging.WARNING)
                         l_log.warning("<E02: mensagem não reconhecida ou não tratável.")
 
             # em caso de não haver mensagens...
@@ -340,26 +316,16 @@ class CControlVisil(control.CControlBasic):
                     l_log.setLevel(logging.WARNING)
                     l_log.warning("<E03: atrasou: {}".format(lf_dif - lf_tim_rrbn))
 
-        # logger
-        # M_LOG.info("run:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def start_time(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("start_time:>>")
-
         # verifica condições de execução
         assert self.sim_time
 
         # inicia o relógio da simulação
         self.sim_time.set_hora((0, 0, 0))
-
-        # logger
-        # M_LOG.info("start_time:<<")
 
     # =============================================================================================
     # dados
@@ -378,7 +344,7 @@ class CControlVisil(control.CControlBasic):
         """
         set flight model
         """
-        # verifica parâmetros de entrada
+        # check input
         assert f_val
 
         # save flight model
@@ -397,7 +363,7 @@ class CControlVisil(control.CControlBasic):
         """
         set configuration listener
         """
-        # verifica parâmetros de entrada
+        # check input
         assert f_val
 
         # save configuration listener
@@ -431,7 +397,7 @@ class CControlVisil(control.CControlBasic):
         """
         set data listener
         """
-        # verifica parâmetros de entrada
+        # check input
         assert f_val
 
         # save data listener

@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CEventsModel >---------------------------------------------------------------------------
 
 class CEventsModel(object):
@@ -48,25 +37,17 @@ class CEventsModel(object):
     generic event super class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CEventsModel, self).__init__()
 
         # event name
         self.__s_name = "Generic Event"
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # str (void)
     def __str__(self):
         """
         DOCUMENT ME!

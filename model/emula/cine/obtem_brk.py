@@ -68,7 +68,7 @@ def obtem_brk(f_atv, f_brk, f_cine_data):
         # logger
         l_log = logging.getLogger("obtem_brk")
         l_log.setLevel(logging.ERROR)
-        l_log.error("<E01: aeronave não ativa.")
+        l_log.error(u"<E01: aeronave não ativa.")
 
         # cai fora...
         return
@@ -78,7 +78,7 @@ def obtem_brk(f_atv, f_brk, f_cine_data):
         # logger
         l_log = logging.getLogger("obtem_brk")
         l_log.setLevel(logging.ERROR)
-        l_log.error("<E02: performance não existe.")
+        l_log.error(u"<E02: performance não existe.")
 
         # cai fora...
         return
@@ -420,7 +420,7 @@ def obtem_brk(f_atv, f_brk, f_cine_data):
         # seleciona próxima fase
         f_atv.en_atv_fase = ldefs.E_FASE_RUMOALT
 
-    # otherwise, coordenada cartesiana ou temporal...
+    # otherwise, outro tipo de coordenada...
     else:
         # seleciona próxima fase
         f_atv.en_atv_fase = ldefs.E_FASE_DIRPONTO

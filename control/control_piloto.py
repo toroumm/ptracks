@@ -38,33 +38,27 @@ import multiprocessing
 import Queue
 import time
 
-# from ..model 
+# model 
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 import model.model_piloto as model
 
-# from ..view 
+# view 
 import view.view_piloto as view
 
-# from ..control 
+# control 
 import control.control_basic as control
-# from ..control.config 
+
 import control.config.config_piloto as config
-# from ..control.events 
+
 import control.events.events_config as events
-# from ..control.network 
+
 import control.network.get_address as gaddr
 import control.network.net_http_get as httpsrv
 import control.network.net_listener as listener
 import control.network.net_sender as sender
-# from ..control.simula 
+
 import control.simula.sim_time as stime
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CControlPiloto >-------------------------------------------------------------------------
 
@@ -73,14 +67,10 @@ class CControlPiloto(control.CControlBasic):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CControlPiloto, self).__init__()
 
@@ -161,20 +151,13 @@ class CControlPiloto(control.CControlBasic):
         self.view = view.CViewPiloto(self, self.model)
         assert self.view
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def run(self):
         """
         drive application
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # verifica condições de execução (I)
-        if (None == self.model) or (None == self.view):
+        if (self.model is None) or (self.view is None):
             # termina a aplicação sem confirmação e sem envio de fim
             self.cbk_termina()
 
@@ -290,27 +273,17 @@ class CControlPiloto(control.CControlBasic):
                     # permite o scheduler
                     time.sleep(lf_tim_rrbn - lf_dif)
 
-        # logger
-        # M_LOG.info("run:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def start_time(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("start_time:>>")
-
         # verifica condições de execução
         # assert self.sim_time
 
         # inicia o relógio da simulação
         # self.sim_time.set_hora_ini((0, 0, 0))
         pass
-
-        # logger
-        # M_LOG.info("start_time:<<")
 
     # =============================================================================================
     # data

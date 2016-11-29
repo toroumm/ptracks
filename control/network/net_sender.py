@@ -37,15 +37,8 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import multiprocessing
 import socket
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CNetSender >-----------------------------------------------------------------------------
 
@@ -54,7 +47,6 @@ class CNetSender(multiprocessing.Process):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, ft_ifce, fs_addr, fi_port, f_queue):
         """
         initializes network sender
@@ -64,9 +56,6 @@ class CNetSender(multiprocessing.Process):
         @param fi_port: porta (1970)
         @param f_queue: queue de mensagens
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert fs_addr
         assert fi_port
@@ -93,26 +82,15 @@ class CNetSender(multiprocessing.Process):
         # config sender socket
         self.__fd_send.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def send_data(self, fs_msg):
         """
         @param fs_msg: DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("send_data:>>")
-
         # checks
         assert self.__fd_send
 
         # envia a mensagem
         self.__fd_send.sendto(fs_msg, self.__t_addr)
-        # M_LOG.debug("dados [{}] enviados para [{}]".format(fs_msg, self.__t_addr))
-
-        # logger
-        # M_LOG.info("send_data:<<")
 
 # < the end >--------------------------------------------------------------------------------------

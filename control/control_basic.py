@@ -35,17 +35,8 @@ __date__ = "2016/08"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
-# from . 
+# control
 import control.control_manager as control
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CControlBasic >--------------------------------------------------------------------------
 
@@ -54,16 +45,12 @@ class CControlBasic(control.CControlManager):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_path=None):
         """
         constructor
 
         @param fs_path: path do arquivo de configuração
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CControlBasic, self).__init__(fs_path)
 
@@ -82,9 +69,6 @@ class CControlBasic(control.CControlManager):
 
         # simulation timer
         self.__sim_time = None
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # =============================================================================================
     # data

@@ -47,12 +47,6 @@ import model.items.parser_utils as parser
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CApxData >-------------------------------------------------------------------------------
 
 class CApxData(dict):
@@ -70,7 +64,6 @@ class CApxData(dict):
     </aproximacao>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None):
         """
         @param f_model: model manager
@@ -93,14 +86,12 @@ class CApxData(dict):
             # recebeu uma lista ?
             if isinstance(f_data, list):
                 # cria um procedimento de aproximação com os dados da lista
-                # self.make_apx(f_data)
-                pass
+                pass  # self.make_apx(f_data)
 
             # recebeu um procedimento de aproximação ?
             elif isinstance(f_data, CApxData):
                 # copia o procedimento de aproximação
-                # self.copy_apx(f_data)
-                pass
+                pass  # self.copy_apx(f_data)
 
             # senão, recebeu o pathname de um arquivo de procedimento de aproximação
             else:
@@ -108,7 +99,6 @@ class CApxData(dict):
                 self.load_file(f_data)
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def load_file(self, fs_apx_pn):
         """
         carrega os dados do procedimento de aproximação de um arquivo em disco
@@ -122,7 +112,6 @@ class CApxData(dict):
         self.parse_apx_xml(fs_apx_pn + ".xml")
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def make_apx(self, fdct_root, fdct_data):
         """
         carrega os dados de procedimento de aproximação a partir de um dicionário
@@ -212,7 +201,6 @@ class CApxData(dict):
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def parse_apx_xml(self, fs_apx_pn):
         """
         carrega o arquivo de procedimentos de aproximação
@@ -329,13 +317,10 @@ class CApxData(dict):
                 l_node = l_node.nextSibling()
                 assert l_node is not None
 
-            # !l_log.info("aproximação: " + str(ldct_data))
-
             # carrega os dados de procedimento de aproximação a partir de um dicionário
             self.make_apx(ldct_root, ldct_data)
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def save2disk(self, fs_apx_pn=None):
         """
         salva os dados da procedimento de aproximação em um arquivo em disco

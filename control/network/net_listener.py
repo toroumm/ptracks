@@ -47,12 +47,6 @@ import time
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CNetListener >---------------------------------------------------------------------------
 
 class CNetListener(multiprocessing.Process):

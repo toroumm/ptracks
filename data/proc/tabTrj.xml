@@ -468,6 +468,32 @@
     </breakpoint>
   </trajetoria>
 
+  <trajetoria nTrj="501">
+    <descricao>Circuito IV-1</descricao>
+    <star>N</star>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>D</tipo>
+        <cpoA>MAE</cpoA>
+        <cpoB>2</cpoB>
+        <cpoC>180</cpoC>
+      </coord>
+      <altitude>20000</altitude>
+      <velocidade>360</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MAE</cpoA>
+      </coord>
+      <altitude>19000</altitude>
+      <velocidade>200</velocidade>
+      <procedimento>APX005</procedimento>
+    </breakpoint>
+  </trajetoria>
+
   <trajetoria nTrj="1004">
     <descricao>STAR MUMOP2 RWY35L A PARTIR DE MUMOP</descricao>
     <star>S</star>
@@ -553,7 +579,7 @@
     <breakpoint nBrk="2">
       <coord>
         <tipo>F</tipo>
-        <cpoA>ARAXA</cpoA>
+        <cpoA>ARX</cpoA>
       </coord>
       <altitude>39000</altitude>
       <velocidade>430</velocidade>

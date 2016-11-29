@@ -11,23 +11,13 @@
         <temptrafego>0</temptrafego>
         <coord>
             <tipo>D</tipo>
-            <cpoA>NITBU</cpoA>
+            <cpoA>MAE</cpoA>
             <cpoB>2</cpoB>
             <cpoC>180</cpoC>
         </coord>
         <velocidade>430</velocidade>
-        <altitude>40000</altitude>
-        <procedimento>TRJ1100</procedimento>
-    </trafego>
-
-    <trafego nTrf="2">
-        <designador>B737</designador>
-        <ssr>0102</ssr>
-        <indicativo>GOL1234</indicativo>
-        <origem>SBBR</origem>
-        <destino>SBGR</destino>
-        <temptrafego>0</temptrafego>
-        <procedimento>SUB1100</procedimento>
+        <altitude>28000</altitude>
+        <procedimento>TRJ501</procedimento>
     </trafego>
 
 </trafegos>

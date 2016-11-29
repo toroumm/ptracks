@@ -43,12 +43,6 @@ import model.items.brk_new as brknew
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CApxNEW >--------------------------------------------------------------------------------
 
 class CApxNEW(model.CPrcModel):
@@ -66,16 +60,12 @@ class CApxNEW(model.CPrcModel):
     </aproximacao>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
         @param f_model: model manager
         @param f_data:  dados do procedimento de aproximação
         @param fs_ver:  versão do formato
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
         # check input
         assert f_model
                 
@@ -111,7 +101,7 @@ class CApxNEW(model.CPrcModel):
         # espera
         self.__ptr_apx_prc_esp = None
 
-        # lista de break-points da aproximação
+        # lista de breakpoints da aproximação
         self.__lst_apx_brk = []
 
         # recebeu dados ?
@@ -126,11 +116,7 @@ class CApxNEW(model.CPrcModel):
                 # copia a procedimento de aproximação
                 self.copy_apx(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_apx(self, f_apx):
         """
         copy constructor
@@ -138,9 +124,6 @@ class CApxNEW(model.CPrcModel):
 
         @param f_apx: procedimento de aproximação a ser copiada
         """
-        # logger
-        # M_LOG.info("copy_apx:>>")
-                
         # check input
         assert f_apx
 
@@ -161,14 +144,10 @@ class CApxNEW(model.CPrcModel):
         # número da espera
         self.__ptr_apx_prc_esp = f_apx.ptr_apx_prc_esp
 
-        # lista de break-points da subida              !!!REVER!!! deepcopy ?
+        # lista de breakpoints da subida              !!!REVER!!! deepcopy ?
         self.__lst_apx_brk = list(f_apx.lst_apx_brk)
 
-        # logger
-        # M_LOG.info("copy_apx:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __load_apx(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados de procedimento de aproximação a partir de um dicionário
@@ -176,9 +155,6 @@ class CApxNEW(model.CPrcModel):
         @param fdct_data: dicionário com os dados do procedimento de aproximação
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("__load_apx:>>")
-                
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a procedimento de aproximação
@@ -201,29 +177,20 @@ class CApxNEW(model.CPrcModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("__load_apx:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __make_apx(self, fdct_data):
         """
         carrega os dados de procedimento de aproximação a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados do procedimento de aproximação
         """
-        # logger
-        # M_LOG.info("__make_apx:>>")
-                
         # identificação do procedimento de aproximação
         if "nApx" in fdct_data:
             self.i_prc_id = int(fdct_data["nApx"])
-            # M_LOG.debug("self.i_prc_id: " + str(self.i_prc_id))
 
         # descrição do procedimento de aproximação
         if "nome" in fdct_data:
             self.s_prc_desc = fdct_data["nome"].strip()
-            # M_LOG.debug("self.s_prc_desc: " + str(self.s_prc_desc))
 
         # aeródromo da aproximação
         if "aerodromo" in fdct_data:
@@ -232,7 +199,6 @@ class CApxNEW(model.CPrcModel):
 
             # obtém o indicativo do aeródromo
             ls_aer_indc = fdct_data["aerodromo"]
-            # M_LOG.debug("ls_aer_indc: " + str(ls_aer_indc))
 
             # obtém o aeródromo de aproximação
             self.__ptr_apx_aer = ldct_aer.get(ls_aer_indc, None)
@@ -253,7 +219,6 @@ class CApxNEW(model.CPrcModel):
 
                 # obtém o indicativo do aeródromo
                 ls_pst_indc = fdct_data["pista"]
-                # M_LOG.debug("ls_pst_indc: " + str(ls_pst_indc))
 
                 # obtém o pista de subida
                 self.__ptr_apx_pis = ldct_pis.get(ls_pst_indc, None)
@@ -268,37 +233,29 @@ class CApxNEW(model.CPrcModel):
         # flag ILS
         if "ils" in fdct_data:
             self.__v_apx_ils = ('S' == fdct_data["ils"].strip().upper())
-            # M_LOG.debug("self.__v_apx_ils: " + str(self.__v_apx_ils))
 
         # flag aproximação perdida
         if "aproxperd" in fdct_data:
             self.__v_apx_ape = ('S' == fdct_data["aproxperd"].strip().upper())
-            # M_LOG.debug("self.__v_apx_ape: " + str(self.__v_apx_ape))
 
         # número da espera
         if "espera" in fdct_data:
             self.__ptr_apx_prc_esp = int(fdct_data["espera"])
-            # M_LOG.debug("self.__ptr_apx_prc_esp: " + str(self.__ptr_apx_prc_esp))
 
-        # break-points da aproximação
+        # breakpoints da aproximação
         if "breakpoints" in fdct_data:
-            # M_LOG.debug("breakpoints: " + str(fdct_data["breakpoints"]))
-
-            # para todos break-points da aproximação...
+            # para todos breakpoints da aproximação...
             for l_brk in sorted(fdct_data["breakpoints"], key=lambda l_k: l_k["nBrk"]):
-                # cria o break-points
+                # cria o breakpoints
                 lo_brk = brknew.CBrkNEW(self.__model, self, l_brk)
                 assert lo_brk
 
-                # coloca o break-point na lista
+                # coloca o breakpoint na lista
                 self.__lst_apx_brk.append(lo_brk)
 
         # (bool)
         self.v_prc_ok = True
 
-        # logger
-        # M_LOG.info("__make_apx:<<")
-                
     # =============================================================================================
     # data
     # =============================================================================================
@@ -337,14 +294,14 @@ class CApxNEW(model.CPrcModel):
     @property
     def lst_apx_brk(self):
         """
-        get lista de break-points da aproximação
+        get lista de breakpoints da aproximação
         """
         return self.__lst_apx_brk
 
     @lst_apx_brk.setter
     def lst_apx_brk(self, f_val):
         """
-        set lista de break-points da aproximação
+        set lista de breakpoints da aproximação
         """
         self.__lst_apx_brk = f_val
 

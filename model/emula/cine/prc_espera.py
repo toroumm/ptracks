@@ -50,8 +50,8 @@ import model.emula.cine.sentido_curva as scrv
 # < module data >----------------------------------------------------------------------------------
 
 # logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
+M_LOG = logging.getLogger(__name__)
+M_LOG.setLevel(logging.DEBUG)
 
 # nível 140 = 14000FT
 M_14000FT = 14000 * cdefs.D_CNV_FT2M
@@ -72,26 +72,17 @@ def __check_cancel_espera(f_atv, f_esp):
 
     @return True se condição de abandonar a espera, senão False (condição de permanecer em espera)
     """
-    # logger
-    # M_LOG.info("__check_cancel_espera:>>")
-        
     # check input
     assert f_atv
 
     # verifica condições para execução
     if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-        # logger
-        # M_LOG.info("__check_cancel_espera:<E01: aeronave não ativa.")
-
-        # cai fora...
+        # aeronave não ativa. cai fora...
         return True
 
     # verifica condições para execução
     if (f_esp is None) or (not f_esp.v_prc_ok):
-        # logger
-        # M_LOG.info("__check_cancel_espera:<E02: procedimento de espera não existe.")
-                        
-        # cai fora...
+        # procedimento de espera não existe. cai fora...
         return True
 
     # condição de cancelamento ?
@@ -99,15 +90,9 @@ def __check_cancel_espera(f_atv, f_esp):
         # coloca a aeronave na condição de abandonar a espera
         abnd.abort_prc(f_atv)
                 
-        # logger
-        # M_LOG.info("__check_cancel_espera:<E03: em condição de abandonar.")
-
         # return
         return True
 
-    # logger
-    # M_LOG.info("__check_cancel_espera:<<")
-        
     # return
     return False
 
@@ -121,26 +106,17 @@ def __setor_entrada(f_atv, f_esp):
 
     @return ldefs.E_FASE_SETOR1, ldefs.E_FASE_SETOR2 ou ldefs.E_FASE_SETOR3
     """
-    # logger
-    # M_LOG.info("__setor_entrada:>>")
-        
     # check input
     assert f_atv
 
-    # verifica condições para execução
+    # aeronave ativa ?
     if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-        # logger
-        # M_LOG.info("__setor_entrada:<E01: aeronave não ativa.")
-
-        # cai fora...
+        # aeronave não ativa. cai fora...
         return -1
 
-    # verifica condições para execução
+    # procedimento de espera ok ?
     if (f_esp is None) or (not f_esp.v_prc_ok):
-        # logger
-        # M_LOG.info("__setor_entrada:<E02: procedimento de espera não existe.")
-                        
-        # cai fora...
+        # procedimento de espera não existe. cai fora...
         return -1
 
     # calcula o ângulo de entrada
@@ -170,23 +146,15 @@ def __setor_entrada(f_atv, f_esp):
 
         # determina o setor de entrada da aeronave
         if lf_dif_ang <= 70.:
-            # logger
-            # M_LOG.info("__setor_entrada:<E03: FASE_SETOR2.")
-
             # realiza fase entrada no setor 2
             return ldefs.E_FASE_SETOR2
 
         elif lf_dif_ang <= 180.:
-            # logger
-            # M_LOG.info("__setor_entrada:<E04: FASE_SETOR1.")
-
             # realiza fase entrada no setor 1
             return ldefs.E_FASE_SETOR1
 
+        # senão,...
         else:
-            # logger
-            # M_LOG.info("__setor_entrada:<E05: FASE_SETOR3.")
-
             # realiza fase entrada no setor 3
             return ldefs.E_FASE_SETOR3
 
@@ -201,29 +169,18 @@ def __setor_entrada(f_atv, f_esp):
 
         # determina o setor de entrada da aeronave
         if lf_dif_ang <= 110.:
-            # logger
-            # M_LOG.info("__setor_entrada:<E06: FASE_SETOR1.")
-
             # realiza fase entrada no setor 1
             return ldefs.E_FASE_SETOR1
 
         elif lf_dif_ang <= 290.:
-            # logger
-            # M_LOG.info("__setor_entrada:<E07: FASE_SETOR3.")
-
             # realiza fase entrada no setor 3
             return ldefs.E_FASE_SETOR3
 
+        # sanão,...
         else:
-            # logger
-            # M_LOG.info("__setor_entrada:<E08: FASE_SETOR2.")
-
             # realiza fase entrada no setor 2
             return ldefs.E_FASE_SETOR2
 
-    # logger
-    # M_LOG.info("__setor_entrada:<<")
-        
     # return
     return -1
 
@@ -237,28 +194,29 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
     @param f_stk_context: pointer para pilha
     @param ff_delta_t: tempo decorrido desde a última atualização
     """
-    # logger
-    # M_LOG.info("prc_espera:>>")
-        
     # check input
     assert f_atv
     assert f_cine_data
     assert f_stk_context is not None
 
-    # verifica condições para execução
+    # aeronave ativa ?
     if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
         # logger
-        # M_LOG.info(u"prc_espera:<E01: aeronave não ativa.")
-
-        # cai fora...
+        l_log = logging.getLogger("prc_espera")
+        l_log.setLevel(logging.ERROR)
+        l_log.error(u"<E01: aeronave não ativa.")
+                                
+        # aeronave não ativa. cai fora...
         return
 
-    # verifica condições para execução
+    # performance existe ?
     if (f_atv.ptr_trf_prf is None) or (not f_atv.ptr_trf_prf.v_prf_ok):
         # logger
-        # M_LOG.info(u"prc_espera:<E02: performance não existe.")
-                        
-        # cai fora...
+        l_log = logging.getLogger("prc_espera")
+        l_log.setLevel(logging.ERROR)
+        l_log.error(u"<E02: performance não existe.")
+
+        # performance não existe. cai fora...
         return
 
     # aponta para a espera planejada e valida pointer
@@ -273,10 +231,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # não encontrou a espera, força a aeronave abandonar o procedimento
         abnd.abort_prc(f_atv)
                 
-        # logger
-        # M_LOG.info("prc_espera:<E03: espera inexistente.")
-
-        # return
+        # espera inexistente. cai fora...
         return
 
     # aeronave abaixo de 14000ft ?
@@ -284,7 +239,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # velocidade máxima é de 230KT
         f_atv.f_atv_vel_dem = M_VEL_MAX
 
-    # M_LOG.debug("prc_espera:fase [{}/{}] da espera.".format(f_atv.en_atv_fase, ldefs.DCT_FASE[f_atv.en_atv_fase]))
+    M_LOG.debug("prc_espera:fase [{}/{}] da espera.".format(f_atv.en_atv_fase, ldefs.DCT_FASE[f_atv.en_atv_fase]))
 
     # preparação de dados ?
     if ldefs.E_FASE_ZERO == f_atv.en_atv_fase:
@@ -301,10 +256,7 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # não encontrou o fixo, força a aeronave abandonar o procedimento
             abnd.abort_prc(f_atv)
 
-            # logger
-            # M_LOG.info("prc_espera:<E04: fixo da espera inexistente.")
-
-            # return
+            # fixo da espera inexistente. cai fora...
             return
 
         # checa condição de cancelamento, caso tenha sido comandado pelo piloto
@@ -440,7 +392,6 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
 
     # fase volta ?
     elif ldefs.E_FASE_VOLTA == f_atv.en_atv_fase:
-
         # acessa dados do fixo de espera e valida parâmetro
         l_fix = l_esp.ptr_esp_fix
 
@@ -448,15 +399,12 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # logger
             l_log = logging.getLogger("prc_espera::prc_espera")
             l_log.setLevel(logging.ERROR)
-            l_log.error("<E05: fixo da espera inexistente. aeronave:[%d/%s]", f_atv.i_trf_id, f_atv.s_trf_ind)
+            l_log.error("<E05: fixo da espera inexistente. aeronave: [%d/%s]", f_atv.i_trf_id, f_atv.s_trf_ind)
 
             # não encontrou o fixo, força a aeronave abandonar o procedimento
             abnd.abort_prc(f_atv)
 
-            # logger
-            # M_LOG.info("prc_espera:<E05: fixo da espera inexistente.")
-
-            # return
+            # fixo da espera inexistente. caifora...
             return
 
         # calcula distância da aeronave ao ponto (x, y)
@@ -483,28 +431,26 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
                 return
 
             # verifica se a função operacional anterior era aproximação
-            # if ldefs.E_APROXIMACAO == f_atv.en_trf_fnc_opeAnt:
+            if ldefs.E_APROXIMACAO == f_atv.en_trf_fnc_ope_ant:
                 # verifica se aeronave chegou na altitude do fixo de espera
-                # if f_atv.f_trf_alt_atu == f_atv.f_atv_alt_dem:
+                if f_atv.f_trf_alt_atu == f_atv.f_atv_alt_dem:
                     # verifica se existe algo na pilha
-                    # if 0 != f_cine_data.iCinPtr:
-                        # f_cine_data.iCinPtr -= 1
-
+                    if len(f_stk_context) > 0:
                         # se existe, desempilha o contexto
-                        # f_atv.f_atv_vel_dem = f_pAtr.fAtrPrfVelApx
-                        # f_atv.f_atv_pro_dem = l_esp.f_esp_rumo
+                        f_atv.en_trf_fnc_ope, f_atv.en_atv_fase, f_atv.ptr_trf_prc, f_atv.ptr_atv_brk, f_cine_data.i_brk_ndx = f_stk_context.pop()
+
+                        # velocidade e proa
+                        f_atv.f_atv_vel_dem = f_atv.ptr_trf_prf.f_prf_vel_apx
+                        f_atv.f_atv_pro_dem = l_esp.f_esp_rumo
 
                         # calcula novo sentido de curva
-                        # scrv.sentidoCurva(f_atv)
+                        scrv.sentido_curva(f_atv)
 
-                        # f_atv.en_trf_fnc_ope = f_stk_context [ f_cine_data.iCinPtr ].eItmFncOpe
-                        # f_atv.en_atv_fase    = f_stk_context [ f_cine_data.iCinPtr ].iItmFase
-                        # f_atv.pAnvPtrBkp     = f_stk_context [ f_cine_data.iCinPtr ].pItmPtrBkp
-                        # f_atv.ptr_trf_prc    = f_stk_context [ f_cine_data.iCinPtr ].pItmPtrPrc
+                        # razão de subida
+                        f_atv.f_atv_raz_sub = f_cine_data.f_raz_sub_des
 
-                        # f_atv.f_atv_raz_sub = f_cine_data.f_raz_sub_des
-
-                        # return  # break
+                        # break
+                        return
 
             # aprumar no rumo da espera (sentido afastamento)
             f_atv.f_atv_pro_dem = f_cine_data.f_afasta
@@ -552,7 +498,4 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         l_log.setLevel(logging.ERROR)
         l_log.error("<E06: fase [{}/{}] da espera não identificada.".format(f_atv.en_atv_fase, ldefs.DCT_FASE[f_atv.en_atv_fase]))
 
-    # logger
-    # M_LOG.info("prc_espera:<<")
-        
 # < the end >--------------------------------------------------------------------------------------

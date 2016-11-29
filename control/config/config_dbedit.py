@@ -33,20 +33,13 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 
-# from ...model 
+# model 
 import model.data as data
 
-# from ...control.config 
+# control
 import control.config.config_manager as config
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CConfigDBEdit >--------------------------------------------------------------------------
 
@@ -67,16 +60,12 @@ class CConfigDBEdit(config.CConfigManager):
                    }  # __CFG_DBEDIT
 
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_path):
         """
         inicia o gerente de configuração do editor da base de dados
 
         @param fs_path: full path do arquivo de configuração
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CConfigDBEdit, self).__init__(fs_path)
 
@@ -91,18 +80,11 @@ class CConfigDBEdit(config.CConfigManager):
         # load dirs section
         self.__load_dirs()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_dirs(self):
         """
         carrega as configurações de diretórios
         """
-        # logger
-        # M_LOG.info("__load_dirs:>>")
-
         # monta o diretório de exercícios
         self.dct_config["dir.exe"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
                                                                 self.dct_config["dir.exe"]))
@@ -118,8 +100,5 @@ class CConfigDBEdit(config.CConfigManager):
         # monta o diretório de tráfegos
         self.dct_config["dir.trf"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
                                                                 self.dct_config["dir.trf"]))
-
-        # logger
-        # M_LOG.info("__load_dirs:<<")
 
 # < the end >--------------------------------------------------------------------------------------

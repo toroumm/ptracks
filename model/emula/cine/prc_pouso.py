@@ -72,9 +72,6 @@ def prc_pouso(f_atv):
     global glb_ui_ang_teta, glb_f_dst_eixo, glb_f_dst_rampa, glb_f_dst_anv_ptq
     global glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y, glb_f_raio_curva
 
-    # logger
-    # M_LOG.info("prc_pouso:>>")
-
     # check input
     assert f_atv
 
@@ -85,8 +82,8 @@ def prc_pouso(f_atv):
         l_log.setLevel(logging.ERROR)
         l_log.error("<E01: aeronave não ativa.")
 
-        # cai fora...
-        return None
+        # aeronave não ativa. cai fora...
+        return
 
     # performance ok ?
     if (f_atv.ptr_trf_prf is None) or (not f_atv.ptr_trf_prf.v_prf_ok):
@@ -95,7 +92,7 @@ def prc_pouso(f_atv):
         l_log.setLevel(logging.ERROR)
         l_log.error(u"<E02: performance não existe.")
 
-        # cai fora...
+        # performance não existe. cai fora...
         return
 
     # posição da aeronave (dir/esq) em relação ao eixo da pista
@@ -113,10 +110,8 @@ def prc_pouso(f_atv):
         # aerodrome not found, abort procedure
         abnd.abort_prc(f_atv)
 
-        # return
+        # aeródromo inexistente. cai fora...
         return
-
-    # M_LOG.debug("prc_pouso:aerodromo:[{}]".format(l_aer.s_aer_indc))
 
     # pointer to runway
     l_pst = f_atv.ptr_atv_pst
@@ -130,10 +125,8 @@ def prc_pouso(f_atv):
         # runway not found, abort procedure
         abnd.abort_prc(f_atv)
 
-        # return
+        # pista inexistente. cai fora...
         return
-
-    # M_LOG.debug("prc_pouso:pista/rumo:[{}/{}]".format(l_pst.s_pst_indc, l_pst.i_pst_rumo))
 
     # fases do procedimento de pouso
 
@@ -621,8 +614,5 @@ def prc_pouso(f_atv):
         l_log = logging.getLogger("prc_pouso")
         l_log.setLevel(logging.ERROR)
         l_log.error(u"<E05: fase no pouso não identificada:[{}].".format(ldefs.DCT_FASE[f_atv.en_atv_fase]))
-
-    # logger
-    # M_LOG.info("prc_pouso:<<")
 
 # < the end >--------------------------------------------------------------------------------------

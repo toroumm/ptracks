@@ -33,7 +33,7 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# from . 
+# control
 import control.events.events_model as model
 
 # < class CConfigExe >-----------------------------------------------------------------------------
@@ -43,7 +43,6 @@ class CConfigExe(model.CEventsModel):
     CConfigExe event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, ls_exe):
         """
         constructor
@@ -65,14 +64,13 @@ class CConfigExe(model.CEventsModel):
         """
         return self.__s_exe
 
-# < class CConfigHora >-----------------------------------------------------------------------------
+# < class CConfigHora >----------------------------------------------------------------------------
 
 class CConfigHora(model.CEventsModel):
     """
     CConfigHora event class
     """
     # ---------------------------------------------------------------------------------------------
-    # void (tuple)
     def __init__(self, lt_hora):
         """
         constructor

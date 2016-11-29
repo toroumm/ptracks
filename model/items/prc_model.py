@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2016/04"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CPrcModel >------------------------------------------------------------------------------
 
 class CPrcModel(object):
@@ -48,14 +37,10 @@ class CPrcModel(object):
     mantém as informações específicas sobre procedimento
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # flag ok (bool)
         self.__v_prc_ok = False
 
@@ -65,11 +50,7 @@ class CPrcModel(object):
         # descrição do procedimento
         self.__s_prc_desc = ""
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def copy_prc(self, f_prc):
         """
         copy constructor
@@ -77,9 +58,6 @@ class CPrcModel(object):
 
         @param f_prc: procedimento a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_prc:>>")
-
         # check input
         assert f_prc
 
@@ -91,9 +69,6 @@ class CPrcModel(object):
 
         # flag ok (bool)
         self.v_prc_ok = f_prc.v_prc_ok
-
-        # logger
-        # M_LOG.info("copy_prc:<<")
 
     # =============================================================================================
     # data

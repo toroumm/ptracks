@@ -40,22 +40,14 @@ __date__ = "2016/08"
 
 # python library
 import ConfigParser
-# import logging
 import os
 
 # libs
 import libs.coords.coord_defs as cdefs
 
-# from ...model 
+# model 
 import model.glb_data as gdata
-# from ...model 
 import model.glb_defs as gdefs
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CConfigManager >-------------------------------------------------------------------------
 
@@ -107,16 +99,12 @@ class CConfigManager(object):
                    }  # __CFG_COMMON
 
     # ---------------------------------------------------------------------------------------------
-    # void (str)
     def __init__(self, fs_path="acme.cfg"):
         """
         inicia o gerente de configuração
 
         @param fs_path: full path do arquivo de configuração
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # load default values in dictionary
         self.__dct_config = self.__CFG_COMMON.copy()
         assert self.__dct_config is not None
@@ -134,9 +122,6 @@ class CConfigManager(object):
             for l_section in l_cp.sections():
                 for l_option in l_cp.options(l_section):
                     self.__dct_config[str(l_section.lower() + '.' + l_option.lower())] = l_cp.get(l_section, l_option)
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # =============================================================================================
     # data
