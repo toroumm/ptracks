@@ -53,12 +53,6 @@ import model.items.trf_data as trfdata
 import model.newton.airspace_newton as airs
 import model.newton.defs_newton as ldefs
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CModelNewton >----------------------------------------------------------------------------
 
 class CModelNewton(model.CModelManager):
@@ -70,9 +64,6 @@ class CModelNewton(model.CModelManager):
         """
         @param  f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_control
         
@@ -119,9 +110,6 @@ class CModelNewton(model.CModelManager):
         # set as daemon
         self.__emula_model.daemon = True
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def __load_air(self):
         """
@@ -129,8 +117,6 @@ class CModelNewton(model.CModelManager):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_air:>>")
         '''
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
@@ -158,9 +144,6 @@ class CModelNewton(model.CModelManager):
         # carrega as tabelas do sistema
         self.__airspace.load_dicts()
 
-        # logger
-        # M_LOG.info("__load_air:<<")
-
         # retorna ok
         return True, None
 
@@ -171,9 +154,6 @@ class CModelNewton(model.CModelManager):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_cenario:>>")
-
         # carrega o airspace
         lv_ok, ls_msg = self.__load_air()
 
@@ -194,17 +174,11 @@ class CModelNewton(model.CModelManager):
             # termina a aplicação
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("__load_cenario:<<")
-
     # ---------------------------------------------------------------------------------------------
     def __load_dicts(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__load_dicts:>>")
-
         # monta o nome da tabela de performances
         ls_path = os.path.join(self.dct_config["dir.tab"], self.dct_config["tab.prf"])
 
@@ -232,9 +206,6 @@ class CModelNewton(model.CModelManager):
 
         # coloca a tabela de tráfegos no exercício
         self.__exe.dct_exe_trf = self.__dct_trf
-
-        # logger
-        # M_LOG.info("__load_dicts:<<")
 
     # =============================================================================================
     # data

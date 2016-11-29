@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-data_piloto.
+data_piloto
 
 provide all the interface to store the layer
 

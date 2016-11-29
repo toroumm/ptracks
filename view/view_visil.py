@@ -33,7 +33,6 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 import sys
 
@@ -48,12 +47,6 @@ import view.visil.wnd_main_visil as wmain
 # control
 import control.events.events_basic as event
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CViewVisil >-----------------------------------------------------------------------------
 
 class CViewVisil(view.CViewManager):
@@ -61,14 +54,10 @@ class CViewVisil(view.CViewManager):
     the interface to configuration visil. Handles all interaction with user
     """
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __init__(self, f_control, f_model):
         """
-        initializes the display
+        constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_control
         assert f_model
@@ -93,48 +82,34 @@ class CViewVisil(view.CViewManager):
         # color manager 
         self.__colors = clrm.CColorManager(self.config)
                 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def notify(self, f_evt):
         """
         events callback
 
         @param f_evt: event
         """
-        # logger
-        # M_LOG.info("notify:>>")
-
         # check input
         assert f_evt
 
         # clock tick event ?
         if isinstance(f_evt, event.CTick):
-            # M_LOG.debug("event.CTick")
+            # event.CTick
             pass
 
         # quit event ?
         elif isinstance(f_evt, event.CQuit):
-            # M_LOG.debug("event.CQuit")
-
             # para todos os processos
             # glb_data.G_KEEP_RUN = False
+
+            # event.CQuit
             pass
 
-        # logger
-        # M_LOG.info("notify:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def run(self):
         """
         exec application
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # checks
         assert self.control
         assert self.app
@@ -151,9 +126,6 @@ class CViewVisil(view.CViewManager):
 
         # exec application
         self.app.exec_()
-
-        # logger
-        # M_LOG.info("run:<<")
 
     # =============================================================================================
     # data

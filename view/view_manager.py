@@ -33,17 +33,6 @@ __version__ = "$revision: 0.3$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2016/08"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CViewManager >---------------------------------------------------------------------------
 
 class CViewManager(object):
@@ -52,14 +41,10 @@ class CViewManager(object):
     It draws the scope on the screen and handles all mouse input
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_control):
         """
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
         # check input
         assert f_control
 
@@ -68,33 +53,24 @@ class CViewManager(object):
 
         # register as listener
         f_control.event.register_listener(self)
-                                                                                                
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # ---------------------------------------------------------------------------------------------
-    # @abstractmethod
     def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos
 
         @param f_event: evento recebido
         """
-        # logger
-        # M_LOG.info("notify:><")
-        pass
+        # return
+        return
 
     # ---------------------------------------------------------------------------------------------
-    # @abstractmethod
     def run(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("run:><")
-                
         # return
-        return False
+        return
 
     # =============================================================================================
     # data

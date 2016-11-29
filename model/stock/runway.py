@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-runway.
+runway
 
 DOCUMENT ME!
 
@@ -32,17 +32,8 @@ __date__ = "2016/01"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-import logging
-
 # model
 import model.stock.fix as CFix
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CRunway >--------------------------------------------------------------------------------
 
@@ -51,7 +42,6 @@ class CRunway(CFix.CFix):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, fs_rwy_name, ff_rwy_lat, ff_rwy_lng, ff_rwy_track, ff_rwy_gp):
         """
         define uma aerovia
@@ -62,12 +52,6 @@ class CRunway(CFix.CFix):
         @param ff_rwy_track: path
         @param ff_rwy_gp: glide path
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
         # inicia a super classe
         super(CRunway, self).__init__(fs_rwy_name, ff_rwy_lat, ff_rwy_lng)
 
@@ -76,20 +60,13 @@ class CRunway(CFix.CFix):
         # self.position    # posição
 
         self.__f_track = ff_rwy_track
-        # M_LOG.info("self.__f_track: %f" % self.__f_track)
-
         self.__f_app_angle = ff_rwy_gp
-        # M_LOG.info("self.__f_app_angle: %f" % self.__f_app_angle)
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # =============================================================================================
     # dados
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def f_app_angle(self):
         """
@@ -105,7 +82,6 @@ class CRunway(CFix.CFix):
         self.__f_app_angle = f_val
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def f_track(self):
         """

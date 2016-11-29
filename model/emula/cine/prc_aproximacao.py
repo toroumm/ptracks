@@ -35,6 +35,9 @@ __date__ = "2016/10"
 # python library
 import logging
 
+# control
+import control.control_debug as dbg
+
 # model
 import model.newton.defs_newton as ldefs
 
@@ -43,12 +46,6 @@ import model.emula.cine.obtem_brk as obrk
 import model.emula.cine.prc_dir_ponto as dp
 import model.emula.cine.trata_associado as tass
 import model.emula.cine.sentido_curva as scrv
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------
 def __obtem_apx_per(f_atv, f_apx):
@@ -117,7 +114,7 @@ def __obtem_pouso(f_atv, f_apx):
     # pista de pouso ok ?
     if (f_apx.ptr_apx_pis is not None) and (f_apx.ptr_apx_pis.v_pst_ok):
         # ângulo mínimo para o pouso
-        lf_ang = abs(f_atv.f_trf_pro_atu - f_apx.ptr_apx_pis.f_pst_rumo)
+        lf_ang = abs(f_atv.f_trf_pro_atu - f_apx.ptr_apx_pis.i_pst_rumo)
 
         # tem condições de fazer pouso direto ?
         if lf_ang <= 15.:
@@ -125,7 +122,7 @@ def __obtem_pouso(f_atv, f_apx):
             f_atv.en_atv_fase = ldefs.E_FASE_APXALINHAR
 
             # estabelece a proa a ser atingida (rumo da pista)
-            f_atv.f_atv_pro_dem = f_apx.ptr_apx_pis.f_pst_rumo
+            f_atv.f_atv_pro_dem = f_apx.ptr_apx_pis.i_pst_rumo
 
             # inicia a curva pelo menor lado
             scrv.sentido_curva(f_atv)
@@ -156,9 +153,6 @@ def prc_aproximacao(f_atv, f_cine_data, f_stk_context):
     @param f_cine_data: dados da cinemática
     @param f_stk_context: pointer to stack
     """
-    # logger
-    # M_LOG.info("prc_aproximacao:<<")
-
     # check input
     assert f_atv
 
@@ -207,8 +201,6 @@ def prc_aproximacao(f_atv, f_cine_data, f_stk_context):
     # variáveis locais
     l_brk = None
 
-    M_LOG.debug("prc_aproximacao:fase:[{}]".format(ldefs.DCT_FASE[f_atv.en_atv_fase]))
-
     # fase de preparação dos dados para o procedimento ?
     if ldefs.E_FASE_ZERO == f_atv.en_atv_fase:
         # inicia o index de breakpoints
@@ -249,8 +241,6 @@ def prc_aproximacao(f_atv, f_cine_data, f_stk_context):
 
     # fase de espera ? (mantém a aeronave em orbita até alcançar a altitude do breakpoint)
     elif ldefs.E_FASE_ESPERA == f_atv.en_atv_fase:
-        # verifica altitude para IAF(primeiro breakpoint)
-
         # dados do breakpoint
         l_brk = f_atv.ptr_atv_brk
         assert l_brk
@@ -290,7 +280,7 @@ def prc_aproximacao(f_atv, f_cine_data, f_stk_context):
         if tass.trata_associado(f_atv, l_brk, f_cine_data.i_brk_ndx, f_stk_context):
             # é o último breakpoint da aproximação atual ?
             if f_atv.ptr_atv_brk == l_apx.lst_apx_brk[-1]:
-                pass # f_pStk.iCinPtr -= 1
+                f_cine_data.i_brk_ndx -= 1
 
     # já passou por todos os breakpoints ?
     elif ldefs.E_FASE_BREAKPOINT == f_atv.en_atv_fase:
@@ -300,7 +290,7 @@ def prc_aproximacao(f_atv, f_cine_data, f_stk_context):
             if l_apx.ptr_apx_prc_ils is not None:
                 # ils ok ?
                 if __obtem_ils(f_atv, l_apx):
-                    # prepara para procedimento de ILS
+                    # coloca em procedimento de ILS
                     f_atv.en_trf_fnc_ope = ldefs.E_ILS
                     f_atv.en_atv_fase = ldefs.E_FASE_ZERO
 

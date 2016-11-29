@@ -43,10 +43,6 @@ import control.events.events_basic as evtbas
 
 # < module data >----------------------------------------------------------------------------------
 
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # brightness category
 M_MasterCategory = -1
 
@@ -135,18 +131,12 @@ class CColorManager(object):
                       DFFinderCategory]
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, fo_config=None, fs_path=None):
         """
         @param fs_path: color table file path (basestring)
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-        
         # init super class
         super(CColorManager, self).__init__()
-
-        # M_LOG.debug("fs_path:{}".format(fs_path))
 
         # (int)
         self.__lst_category = [100 for _ in xrange(len(self.c_lst_category))]
@@ -175,11 +165,7 @@ class CColorManager(object):
         # load color table
         self.__load_ctable(fs_path)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # tuple (str)
     def extract_attributes(self, fs_data):
         """
         extract the attributes contained in line
@@ -188,9 +174,6 @@ class CColorManager(object):
 
         @return extrated attributes
         """
-        # logger
-        # M_LOG.info("extract_attributes:>>")
-                
         # check input
         if not fs_data or (len(fs_data) < 1):
             # get out...
@@ -211,14 +194,10 @@ class CColorManager(object):
         # get remarks
         ls_rem = llst_attr[2].strip().lower()
 
-        # logger
-        # M_LOG.info("extract_attributes:<<")
-                
         # return
         return (ls_rem, lt_cor, li_cat)
 
     # ---------------------------------------------------------------------------------------------
-    # int (int)
     def get_brightness(self, fi_category):
         """
         gets the brightness according to the category argument
@@ -227,24 +206,14 @@ class CColorManager(object):
     
         @return the brightness value of the category
         """
-        # logger
-        # M_LOG.info("get_brightness:>>")
-
         if M_MasterCategory == fi_category:
-            # logger
-            # M_LOG.info("get_brightness:<E01: master category")
-
             # return
             return self.__i_master_category
-
-        # logger
-        # M_LOG.info("get_brightness:<<")
 
         # return
         return self.__lst_category[fi_category]
 
     # ---------------------------------------------------------------------------------------------
-    # int (str)
     def get_color(self, fs_name):
         """
         returns the color according to the color name from the color table
@@ -253,27 +222,17 @@ class CColorManager(object):
 
         @return the color if the function is successful, otherwise (255, 255, 255)
         """
-        # logger
-        # M_LOG.info("get_color:>>")
-
         # get color
         lt_cor = self.c_dct_color.get(fs_name.lower(), None)
 
         if lt_cor is None:
-            # logger
-            # M_LOG.info("get_color:<E01: color {} not found".format(fs_name))
-
             # return
             return (255, 255, 255)
-
-        # logger
-        # M_LOG.info("get_color:<<")
 
         # return
         return self.transform_color(self.c_dct_color[fs_name][1], self.c_dct_color[fs_name][2])
 
     # ---------------------------------------------------------------------------------------------
-    # tuple (int)
     def get_color_by_no(self, fi_color_no):
         """
         returns the color according to the color position
@@ -283,35 +242,22 @@ class CColorManager(object):
         @return color tuple according to the color position if the function is successful,
                 otherwise default white color (255,255,255)
         """
-        # logger
-        # M_LOG.info("get_color_by_no:>>")
-
         ls_name = self.c_dct_color_no.get(fi_color_no, None)
 
         if ls_name is None:
-            # logger
-            # M_LOG.info("get_color_by_no:<E01: color number {} not found".format(fi_color_no))
-
             # return
             return (255, 255, 255)
-
-        # logger
-        # M_LOG.info("get_color_by_no:<<")
 
         # return
         return self.get_color(ls_name)
 
     # ---------------------------------------------------------------------------------------------
-    # bool, str (str)
     def __load_ctable(self, fs_path):
         """
         faz a carga do airspace
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_ctable:>>")
-
         # open color table file
         lfd_tab = open(fs_path, 'r')
         assert lfd_tab
@@ -347,14 +293,10 @@ class CColorManager(object):
         # close file
         lfd_tab.close()
 
-        # logger
-        # M_LOG.info("__load_ctable:<<")
-
         # retorna ok
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    # void (int, int)
     def set_brightness(self, fi_category, fi_value):
         """
         sets the brightness according to the category argument
@@ -362,9 +304,6 @@ class CColorManager(object):
         @param fi_category: the category
         @param fi_value: the brightness value
         """
-        # logger
-        # M_LOG.info("set_brightness:>>")
-                
         # master category ?
         if M_MasterCategory == fi_category:
             # save master category brightness
@@ -383,11 +322,7 @@ class CColorManager(object):
             if M_MouseCategory == fi_category:
                 pass  # CAsdApp::GetApp().SetCursorColors()
 
-        # logger
-        # M_LOG.info("set_brightness:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # color_tuple (color_tuple, int)
     def transform_color(self, ft_color, fi_category):
         """
         computes the color argument according to the brightness category argument
@@ -397,9 +332,6 @@ class CColorManager(object):
     
         @return color tuple
         """
-        # logger
-        # M_LOG.info("transform_color:>>")
-
         # check input
         assert ft_color
                         
@@ -441,14 +373,10 @@ class CColorManager(object):
         elif li_blue > 255:
             li_blue = 255
 
-        # logger
-        # M_LOG.info("transform_color:<<")
-                
         # return
         return (li_red, li_green, li_blue)
 
     # ---------------------------------------------------------------------------------------------
-    # color_tuple (int, int)
     def transform_color_no(self, fi_color_no, fi_category):
         """
         computes the color according to the color position and the brightness category arguments
@@ -461,9 +389,6 @@ class CColorManager(object):
         ls_name = self.c_dct_color_no.get(fi_color_no, None)
 
         if ls_name is None:
-            # logger
-            # M_LOG.info("get_color_by_no:<E01: color number {} not found".format(fi_color_no))
-
             # return
             return (255, 255, 255)
 

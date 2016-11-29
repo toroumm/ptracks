@@ -5,6 +5,7 @@
   <aerodromo nAer="SBRJ">
     <descricao>SANTOS DUMONT</descricao>
     <elevacao>10</elevacao>
+    <declmag>-21</declmag>
     <coord>
       <tipo>G</tipo>
       <cpoA>2255S</cpoA>
@@ -33,6 +34,7 @@
   <aerodromo nAer="SBSJ">
     <descricao>SÃO JOSÉ DOS CAMPOS</descricao>
     <elevacao>2120</elevacao>
+    <declmag>-21</declmag>
     <coord>
       <tipo>G</tipo>
       <cpoA>2313.09S</cpoA>
@@ -61,6 +63,7 @@
   <aerodromo nAer="SBSP">
     <descricao>CONGONHAS</descricao>
     <elevacao>2631</elevacao>
+    <declmag>-21</declmag>
     <coord>
       <tipo>G</tipo>
       <cpoA>2337.25S</cpoA>
@@ -107,6 +110,7 @@
   <aerodromo nAer="SBBR">
     <nome>BRASÍLIA</nome>
     <elevacao>3479</elevacao>
+    <declmag>-21</declmag>
     <coord>
       <tipo>G</tipo>
       <cpoA>1552.267S</cpoA>
@@ -153,6 +157,7 @@
   <aerodromo nAer="SBGR">
     <nome>GUARULHOS</nome>
     <elevacao>2459</elevacao>
+    <declmag>-21</declmag>
     <coord>
       <tipo>K</tipo>
       <cpoA>S:23:26:08</cpoA>

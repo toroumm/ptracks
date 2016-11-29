@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-view_dbedit.
-code for the view manager.
+view_dbedit
+
+code for the view manager
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,7 +33,6 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 import sys
 
@@ -42,23 +42,13 @@ from PyQt4 import QtGui
 # view
 import view.view_manager as view
 
-# view / dbEdit
+# view
 import view.dbedit.wnd_main_dbedit as wmain
 
-# control / events
+# control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
-
 # < class CViewDBEdit >----------------------------------------------------------------------------
-
 
 class CViewDBEdit(view.CViewManager):
     """
@@ -66,15 +56,11 @@ class CViewDBEdit(view.CViewManager):
     usuário.
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control):
         """
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")   
-                
-        # check input parameters
+        # check input
         assert f_control
 
         # inicia a super classe
@@ -107,38 +93,24 @@ class CViewDBEdit(view.CViewManager):
         # flag started
         # self._bStarted = False
 
-        # logger
-        # M_LOG.info("__init__:<<")   
-                
     # ---------------------------------------------------------------------------------------------
-
     def notify(self, f_event):
         """
-        callback de recebimento de eventos.
+        callback de recebimento de eventos
 
         @param f_event: event
         """
-        # logger
-        # M_LOG.info("notify:>>")   
-                
-        # check input parameters
+        # check input 
         assert f_event
 
         if isinstance(f_event, events.CTick):
             pass
-
-        # logger
-        # M_LOG.info("notify:<<")   
                 
     # ---------------------------------------------------------------------------------------------
-
     def run(self):
         """
         executa a aplicação
         """
-        # logger
-        # M_LOG.info("run:>>")   
-                
         # verifica condições de execução
         assert self.__app
         assert self.__wmain
@@ -149,7 +121,4 @@ class CViewDBEdit(view.CViewManager):
         # processa a aplicação
         self.__app.exec_()
 
-        # logger
-        # M_LOG.info("run:<<")   
-                
 # < the end >--------------------------------------------------------------------------------------

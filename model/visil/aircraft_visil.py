@@ -51,12 +51,6 @@ import model.stock.aircraft_basic as sanv
 #import model.visadsb.mcp as CMCP
 #import model.visadsb.pilot as CPilot
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CAircraftVisil >-------------------------------------------------------------------------
 
 class CAircraftVisil(sanv.CAircraftBasic):
@@ -68,9 +62,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_emula
 
@@ -132,17 +123,11 @@ class CAircraftVisil(sanv.CAircraftBasic):
                 self.adiru.f_ias = 230.
                 self.adiru.f_true_heading = 0.
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def fly(self, t):
         """
         do periodic updates (position, altitude, speed,...) variable t specifies time in microseconds
         """
-        # logger
-        # M_LOG.info("fly:>>")
-
         # check input
         # assert f_control
         '''
@@ -178,22 +163,13 @@ class CAircraftVisil(sanv.CAircraftBasic):
         #                                           self.__weather.get_wind_spd(self.adiru.f_altitude), t / 2000.)
         self._auto_pilot.move(tmath.trackOpposite(0.), 0., t / 2000.)
         '''
-        # logger
-        # M_LOG.info("fly:<<")
-
     # ---------------------------------------------------------------------------------------------
     def init_position(self, f_oPos):
         """
         set initial position and radar position
         """
-        # logger
-        # M_LOG.info("init_position:>>")
-
         # check input
         # assert f_control
-
-        # logger
-        # M_LOG.info("init_position:<<")
 
     # ---------------------------------------------------------------------------------------------
     def instructAltitude(self, f_fAlt):
@@ -201,9 +177,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         give instruction for an altitude
         TODO: FL/ALT
         """
-        # logger
-        # M_LOG.info("instructAltitude:><")
-
         # TODO
 
     # ---------------------------------------------------------------------------------------------
@@ -211,9 +184,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         give instruction for an approach procedure
         """
-        # logger
-        # M_LOG.info("instructApproach:>>")
-
         # check input
         # assert f_control
         '''
@@ -236,17 +206,11 @@ class CAircraftVisil(sanv.CAircraftBasic):
         l_inst._sText = f_appName
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructApproach:<<")
-
     # ---------------------------------------------------------------------------------------------
     def instructDirect(self, f_ptName):
         """
         give instruction for a direct (or shortcut)
         """
-        # logger
-        # M_LOG.info("instructDirect:>>")
-
         # check input
         # assert f_control
         '''
@@ -270,17 +234,11 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructDirect:<<")
-
     # ---------------------------------------------------------------------------------------------
     def instructHeading(self, f_hdg):
         """
         give instruction for a heading
         """
-        # logger
-        # M_LOG.info("instructHeading:>>")
-
         # check input
         # assert f_control
         '''
@@ -301,17 +259,11 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructHeading:<<")
-
     # ---------------------------------------------------------------------------------------------
     def instructRoute(self, f_sRtName):
         """
         give instruction for a standard route
         """
-        # logger
-        # M_LOG.info("instructRoute:>>")
-
         # check input
         # assert f_control
         '''
@@ -335,17 +287,11 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructRoute:<<")
-
     # ---------------------------------------------------------------------------------------------
     def instructSpeed(self, ff_ias):
         """
         give instruction for a speed
         """
-        # logger
-        # M_LOG.info("instructSpeed:><")
-
         # TODO
 
     # ---------------------------------------------------------------------------------------------
@@ -353,9 +299,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         is the aircraft climbing ?
         """
-        # logger
-        # M_LOG.info("isClimbing:><")
-
         # TODO
         return False
 
@@ -364,9 +307,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         is the aircraft descending ?
         """
-        # logger
-        # M_LOG.info("isDescending:><")
-
         # TODO
         return False
 
@@ -375,9 +315,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         create an aircraft from list
         """
-        # logger
-        # M_LOG.info("__make_aircraft:>>")
-
         # check input
         assert f_data is not None
 
@@ -388,19 +325,13 @@ class CAircraftVisil(sanv.CAircraftBasic):
         li_id = int(f_data[li_ndx])
         li_ndx += 1
 
-        # M_LOG.debug("li_id:[{}]".format(li_id))
-
         # código transponder (ssr)
         li_ssr = int(f_data[li_ndx])
         li_ndx += 1
 
-        # M_LOG.debug("li_ssr:[{}]".format(li_ssr))
-
         # spi
         li_spi = int(f_data[li_ndx])
         li_ndx += 1
-
-        # M_LOG.debug("li_spi:[{}]".format(li_spi))
 
         # altitude
         lf_alt = float(f_data[li_ndx])
@@ -408,19 +339,13 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         self.adiru.f_altitude = lf_alt
 
-        # M_LOG.debug("lf_alt:[{}]".format(lf_alt))
-
         # latitude
         lf_lat = float(f_data[li_ndx])
         li_ndx += 1
 
-        # M_LOG.debug("lf_lat:[{}]".format(lf_lat))
-
         # longitude
         lf_lng = float(f_data[li_ndx])
         li_ndx += 1
-
-        # M_LOG.debug("lf_lng:[{}]".format(lf_lng))
 
         self.adiru.pos = pll.CPosLatLng(lf_lat, lf_lng)
         assert self.adiru.pos
@@ -435,13 +360,9 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         self.adiru.f_ias = lf_vel
 
-        # M_LOG.debug("lf_vel:[{}]".format(lf_vel))
-
         # razão de subida
         lf_raz = float(f_data[li_ndx])
         li_ndx += 1
-
-        # M_LOG.debug("lf_raz:[{}]".format(lf_raz))
 
         # proa
         lf_pro = float(f_data[li_ndx])
@@ -449,51 +370,31 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         self.adiru.f_true_heading = lf_pro
 
-        # M_LOG.debug("lf_pro:[{}]".format(lf_pro))
-
         # callsign
         ls_ind = str(f_data[li_ndx])
         li_ndx += 1
 
         self.s_callsign = ls_ind
 
-        # M_LOG.debug("ls_ind:[{}]".format(ls_ind))
-
         # performance
         ls_prf = str(f_data[li_ndx])
         li_ndx += 1
 
-        # M_LOG.debug("ls_prf:[{}]".format(ls_prf))
-
         # hora
         lf_tim = float(f_data[li_ndx])
         li_ndx += 1
-
-        # M_LOG.debug("lf_tim:[{}]".format(lf_tim))
-
-        # logger
-        # M_LOG.info("__make_aircraft:<<")
 
     # ---------------------------------------------------------------------------------------------
     def radar_ground_speed(self):
         """
         determine groundspeed from radar history
         """
-        # logger
-        # M_LOG.info("radar_ground_speed:>>")
-
         if len(self.__lst_trail) < 3:
-            # logger
-            # M_LOG.info("radar_ground_speed:<E01")
-
             # return
             return 0
 
         # calculate ground speed
         l_gs = tmath.distLL(self.__lst_trail[-1], self.pos) / (self.__f_trail_interval / 1000.) * 3600.
-
-        # logger
-        # M_LOG.info("radar_ground_speed:<<")
 
         # return
         return l_gs
@@ -503,13 +404,7 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         determine magnetic track from radar history
         """
-        # logger
-        # M_LOG.info("radar_magnetic_track:>>")
-
         if len(self.__lst_trail) < 3:
-            # logger
-            # M_LOG.info("radar_magnetic_track:<E01")
-
             # return
             return 0
 
@@ -521,9 +416,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
             # normalize angle
             l_tr += 360
 
-        # logger
-        # M_LOG.info("radar_magnetic_track:<<")
-
         # return
         return l_tr
 
@@ -532,27 +424,15 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         get position of radar history point #n
         """
-        # logger
-        # M_LOG.info("trail:>>")
-
         # exists trail ?
         if not self.__lst_trail:
-            # logger
-            # M_LOG.info("trail:<E01")
-
             # return
             return None
 
         # index out of range ?
         if fi_ndx >= len(self.__lst_trail):
-            # logger
-            # M_LOG.info("trail:<E02")
-
             # return
             return None
-
-        # logger
-        # M_LOG.info("trail:<<")
 
         # return
         return self.__lst_trail[len(self.__lst_trail) - 1 - fi_ndx]
@@ -562,23 +442,14 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         update data
         """
-        # logger
-        # M_LOG.info("update_data:>>")
-
         # update aircraft data
         self.__make_aircraft(f_data)
-
-        # logger
-        # M_LOG.info("update_data:<<")
 
     # ---------------------------------------------------------------------------------------------
     def update_radar_position(self, ff_tim):
         """
         get new radar position, and push old one into history
         """
-        # logger
-        # M_LOG.info("update_radar_position:>>")
-
         # check input
         # assert f_control
 
@@ -594,9 +465,6 @@ class CAircraftVisil(sanv.CAircraftBasic):
 
         # salva o intervalo do rastro
         self.__f_trail_interval = ff_tim
-
-        # logger
-        # M_LOG.info("update_radar_position:<<")
 
     # =============================================================================================
     # dados

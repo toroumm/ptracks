@@ -46,12 +46,6 @@ import model.items.pst_new as pstnew
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CAerNEW >--------------------------------------------------------------------------------
 
 class CAerNEW(model.CAerModel):
@@ -67,19 +61,16 @@ class CAerNEW(model.CAerModel):
     </aerodromo>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
+        constructor
+        
         @param f_model: model manager
         @param f_data: dados do aeródromo
         @param fs_ver: versão do formato
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_model
-        # M_LOG.debug("f_data: {}".format(f_data))
 
         # init super class
         super(CAerNEW, self).__init__()
@@ -133,22 +124,13 @@ class CAerNEW(model.CAerModel):
                 # copia a aeródromo
                 self.copy_aer(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def calc_cab_oposta(self):
         """
         calcula as coordenadas da cabeceira oposta de cada pista
         """
-        # logger
-        # M_LOG.info("calc_cab_oposta:>>")
-
         # para todas as pistas...
         for lp_pst in self.__dct_aer_pistas.values():
-            # M_LOG.debug("lp_pst:[%s]", lp_pst)
-
             # pista não ok ?
             if not lp_pst.v_pst_ok:
                 # próximo
@@ -156,14 +138,12 @@ class CAerNEW(model.CAerModel):
 
             # cabeceira
             ls_cab = "%-3s" % lp_pst.s_pst_indc
-            # M_LOG.debug("ls_cab:[%s]", ls_cab)
 
             # cabeceira oposta
             ls_oposta = ls_cab
 
             # obtém o rumo da pista
             li_rumo = int(ls_cab[:2])
-            # M_LOG.debug("li_rumo:[%d]", li_rumo)
 
             # calcula o rumo inverso
             if li_rumo <= 18:
@@ -174,7 +154,6 @@ class CAerNEW(model.CAerModel):
 
             # converte para string
             ls_oposta = "%02d" % li_rumo
-            # M_LOG.debug("ls_oposta:[%s]", ls_oposta)
 
             if 'C' == ls_cab[2]:
                 ls_oposta += 'C'
@@ -184,9 +163,6 @@ class CAerNEW(model.CAerModel):
 
             elif 'R' == ls_cab[2]:
                 ls_oposta += 'L'
-
-            # M_LOG.debug("cabeceira.......:[%s]", ls_cab)
-            # M_LOG.debug("cabeceira oposta:[%s]", ls_oposta)
 
             # para todas as pistas, busca a oposta...
             for lp_pst_op in self.__dct_aer_pistas.values():
@@ -213,11 +189,7 @@ class CAerNEW(model.CAerModel):
                 l_log.setLevel(logging.WARNING)
                 l_log.warning("pista:[{}/{}][{}] cabeceira oposta não encontrada.".format(lp_pst.ptr_pst_aer.s_aer_indc, lp_pst.s_pst_indc, ls_oposta))
 
-        # logger
-        # M_LOG.info("calc_cab_oposta:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_aer(self, f_aer):
         """
         copy constructor
@@ -225,9 +197,6 @@ class CAerNEW(model.CAerModel):
 
         @param f_aer: aeródromo a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_aer:>>")
-
         # check input
         assert f_aer
 
@@ -245,11 +214,7 @@ class CAerNEW(model.CAerModel):
         # flag ok (bool)
         self.v_aer_ok = f_aer.v_aer_ok
 
-        # logger
-        # M_LOG.info("copy_aer:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def load_aer(self, f_dct_data, fs_ver="0001"):
         """
         carrega os dados de um aeródromo a partir de um dicionário (formato 0001)
@@ -257,9 +222,6 @@ class CAerNEW(model.CAerModel):
         @param f_dct_data: dicionário com os dados do aeródromo
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("load_aer:>>")
-
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a aeródromo
@@ -282,56 +244,42 @@ class CAerNEW(model.CAerModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("load_aer:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def make_aer(self, fdct_data):
         """
         carrega os dados do aeródromo a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados do aeródromo
         """
-        # logger
-        # M_LOG.info("make_aer:>>")
-
         # identificação do aeródromo
         if "nAer" in fdct_data:
             self.s_aer_indc = unicode(fdct_data["nAer"]).strip().upper()
-            # M_LOG.debug("s_aer_indc:[{}]".format(self.s_aer_indc))
 
         # descrição (nome)
         if "descricao" in fdct_data:
             self.s_aer_desc = unicode(fdct_data["descricao"]).strip()
-            # M_LOG.debug("s_aer_desc:[{}]".format(self.s_aer_desc))
 
         # declinação magnética (gr)
         if "declmag" in fdct_data:
-            # salva declinação magnética em graus
+            # declinação magnética em graus
             self.__f_aer_decl_mag = float(fdct_data["declmag"])
-            # M_LOG.debug("f_aer_decl_mag:[{}]".format(self.__f_aer_decl_mag))
 
         # elevação (m)
         if "elevacao" in fdct_data:
-            # salva elevação (m)
+            # elevação (m)
             self.f_aer_elev = float(fdct_data["elevacao"]) * cdefs.D_CNV_FT2M
-            # M_LOG.debug("f_aer_elev:[{}]".format(self.f_aer_elev))
 
         # posição (lat, lng)
         if "coord" in fdct_data:
             self.__f_aer_lat, self.__f_aer_lng = self.__model.coords.from_dict(fdct_data["coord"])
-            # M_LOG.debug("aer_lat:[{}] aer_lng:[{}]".format(self.__f_aer_lat, self.__f_aer_lng))
 
         # pistas do aeródromo
         if "pistas" in fdct_data:
-            # M_LOG.debug("pistas:[{}]".format(fdct_data [ "pistas" ]))
 
             # para todas pistas do aeródromo...
             for l_pst in fdct_data["pistas"]:
                 # obtém a identificação da pista
                 li_pst = l_pst.get("nPst", None)
-                # M_LOG.debug("li_pst:[{}]".format(li_pst))
 
                 if li_pst is not None:
                     # cria pista
@@ -343,9 +291,6 @@ class CAerNEW(model.CAerModel):
 
         # (bool)
         self.v_aer_ok = True
-
-        # logger
-        # M_LOG.info("make_aer:<<")
 
     # =============================================================================================
     # data

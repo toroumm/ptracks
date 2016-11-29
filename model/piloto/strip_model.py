@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-strip_model.
+strip_model
 
-used to map attributes of type strip contained in the mds files.
+used to map attributes of type strip contained in the mds files
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,23 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# PyQt library
-# from PyQt4 import QtCore
-
-# model
-# import model.loc_defs as ldefs
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CStripModel >---------------------------------------------------------------------------
 
 class CStripModel(object):
@@ -54,24 +37,18 @@ class CStripModel(object):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
+        """
+        constructor
+        """
         # init super class
         super(CStripModel, self).__init__()
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # =============================================================================================
     # data
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def s_element(self):
         """

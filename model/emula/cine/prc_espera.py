@@ -49,10 +49,6 @@ import model.emula.cine.sentido_curva as scrv
 
 # < module data >----------------------------------------------------------------------------------
 
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # nível 140 = 14000FT
 M_14000FT = 14000 * cdefs.D_CNV_FT2M
 
@@ -239,13 +235,10 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # velocidade máxima é de 230KT
         f_atv.f_atv_vel_dem = M_VEL_MAX
 
-    M_LOG.debug("prc_espera:fase [{}/{}] da espera.".format(f_atv.en_atv_fase, ldefs.DCT_FASE[f_atv.en_atv_fase]))
-
     # preparação de dados ?
     if ldefs.E_FASE_ZERO == f_atv.en_atv_fase:
         # obtém dados do fixo de espera e valida pointer
         l_fix = l_esp.ptr_esp_fix
-        # M_LOG.debug("prc_espera:ptr_atv_fix_prc:[{}/{}]".format(l_fix.i_fix_id, l_fix.s_fix_desc))
 
         if (l_fix is None) or (not l_fix.v_fix_ok):
             # logger
@@ -309,8 +302,6 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # sinaliza nova fase
         f_atv.en_atv_fase = ldefs.E_FASE_TEMPO
 
-        # M_LOG.debug("prc_espera:E_FASE_SETOR1:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
-
     # seguir no rumo perna de afastamento defasado de 30 graus
     elif ldefs.E_FASE_SETOR2 == f_atv.en_atv_fase:
         # curva pela direita ?
@@ -334,13 +325,11 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         # razão de curva pelo menor lado
         scrv.sentido_curva(f_atv)
 
-        # verifica o tempo na defasagem (1 minuto e meio no limite de 14000FT)
+        # tempo na defasagem (1 minuto e meio no limite de 14000FT)
         f_cine_data.h_tempo = 90. if (f_atv.f_trf_alt_atu > M_14000FT) else 60.
 
         # sinaliza nova fase
         f_atv.en_atv_fase = ldefs.E_FASE_TEMPOSETOR
-
-        # M_LOG.debug("prc_espera:E_FASE_SETOR2:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
 
     # entrada pelo setor 3
     elif ldefs.E_FASE_SETOR3 == f_atv.en_atv_fase:
@@ -360,8 +349,6 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # curva pela direita (positiva)
             f_atv.f_atv_raz_crv = abs(f_atv.f_atv_raz_crv)
 
-        # M_LOG.debug("prc_espera:E_FASE_SETOR2:[{}/{}]".format(f_atv.f_atv_raz_crv, f_cine_data.h_tempo))
-
     # permanência na perna de aproximação
     elif ldefs.E_FASE_TEMPO == f_atv.en_atv_fase:
         # permanece na perna de aproximação ?
@@ -374,8 +361,6 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             # nova fase
             f_atv.en_atv_fase = ldefs.E_FASE_VOLTA
 
-        # M_LOG.debug("prc_espera:E_FASE_TEMPO:[{}]".format(f_cine_data.h_tempo))
-
     # permanência nos 30 graus do rumo para o setor 2
     elif ldefs.E_FASE_TEMPOSETOR == f_atv.en_atv_fase:
         # permanece nos 30 graus ?
@@ -387,8 +372,6 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
         else:
             # nova fase
             f_atv.en_atv_fase = ldefs.E_FASE_VOLTA
-
-        # M_LOG.debug("prc_espera:E_FASE_TEMPOSETOR:[{}]".format(f_cine_data.h_tempo))
 
     # fase volta ?
     elif ldefs.E_FASE_VOLTA == f_atv.en_atv_fase:
@@ -430,13 +413,13 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
                 # break
                 return
 
-            # verifica se a função operacional anterior era aproximação
+            # função operacional anterior era aproximação ?
             if ldefs.E_APROXIMACAO == f_atv.en_trf_fnc_ope_ant:
-                # verifica se aeronave chegou na altitude do fixo de espera
+                # aeronave chegou na altitude do fixo de espera ?
                 if f_atv.f_trf_alt_atu == f_atv.f_atv_alt_dem:
-                    # verifica se existe algo na pilha
+                    # existe algo na pilha ?
                     if len(f_stk_context) > 0:
-                        # se existe, desempilha o contexto
+                        # desempilha o contexto
                         f_atv.en_trf_fnc_ope, f_atv.en_atv_fase, f_atv.ptr_trf_prc, f_atv.ptr_atv_brk, f_cine_data.i_brk_ndx = f_stk_context.pop()
 
                         # velocidade e proa

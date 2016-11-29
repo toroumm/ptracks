@@ -55,12 +55,6 @@ import model.items.trj_data as trjdata
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CModelDBEdit >---------------------------------------------------------------------------
 
 class CModelDBEdit(model.CModelManager):
@@ -129,7 +123,7 @@ class CModelDBEdit(model.CModelManager):
         if not lv_ok:
             # logger
             l_log = logging.getLogger("CModelDBEdit::__init__")
-            l_log.setLevel(logging.NOTSET)
+            l_log.setLevel(logging.CRITICAL)
             l_log.critical(u"<E01: Erro na carga da base de dados.")
 
             # cria um evento de quit
@@ -156,8 +150,6 @@ class CModelDBEdit(model.CModelManager):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_airs:>>")
         '''
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
@@ -184,9 +176,6 @@ class CModelDBEdit(model.CModelManager):
 
         # carrega os dicionários
         self.__airspace.load_dicts()
-
-        # logger
-        # M_LOG.info("__load_airs:<<")
 
         # retorna ok
         return True, None
@@ -225,8 +214,6 @@ class CModelDBEdit(model.CModelManager):
 
         # coloca a tabela de tráfegos no exercício
         self.__exe.dct_exe_trf = self.__dct_trf
-
-        # M_LOG.debug("QtdTrf: " + str(self.exe.iExeQtdTrf))
         '''
         # carrega a tabela de aeródromos
         lv_ok = self.load_aers()
@@ -257,7 +244,6 @@ class CModelDBEdit(model.CModelManager):
         """
         # obtém o diretório padrão de exercícios
         ls_dir = self.dct_config["dir.exe"]
-        # M_LOG.debug("ls_dir: " + str(ls_dir))
 
         # nome do diretório vazio ?
         if ls_dir is None:
@@ -269,14 +255,10 @@ class CModelDBEdit(model.CModelManager):
             # cria o diretório
             os.mkdir(ls_dir)
 
-        # logger
-        # M_LOG.debug(u"Carregando diretório: " + str(ls_dir))
-
         # percorre o diretório
         for ls_file in os.listdir(ls_dir):
             # monta o path completo do arquivo de exercício
             ls_path = os.path.join(ls_dir, ls_file)
-            # M_LOG.debug("ls_path: " + str(ls_path))
 
             # não é um arquivo ?
             if not os.path.isfile(ls_path):
@@ -285,8 +267,6 @@ class CModelDBEdit(model.CModelManager):
 
             # split name and extension
             _, l_fext = os.path.splitext(ls_file)
-            # M_LOG.debug("l_fn...: " + str(l_fn))
-            # M_LOG.debug("l_fext.: " + str(l_fext))
 
             # não é um arquivo XML ?
             if ".xml" != l_fext:
@@ -295,12 +275,11 @@ class CModelDBEdit(model.CModelManager):
 
             # cria um dicionário de exercícios
             ldct_exe = exedata.CExeData(self, ls_path)
-            # M_LOG.debug("dct_exe: " + str(ldct_exe))
 
             if ldct_exe is None:
                 # logger
                 l_log = logging.getLogger("CModelDBEdit::load_exes")
-                l_log.setLevel(logging.NOTSET)
+                l_log.setLevel(logging.WARNING)
                 l_log.warning("<E01: tabela de exercícios:[{}] não existe.".format(ls_path))
 
                 # cai fora...

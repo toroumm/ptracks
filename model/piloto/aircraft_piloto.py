@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-aircraft_piloto.
+aircraft_piloto
 
 DOCUMENT ME!
 
@@ -52,12 +52,6 @@ import model.piloto.strip_model as mstp
 #import model.visadsb.mcp as CMCP
 #import model.visadsb.pilot as CPilot
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CAircraftPiloto >------------------------------------------------------------------------
 
 class CAircraftPiloto(sanv.CAircraftBasic):
@@ -70,9 +64,6 @@ class CAircraftPiloto(sanv.CAircraftBasic):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # verifica parâmetros de entrada
         assert f_emula
 
@@ -143,55 +134,29 @@ class CAircraftPiloto(sanv.CAircraftBasic):
                 self.adiru.f_ias = 230.
                 self.adiru.f_true_heading = 0.
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def get_strip(self):
         """
         return flight strip
         """
-        # logger
-        # M_LOG.info("get_strip:>>")
-
-        # TODO
-
-        # logger
-        # M_LOG.info("get_strip:<<")
-
         # return
         return mstp.CStripModel()
 
     # ---------------------------------------------------------------------------------------------
-
     def instructAltitude(self, f_fAlt):
         """
         give instruction for an altitude
         TODO: FL/ALT
         """
-        # logger
-        # M_LOG.info("instructAltitude:><")
-
         # TODO
 
     # ---------------------------------------------------------------------------------------------
-
     def instructApproach(self, f_appName):
         """
         give instruction for an approach procedure
         """
-        # logger
-        # M_LOG.info("instructApproach:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
         '''
         if (f_appName == ""):
-
-            # logger
-            # M_LOG.info("<E01")
-
             return
 
         l_inst = CInstruction.CInstruction()
@@ -207,26 +172,13 @@ class CAircraftPiloto(sanv.CAircraftBasic):
         l_inst._sText = f_appName
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructApproach:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def instructDirect(self, f_ptName):
         """
         give instruction for a direct (or shortcut)
         """
-        # logger
-        # M_LOG.info("instructDirect:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
         '''
         if (f_ptName == ""):
-
-            # logger
-            # M_LOG.info("<E01")
-
             return
 
         l_inst = CInstruction.CInstruction()
@@ -243,20 +195,11 @@ class CAircraftPiloto(sanv.CAircraftBasic):
 
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructDirect:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def instructHeading(self, f_hdg):
         """
         give instruction for a heading
         """
-        # logger
-        # M_LOG.info("instructHeading:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
         '''
         if (f_hdg == 360):
             f_hdg = 0
@@ -275,26 +218,13 @@ class CAircraftPiloto(sanv.CAircraftBasic):
 
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructHeading:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def instructRoute(self, f_sRtName):
         """
         give instruction for a standard route
         """
-        # logger
-        # M_LOG.info("instructRoute:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
         '''
         if (f_sRtName == ""):
-
-            # logger
-            # M_LOG.info("<E01")
-
             return
 
         l_inst = CInstruction.CInstruction()
@@ -311,18 +241,11 @@ class CAircraftPiloto(sanv.CAircraftBasic):
 
         self.__lst_instructions.append(l_inst)
         '''
-        # logger
-        # M_LOG.info("instructRoute:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def instructSpeed(self, ff_ias):
         """
         give instruction for a speed
         """
-        # logger
-        # M_LOG.info("instructSpeed:><")
-
         # TODO
 
     # =============================================================================================
@@ -330,7 +253,6 @@ class CAircraftPiloto(sanv.CAircraftBasic):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_altitude(self):
         """

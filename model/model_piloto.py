@@ -43,12 +43,6 @@ import model.emula.emula_piloto as emula
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CModelPiloto >---------------------------------------------------------------------------
 
 class CModelPiloto(model.CModelManager):
@@ -60,9 +54,6 @@ class CModelPiloto(model.CModelManager):
         """
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
         # verifica parâmetros de entrada
         assert f_control
 
@@ -89,17 +80,14 @@ class CModelPiloto(model.CModelManager):
         self.__emula_model = emula.CEmulaPiloto(self, f_control)
         assert self.__emula_model
                         
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
     def load_tables(self, ls_cena):
         """
-        abre/cria as tabelas do sistema.
+        abre/cria as tabelas do sistema
 
-        @param ls_cena: cenário.
+        @param ls_cena: cenário
 
-        @return flag e mensagem.
+        @return flag e mensagem
         """
         # inicia flag
         lv_ok = True
@@ -110,7 +98,6 @@ class CModelPiloto(model.CModelManager):
 
         # tudo Ok ?
         # if lv_ok:
-
             # carrega o airspace
             # lv_ok, ls_msg = self.load_air(ls_cena)
 
@@ -118,7 +105,7 @@ class CModelPiloto(model.CModelManager):
         if not lv_ok:
             # logger
             l_log = logging.getLogger("CModelPiloto::load_tables")
-            l_log.setLevel(M_LOG_LVL)
+            l_log.setLevel(logging.CRITICAL)
             l_log.critical(u"<E01: Erro na carga da base de dados ({}).".format(ls_msg))
 
             # cria um evento de quit
@@ -135,18 +122,17 @@ class CModelPiloto(model.CModelManager):
     '''
     def load_air(self, fs_cena):
         """
-        faz a carga do airspace.
+        faz a carga do airspace
 
-        @param ls_cena: cenário.
+        @param ls_cena: cenário
 
-        @return flag e mensagem.
+        @return flag e mensagem
         """
         # obtém o diretório padrão de tabelas
         ls_dir = self.dct_config["dir.air"]
 
         # nome do diretório vazio ?
         if ls_dir is None:
-
             # diretório padrão de tabelas
             self.dct_config["dir.air"] = "airs"
 
@@ -158,7 +144,6 @@ class CModelPiloto(model.CModelManager):
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
-
             # cria o diretório
             os.mkdir(ls_dir)
 
@@ -172,18 +157,17 @@ class CModelPiloto(model.CModelManager):
     # ---------------------------------------------------------------------------------------------
     def load_land(self, fs_land):
         """
-        faz a carga do landscape.
+        faz a carga do landscape
 
-        @param ls_cena: cenário.
+        @param ls_cena: cenário
 
-        @return flag e mensagem.
+        @return flag e mensagem
         """
         # obtém o diretório padrão de landscapes
         ls_dir = self.dct_config["dir.map"]
 
         # nome do diretório vazio ?
         if ls_dir is None:
-
             # diretório padrão de landscapes
             self.dct_config["dir.map"] = "maps"
 
@@ -195,7 +179,6 @@ class CModelPiloto(model.CModelManager):
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
-
             # cria o diretório
             os.mkdir(ls_dir)
 
@@ -209,11 +192,12 @@ class CModelPiloto(model.CModelManager):
     # ---------------------------------------------------------------------------------------------
     def notify(self, f_event):
         """
-        callback de tratamento de eventos recebidos.
+        callback de tratamento de eventos recebidos
 
-        @param f_event: evento recebido.
+        @param f_event: evento recebido
         """
-        pass
+        # return
+        return
 
     # =============================================================================================
     # data

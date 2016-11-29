@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-instruction.
+instruction
 
 DOCUMENT ME!
 
@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2016/01"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# Python library
-import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CInstruction >----------------------------------------------------------------------------
 
 class CInstruction(object):
@@ -56,15 +45,10 @@ class CInstruction(object):
     # C_ROUTE = 4
 
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
+        """
+        constructor
+        """ 
         # inicia a super classe
         super(CInstruction, self).__init__()
 
@@ -82,15 +66,11 @@ class CInstruction(object):
         # self.__f_number = 0.
         # self.__o_react_time = None
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # =============================================================================================
     # data
     # =============================================================================================
             
     # ---------------------------------------------------------------------------------------------
-                
     @property
     def en_cmd_ope(self):
         """
@@ -106,7 +86,6 @@ class CInstruction(object):
         self.__en_cmd_ope = f_val
                                                         
     # ---------------------------------------------------------------------------------------------
-                
     @property
     def f_param_1(self):
         """
@@ -122,7 +101,6 @@ class CInstruction(object):
         self.__f_param_1 = f_val
                                                         
     # ---------------------------------------------------------------------------------------------
-                
     @property
     def f_param_2(self):
         """
@@ -138,7 +116,6 @@ class CInstruction(object):
         self.__f_param_2 = f_val
                                                         
     # ---------------------------------------------------------------------------------------------
-                
     @property
     def s_text(self):
         """

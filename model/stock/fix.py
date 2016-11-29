@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-fix.
+fix
 
 DOCUMENT ME!
 
@@ -32,17 +32,8 @@ __date__ = "2016/01"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-import logging
-
 # libs
 import libs.coords.pos_lat_lng as pll
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CFix >-----------------------------------------------------------------------------------
 
@@ -51,7 +42,6 @@ class CFix(object):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, fs_fix_indc="NONAME", ff_fix_lat=0., ff_fix_lng=0.):
         """
         define um navaid
@@ -60,30 +50,19 @@ class CFix(object):
         @param ff_fix_lat: latitude
         @param ff_fix_lng: longitude
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
         # inicia a super classe
         super(CFix, self).__init__()
 
         self.__s_indc = fs_fix_indc
-        # M_LOG.info("self.__s_indc: %s" % self.__s_indc)
 
         self.__position = pll.CPosLatLng(ff_fix_lat, ff_fix_lng)
         assert self.__position
-
-        # logger
-        # M_LOG.info("__init__:<<")
 
     # =============================================================================================
     # dados
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def s_indc(self):
         """
@@ -99,7 +78,6 @@ class CFix(object):
         self.__s_indc = f_val
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def position(self):
         """

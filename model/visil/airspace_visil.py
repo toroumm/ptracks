@@ -57,12 +57,6 @@ import model.items.esp_data as espdata
 import model.items.sub_data as subdata
 import model.items.trj_data as trjdata
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CAirspaceVisil >------------------------------------------------------------------------------
 
 class CAirspaceVisil(airs.CAirspaceBasic):
@@ -79,9 +73,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         read datafile for specified location (airport)
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_model
         assert fs_dir
@@ -118,55 +109,38 @@ class CAirspaceVisil(airs.CAirspaceBasic):
 
         self.__dct_transitions = {}
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def activateRunway(self, fs_indc, fi_mode):
         """
         add a runway for arrivals or departures
         """
-        # logger
-        # M_LOG.info("activateRunway:>>")
-
         # check input
         # assert f_model
 
         if self.C_DEPARTURE == fi_mode:
             if fs_indc in self.__dct_dep_runways:
-                # logger
-                # M_LOG.info("<E01")
-
+                # return
                 return
 
             self.__dct_dep_runways.append(fs_indc)
-            # M_LOG.info("added runway ", fs_indc, " for departures.")
 
         elif self.C_ARRIVAL == fi_mode:
             if fs_indc in self.__dct_arr_runways:
-                # logger
-                # M_LOG.info("<E02")
-
+                # return
                 return
 
             self.__dct_arr_runways.append(fs_indc)
-            # M_LOG.info("added runway " + fs_indc + " for arrivals.")
-
-        # logger
-        # M_LOG.info("activateRunway:<<")
 
     # ---------------------------------------------------------------------------------------------
     def arrival(self, fi_ndx):
         """
         return a pointer to the arrival route with specified index
         """
-        # logger
-        # M_LOG.info("arrival:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_pso):
+            # return
             return None
 
         # return
@@ -177,13 +151,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to a string naming the arrival runway of specified index
         """
-        # logger
-        # M_LOG.info("arrivalRunway:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_arr_runways):
+            # return
             return None
 
         # return
@@ -194,37 +166,27 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         remove a runway from available departure or arrival runways
         """
-        # logger
-        # M_LOG.info("deactivateRunway:>>")
-
         # check input
         # assert f_model
 
         if self.C_DEPARTURE == fi_mode:
             if fs_indc in self.__dct_dep_runways:
                 self.__dct_dep_runways.remove(fs_indc)
-                # M_LOG.info("removed runway ", fs_indc, " for departures.")
 
         elif self.C_ARRIVAL == fi_mode:
             if fs_indc in self.__dct_arr_runways:
                 self.__dct_arr_runways.remove(fs_indc)
-                # M_LOG.info("removed runway ", fs_indc, " for arrivals.")
-
-        # logger
-        # M_LOG.info("deactivateRunway:<<")
 
     # ---------------------------------------------------------------------------------------------
     def departure(self, fi_ndx):
         """
         return a pointer to the departure route with specified index
         """
-        # logger
-        # M_LOG.info("departure:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.___dep):
+            # return
             return None
 
         # return
@@ -235,13 +197,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to a string naming the departure runway of specified index
         """
-        # logger
-        # M_LOG.info("departureRunway:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_dep_runways):
+            # return
             return None
 
         # return
@@ -252,13 +212,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the DME with specified index
         """
-        # logger
-        # M_LOG.info("dme:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_dme):
+            # return
             return None
 
         # return
@@ -269,23 +227,13 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         get position of a waypoint/vor/ndb/... named as specified
         """
-        # logger
-        # M_LOG.info("getPosition:>>")
-
         # check input
         # assert f_model
 
         # pesquisa aeródromos
         l_aer = self.dct_aer.get(fs_indc, None)
-        # M_LOG.debug("getPosition:aer:[{}]".format(l_aer))
 
         if l_aer is not None:
-
-            # M_LOG.debug("getPosition:aer:[{}]/[{}]".format(l_aer.f_aer_lat, l_aer.f_aer_lng))
-
-            # logger
-            # M_LOG.info("getPosition:<E01")
-
             # return
             return pll.CPosLatLng(l_aer.f_aer_lat, l_aer.f_aer_lng)
 
@@ -298,24 +246,14 @@ class CAirspaceVisil(airs.CAirspaceBasic):
             l_fix = self.dct_fix[l_key]
             assert l_fix
 
-            # logger
-            # M_LOG.info("getPosition:<E02")
-
             # return
             return pll.CPosLatLng(l_fix.f_fix_lat, l_fix.f_fix_lng)
 
         # pesquisa runway's
         for l_item in self.__dct_rwy:
             if l_item.s_indc == fs_indc:
-
-                # logger
-                # M_LOG.info("getPosition:<E03")
-
                 # return
                 return l_item.position
-
-        # logger
-        # M_LOG.info("getPosition:<<")
 
         # return
         return None
@@ -325,16 +263,15 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the holding with specified index
         """
-        # logger
-        # M_LOG.info("holding:><")
-
         # check input
         # assert f_model
 
         if isinstance(f_val, int):
+            # return
             return self.dct_esp.get(f_val, None)
 
         elif isinstance(f_val, str):
+            # return
             return self.dct_esp_indc.get(f_val, None)
 
         # return
@@ -345,9 +282,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("load_dicts:>>")
-
         # pathname of approach procedures table
         ls_path = os.path.join(self.dct_config["dir.prc"], self.dct_config["tab.apx"])
 
@@ -376,23 +310,16 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         self.__dct_trj = trjdata.CTrjData(self.model, ls_path)
         assert self.__dct_trj is not None
 
-        # logger
-        # M_LOG.info("load_dicts:<<")
-
     # ---------------------------------------------------------------------------------------------
     def load_xml(self, fs_filename):
         """
         load xml airspace file
         """
-        # logger
-        # M_LOG.info("load_xml:>>")
-
         # check input
         # assert f_model
 
         # read coordinates
         ls_filename = ":/data/" + fs_filename + ".xml"
-        # M_LOG.debug("ls_filename: " + str(ls_filename))
 
         l_data_file = QtCore.QFile(ls_filename)
         assert l_data_file is not None
@@ -444,21 +371,16 @@ class CAirspaceVisil(airs.CAirspaceBasic):
             l_node = l_node.nextSibling()
             assert l_node is not None
 
-        # logger
-        # M_LOG.info("load_xml:<<")
-
     # ---------------------------------------------------------------------------------------------
     def ndb(self, fi_ndx):
         """
         return a pointer to the NDB with specified index
         """
-        # logger
-        # M_LOG.info("ndb:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_ndb):
+            # return
             return None
 
         # return
@@ -469,9 +391,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         helper function to the constructor, parses xml entries
         """
-        # logger
-        # M_LOG.info("__parse_dom_element:>>")
-
         # check input
         # assert f_model
 
@@ -481,7 +400,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         lf_lng = 0
 
         ls_indc = f_element.text().toLocal8Bit().data()  # constData ()
-        # M_LOG.info("ls_indc: %s" % ls_indc)
 
         # read coordinates if available
         if f_element.hasAttribute(QtCore.QString("longitude")) and \
@@ -535,11 +453,9 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # handle case of holding
         elif f_element.tagName() == QtCore.QString("holding"):
             l_inb, lv_ok = f_element.attribute(QtCore.QString("inbound"), QtCore.QString("0")).toDouble()
-            # M_LOG.info("l_inb: %f" % l_inb)
 
             l_dir = 'l' if f_element.attribute(QtCore.QString("direction"),
                            QtCore.QString("0")).startsWith(QtCore.QString("l")) else 'r'
-            # M_LOG.info("l_dir: %c" % l_dir)
 
             l_hold = cesp.CHolding(f_element.attribute(QtCore.QString("waypoint"),
                                                        QtCore.QString("")).toLocal8Bit().data(), l_inb, l_dir)
@@ -557,7 +473,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
             ls_rt.s_indc = f_element.attribute(QtCore.QString("name"), QtCore.QString("")).toLocal8Bit().data()
 
             l_nodeList = f_element.elementsByTagName(QtCore.QString("runway"))
-            # M_LOG.info("l_nodeList.len (RWY): %d" % l_nodeList.length())
 
             for l_iI in xrange(l_nodeList.length()):
                 l_e = l_nodeList.at(l_iI).toElement()
@@ -568,7 +483,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
                 ls_rt.addRunway(l_e.text().toLocal8Bit().data())
 
             l_nodeList = f_element.elementsByTagName(QtCore.QString("waypoint"))
-            # M_LOG.info("l_nodeList.len (WPT): %d" % l_nodeList.length())
 
             for l_iI in xrange(l_nodeList.length()):
                 l_e = l_nodeList.at(l_iI).toElement()
@@ -580,7 +494,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
                 assert l_fpItem is not None
 
                 l_fpItem.s_indc = l_e.text().toLocal8Bit().data()
-                # M_LOG.info("l_fpItem.s_indc: %s" % l_fpItem.s_indc)
 
                 l_fpItem._iSpeedConstraint, lv_ok = l_e.attribute(
                     QtCore.QString("speed"), QtCore.QString("0")).toInt()
@@ -617,43 +530,28 @@ class CAirspaceVisil(airs.CAirspaceBasic):
             if f_element.tagName() == QtCore.QString("transition"):
                 self.__dct_transitions.append(ls_rt)
 
-        # logger
-        # M_LOG.info("__parse_dom_element:<<")
-
     # ---------------------------------------------------------------------------------------------
     def route(self, fs_indc):
         """
         return a pointer to the standard route with specified name
         """
-        # logger
-        # M_LOG.info("route:>>")
-
         # check input
         # assert f_model
 
         for l_iI in xrange(len(self.__dct_pso)):
             if self.arrival(l_iI).s_indc == fs_indc:
-                # logger
-                # M_LOG.info("<E01")
-
+                # return
                 return self.arrival(l_iI)
 
         for l_iI in xrange(len(self.___dep)):
             if self.departure(l_iI).s_indc == fs_indc:
-                # logger
-                # M_LOG.info("<E02")
-
+                # return
                 return self.departure(l_iI)
 
         for l_iI in xrange(len(self.__dct_transitions)):
             if self.transition(l_iI).s_indc == fs_indc:
-                # logger
-                # M_LOG.info("<E03")
-
+                # return
                 return self.transition(l_iI)
-
-        # logger
-        # M_LOG.info("route:<<")
 
         # return
         return None
@@ -663,16 +561,15 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the runway with specified index
         """
-        # logger
-        # M_LOG.info("runway:><")
-
         # check input
         # assert f_model
 
         if isinstance(f_val, int):
+            # return
             return self.__runway_by_no(f_val)
 
         elif isinstance(f_val, str):
+            # return
             return self.__runway_by_indc(f_val)
 
         # return
@@ -683,13 +580,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the runway with specified index
         """
-        # logger
-        # M_LOG.info("__runway_by_no:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_rwy):
+            # return
             return None
 
         # return
@@ -700,9 +595,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the runway with specified indc
         """
-        # logger
-        # M_LOG.info("__runway_by_indc:>>")
-
         # check input
         # assert f_model
 
@@ -710,15 +602,10 @@ class CAirspaceVisil(airs.CAirspaceBasic):
 
         while self.__runway_by_no(li_ndx):
             if self.__runway_by_no(li_ndx).s_indc == fs_indc:
-                # logger
-                # M_LOG.info("<E01")
-
+                # return
                 return self.__runway_by_no(li_ndx)
 
             li_ndx += 1
-
-        # logger
-        # M_LOG.info("__runway_by_indc:<<")
 
         # return
         return None
@@ -728,13 +615,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the transition with specified index
         """
-        # logger
-        # M_LOG.info("transition:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_transitions):
+            # return
             return None
 
         # return
@@ -745,13 +630,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the VOR with specified index
         """
-        # logger
-        # M_LOG.info("vor:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_vor):
+            # return
             return None
 
         # return
@@ -762,13 +645,11 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         """
         return a pointer to the waypoint with specified index
         """
-        # logger
-        # M_LOG.info("waypoint:><")
-
         # check input
         # assert f_model
 
         if fi_ndx >= len(self.__dct_wpt):
+            # return
             return None
 
         # return

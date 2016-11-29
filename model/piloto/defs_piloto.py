@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-defs_piloto.
+defs_piloto
 
 provide all the interface to store the layer
 

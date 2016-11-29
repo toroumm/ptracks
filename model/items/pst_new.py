@@ -42,12 +42,6 @@ import model.items.pst_model as model
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CPstNEW >--------------------------------------------------------------------------------
 
 class CPstNEW(model.CPstModel):
@@ -55,7 +49,6 @@ class CPstNEW(model.CPstModel):
     mantém as informações específicas sobre pista
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_aer, f_data=None, fs_ver="0001"):
         """
         @param f_model: model manager
@@ -63,13 +56,8 @@ class CPstNEW(model.CPstModel):
         @param f_data: dados da pista
         @param fs_ver: versão do formato
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_aer
-
-        # M_LOG.debug("f_data: " + str(f_data))
 
         # init super class
         super(CPstNEW, self).__init__()
@@ -122,11 +110,7 @@ class CPstNEW(model.CPstModel):
                 # copia a pista
                 self.copy_pst(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_pst(self, f_pst):
         """
         copy constructor
@@ -134,9 +118,6 @@ class CPstNEW(model.CPstModel):
 
         @param f_pst: pista a ser copiada
         """
-        # logger
-        # M_LOG.info("copy_pst:>>")
-
         # check input
         assert f_pst
 
@@ -163,11 +144,7 @@ class CPstNEW(model.CPstModel):
         # indicativo de pista em uso
         self.__v_pst_em_uso = f_pst.v_pst_em_uso
 
-        # logger
-        # M_LOG.info("copy_pst:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def load_pst(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados de pista a partir de um dicionário (formato 0001)
@@ -175,9 +152,6 @@ class CPstNEW(model.CPstModel):
         @param fdct_data: dicionário com os dados da pista
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("load_pst:>>")
-
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a pista
@@ -200,31 +174,21 @@ class CPstNEW(model.CPstModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("load_pst:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def make_pst(self, fdct_data):
         """
         carrega os dados de pista a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados da pista
         """
-        # logger
-        # M_LOG.info("make_pst:>>")
-
         # identificação da pista
         if "nPst" in fdct_data:
             self.s_pst_indc = fdct_data["nPst"]
-            # M_LOG.debug("self.s_pst_indc: " + str(self.s_pst_indc))
 
         # coord (posição) (lat, lng)
         if "coord" in fdct_data:
             # salva a latitude e longitude
             self.__f_pst_lat, self.__f_pst_lng = self.__model.coords.from_dict(fdct_data["coord"])
-            # M_LOG.debug("self.__f_pst_lat: " + str(self.__f_pst_lat))
-            # M_LOG.debug("self.__f_pst_lng: " + str(self.__f_pst_lng))
 
             # cabeceira oposta
             self.__f_pst_cab_opos_lat = self.__f_pst_lat
@@ -232,8 +196,6 @@ class CPstNEW(model.CPstModel):
 
             # converte para xyz
             self.f_pst_x, self.f_pst_y, self.f_pst_z = self.__model.coords.geo2xyz(self.__f_pst_lat, self.__f_pst_lng, 0.)
-            # M_LOG.debug("self.f_pst_x: " + str(self.f_pst_x))
-            # M_LOG.debug("self.f_pst_y: " + str(self.f_pst_y))
 
             # cabeceira oposta
             self.__f_pst_cab_opos_x = self.f_pst_x
@@ -246,13 +208,9 @@ class CPstNEW(model.CPstModel):
         if "rumo" in fdct_data:
             # salva o rumo (gr)
             self.i_pst_rumo = int(fdct_data["rumo"])
-            # M_LOG.debug("self.i_pst_rumo: " + str(self.i_pst_rumo))
 
         # (bool)
         self.v_pst_ok = True
-
-        # logger
-        # M_LOG.info("make_pst:<<")
 
     # =============================================================================================
     # data

@@ -50,12 +50,6 @@ import model.items.trj_data as trjdata
 
 import model.newton.defs_newton as ldefs
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CAirspaceNewton >-------------------------------------------------------------------------
 
 class CAirspaceNewton(airs.CAirspaceBasic):
@@ -63,14 +57,10 @@ class CAirspaceNewton(airs.CAirspaceBasic):
     newton airspace
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model):
         """
         @param f_model: model manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CAirspaceNewton, self).__init__(f_model)
 
@@ -94,11 +84,7 @@ class CAirspaceNewton(airs.CAirspaceBasic):
         # procedimentos de trajetória
         self.__dct_trj = {}
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def get_aer_pst(self, fs_aer, fs_pst):
         """
         obtém o pointer para o aeródromo e pista
@@ -108,9 +94,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
         @return pointer para o aeródromo e pista
         """
-        # logger
-        # M_LOG.info("get_aer_pst:>>")
-
         # obtém o aeródromo
         l_aer = self.dct_aer.get(fs_aer, None)
 
@@ -135,31 +118,20 @@ class CAirspaceNewton(airs.CAirspaceBasic):
             # retorna pointers
             return l_aer, None
 
-        # logger
-        # M_LOG.info("get_aer_pst:<<")
-
         # retorna pointers
         return l_aer, l_pst
 
     # ---------------------------------------------------------------------------------------------
-    # void (obj)
     def get_brk_prc(self, f_brk):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("get_brk_prc:>>")
-
         # existe procedimento associado ?
         if f_brk.ptr_brk_prc is not None:
             # obtém o procedimento e a função operacional
             f_brk.ptr_brk_prc, f_brk.en_brk_fnc_ope = self.get_ptr_prc(f_brk.ptr_brk_prc)
 
-        # logger
-        # M_LOG.info("get_brk_prc:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def get_ptr_prc(self, fs_prc):
         """
         obtém o pointer e a função operacional de um procedimento
@@ -168,9 +140,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
         @return pointer e função operacional
         """
-        # logger
-        # M_LOG.info("get_ptr_prc:>>")
-
         # não existe procedimento ?
         if fs_prc is None:
             # logger
@@ -183,11 +152,9 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
         # obtém o procedimento
         ls_prc = fs_prc[:3]
-        # M_LOG.debug("get_ptr_prc:ls_prc: " + str(ls_prc))
 
         # obtém o número do procedimento
         li_num_prc = int(fs_prc[3:])
-        # M_LOG.debug("get_ptr_prc:li_num_prc: " + str(li_num_prc))
 
         # é uma aproximação ?
         if "APX" == ls_prc:
@@ -196,7 +163,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
             # obtém o procedimento de aproximação pelo número
             lptr_prc = self.__dct_apx.get(li_num_prc, None)
-            # M_LOG.debug("get_ptr_prc:lptr_prc: " + str(lptr_prc))
 
             # função operacional da aproximação
             le_fnc_ope = ldefs.E_APROXIMACAO if lptr_prc is not None else ldefs.E_NOPROC
@@ -208,7 +174,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
             # obtém o procedimento de espera pelo número
             lptr_prc = self.__dct_esp.get(li_num_prc, None)
-            # M_LOG.debug("get_ptr_prc:lptr_prc: " + str(lptr_prc))
 
             # função operacional da espera
             le_fnc_ope = ldefs.E_ESPERA if lptr_prc is not None else ldefs.E_NOPROC
@@ -220,7 +185,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
             # obtém o procedimento de subida pelo número
             lptr_prc = self.__dct_sub.get(li_num_prc, None)
-            # M_LOG.debug("get_ptr_prc:lptr_prc: " + str(lptr_prc))
 
             # função operacional da subidas
             le_fnc_ope = ldefs.E_SUBIDA if lptr_prc is not None else ldefs.E_NOPROC
@@ -232,7 +196,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
             # obtém o procedimento de trajetória pelo número
             lptr_prc = self.__dct_trj.get(li_num_prc, None)
-            # M_LOG.debug("get_ptr_prc:lptr_prc: " + str(lptr_prc))
 
             # função operacional da trajetória
             le_fnc_ope = ldefs.E_TRAJETORIA if lptr_prc is not None else ldefs.E_NOPROC
@@ -255,21 +218,14 @@ class CAirspaceNewton(airs.CAirspaceBasic):
             l_log.setLevel(logging.ERROR)
             l_log.error(u"<E03: função operacional:[{}] sem procedimento:[{}].".format(ls_prc, li_num_prc))
 
-        # logger
-        # M_LOG.info("get_ptr_prc:<<")
-
         # retorna pointer & função
         return lptr_prc, le_fnc_ope
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def load_dicts(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("load_dicts:>>")
-
         # monta o nome da tabela de procedimentos de aproximação
         ls_path = os.path.join(self.dct_config["dir.prc"], self.dct_config["tab.apx"])
 
@@ -301,30 +257,21 @@ class CAirspaceNewton(airs.CAirspaceBasic):
         # resolve os procedimentos dos breakpoints
         self.resolv_procs()
 
-        # logger
-        # M_LOG.info("load_dicts:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos
 
         @param f_event: evento recebido
         """
-        # logger
-        # M_LOG.info("notify:><")
-
+        return
+         
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def resolv_procs(self):
         """
         resolve os procedimentos dos breakpoints. Os procedimentos, ainda no formato XXX9999 são
-        validados e resolvidos.
+        validados e resolvidos
         """
-        # logger
-        # M_LOG.info("resolv_procs:>>")
-
         # para todos os procedimentos de aproximação...
         for l_apx in self.__dct_apx.values():
             # aproximação ok ?
@@ -341,7 +288,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
 
                 # obtém o procedimento de espera pelo número
                 l_apx.ptr_apx_prc_esp = lptr_prc = self.__dct_esp.get(l_apx.ptr_apx_prc_esp, None)
-                # M_LOG.debug("resolv_procs::l_apx.ptr_apx_prc_esp: " + str(l_apx.ptr_apx_prc_esp))
 
                 # espera ok ?
                 if l_apx.ptr_apx_prc_esp is None:
@@ -403,9 +349,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
                 # para todos breakpoints da trajetória...
                 for l_brk in l_trj.lst_trj_brk:
                     self.get_brk_prc(l_brk)
-
-        # logger
-        # M_LOG.info("resolv_procs:<<")
 
     # =============================================================================================
     # data

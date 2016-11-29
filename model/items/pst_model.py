@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CPstModel >------------------------------------------------------------------------------
 
 class CPstModel(object):
@@ -48,12 +37,10 @@ class CPstModel(object):
     mantém as informações específicas sobre pista
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
+        """
+        constructor
+        """
         # flag ok (bool)
         self.__v_pst_ok = False
         # identificação do pista (indicativo)
@@ -69,11 +56,7 @@ class CPstModel(object):
         # Z (m)
         self.__f_pst_z = 0.
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_pst(self, f_pst):
         """
         copy constructor
@@ -81,9 +64,6 @@ class CPstModel(object):
 
         @param f_pst: pista a ser copiada
         """
-        # logger
-        # M_LOG.info("copy_pst:>>")
-
         # check input
         assert f_pst
 
@@ -101,9 +81,6 @@ class CPstModel(object):
 
         # flag ok (bool)
         self.__v_pst_ok = f_pst.v_pst_ok
-
-        # logger
-        # M_LOG.info("copy_pst:<<")
 
     # =============================================================================================
     # data

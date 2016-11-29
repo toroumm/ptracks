@@ -54,12 +54,6 @@ import model.visil.landscape_visil as lands
 # control
 import control.events.events_basic as event
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CModelVisil >----------------------------------------------------------------------------
 
 class CModelVisil(model.CModelManager):
@@ -67,14 +61,10 @@ class CModelVisil(model.CModelManager):
     visir model object
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_control):
         """
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CModelVisil, self).__init__(f_control)
 
@@ -111,11 +101,7 @@ class CModelVisil(model.CModelManager):
         self.__emula_model = emula.CEmulaVisil(self, f_control)
         assert self.__emula_model
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_cenario(self, fs_cena):
         """
         abre/cria as tabelas do sistema
@@ -124,9 +110,6 @@ class CModelVisil(model.CModelManager):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_cenario:>>")
-
         # carrega o landscape
         lv_ok, ls_msg = self.__load_land(fs_cena)
 
@@ -139,7 +122,7 @@ class CModelVisil(model.CModelManager):
         if not lv_ok:
             # logger
             l_log = logging.getLogger("CModelVisil::__load_cenario")
-            l_log.setLevel(logging.NOTSET)
+            l_log.setLevel(logging.CRITICAL)
             l_log.critical(u"<E01: erro na carga da base de dados: {}".format(ls_msg))
 
             # cria um evento de quit
@@ -152,11 +135,7 @@ class CModelVisil(model.CModelManager):
             # termina a aplicação
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("__load_cenario:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_air(self, fs_cena):
         """
         faz a carga do airspace
@@ -165,9 +144,6 @@ class CModelVisil(model.CModelManager):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_air:>>")
-
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
 
@@ -194,14 +170,10 @@ class CModelVisil(model.CModelManager):
         # carrega os dicionários
         self.__airspace.load_dicts()
 
-        # logger
-        # M_LOG.info("__load_air:<<")
-
         # retorna ok
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __load_land(self, fs_cena):
         """
         faz a carga do landscape
@@ -210,9 +182,6 @@ class CModelVisil(model.CModelManager):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("__load_land:>>")
-
         # obtém o diretório padrão de landscapes
         ls_dir = self.dct_config["dir.map"]
 
@@ -239,24 +208,19 @@ class CModelVisil(model.CModelManager):
         # carrega os dicionários
         self.__landscape.load_dicts()
 
-        # logger
-        # M_LOG.info("__load_land:<<")
-
         # retorna ok
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def notify(self, f_evt):
         """
         callback de tratamento de eventos recebidos
 
         @param f_evt: evento recebido
         """
-        # logger
-        # M_LOG.info("notify:><")
-        pass
-
+        # return
+        return
+        
     # =============================================================================================
     # dados
     # =============================================================================================

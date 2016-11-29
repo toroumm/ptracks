@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-strip_table_model.
+strip_table_model
 
 provide all the interface to store the strip
 
@@ -35,13 +35,7 @@ __date__ = "2016/01"
 # python library
 import logging
 
-# this is only needed for Python v2 but is harmless for Python v3.
-# import sip
-# sip.setapi("QString", 2)
-# sip.setapi("QVariant", 1)
-
 # PyQt library
-#from PyQt4 import QtGui
 from PyQt4 import QtCore
 
 # libs
@@ -52,12 +46,6 @@ import libs.coords.coord_defs as cdefs
 import model.piloto.defs_piloto as ldefs
 import model.piloto.aircraft_piloto as anvmdl
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CStripTableModel >-----------------------------------------------------------------------
 
 class CStripTableModel(QtCore.QAbstractTableModel):
@@ -65,14 +53,10 @@ class CStripTableModel(QtCore.QAbstractTableModel):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CStripTableModel, self).__init__()
 
@@ -84,32 +68,19 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         # self.dataChanged.connect(self.__data_changed)
         # self.rowsRemoved.connect(self.__rows_removed)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # int columnCount (self, QModelIndex parent = QModelIndex())
-
     def columnCount(self, f_parent=QtCore.QModelIndex()):
         """
         @return the number of columns for the children of the given parent.
         """
-        # logger
-        # M_LOG.info("columnCount:><")
-
         # return
         return 12
 
     # ---------------------------------------------------------------------------------------------
-    # QVariant data (self, QModelIndex index, int role = Qt.DisplayRole)
-
     def data(self, f_index, f_role=QtCore.Qt.DisplayRole):
         """
         @return the data stored under the given role for the strip referred to by the index.
         """
-        # logger
-        # M_LOG.info("data:>>")
-
         # index or row invalid ?
         if not f_index.isValid() or not (0 <= f_index.row() < len(self.__lst_strips)):
             return QtCore.QVariant()
@@ -230,9 +201,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
             elif l_column == ldefs.D_STP_LNG:
                 return QtCore.QVariant(str(l_anv.f_lng) + l_msg)
         '''
-        # logger
-        # M_LOG.info("data:<<")
-
         # return
         return QtCore.QVariant()
 
@@ -248,14 +216,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         @param f_index_tl: topLeft index
         @param f_index_br: bottomRight index
         """
-        # logger
-        M_LOG.info("__data_changed:>>")
-
-        M_LOG.debug("__data_changed:f_index_tl: " + str(f_index_tl))
-        M_LOG.debug("__data_changed:f_index_br: " + str(f_index_br))
-
-        # logger
-        M_LOG.info("__data_changed:<<")
     '''
     # ---------------------------------------------------------------------------------------------
     # Qt.ItemFlags flags (self, QModelIndex index)
@@ -264,21 +224,14 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         """
         @return the strip flags for the given index.
         """
-        # logger
-        # M_LOG.info("flags:>>")
-
         if not f_index.isValid():
             return QtCore.Qt.ItemIsEnabled
-
-        # logger
-        # M_LOG.info("flags:<<")
 
         # return
         return QtCore.Qt.ItemFlags(QtCore.QAbstractTableModel.flags(self, f_index)|QtCore.Qt.ItemIsEditable)
     '''
     # ---------------------------------------------------------------------------------------------
     # QVariant headerData (self, int section, Qt.Orientation orientation, int role = Qt.DisplayRole)
-
     def headerData(self, f_section, f_orientation, f_role=QtCore.Qt.DisplayRole):
         """
         for horizontal headers, the section number corresponds to the column number. Similarly,
@@ -286,9 +239,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         @return the data for the given role and section in the header with the specified orientation.
         """
-        # logger
-        # M_LOG.info("headerData:>>")
-
         # text alignment role ?
         if f_role == QtCore.Qt.TextAlignmentRole:
             # horizontal ?
@@ -348,14 +298,10 @@ class CStripTableModel(QtCore.QAbstractTableModel):
             elif f_section == ldefs.D_STP_HORA:
                 return QtCore.QVariant("Age")
 
-        # logger
-        # M_LOG.info("headerData:<<")
-
         # return
         return QtCore.QVariant(int(f_section + 1))
 
     # ---------------------------------------------------------------------------------------------
-    # bool insertRows (self, int row, int count, QModelIndex parent = QModelIndex())
     '''
     def insertRows(self, f_row, f_count=1, f_parent=QtCore.QModelIndex()):
         """
@@ -368,9 +314,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         @return true if the rows were successfully inserted; otherwise returns false.
         """
-        # logger
-        # M_LOG.info("insertRows:>>")
-
         # begins a row insertion operation
         self.beginInsertRows(QtCore.QModelIndex(), f_row, f_row + f_count - 1)
 
@@ -389,14 +332,10 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         # avisa que existem modificações
         self.__v_dirty = True
 
-        # logger
-        # M_LOG.info("insertRows:<<")
-
         # return
         return True
     '''
     # ---------------------------------------------------------------------------------------------
-    # bool removeRows (self, int row, int count, QModelIndex parent = QModelIndex())
     '''
     def removeRows(self, f_row, f_count=1, f_parent=QtCore.QModelIndex()):
         """
@@ -404,9 +343,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         @return true if the rows were successfully removed; otherwise returns false.
         """
-        # logger
-        # M_LOG.info("removeRows:>>")
-
         # begins a row removal operation
         self.beginRemoveRows(QtCore.QModelIndex(), f_row, f_row + f_count - 1)
 
@@ -419,22 +355,14 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         # marca que existem modificações
         self.__v_dirty = True
 
-        # logger
-        # M_LOG.info("removeRows:<<")
-
         # return
         return True
     '''
     # ---------------------------------------------------------------------------------------------
-    # int rowCount (self, QModelIndex parent = QModelIndex())
-
     def rowCount(self, f_parent=QtCore.QModelIndex()):
         """
         returns the number of rows under the given parent.
         """
-        # logger
-        # M_LOG.info("rowCount:><")
-
         # return
         return len(self.__lst_strips)
 
@@ -450,18 +378,8 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         @param f_start: DOC!
         @param f_end: DOC!
         """
-        # logger
-        # M_LOG.info("__rows_removed:>>")
-
-        # M_LOG.debug("__rows_removed:f_parent: " + str(f_parent))
-        # M_LOG.debug("__rows_removed:fi_start: " + str(fi_start))
-        # M_LOG.debug("__rows_removed:fi_end..: " + str(fi_end))
-
         if not f_parent.isValid():
             return
-
-        # logger
-        # M_LOG.info("__rows_removed:<<")
     '''
     # ---------------------------------------------------------------------------------------------
     # bool setData (self, QModelIndex index, QVariant value, int role = Qt.EditRole)
@@ -472,10 +390,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         @return true if successful; otherwise returns false.
         """
-        # logger
-        # M_LOG.info("setData:>>")
-        # M_LOG.debug("f_value:" + str(f_value))
-
         if f_index.isValid() and (0 <= f_index.row() < len(self.__lst_strips)):
 
             # get anv/strip
@@ -562,9 +476,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
             # return
             return True
 
-        # logger
-        # M_LOG.info("setData:<<")
-
         # return
         return False
     '''
@@ -573,7 +484,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def v_dirty(self):
         """
@@ -589,7 +499,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         self.__v_dirty = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def lst_strips(self):
         """

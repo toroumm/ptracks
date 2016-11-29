@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-standard_route.
+standard_route
+
 DOCUMENT ME!
 
 This program is free software: you can redistribute it and/or modify
@@ -29,36 +30,17 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2016/01"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
-
 # < class CStandardRoute >-------------------------------------------------------------------------
-
 
 class CStandardRoute(object):
     """
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # inicia a super classe
         super(CStandardRoute, self).__init__()
 
@@ -68,60 +50,34 @@ class CStandardRoute(object):
         self.__lst_items = []
         self.__lst_runways = []
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def addItem(self, f_item):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("addItem:><")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
         self.__lst_items.append(f_item)
 
     # ---------------------------------------------------------------------------------------------
-
     def addRunway(self, fs_rwy):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("addRunway:><")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
         self.__lst_runways.append(fs_rwy)
-        # M_LOG.info("fs_rwy: %s added." % fs_rwy)
 
     # ---------------------------------------------------------------------------------------------
-
     def belongsToRunway(self, fs_rwy):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("belongsToRunway:><")
-
         # return
         return fs_rwy in self.__lst_runways
 
     # ---------------------------------------------------------------------------------------------
-
     def getItem(self, fi_ndx):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("getItem:><")
-
-        # verifica parâmetros de entrada
+        # check input
         if fi_ndx >= len(self.__lst_items):
             return None
 
@@ -137,7 +93,6 @@ class CStandardRoute(object):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def lst_items(self):
         """
@@ -153,7 +108,6 @@ class CStandardRoute(object):
         self.__lst_items = f_val
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def s_name(self):
         """

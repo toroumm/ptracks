@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-flight_plan_item.
+flight_plan_item
+
 DOCUMENT ME!
 
 This program is free software: you can redistribute it and/or modify
@@ -29,25 +30,11 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2016/01"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# Python library
-import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(# M_LOG_LVL)
-
 # < class CFlightPlanItem >------------------------------------------------------------------------
-
 
 class CFlightPlanItem(object):
 
+    # ---------------------------------------------------------------------------------------------
     _EXACTLY = 0
     _OR_BELOW = 1
     _OR_ABOVE = 2
@@ -57,9 +44,6 @@ class CFlightPlanItem(object):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         self.__s_name = None
 
         self._fInbound = -1.
@@ -71,15 +55,11 @@ class CFlightPlanItem(object):
         self._vFlyOver = False
         self._vApproach = False
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # =============================================================================================
     # dados
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def s_name(self):
         """
@@ -95,7 +75,6 @@ class CFlightPlanItem(object):
         self.__s_name = f_val
 
     # ---------------------------------------------------------------------------------------------
-    
     @property
     def f_lng(self):
         """

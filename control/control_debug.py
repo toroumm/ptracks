@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
----------------------------------------------------------------------------------------------------
-holding
+--------------------------------------------------------------------------------------------------
+control_debug
 
 DOCUMENT ME!
 
@@ -19,34 +19,26 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-revision 0.2  2015/dez  mlabru
+revision 0.2  2016/oct  mlabru
 pep8 style conventions
 
-revision 0.1  2014/nov  mlabru
-initial release (Linux/Python)
----------------------------------------------------------------------------------------------------
+revision 0.1  2015/nov  mlabru
+initial version (Linux/Python)
+-------------------------------------------------------------------------------------------------- 
 """
 __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
-__date__ = "2016/01"
+__date__ = "2016/10"
 
-# < class CHolding >----------------------------------------------------------------------------
+# < imports >--------------------------------------------------------------------------------------
 
-class CHolding(object):
+# python library
+import logging
 
-    # ---------------------------------------------------------------------------------------------
-    def __init__(self, fs_fixo=None, ff_entrada=None, fc_dir=None):
-        """
-        constructor
-        """
-        # check input
-        assert fc_dir in ['l', 'r']
+# < module data >----------------------------------------------------------------------------------
 
-        self._sWaypoint = fs_fixo
-
-        self._fInbound = ff_entrada
-
-        # sentido da espera 
-        self._cDirection = fc_dir
+# logger
+M_LOG = logging.getLogger(__name__)
+M_LOG.setLevel(logging.DEBUG)
 
 # < the end >--------------------------------------------------------------------------------------

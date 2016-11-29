@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-comando_piloto.
+comando_piloto
 
 DOCUMENT ME!
 
@@ -32,19 +32,10 @@ __date__ = "2016/01"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# Python library
-import logging
-
 # model
 import model.newton.defs_newton as ldefs
 
 import model.stock.instruction as inst
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
 
 # < class CComandoPil >----------------------------------------------------------------------------
 
@@ -53,15 +44,10 @@ class CComandoPil(inst.CInstruction):
     DOCUMENT ME
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, fs_msg=""):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
+        """
+        constructor
+        """
         # inicia a super classe
         super(CComandoPil, self).__init__()
 
@@ -73,27 +59,19 @@ class CComandoPil(inst.CInstruction):
 
         # recebeu uma mensagem ?
         if "" != fs_msg:
-
             # salva o texto da mensagem
             self.s_text = fs_msg
 
             # parse mensagem
             self.__parse_comando(fs_msg)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_altitude(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_altitude:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
-
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
 
         # comando
         self.en_cmd_ope = ldefs.E_ALT
@@ -103,34 +81,24 @@ class CComandoPil(inst.CInstruction):
 
         # parâmetro razão ?
         if "RAZ" == flst_tok[1]:
-
             # parse command
             self.__cmd_razao(flst_tok[2:])
 
-        # logger
-        # M_LOG.info("__cmd_altitude:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_curva(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_curva:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
-
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
 
         # parâmetro direita ?
         if "DIR" == flst_tok[0]:
-
             # comando curva direita
             self.en_cmd_ope = ldefs.E_CDIR
 
         # parâmetro esquerda ?
         elif "ESQ" == flst_tok[0]:
-
             # comando curva esquerda
             self.en_cmd_ope = ldefs.E_CESQ
 
@@ -141,61 +109,43 @@ class CComandoPil(inst.CInstruction):
 
         # parâmetro proa ?
         if "PROA" == flst_tok[1]:
-
             # parse proa
             self.__cmd_proa(flst_tok[2:])
         
         # parâmetro graus ?
         elif "GRAUS" == flst_tok[2]:
-
             # parse graus
             self.__cmd_graus(flst_tok[1:])
         
         # parâmetro razão ?
         elif "RAZ" == flst_tok[1]:
-
             # parse razão
             self.__cmd_razao(flst_tok[2:])
 
-        # logger
-        # M_LOG.info("__cmd_curva:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_graus(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_graus:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
         
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
-
         # graus
         self.f_param_1 = float(flst_tok[0])
 
         # parâmetro razão ?
         if "RAZ" == flst_tok[2]:
-
             # parse command razão
             self.__cmd_razao(flst_tok[3:])
 
-        # logger
-        # M_LOG.info("__cmd_graus:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_nivel(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_nivel:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
         
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
-
         # comando nível
         self.en_cmd_ope = ldefs.E_NIV
 
@@ -204,66 +154,43 @@ class CComandoPil(inst.CInstruction):
 
         # parâmetro razão ?
         if "RAZ" == flst_tok[1]:
-
             # parse command
             self.__cmd_razao(flst_tok[2:])
 
-        # logger
-        # M_LOG.info("__cmd_nivel:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_proa(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_proa:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
         
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
-
         # proa
         self.f_param_1 = float(flst_tok[0])
 
         # parâmetro razão ?
         if "RAZ" == flst_tok[1]:
-
             # parse command razão
             self.__cmd_razao(flst_tok[2:])
 
-        # logger
-        # M_LOG.info("__cmd_proa:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_razao(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_razao:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
         
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
-
         # razão
         self.f_param_2 = float(flst_tok[0])
 
-        # logger
-        # M_LOG.info("__cmd_razao:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __cmd_velocidade(self, flst_tok):
-
-        # logger
-        # M_LOG.info("__cmd_velocidade:>>")
-
-        # verifica parâmetros de entrada
+        """
+        DOCUMENT ME!
+        """
+        # check input
         assert flst_tok
-
-        M_LOG.debug("lista de tokens: " + str(flst_tok))
 
         # comando
         self.en_cmd_ope = ldefs.E_IAS
@@ -271,25 +198,13 @@ class CComandoPil(inst.CInstruction):
         # velocidade
         self.f_param_1 = float(flst_tok[0])
 
-        # logger
-        # M_LOG.info("__cmd_velocidade:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __parse_comando(self, fs_cmd=""):
-
-        # logger
-        # M_LOG.info("__parse_comando:>>")
-
-        # verifica parâmetros de entrada
-        # assert f_control
-
+        """
+        DOCUMENT ME!
+        """
         # recebeu um comando ?
         if "" == fs_cmd:
-
-            # logger
-            # M_LOG.info("__parse_comando:<E01: comando vazio")
-
             # return
             return
 
@@ -315,9 +230,6 @@ class CComandoPil(inst.CInstruction):
         elif "VEL" == llst_tok[0]:
             # parse command
             self.__cmd_velocidade(llst_tok[1:])
-
-        # logger
-        # M_LOG.info("__parse_comando:<<")
 
     # =============================================================================================
     # data

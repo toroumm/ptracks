@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-aircraft.
+aircraft
 
-mantém os detalhes de uma aeronave.
+mantém os detalhes de uma aeronave
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ __date__ = "2015/11"
 
 # python library
 import copy
-# import logging
 
 # libs
 import libs.coords.pos_lat_lng as pll
@@ -42,28 +41,18 @@ import libs.coords.pos_lat_lng as pll
 # model
 import model.stock.adiru as cadi
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CAircraft >------------------------------------------------------------------------------
 
 class CAircraft(object):
     """
-    mantém as informações específicas sobre uma aeronave.
+    mantém as informações específicas sobre uma aeronave
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, fs_id="ABCDEF"):
         """
         @param  fs_id: identificação da aeronave
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # check input parameters
+        # check input
         assert fs_id
 
         # air data inertial reference unit
@@ -80,18 +69,11 @@ class CAircraft(object):
         self.__pos = pll.CPosLatLng()
         assert self.__pos is not None
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def copy(self):
         """
-        copy constructor.
+        copy constructor
         """
-        # logger
-        # M_LOG.info("copy:><")
-
         # return a copy
         return copy.deepcopy(self)
 
@@ -100,7 +82,6 @@ class CAircraft(object):
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def adiru(self):
         """
@@ -116,7 +97,6 @@ class CAircraft(object):
         self.__adiru = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_alt(self):
         """
@@ -132,7 +112,6 @@ class CAircraft(object):
         self.__adiru.f_alt = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def s_callsign(self):
         """
@@ -148,7 +127,6 @@ class CAircraft(object):
         self.__s_callsign = f_val.strip()  # .encode ( "utf-8" )
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def s_icao_addr(self):
         """
@@ -164,7 +142,6 @@ class CAircraft(object):
         self.__s_icao_addr = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_lat(self):
         """
@@ -180,7 +157,6 @@ class CAircraft(object):
         self.__pos.f_lat = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_lng(self):
         """
@@ -196,7 +172,6 @@ class CAircraft(object):
         self.__pos.f_lng = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def pos(self):
         """
@@ -212,7 +187,6 @@ class CAircraft(object):
         self.__pos = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_proa(self):
         """
@@ -228,14 +202,13 @@ class CAircraft(object):
         self.__adiru.f_proa = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_true_heading(self):
         """
         get true heading
         """
         return self.__adiru.f_true_heading
-                                            
+
     @f_true_heading.setter
     def f_true_heading(self, f_val):
         """
@@ -244,7 +217,6 @@ class CAircraft(object):
         self.__adiru.f_true_heading = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def f_vel(self):
         """

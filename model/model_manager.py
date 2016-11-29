@@ -38,18 +38,9 @@ __date__ = "2016/08"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
 # control
 import control.events.events_manager as event
 import control.config.config_manager as config
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CModelManager >--------------------------------------------------------------------------
 
@@ -58,16 +49,12 @@ class CModelManager(object):
     main model object. Views and controllers interact with this
     """
     # ---------------------------------------------------------------------------------------------
-    # void (obj)
     def __init__(self, f_control):
         """
         initializes the model manager
 
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_control
 
@@ -88,22 +75,15 @@ class CModelManager(object):
         # registra como recebedor de eventos
         self.__event.register_listener(self)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # @ abstractmethod
     def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos
 
         @param f_event: evento recebido
         """
-        # logger
-        # M_LOG.info("notify:><")
-
         # return
-        pass
+        return
 
     # =============================================================================================
     # data

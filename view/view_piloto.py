@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-view_piloto.
+view_piloto
 
 DOCUMENT ME!
 
@@ -33,12 +33,12 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 import sys
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # view
 import view.view_manager as view
@@ -47,12 +47,6 @@ import view.piloto.wnd_main_piloto as wmain
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CViewPiloto >----------------------------------------------------------------------------
 
 class CViewPiloto(view.CViewManager):
@@ -60,17 +54,13 @@ class CViewPiloto(view.CViewManager):
     the interface to configuration piloto. Handles all interaction with user.
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_model):
         """
-        initializes the display.
+        constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
-        # check input parameters
+        # check input
         assert f_control
-        assert f_model 
+        assert f_model
 
         # initialize super class
         super(CViewPiloto, self).__init__(f_control)
@@ -84,8 +74,8 @@ class CViewPiloto(view.CViewManager):
 
         # salva o model localmente
         self.model = f_model
-        assert self.model   
-                        
+        assert self.model
+
         # cria a aplicação
         self.__app = QtGui.QApplication(sys.argv)
         assert self.__app
@@ -113,50 +103,34 @@ class CViewPiloto(view.CViewManager):
         # trata os eventos (antes do loop principal)
         self.__app.processEvents()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
-
     def notify(self, f_evt):
         """
-        callback de recebimento de eventos.
+        callback de recebimento de eventos
 
         @param f_evt: event
         """
-        # logger
-        # M_LOG.info("notify:>>")
-                
-        # check input parameters
+        # check input
         assert f_evt
 
         # o evento recebido foi um Tick ?
         if isinstance(f_evt, events.CTick):
-
-            # M_LOG.debug("events.Tick !!")
+            # events.CTick
             pass
 
         # o evento recebido foi um aviso de término da aplicação ?
         elif isinstance(f_evt, events.CQuit):
-
-            # M_LOG.debug("events.Quit !!")
-            pass
-
             # para todos os processos
             # glb_data.G_KEEP_RUN = False
 
-        # logger
-        # M_LOG.info("notify:<<")
-                
-    # ---------------------------------------------------------------------------------------------
+            # events.CQuit
+            pass
 
+    # ---------------------------------------------------------------------------------------------
     def run(self):
         """
-        executa a aplicação.
+        executa a aplicação
         """
-        # logger
-        # M_LOG.info("run:>>")
-                
         # verifica condições de execução
         assert self.__app
         assert self.control
@@ -183,7 +157,4 @@ class CViewPiloto(view.CViewManager):
         # processa a aplicação
         self.__app.exec_()
 
-        # logger
-        # M_LOG.info("run:<<")
-                
 # < the end >--------------------------------------------------------------------------------------

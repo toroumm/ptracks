@@ -37,18 +37,11 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 
 # model
 import model.items.aer_data as aerdata
 import model.items.fix_data as fixdata
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CLandscapeBasic >------------------------------------------------------------------------
 
@@ -57,16 +50,12 @@ class CLandscapeBasic(object):
     basic landscape model manager
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_model):
         """
         constructor
         
         @param f_model: model manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_model
 
@@ -93,18 +82,11 @@ class CLandscapeBasic(object):
         # carrega as tabelas de dados nos dicionários
         self.__load_dicts()
         
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __load_dicts(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__load_dicts:>>")
-
         # monta o nome da tabela de fixos
         ls_path = os.path.join(self.dct_config["dir.tab"], self.dct_config["tab.fix"])
 
@@ -124,20 +106,14 @@ class CLandscapeBasic(object):
         # carrega a tabela de aeródromos em um dicionário
         self.dct_aer = aerdata.CAerData(self.model, ls_path)
 
-        # logger
-        # M_LOG.info("__load_dicts:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def notify(self, f_evt):
         """
         callback de tratamento de eventos recebidos
 
         @param f_evt: evento recebido
         """
-        # logger
-        # M_LOG.info("notify:><")
-        pass
+        return
 
     # =============================================================================================
     # data

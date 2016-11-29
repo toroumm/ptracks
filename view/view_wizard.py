@@ -33,13 +33,13 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 import sys
 import time
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # view
 import view.view_manager as view
@@ -47,12 +47,6 @@ import view.wizard.dlg_wizard as wzd
 
 # control
 import control.events.events_basic as events
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CViewWizard >-----------------------------------------------------------------------------
 
@@ -65,10 +59,7 @@ class CViewWizard(view.CViewManager):
         """
         initializes the display
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
-        # check input parameters
+        # check input
         assert f_control
 
         # initialize super class
@@ -115,9 +106,6 @@ class CViewWizard(view.CViewManager):
 
         self._app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))
 
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
     def notify(self, f_event):
         """
@@ -125,26 +113,17 @@ class CViewWizard(view.CViewManager):
 
         @param f_event: event
         """
-        # logger
-        # M_LOG.info("notify:>>")
-                
-        # check input parameters
+        # check input
         assert f_event
 
         if isinstance(f_event, events.CTick):
             pass
-
-        # logger
-        # M_LOG.info("notify:<<")
                 
     # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         executa a aplicação
         """
-        # logger
-        # M_LOG.info("run:>>")
-                
         # verifica condições de execução
         assert self._app
 
@@ -209,7 +188,4 @@ class CViewWizard(view.CViewManager):
         # processa a aplicação
         self._app.exec_()
 
-        # logger
-        # M_LOG.info("run:<<")
-                
 # < the end >--------------------------------------------------------------------------------------

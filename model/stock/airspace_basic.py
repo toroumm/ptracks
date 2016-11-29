@@ -44,12 +44,6 @@ import os
 import model.items.aer_data as aerdata
 import model.items.fix_data as fixdata
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CAirspaceBasic >-------------------------------------------------------------------------
 
 class CAirspaceBasic(object):
@@ -57,15 +51,11 @@ class CAirspaceBasic(object):
     basic airspace model manager
     """
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_model):
         """
         @param f_model: model manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # check input parameters
+        # check input
         assert f_model
 
         # init super class
@@ -92,28 +82,19 @@ class CAirspaceBasic(object):
         # carrega as tabelas de dados nos dicionários
         self.__load_dicts()
         
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (void)
     def __load_dicts(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__load_dicts:>>")
-
         # monta o nome da tabela de fixos
         ls_path = os.path.join(self.dct_config["dir.tab"], self.dct_config["tab.fix"])
 
         # carrega a tabela de fixos em um dicionário
         self.dct_fix = fixdata.CFixData(self.model, ls_path)
-        # M_LOG.debug("__load_dicts:fixos: {}".format(self.dct_fix))
 
         # cria o dicionário de fixos por indicativo
         # self.dct_fix_indc = {fix.s_fix_indc:key for key, fix in self.dct_fix.iteritems()}
-        # M_LOG.debug("__load_dicts:indicativos: {}".format(self.dct_fix_indc))
 
         # salva referência da tabela de fixos no sistema de coordenadas
         self.model.coords.dct_fix = self.dct_fix
@@ -124,7 +105,6 @@ class CAirspaceBasic(object):
 
         # carrega a tabela de aeródromos em um dicionário
         self.dct_aer = aerdata.CAerData(self.model, ls_path)
-        # M_LOG.debug("__load_dicts:aerodromos: {}".format(self.dct_aer))
 
         # monta a lista de pousos/decolagens
 
@@ -135,22 +115,16 @@ class CAirspaceBasic(object):
                 # salva a tupla (aeródromo, pista)
                 self.__lst_arr_dep.append("{}/{}".format(l_aer, l_pst))
 
-        # M_LOG.debug("__load_dicts:pousos/decolagens: {}".format(self.__lst_arr_dep))
-
-        # logger
-        # M_LOG.info("__load_dicts:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos
 
         @param f_event: evento recebido
         """
-        # logger
-        # M_LOG.info("notify:><")
-
+        # return
+        return
+        
     # =============================================================================================
     # data
     # =============================================================================================

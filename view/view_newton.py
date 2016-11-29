@@ -104,7 +104,7 @@ class CViewNewton(threading.Thread):
             # logger
             l_log = logging.getLogger("CViewNewton::run")
             l_log.setLevel(logging.INFO)
-            l_log.info(u"E01: started http server on port {}.".format(self.__i_port))
+            l_log.info(u"<E01: started http server on port {}.".format(self.__i_port))
 
             # wait forever for incoming http requests
             l_server.serve_forever()
@@ -114,7 +114,7 @@ class CViewNewton(threading.Thread):
             # logger
             l_log = logging.getLogger("CViewNewton::run")
             l_log.setLevel(logging.WARNING)
-            l_log.warning(u"E02: ^C received, shutting down the web server.")
+            l_log.warning(u"<E02: ^C received, shutting down the web server.")
 
             # close socket
             l_server.socket.close()

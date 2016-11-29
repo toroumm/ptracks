@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-tMath.
+tMath
 
 DOCUMENT ME!
 
@@ -37,69 +37,51 @@ import logging
 import math
 import sys
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # -------------------------------------------------------------------------------------------------
-
 def dasin(f_sin):
-
-    # logger
-    # M_LOG.info("tMath::dasin:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return math.degrees(math.asin(f_sin))
 
 # -------------------------------------------------------------------------------------------------
-
 def datan(f_tan):
-
-    # logger
-    # M_LOG.info("tMath::datan:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return math.degrees(math.atan(f_tan))
 
 # -------------------------------------------------------------------------------------------------
-
 def dcos(f_degrees):
-
-    # logger
-    # M_LOG.info("tMath::dcos:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return math.cos(math.radians(f_degrees))
 
 # -------------------------------------------------------------------------------------------------
-
 def dsin(f_degrees):
-
-    # logger
-    # M_LOG.info("tMath::dsin:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return math.sin(math.radians(f_degrees))
 
 # -------------------------------------------------------------------------------------------------
-
 def dtan(f_degrees):
-
-    # logger
-    # M_LOG.info("tMath::dtan:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return math.tan(math.radians(f_degrees))
 
 # -------------------------------------------------------------------------------------------------
-
 def dist(f_val1, f_val2):
-
-    # logger
-    # M_LOG.info("tMath::dist:><")
-
+    """
+    DOCUMENT ME!
+    """
     if isinstance(f_val1, float) and isinstance(f_val2, float):
         return distXY(f_val1, f_val2)
 
@@ -109,19 +91,17 @@ def dist(f_val1, f_val2):
     else:
         # logger
         l_log = logging.getLogger("tMath::dist")
-        l_log.setLevel(logging.NOTSET)
-        l_log.fatal("E01: tipo inválido.")
+        l_log.setLevel(logging.CRITICAL)
+        l_log.critical("E01: tipo inválido.")
 
     # quit app
     sys.exit(-1)
 
 # -------------------------------------------------------------------------------------------------
-
 def distLL(f_pos1, f_pos2):
-
-    # logger
-    # M_LOG.info("tMath::distLL:><")
-
+    """
+    DOCUMENT ME!
+    """
     # calc lat dist
     lf_lat = (f_pos2.f_lat - f_pos1.f_lat) * 60.
 
@@ -132,22 +112,18 @@ def distLL(f_pos1, f_pos2):
     return distXY(lf_lat, lf_lng)
 
 # -------------------------------------------------------------------------------------------------
-
 def distXY(f_dx, f_dy):
-
-    # logger
-    # M_LOG.info("tMath::distXY:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return math.sqrt(pow(f_dx, 2) + pow(f_dy, 2))
 
 # -------------------------------------------------------------------------------------------------
-
 def round(f_d, f_n):
-
-    # logger
-    # M_LOG.info("tMath::round:><")
-
+    """
+    DOCUMENT ME!
+    """
     f_d *= pow(10, f_n)
     f_d += .5
     f_d = int(f_d)
@@ -157,22 +133,18 @@ def round(f_d, f_n):
     return f_d
 
 # -------------------------------------------------------------------------------------------------
-
 def sign(l_a):
-
-    # logger
-    # M_LOG.info("tMath::sign:><")
-
+    """
+    DOCUMENT ME!
+    """
     # return
     return 1 if l_a > 0 else -1
 
 # -------------------------------------------------------------------------------------------------
-
 def track(f_pos1, f_pos2):
-
-    # logger
-    # M_LOG.info("tMath::track:><")
-
+    """
+    DOCUMENT ME!
+    """
     lf_lat = f_pos2.f_lat - f_pos1.f_lat
     lf_lng = (f_pos2.f_lng - f_pos1.f_lng) * dcos(f_pos1.f_lat)
 
@@ -192,12 +164,10 @@ def track(f_pos1, f_pos2):
     return l_tr
 
 # -------------------------------------------------------------------------------------------------
-
 def trackDelta(f_from, f_to):
-
-    # logger
-    # M_LOG.info("tMath::trackDelta:><")
-
+    """
+    DOCUMENT ME!
+    """
     l_d = f_to - f_from
 
     while l_d <= -180.:
@@ -210,12 +180,10 @@ def trackDelta(f_from, f_to):
     return l_d
 
 # -------------------------------------------------------------------------------------------------
-
 def trackLeftAbeam(f_tr):
-
-    # logger
-    # M_LOG.info("tMath::trackLeftAbeam:><")
-
+    """
+    DOCUMENT ME!
+    """
     l_d = f_tr - 90.
 
     while l_d < 0.:
@@ -225,12 +193,10 @@ def trackLeftAbeam(f_tr):
     return l_d
 
 # -------------------------------------------------------------------------------------------------
-
 def trackOpposite(f_tr):
-
-    # logger
-    # M_LOG.info("tMath::trackOpposite:><")
-
+    """
+    DOCUMENT ME!
+    """
     l_d = f_tr + 180.
 
     while l_d >= 360.:
@@ -240,12 +206,10 @@ def trackOpposite(f_tr):
     return l_d
 
 # -------------------------------------------------------------------------------------------------
-
 def trackRightAbeam(f_tr):
-
-    # logger
-    # M_LOG.info("tMath::trackRightAbeam:><")
-
+    """
+    DOCUMENT ME!
+    """
     l_d = f_tr + 90.
 
     while l_d >= 360.:
