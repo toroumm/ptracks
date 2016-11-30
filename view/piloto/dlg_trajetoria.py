@@ -33,21 +33,15 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
 import json
 import os
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # view
 from . import dlg_trajetoria_ui as dlg
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
 
 # < class CDlgTrajetoria >-------------------------------------------------------------------------
 
@@ -65,9 +59,6 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         @param fdct_trj: dicionário de trajetórias
         @param f_parent: janela pai
         """
-        # logger
-        M_LOG.info("__init__:>>")
-
         # init super class
         super(CDlgTrajetoria, self).__init__(f_parent)
 
@@ -77,7 +68,7 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         # salva o socket de comunicação
         self.__sck_http = fsck_http
         assert self.__sck_http
-        
+
         # salva o dicionário de configuração
         self.__dct_config = fdct_config
         assert self.__dct_config is not None
@@ -111,18 +102,11 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         # inicia os parâmetros da trajetória
         self.__update_command()
 
-        # logger
-        M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_connects(self):
         """
         configura as conexões slot/signal
         """
-        # logger
-        M_LOG.info("__config_connects:>>")
-
         # conecta spinBox
         self.cbx_trj.currentIndexChanged.connect(self.__on_cbx_currentIndexChanged)
 
@@ -132,44 +116,28 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         # conecta botão Cancela da edição de trajetoria
         # self.bbx_trajetoria.rejected.connect(self.__reject)
 
-        # logger
-        M_LOG.info("__config_connects:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_texts(self):
-
-        # logger
-        M_LOG.info("__config_texts:>>")
-
+        """
+        DOCUMENT ME!
+        """
         # configura títulos e mensagens
         self.__txt_settings = "CDlgTrajetoria"
 
-        # logger
-        M_LOG.info("__config_texts:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def get_data(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("get_data:><")
-
         # return command line
         return self.lbl_comando.text()
 
     # ---------------------------------------------------------------------------------------------
-
     def __load_trj(self, fdct_trj):
         """
         carrega o dicionário de trajetórias
         """
-        # logger
-        # M_LOG.info("__load_trj:>>")
-
-        # check input parameters
+        # check input
         # assert f_strip_cur
 
         # check for requirements
@@ -181,25 +149,22 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
 
         # dicionário vazio ?
         if not fdct_trj:
-                
             # monta o request das trajetórias
             ls_req = "data/trj.json"
-            M_LOG.debug("__load_trj:ls_req:[{}]".format(ls_req))
+            # dbg.M_DBG.debug("__load_trj:ls_req:[{}]".format(ls_req))
 
             # get server address
             l_srv = self.__dct_config.get("srv.addr", None)
-            
-            if l_srv is not None:
 
+            if l_srv is not None:
                 # obtém os dados de trajetórias do servidor
                 l_data = self.__sck_http.get_data(l_srv, ls_req)
-                M_LOG.debug("__load_trj:l_data:[{}]".format(l_data))
+                # dbg.M_DBG.debug("__load_trj:l_data:[{}]".format(l_data))
 
                 if l_data is not None:
-
                     # salva a trajetórias no dicionário
                     ldct_ans = json.loads(l_data)
-                    M_LOG.debug("__load_trj:dct_trj:[{}]".format(ldct_ans))
+                    # dbg.M_DBG.debug("__load_trj:dct_trj:[{}]".format(ldct_ans))
 
                 # senão, não achou no servidor...
                 else:
@@ -219,49 +184,33 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         else:
             # para todas as trajetórias...
             for l_trj in fdct_trj.values():
-
                 # coloca na resposta
                 ldct_ans[l_trj.i_prc_id] = l_trj.s_prc_desc
-
-        # logger
-        # M_LOG.info("__load_trj:<<")
 
         # return
         return ldct_ans
 
     # ---------------------------------------------------------------------------------------------
-
     def __restore_settings(self):
         """
         restaura as configurações salvas para esta janela
         """
-        # logger
-        M_LOG.info("__restore_settings:>>")
-
         # obtém os settings
-        l_set = QtCore.QSettings("ICEA", "piloto")
+        l_set = QtCore.QSettings("sophosoft", "piloto")
         assert l_set
 
         # restaura geometria da janela
         self.restoreGeometry(l_set.value("%s/Geometry" % (self.__txt_settings)).toByteArray())
 
-        # logger
-        M_LOG.info("__restore_settings:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __update_command(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__update_command:>>")
-
         # para todas as trajetórias...
         for l_key, l_trj in self.__dct_trj.iteritems():
-
-            M_LOG.debug("l_key:[{}]".format(l_key))
-            M_LOG.debug("l_trj:[{}]".format(l_trj))
+            # dbg.M_DBG.debug("l_key:[{}]".format(l_key))
+            # dbg.M_DBG.debug("l_trj:[{}]".format(l_trj))
 
             # é a trajetória selecionada ?
             if unicode(self.cbx_trj.currentText()) == unicode(l_trj):
@@ -273,27 +222,17 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         # coloca o comando no label
         self.lbl_comando.setText(ls_cmd)
 
-        # logger
-        M_LOG.info("__update_command:<<")
-
     # =============================================================================================
     # edição de campos
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("int")
     def __on_cbx_currentIndexChanged(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_cbx_currentIndexChanged:>>")
-
         # atualiza comando
         self.__update_command()
-
-        # logger
-        M_LOG.info("__on_cbx_currentIndexChanged:<<")
 
 # < the end >--------------------------------------------------------------------------------------

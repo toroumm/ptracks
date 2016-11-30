@@ -223,7 +223,7 @@ class CDlgDecolagem(QtGui.QDialog, dlg.Ui_CDlgDecolagem):
         # M_LOG.info("__restore_settings:>>")
 
         # obtém os settings
-        l_set = QtCore.QSettings("ICEA", "piloto")
+        l_set = QtCore.QSettings("sophosoft", "piloto")
         assert l_set
 
         # restaura geometria da janela

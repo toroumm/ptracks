@@ -27,21 +27,26 @@ initial release (Linux/Python)
 ---------------------------------------------------------------------------------------------------
 """
 __version__ = "$revision: 0.2$"
-__author__ = "Milton Abrunhosa"
+__author__ = "mlabru, sophosoft"
 __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
 import logging
+import os
 import sys
+
+# libs
+import libs.coords.coord_sys as coords
 
 # model
 import model.model_manager as model
 import model.emula.emula_piloto as emula
+import model.piloto.airspace_piloto as airs
 
 # control
-import control.events.events_basic as events
+# import control.events.events_basic as events
 
 # < class CModelPiloto >---------------------------------------------------------------------------
 
@@ -54,7 +59,7 @@ class CModelPiloto(model.CModelManager):
         """
         @param f_control: control manager
         """
-        # verifica parâmetros de entrada
+        # check input
         assert f_control
 
         # init super class
@@ -66,6 +71,15 @@ class CModelPiloto(model.CModelManager):
         # self.config        # config manager
         # self.dct_config    # dicionário de configuração
 
+        # obtém as coordenadas de referência
+        lf_ref_lat = float(self.dct_config["map.lat"])
+        lf_ref_lng = float(self.dct_config["map.lng"])
+        lf_dcl_mag = float(self.dct_config["map.dcl"])
+                                                                
+        # coordinate system
+        self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)
+        assert self.__coords
+
         # variáveis de instância
         self.__airspace = None
         # self.__landscape = None
@@ -73,43 +87,69 @@ class CModelPiloto(model.CModelManager):
         # dicionário de performances
         self.__dct_prf = {}
                 
-        # carrega as tabelas do sistema
-        # self.load_tables("BR01")
-
+        # carrega o cenário (airspace & landscape)
+        self.__load_cenario()
+                
         # create emula model
         self.__emula_model = emula.CEmulaPiloto(self, f_control)
         assert self.__emula_model
                         
     # ---------------------------------------------------------------------------------------------
-    def load_tables(self, ls_cena):
+    def __load_air(self):
         """
-        abre/cria as tabelas do sistema
-
-        @param ls_cena: cenário
+        faz a carga do airspace
 
         @return flag e mensagem
         """
-        # inicia flag
-        lv_ok = True
-        ls_msg = "Ok"
+        # obtém o diretório padrão de airspaces
+        ls_dir = self.dct_config["dir.air"]
 
-        # carrega o landscape
-        # lv_ok, ls_msg = self.load_land(ls_cena)
+        # nome do diretório vazio ?
+        if ls_dir is None:
+            # diretório padrão de airspaces
+            self.dct_config["dir.air"] = gdefs.D_DIR_AIR
 
-        # tudo Ok ?
-        # if lv_ok:
-            # carrega o airspace
-            # lv_ok, ls_msg = self.load_air(ls_cena)
+            # diretório padrão de airspaces
+            ls_dir = gdefs.D_DIR_AIR
+
+        # expand user (~)
+        # ls_dir = os.path.expanduser(ls_dir)
+
+        # diretório não existe ?
+        if not os.path.exists(ls_dir):
+            # cria o diretório
+            os.mkdir(ls_dir)
+
+        # create airspace
+        self.__airspace = airs.CAirspacePiloto(self)
+        assert self.__airspace
+
+        # carrega as tabelas do sistema
+        self.__airspace.load_dicts()
+
+        # retorna ok
+        return True, None
+
+    # ---------------------------------------------------------------------------------------------
+    def __load_cenario(self):
+        """
+        abre/cria as tabelas do sistema
+
+        @return flag e mensagem
+        """
+        # carrega o airspace
+        lv_ok, ls_msg = self.__load_air()
 
         # houve erro em alguma fase ?
         if not lv_ok:
+
             # logger
-            l_log = logging.getLogger("CModelPiloto::load_tables")
+            l_log = logging.getLogger("CModelPiloto::__load_cenario")
             l_log.setLevel(logging.CRITICAL)
-            l_log.critical(u"<E01: Erro na carga da base de dados ({}).".format(ls_msg))
+            l_log.critical(u"<E01: erro na carga da base de dados {}.".format(ls_msg))
 
             # cria um evento de quit
-            l_evt = events.Quit()
+            l_evt = event.CQuit()
             assert l_evt
 
             # dissemina o evento
@@ -120,41 +160,6 @@ class CModelPiloto(model.CModelManager):
 
     # ---------------------------------------------------------------------------------------------
     '''
-    def load_air(self, fs_cena):
-        """
-        faz a carga do airspace
-
-        @param ls_cena: cenário
-
-        @return flag e mensagem
-        """
-        # obtém o diretório padrão de tabelas
-        ls_dir = self.dct_config["dir.air"]
-
-        # nome do diretório vazio ?
-        if ls_dir is None:
-            # diretório padrão de tabelas
-            self.dct_config["dir.air"] = "airs"
-
-            # diretório padrão de tabelas
-            ls_dir = "airs"
-
-        # expand user (~)
-        ls_dir = os.path.expanduser(ls_dir)
-
-        # diretório não existe ?
-        if not os.path.exists(ls_dir):
-            # cria o diretório
-            os.mkdir(ls_dir)
-
-        # create airspace and weather
-        self.__airspace = airspace.modelAirspace(self, ls_dir, fs_cena)
-        assert self.__airspace
-
-        # retorna ok
-        return True, None
-
-    # ---------------------------------------------------------------------------------------------
     def load_land(self, fs_land):
         """
         faz a carga do landscape
@@ -168,6 +173,7 @@ class CModelPiloto(model.CModelManager):
 
         # nome do diretório vazio ?
         if ls_dir is None:
+
             # diretório padrão de landscapes
             self.dct_config["dir.map"] = "maps"
 
@@ -179,6 +185,7 @@ class CModelPiloto(model.CModelManager):
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
+
             # cria o diretório
             os.mkdir(ls_dir)
 
@@ -190,14 +197,14 @@ class CModelPiloto(model.CModelManager):
         return True, None
     '''
     # ---------------------------------------------------------------------------------------------
+
     def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos
 
         @param f_event: evento recebido
         """
-        # return
-        return
+        pass
 
     # =============================================================================================
     # data
@@ -212,14 +219,28 @@ class CModelPiloto(model.CModelManager):
         return self.__airspace
 
     # ---------------------------------------------------------------------------------------------
-    '''
     @property
-    def landscape(self):
+    def lst_arr_dep(self):
         """
-        landscape
+        get lista de pousos/decolagens
         """
-        return self.__landscape
-    '''
+        return self.__airspace.lst_arr_dep
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def coords(self):
+        """
+        get coordinate system
+        """
+        return self.__coords
+
+    '''@coords.setter
+    def coords(self, f_val):
+        """
+        set coordinate system
+        """
+        self.__coords = f_val'''
+
     # ---------------------------------------------------------------------------------------------
     @property
     def emula_model(self):
@@ -230,10 +251,52 @@ class CModelPiloto(model.CModelManager):
 
     # ---------------------------------------------------------------------------------------------
     @property
+    def dct_esp(self):
+        """
+        get dicionário de esperas
+        """
+        return self.__airspace.dct_esp
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def dct_fix(self):
+        """
+        get dicionário de fixos
+        """
+        return self.__airspace.dct_fix
+
+    # ---------------------------------------------------------------------------------------------
+    '''
+    @property
+    def landscape(self):
+        """
+        landscape
+        """
+        return self.__landscape
+    '''
+    # ---------------------------------------------------------------------------------------------
+
+    @property
     def dct_prf(self):
         """
-        dicionário de performances
+        get dicionário de performances
         """
         return self.__dct_prf
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def dct_sub(self):
+        """
+        get dicionário de subidas
+        """
+        return self.__airspace.dct_sub
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def dct_trj(self):
+        """
+        get dicionário de trajetórias
+        """
+        return self.__airspace.dct_trj
 
 # < the end >--------------------------------------------------------------------------------------

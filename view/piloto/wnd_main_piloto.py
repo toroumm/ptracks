@@ -107,6 +107,9 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.__control = f_control
         assert self.__control
 
+        dbg.M_DBG.debug("self.__control.:[{}]".format(self.__control))
+        dbg.M_DBG.debug("f_control.model:[{}]".format(f_control.model))
+
         # salva a lista de pousos
         self.__lst_arr = f_control.model.lst_arr_dep
         assert self.__lst_arr is not None
