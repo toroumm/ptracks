@@ -6,24 +6,28 @@
     <fixo>UTMUR</fixo>
     <sentido>D</sentido>
     <rumo>52</rumo>
+    <declmag>-21</declmag>
   </espera>
 
   <espera nEsp="2">
     <fixo>MOXEP</fixo>
     <sentido>E</sentido>
     <rumo>175</rumo>
+    <declmag>-21</declmag>
   </espera>
 
   <espera nEsp="3">
     <fixo>ANISE</fixo>
     <sentido>D</sentido>
     <rumo>72</rumo>
+    <declmag>-21</declmag>
   </espera>
 
   <espera nEsp="70">
     <fixo>BCO</fixo>
     <sentido>E</sentido>
     <rumo>270</rumo>
+    <declmag>-21</declmag>
   </espera>
 
 </esperas>

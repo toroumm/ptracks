@@ -33,17 +33,12 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import time
 
 # libs
 import libs.coords.coord_defs as cdefs
 
 # < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # message count
 M_MSG = 0
@@ -184,7 +179,6 @@ def generate_anv_json(fdct_flight, f_coords):
         #                          l_anv.signalLevel[4] + l_anv.signalLevel[5] + l_anv.signalLevel[6] + l_anv.signalLevel[7] + 1e-5) / 8));
 
     ls_buf += "\n  ]\n}\n"
-    # M_LOG.debug("ls_buf:[{}]".format(ls_buf))
 
     # incrementa contador de mensagens
     M_MSG += 1

@@ -127,7 +127,8 @@ def __setor_entrada(f_atv, f_esp):
     # espera pela direita ?
     if ldefs.E_DIREITA == f_esp.en_esp_sentido_curva:
         # calcula o limite pelo setor 2
-        lf_limite_2 = f_esp.f_esp_rumo - 70.
+        # f_esp_rumo (mlabru)
+        lf_limite_2 = f_esp.f_esp_true - 70.
 
         # normaliza o limite
         if lf_limite_2 < 0.:
@@ -157,7 +158,8 @@ def __setor_entrada(f_atv, f_esp):
     # espera pela esquerda
     else:
         # cálculo da diferença entre os ângulos
-        lf_dif_ang = f_esp.f_esp_rumo - lf_ang_entrada
+        # f_esp_rumo (mlabru)
+        lf_dif_ang = f_esp.f_esp_true - lf_ang_entrada
 
         # normaliza a diferença entre os ângulos
         if lf_dif_ang < 0.:
@@ -263,7 +265,8 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
             f_atv.en_atv_fase = __setor_entrada(f_atv, l_esp)
 
             # valida proa para perna de afastamento
-            f_cine_data.f_afasta = l_esp.f_esp_rumo - 180.
+            # f_esp_rumo (mlabru)
+            f_cine_data.f_afasta = l_esp.f_esp_true - 180.
 
             # normaliza proa para perna de afastamento
             if f_cine_data.f_afasta < 0.:
@@ -424,7 +427,8 @@ def prc_espera(f_atv, f_cine_data, f_stk_context, ff_delta_t):
 
                         # velocidade e proa
                         f_atv.f_atv_vel_dem = f_atv.ptr_trf_prf.f_prf_vel_apx
-                        f_atv.f_atv_pro_dem = l_esp.f_esp_rumo
+                        # f_esp_rumo (mlabru)
+                        f_atv.f_atv_pro_dem = l_esp.f_esp_true
 
                         # calcula novo sentido de curva
                         scrv.sentido_curva(f_atv)

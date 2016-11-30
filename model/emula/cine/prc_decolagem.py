@@ -104,8 +104,9 @@ def __check_ok(f_atv, f_cine_data):
     f_atv.f_atv_vel_dem = f_atv.ptr_trf_prf.f_prf_vel_dec
 
     # rumo da pista
+    # i_pst_rumo (mlabru)
     f_atv.f_trf_pro_atu = \
-    f_atv.f_atv_pro_dem = l_pst.i_pst_rumo
+    f_atv.f_atv_pro_dem = l_pst.f_pst_true
 
     # elevação do aeródromo
     f_atv.f_trf_alt_atu = \
@@ -225,7 +226,8 @@ def __do_dep(f_atv, f_cine_data, fstk_context):
         lf_radial_pstta_brk = cpd.calc_proa_demanda(lf_delta_x , lf_delta_y)
 
         # calcula o ângulo entre o rumo da pista e o 1*brk da subida
-        lf_ang_pista_brk = abs(l_pst.i_pst_rumo - lf_radial_pstta_brk)
+        # i_pst_rumo (mlabru)
+        lf_ang_pista_brk = abs(l_pst.f_pst_true - lf_radial_pstta_brk)
 
         # regra de cálculo da altitude na decolagem com Subida:
         # livrar obstáculos na decolagem (montanhas, prédios, ...)

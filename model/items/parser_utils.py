@@ -32,20 +32,10 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
 # PyQt library
 from PyQt4 import QtCore
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_aerodromo(f_element):
     """
     helper function to parse xml entries
@@ -60,16 +50,12 @@ def parse_aerodromo(f_element):
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_aerodromo:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
     # handle descrição (nome)
     if "descricao" == f_element.tagName():
         ldct_tmp["descricao"] = f_element.text()
-        # M_LOG.debug(u"ldct_tmp['descricao']:[{}]".format(ldct_tmp["descricao"]))
 
     # handle elevação
     elif "elevacao" == f_element.tagName():
@@ -114,23 +100,16 @@ def parse_aerodromo(f_element):
         # atualiza o dicionário com a pista
         ldct_tmp["pista"] = ldct_pst
 
-    # logger
-    # M_LOG.info("parse_aerodromo:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_aeronave(f_element, f_hora_ini):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_aeronave:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -234,23 +213,16 @@ def parse_aeronave(f_element, f_hora_ini):
         # atualiza o dicionário com a posição
         ldct_tmp["posicao"] = ldct_pos
 
-    # logger
-    # M_LOG.info("parse_aeronave:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_aproximacao(f_element):
     """
     helper function to parse xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_aproximacao:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -282,23 +254,16 @@ def parse_aproximacao(f_element):
     elif "breakpoint" == f_element.tagName():
         ldct_tmp["breakpoint"] = __parse_bkp(f_element)
 
-    # logger
-    # M_LOG.info("parse_aproximacao:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def __parse_bkp(f_element):
     """
     helper function to parse xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_breakpoint:>>")
-
     # inicia o dicionário de dados
     ldct_brk = {}
 
@@ -325,14 +290,10 @@ def __parse_bkp(f_element):
         l_node = l_node.nextSibling()
         assert l_node is not None
 
-    # logger
-    # M_LOG.info("parse_aproximacao:<<")
-
     # retorna o dicionário de dados
     return ldct_brk
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_breakpoint(f_element):
     """
     helper function to parse xml entries
@@ -350,9 +311,6 @@ def parse_breakpoint(f_element):
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_breakpoint:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -380,14 +338,10 @@ def parse_breakpoint(f_element):
     elif "coord" == f_element.tagName():
         ldct_tmp["coord"] = __parse_crd(f_element)
 
-    # logger
-    # M_LOG.info("parse_breakpoint:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_coord(f_element):
     """
     helper function to parse xml entries
@@ -402,9 +356,6 @@ def parse_coord(f_element):
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_coord:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -428,23 +379,16 @@ def parse_coord(f_element):
     elif "cpoD" == f_element.tagName():
         ldct_tmp["cpoD"] = f_element.text()
 
-    # logger
-    # M_LOG.info("parse_coord:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def __parse_crd(f_element):
     """
     helper function to parse xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_coord:>>")
-
     # inicia o dicionário de dados
     ldct_crd = {}
 
@@ -467,23 +411,16 @@ def __parse_crd(f_element):
         l_node = l_node.nextSibling()
         assert l_node is not None
 
-    # logger
-    # M_LOG.info("parse_coord:<<")
-
     # retorna o dicionário de dados
     return ldct_crd
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_espera(f_element):
     """
     helper function to parse xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_espera:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -499,27 +436,24 @@ def parse_espera(f_element):
     elif "rumo" == f_element.tagName():
         ldct_tmp["rumo"] = f_element.text()
 
+    # handle declmag
+    elif "declmag" == f_element.tagName():
+        ldct_tmp["declmag"] = f_element.text()
+
     # handle breakpoint
     elif "breakpoint" == f_element.tagName():
         ldct_tmp["breakpoint"] = __parse_bkp(f_element)
-
-    # logger
-    # M_LOG.info("parse_espera:<<")
 
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_exercicio(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_exercicio:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -564,7 +498,6 @@ def parse_exercicio(f_element):
         l_lstCon = []
 
         l_node_list = f_element.elementsByTagName("console"))
-        M_LOG.debug("l_node_list.len (console): %d" % l_node_list.length())
 
         # obtém o primeiro nó da sub-árvore
         lo_node = f_element.firstChild()
@@ -594,7 +527,6 @@ def parse_exercicio(f_element):
         l_lstMap = []
 
         l_node_list = f_element.elementsByTagName("subMapa"))
-        M_LOG.debug("l_node_list.len (subMapa): %d" % l_node_list.length())
 
         for li_ndx in xrange(l_node_list.length()):
             lo_element = l_node_list.at(li_ndx).toElement()
@@ -633,23 +565,16 @@ def parse_exercicio(f_element):
         # atualiza o dicionário com a lista de consoles
         ldct_tmp["situacao"] = ldctSit
     '''
-    # logger
-    # M_LOG.info("parse_exercicio:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_fixo(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_fixo:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -685,23 +610,16 @@ def parse_fixo(f_element):
     # elif "frequencia" == f_element.tagName():
         # ldct_tmp["frequencia"] = f_element.text()
 
-    # logger
-    # M_LOG.info("parse_fixo:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 '''def parse_hora(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_hora:>>")
-
     # inicia o dicionário de dados
     ldct_data = {}
 
@@ -713,23 +631,16 @@ def parse_fixo(f_element):
     elif "min" == f_element.tagName():
         ldct_data["min"] = f_element.text()
 
-    # logger
-    # M_LOG.info("parse_hora:<<")
-
     # retorna o dicionário de dados
     return ldct_data
 '''
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_ils(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_ils:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -761,44 +672,30 @@ def parse_ils(f_element):
     elif "breakpoint" == f_element.tagName():
         ldct_tmp["breakpoint"] = __parse_bkp(f_element)
 
-    # logger
-    # M_LOG.info("parse_ils:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 '''def parse_mapa(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_mapa:>>")
-
     # handle subMapa
     if "subMapa" == f_element.tagName():
         li_num = f_element.text()
-
-    # logger
-    # M_LOG.info("parse_mapa:<<")
 
     # retorna o número do mapa
     return li_num
 '''
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_meteorologia(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_meteorologia:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -830,23 +727,16 @@ def parse_meteorologia(f_element):
     elif "supqnh" == f_element.tagName():
         ldct_tmp["supqnh"] = f_element.text()
 
-    # logger
-    # M_LOG.info("parse_meteorologia:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_performance(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_performance:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -966,23 +856,16 @@ def parse_performance(f_element):
     elif "velmaxtax" == f_element.tagName():
         ldct_tmp["velmaxtax"] = f_element.text()
     '''
-    # logger
-    # M_LOG.info("parse_performance:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_pista(f_element):
     """
     helper function to parse xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_pista:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -1006,23 +889,16 @@ def parse_pista(f_element):
     elif "coord" == f_element.tagName():
         ldct_tmp["coord"] = __parse_crd(f_element)
 
-    # logger
-    # M_LOG.info("parse_pista:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_posicao(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_posicao:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -1046,23 +922,16 @@ def parse_posicao(f_element):
     elif "cpoD" == f_element.tagName():
         ldct_tmp["cpoD"] = f_element.text()
 
-    # logger
-    # M_LOG.info("parse_posicao:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_radar(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_radar:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -1125,23 +994,16 @@ def parse_radar(f_element):
         # atualiza o dicionário com a posição
         ldct_tmp["posicao"] = ldct_pos
 
-    # logger
-    # M_LOG.info("parse_radar:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_root_element(f_element):
     """
     helper function to parse xml entries
 
     @param f_element: root element to parse
     """
-    # logger
-    # M_LOG.info("parse_root_element:>>")
-
     # inicia o dicionário de dados
     ldct_root = {}
 
@@ -1158,23 +1020,16 @@ def parse_root_element(f_element):
         # ldct_root[str(l_attr.name()).upper()] = l_attr.value()
         ldct_root[str(l_attr.name()).upper()] = l_attr.value()
 
-    # logger
-    # M_LOG.info("parse_root_element:<<")
-
     # retorna o dicionário de dados
     return ldct_root
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 '''def parse_situacao(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_situacao:>>")
-
     # inicia o dicionário de dados
     ldct_data = {}
 
@@ -1206,14 +1061,10 @@ def parse_root_element(f_element):
         # atualiza o dicionário com a lista de consoles
         ldct_data["horaIni"] = ldct_hor
 
-    # logger
-    # M_LOG.info("parse_situacao:<<")
-
     # retorna o dicionário de dados
     return ldct_data
 '''
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_subida(f_element):
     """
     helper function to the constructor, parses xml entries
@@ -1228,9 +1079,6 @@ def parse_subida(f_element):
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_subida:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -1250,23 +1098,16 @@ def parse_subida(f_element):
     elif "breakpoint" == f_element.tagName():
         ldct_tmp["breakpoint"] = __parse_bkp(f_element)
 
-    # logger
-    # M_LOG.info("parse_subida:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_trafego(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_trafego:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -1346,23 +1187,16 @@ def parse_trafego(f_element):
     elif "coord" == f_element.tagName():
         ldct_tmp["coord"] = __parse_crd(f_element)
 
-    # logger
-    # M_LOG.info("parse_trafego:<<")
-
     # retorna o dicionário de dados
     return ldct_tmp
 
 # -------------------------------------------------------------------------------------------------
-# void (???)
 def parse_trajetoria(f_element):
     """
     helper function to the constructor, parses xml entries
 
     @param f_element: element to parse
     """
-    # logger
-    # M_LOG.info("parse_trajetoria:>>")
-
     # inicia o dicionário de dados
     ldct_tmp = {}
 
@@ -1381,9 +1215,6 @@ def parse_trajetoria(f_element):
     # handle breakpoint
     elif "breakpoint" == f_element.tagName():
         ldct_tmp["breakpoint"] = __parse_bkp(f_element)
-
-    # logger
-    # M_LOG.info("parse_trajetoria:<<")
 
     # retorna o dicionário de dados
     return ldct_tmp

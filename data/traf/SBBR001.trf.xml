@@ -20,4 +20,24 @@
         <procedimento>TRJ501</procedimento>
     </trafego>
 
+    <trafego nTrf="2">
+        <designador>B737</designador>
+        <ssr>0102</ssr>
+        <indicativo>GOL1234</indicativo>
+        <origem>SBBR</origem>
+        <destino>SBGR</destino>
+        <temptrafego>0</temptrafego>
+        <procedimento>SUB1100</procedimento>
+    </trafego>
+
+    <trafego nTrf="3">
+        <designador>B737</designador>
+        <ssr>0103</ssr>
+        <indicativo>GOL5678</indicativo>
+        <origem>SBGR</origem>
+        <destino>SBBR</destino>
+        <temptrafego>0</temptrafego>
+        <procedimento>SUB1101</procedimento>
+    </trafego>
+
 </trafegos>

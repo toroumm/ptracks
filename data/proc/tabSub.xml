@@ -222,4 +222,29 @@
       <procedimento>TRJ1100</procedimento>
     </breakpoint>
 
+  <subida nSub="1101">
+    <nome>SBGR</nome>
+    <aerodromo>SBGR</aerodromo>
+    <pista>09L</pista>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>TUCA</cpoA>
+      </coord>
+      <altitude>4000</altitude>
+      <razsub>5.2</razsub>
+      <velocidade>230</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MAE</cpoA>
+      </coord>
+      <altitude>12000</altitude>
+      <velocidade>300</velocidade>
+      <procedimento>TRJ1004</procedimento>
+    </breakpoint>
+
 </subidas>

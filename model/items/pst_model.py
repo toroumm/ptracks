@@ -46,8 +46,11 @@ class CPstModel(object):
         # identificação do pista (indicativo)
         self.__s_pst_indc = ""
 
-        # rumo magnético da pista
-        self.__i_pst_rumo = 0
+        # proa em relação ao norte magnético
+        self.__f_pst_rumo = 0.
+                
+        # proa em relação ao norte verdadeiro
+        self.__f_pst_true = 0.
 
         # X (m)
         self.__f_pst_x = 0.
@@ -69,8 +72,10 @@ class CPstModel(object):
 
         # identificação da pista
         self.__s_pst_indc = f_pst.s_pst_indc
-        # rumo da pista
-        self.__i_pst_rumo = f_pst.i_pst_rumo
+        # rumo magnético
+        self.__f_pst_rumo = f_pst.f_pst_rumo
+        # rumo verdadeiro
+        self.__f_pst_true = f_pst.f_pst_true
 
         # X
         self.__f_pst_x = f_pst.f_pst_x
@@ -118,18 +123,33 @@ class CPstModel(object):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def i_pst_rumo(self):
+    def f_pst_rumo(self):
         """
         get rumo magnético da pista
         """
-        return self.__i_pst_rumo
+        return self.__f_pst_rumo
 
-    @i_pst_rumo.setter
-    def i_pst_rumo(self, f_val):
+    @f_pst_rumo.setter
+    def f_pst_rumo(self, f_val):
         """
         set rumo magnético da pista
         """
-        self.__i_pst_rumo = f_val
+        self.__f_pst_rumo = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def f_pst_true(self):
+        """
+        get rumo verdadeiro da pista
+        """
+        return self.__f_pst_true
+
+    @f_pst_true.setter
+    def f_pst_true(self, f_val):
+        """
+        set rumo verdadeiro da pista
+        """
+        self.__f_pst_true = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

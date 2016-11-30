@@ -110,7 +110,7 @@
   <aerodromo nAer="SBBR">
     <nome>BRASÍLIA</nome>
     <elevacao>3479</elevacao>
-    <declmag>-21</declmag>
+    <declmag>-25</declmag>
     <coord>
       <tipo>G</tipo>
       <cpoA>1552.267S</cpoA>
@@ -157,7 +157,7 @@
   <aerodromo nAer="SBGR">
     <nome>GUARULHOS</nome>
     <elevacao>2459</elevacao>
-    <declmag>-21</declmag>
+    <declmag>-18</declmag>
     <coord>
       <tipo>K</tipo>
       <cpoA>S:23:26:08</cpoA>

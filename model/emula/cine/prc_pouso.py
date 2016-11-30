@@ -154,11 +154,13 @@ def prc_pouso(f_atv):
         # M_LOG.debug("prc_pouso:glb_f_dst_anv_ptq_y:[{}]".format(glb_f_dst_anv_ptq_y))
 
         # posição da aeronave em relação a pista (dir/esq)
-        len_pos_anv = scrv.sent_crv(l_pst.i_pst_rumo, cpd.calc_proa_demanda(-glb_f_dst_anv_ptq_x, -glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        len_pos_anv = scrv.sent_crv(l_pst.f_pst_true, cpd.calc_proa_demanda(-glb_f_dst_anv_ptq_x, -glb_f_dst_anv_ptq_y))
         # M_LOG.debug("prc_pouso:len_pos_anv:[{}]".format(len_pos_anv))
 
         # calcula ângulo formado pela aeronave e a pista (teta)
-        glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -186,7 +188,8 @@ def prc_pouso(f_atv):
                 # aeronave a direita da pista ?
                 if ldefs.E_DIREITA == len_pos_anv:
                     # aeronave a direita da pista
-                    f_atv.f_atv_pro_dem = l_pst.i_pst_rumo - 90.
+                    # i_pst_rumo (mlabru)
+                    f_atv.f_atv_pro_dem = l_pst.f_pst_true - 90.
 
                     if f_atv.f_atv_pro_dem < 0:
                         f_atv.f_atv_pro_dem += 360.
@@ -194,7 +197,8 @@ def prc_pouso(f_atv):
                 # otherwise,...
                 else:
                     # aeronave a esquerda da pista
-                    f_atv.f_atv_pro_dem = l_pst.i_pst_rumo + 90.
+                    # i_pst_rumo (mlabru)
+                    f_atv.f_atv_pro_dem = l_pst.f_pst_true + 90.
 
                     if f_atv.f_atv_pro_dem >= 360.:
                         f_atv.f_atv_pro_dem -= 360.
@@ -208,7 +212,8 @@ def prc_pouso(f_atv):
             # otherwise,...
             else:
                 # aeronave após a distância que garante condição de alinhamento
-                f_atv.f_atv_pro_dem = l_pst.i_pst_rumo + 180.
+                # i_pst_rumo (mlabru)
+                f_atv.f_atv_pro_dem = l_pst.f_pst_true + 180.
 
                 if f_atv.f_atv_pro_dem >= 360.:
                     f_atv.f_atv_pro_dem -= 360.
@@ -231,7 +236,8 @@ def prc_pouso(f_atv):
             # aeronave está no eixo da pista ? 
             if abs(glb_f_dst_eixo) <= 0.01:
                 # aeronave está no rumo da pista ?
-                if abs(f_atv.f_trf_pro_atu - l_pst.i_pst_rumo) <= 0.01:
+                # i_pst_rumo (mlabru)
+                if abs(f_atv.f_trf_pro_atu - l_pst.f_pst_true) <= 0.01:
                     # aeronave antes da rampa ?
                     if (glb_ui_ang_teta < 90.) and (abs(glb_f_dst_anv_ptq * math.cos(math.radians(glb_ui_ang_teta))) >= glb_f_dst_rampa):
                         # voar até iniciar rampa
@@ -240,7 +246,8 @@ def prc_pouso(f_atv):
                     # otherwise,...
                     else:
                         # aeronave após a rampa
-                        f_atv.f_atv_pro_dem = l_pst.i_pst_rumo - 90.
+                        # i_pst_rumo (mlabru)
+                        f_atv.f_atv_pro_dem = l_pst.f_pst_true - 90.
 
                         if f_atv.f_atv_pro_dem < 0:
                             f_atv.f_atv_pro_dem += 360.
@@ -254,9 +261,11 @@ def prc_pouso(f_atv):
                 # otherwise, proas diferentes
                 else:
                     # proa da aeronave oposta a da pista ?
-                    if (abs(l_pst.i_pst_rumo - f_atv.f_trf_pro_atu) - 180.) <= 0.01:
+                    # i_pst_rumo (mlabru)
+                    if (abs(l_pst.f_pst_true - f_atv.f_trf_pro_atu) - 180.) <= 0.01:
                         # aeronave após a rampa
-                        f_atv.f_atv_pro_dem = l_pst.i_pst_rumo + 90.
+                        # i_pst_rumo (mlabru)
+                        f_atv.f_atv_pro_dem = l_pst.f_pst_true + 90.
 
                         if f_atv.f_atv_pro_dem >= 360.:
                             f_atv.f_atv_pro_dem -= 360.
@@ -271,14 +280,16 @@ def prc_pouso(f_atv):
             else:
                 # aeronave a direita da pista ?
                 if ldefs.E_DIREITA == len_pos_anv:
-                    f_atv.f_atv_pro_dem = l_pst.i_pst_rumo + 90.
+                    # i_pst_rumo (mlabru)
+                    f_atv.f_atv_pro_dem = l_pst.f_pst_true + 90.
 
                     if f_atv.f_atv_pro_dem >= 360.:
                         f_atv.f_atv_pro_dem -= 360.
 
                 # otherwise, aeronave a esquerda da pista
                 else:
-                    f_atv.f_atv_pro_dem = l_pst.i_pst_rumo - 90.
+                    # i_pst_rumo (mlabru)
+                    f_atv.f_atv_pro_dem = l_pst.f_pst_true - 90.
 
                     if f_atv.f_atv_pro_dem < 0:
                         f_atv.f_atv_pro_dem += 360.
@@ -300,7 +311,8 @@ def prc_pouso(f_atv):
         glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
 
         # calcula ângulo formado pela aeronave e a pista (teta)
-        glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -327,10 +339,12 @@ def prc_pouso(f_atv):
         glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
 
         # posição da aeronave em relação a pista (direita/esquerda)
-        len_pos_anv  = scrv.sent_crv(l_pst.i_pst_rumo, cpd.calc_proa_demanda(-glb_f_dst_anv_ptq_x, -glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        len_pos_anv  = scrv.sent_crv(l_pst.f_pst_true, cpd.calc_proa_demanda(-glb_f_dst_anv_ptq_x, -glb_f_dst_anv_ptq_y))
 
         # calcula ângulo formado pela aeronave e a pista (teta)
-        glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -349,14 +363,16 @@ def prc_pouso(f_atv):
         if (glb_ui_ang_teta < 90.) and ((abs(glb_f_dst_anv_ptq) * math.cos(math.radians(glb_ui_ang_teta))) >= (glb_f_raio_curva + glb_f_dst_rampa)):
             # aeronave a direita da pista ?
             if ldefs.E_DIREITA == len_pos_anv:
-                f_atv.f_atv_pro_dem = l_pst.i_pst_rumo - 90.
+                # i_pst_rumo (mlabru)
+                f_atv.f_atv_pro_dem = l_pst.f_pst_true - 90.
 
                 if f_atv.f_atv_pro_dem < 0:
                     f_atv.f_atv_pro_dem += 360.
 
             # otherwise, aeronave a esquerda da pista
             else:
-                f_atv.f_atv_pro_dem = l_pst.i_pst_rumo + 90.
+                # i_pst_rumo (mlabru)
+                f_atv.f_atv_pro_dem = l_pst.f_pst_true + 90.
 
                 if f_atv.f_atv_pro_dem >= 360.:
                     f_atv.f_atv_pro_dem -= 360.
@@ -380,7 +396,8 @@ def prc_pouso(f_atv):
             glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
 
             # calcula ângulo formado pela aeronave e a pista (teta)
-            glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+            # i_pst_rumo (mlabru)
+            glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
             if glb_ui_ang_teta > 180.:
                 glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -394,7 +411,8 @@ def prc_pouso(f_atv):
             # distância da aeronave ao eixo da pista > raio de curvatura ?
             if glb_f_dst_eixo <= glb_f_raio_curva:
                 # curva em direção ao rumo da pista
-                f_atv.f_atv_pro_dem = l_pst.i_pst_rumo
+                # i_pst_rumo (mlabru)
+                f_atv.f_atv_pro_dem = l_pst.f_pst_true
 
                 # força a curva pelo menor lado
                 scrv.sentido_curva(f_atv)
@@ -426,7 +444,8 @@ def prc_pouso(f_atv):
         glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
 
         # calcula ângulo formado pela aeronave e a pista (teta)
-        glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -463,7 +482,8 @@ def prc_pouso(f_atv):
         # otherwise, teta >= 90.
         else:
             # aeronave após a cabeceira
-            f_atv.f_atv_pro_dem = l_pst.i_pst_rumo + 180.
+            # i_pst_rumo (mlabru)
+            f_atv.f_atv_pro_dem = l_pst.f_pst_true + 180.
 
             if f_atv.f_atv_pro_dem >= 360.:
                 f_atv.f_atv_pro_dem -= 360.
@@ -481,7 +501,8 @@ def prc_pouso(f_atv):
         glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
 
         # calcula ângulo formado pela aeronave e a pista (teta)
-        glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -521,7 +542,8 @@ def prc_pouso(f_atv):
         glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
 
         # calcula ângulo formado pela aeronave e a pista (teta)
-        glb_ui_ang_teta = abs(l_pst.i_pst_rumo - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
+        # i_pst_rumo (mlabru)
+        glb_ui_ang_teta = abs(l_pst.f_pst_true - cpd.calc_proa_demanda(glb_f_dst_anv_ptq_x, glb_f_dst_anv_ptq_y))
 
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
@@ -586,7 +608,8 @@ def prc_pouso(f_atv):
             if (abs(l_pst.f_pst_cab_opos_x - f_atv.f_trf_x) <= abs(glb_f_dst_anv_ptq_x)) and \
                (abs(l_pst.f_pst_cab_opos_y - f_atv.f_trf_y) <= abs(glb_f_dst_anv_ptq_y)):
                 # ajusta demanda ao rumo da pista
-                f_atv.f_atv_pro_dem = l_pst.i_pst_rumo
+                # i_pst_rumo (mlabru)
+                f_atv.f_atv_pro_dem = l_pst.f_pst_true
 
             # otherwise,...
             else:

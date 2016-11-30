@@ -114,7 +114,8 @@ def __obtem_pouso(f_atv, f_apx):
     # pista de pouso ok ?
     if (f_apx.ptr_apx_pis is not None) and (f_apx.ptr_apx_pis.v_pst_ok):
         # ângulo mínimo para o pouso
-        lf_ang = abs(f_atv.f_trf_pro_atu - f_apx.ptr_apx_pis.i_pst_rumo)
+        # i_pst_rumo (mlabru)
+        lf_ang = abs(f_atv.f_trf_pro_atu - f_apx.ptr_apx_pis.f_pst_true)
 
         # tem condições de fazer pouso direto ?
         if lf_ang <= 15.:
@@ -122,7 +123,8 @@ def __obtem_pouso(f_atv, f_apx):
             f_atv.en_atv_fase = ldefs.E_FASE_APXALINHAR
 
             # estabelece a proa a ser atingida (rumo da pista)
-            f_atv.f_atv_pro_dem = f_apx.ptr_apx_pis.i_pst_rumo
+            # i_pst_rumo (mlabru)
+            f_atv.f_atv_pro_dem = f_apx.ptr_apx_pis.f_pst_true
 
             # inicia a curva pelo menor lado
             scrv.sentido_curva(f_atv)

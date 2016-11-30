@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-generate_prf_json.
+generate_prf_json
 
 DOCUMENT ME!
 
@@ -35,37 +35,23 @@ __date__ = "2015/11"
 # python library
 import json
 import logging
-import time
 
 # libs
 import libs.coords.coord_defs as cdefs
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # ------------------------------------------------------------------------------------------------
-
 def generate_prf_json(fdct_prf, fs_prf):
     """
     DOCUMENT ME!
     """
-    # logger
-    # M_LOG.info("generate_prf_json:>>")
-
-    # M_LOG.debug("generate_prf_json::fs_prf:[{}]".format(fs_prf))
-
     # performance existe no dicionário ?
     l_prf = fdct_prf.get(fs_prf, None)
 
     if l_prf is None:
-
         # logger
         l_log = logging.getLogger("generate_prf_json")
-        l_log.setLevel(logging.NOTSET)
-        l_log.error(u"E01: performance {} não existe no dicionário.".format(fs_prf))
+        l_log.setLevel(logging.ERROR)
+        l_log.error(u"<E01: performance {} não existe no dicionário.".format(fs_prf))
                                                 
         # return
         return None
@@ -77,14 +63,8 @@ def generate_prf_json(fdct_prf, fs_prf):
                  "raz_max_des_crz": int(l_prf.f_prf_raz_max_des_crz * cdefs.D_CNV_MS2FTMIN),  # (m/s -> ft/min)
                  "raz_crv_rot": round(l_prf.f_prf_raz_crv_rot, 1),
                }
-
-    ls_buf = json.dumps(ldct_prf)
-    # M_LOG.debug("generate_prf_json:ls_buf:[{}]".format(ls_buf))
-
-    # logger
-    # M_LOG.info("generate_prf_json:<<")
-
+ 
     # return
-    return ls_buf
+    return json.dumps(ldct_prf)
 
 # < the end >--------------------------------------------------------------------------------------

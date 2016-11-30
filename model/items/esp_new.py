@@ -43,12 +43,6 @@ import model.newton.defs_newton as ldefs
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CEspNEW >------------------------------------------------------------------------------
 
 class CEspNEW(model.CPrcModel):
@@ -59,19 +53,16 @@ class CEspNEW(model.CPrcModel):
         <fixo>MUMOP</fixo>
         <sentido>D</sentido>
         <rumo>274</rumo>
+        <declmag>-21</declmag>
     </espera>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
         @param f_model: model manager
         @param f_data: dados da espera
         @param fs_ver: versão do formato
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
         # check input
         assert f_model
         
@@ -94,8 +85,14 @@ class CEspNEW(model.CPrcModel):
         # sentido da espera
         self.__en_esp_sentido_curva = ldefs.E_MENOR
 
-        # rumo da espera
+        # rumo magnético da espera
         self.__f_esp_rumo = 0.
+
+        # rumo verdadeiro da espera
+        self.__f_esp_true = 0.
+
+        # declinação magnética
+        self.__f_dcl_mag = 0.
 
         # recebeu dados ?
         if f_data is not None:
@@ -109,11 +106,7 @@ class CEspNEW(model.CPrcModel):
                 # copia a espera
                 self.copy_esp(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_esp(self, f_esp):
         """
         copy constructor
@@ -121,9 +114,6 @@ class CEspNEW(model.CPrcModel):
 
         @param f_esp: espera a ser copiada
         """
-        # logger
-        # M_LOG.info("copy_esp:>>")
-                
         # check input
         assert f_esp
 
@@ -136,14 +126,16 @@ class CEspNEW(model.CPrcModel):
         # rumo
         self.__f_esp_rumo = f_esp.f_esp_rumo
 
+        # rumo verdadeiro
+        self.__f_esp_true = f_esp.f_esp_true
+
+        # declinação magnética
+        self.__f_dcl_mag = f_esp.f_dcl_mag
+
         # sentido
         self.__en_esp_sentido_curva = f_esp.en_esp_sentido_curva
 
-        # logger
-        # M_LOG.info("copy_esp:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __load_esp(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados de espera a partir de um dicionário
@@ -151,9 +143,6 @@ class CEspNEW(model.CPrcModel):
         @param fdct_data: dicionário com os dados do espera
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("__load_esp:>>")
-                
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a espera
@@ -176,25 +165,17 @@ class CEspNEW(model.CPrcModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("__load_esp:<<")
-                
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __make_esp(self, fdct_data):
         """
         carrega os dados de espera a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados do espera
         """
-        # logger
-        # M_LOG.info("__make_esp:>>")
-                
         # identificação da espera
         if "nEsp" in fdct_data:
             self.i_prc_id = int(fdct_data["nEsp"])
             self.s_prc_desc = "Espera {:02d}".format(fdct_data["nEsp"])
-            # M_LOG.debug("self.i_prc_id: " + str(self.i_prc_id))
 
         # fixo da espera
         if "fixo" in fdct_data:
@@ -203,7 +184,6 @@ class CEspNEW(model.CPrcModel):
 
             # obtém o indicativo do fixo
             ls_fix = fdct_data["fixo"]
-            # M_LOG.debug("ls_fix: " + str(ls_fix))
 
             # obtém o fixo da espera
             self.__ptr_esp_fix = ldct_fix.get(ls_fix, None)
@@ -215,16 +195,27 @@ class CEspNEW(model.CPrcModel):
                 l_log.setLevel(logging.ERROR)
                 l_log.error(u"<E01: espera:[{}]. Fixo [{}] não existe no dicionário".format(self.i_prc_id, ls_fix))
 
-        # rumo
+        # declinação magnética
+        if "declmag" in fdct_data:
+            self.__f_dcl_mag = float(fdct_data["declmag"])
+
+        # rumo magnético
         if "rumo" in fdct_data:
-            self.__f_esp_rumo = abs(int(fdct_data["rumo"])) % 360
-            # M_LOG.debug("self.__f_esp_rumo: " + str(self.__f_esp_rumo))
+            self.__f_esp_rumo = float(abs(int(fdct_data["rumo"])) % 360)
+
+            # rumo verdadeiro
+            self.__f_esp_true = self.__f_esp_rumo + self.__f_dcl_mag
+            
+            # normaliza o rumo
+            if self.__f_esp_true < 0.:
+                self.__f_esp_true += 360.
+            elif self.__f_esp_true > 360.:
+                self.__f_esp_true -= 360.
 
         # sentido
         if "sentido" in fdct_data:
             # sentido de curva
             lc_sentido = fdct_data["sentido"].strip().upper()
-            # M_LOG.debug("lc_sentido: " + str(lc_sentido))
 
             # valida o sentido de curva
             self.__en_esp_sentido_curva = ldefs.DCT_SENTIDOS_CURVA_INV.get(lc_sentido, ldefs.E_MENOR)
@@ -232,12 +223,28 @@ class CEspNEW(model.CPrcModel):
         # (bool)
         self.v_prc_ok = True
 
-        # logger
-        # M_LOG.info("__make_esp:<<")
-                
     # =============================================================================================
     # data
     # =============================================================================================
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def f_esp_dcl_mag(self):
+        """
+        get declinação magnética
+        """
+        return self.__f_esp_dcl_mag
+
+    @f_esp_dcl_mag.setter
+    def f_esp_dcl_mag(self, f_val):
+        """
+        set declinação magnética
+        """
+        # check input
+        # assert 0. <= f_val <= 360.
+
+        # rumo
+        self.__f_esp_dcl_mag = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -272,6 +279,25 @@ class CEspNEW(model.CPrcModel):
 
         # rumo
         self.__f_esp_rumo = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def f_esp_true(self):
+        """
+        get rumo verdadeiro
+        """
+        return self.__f_esp_true
+
+    @f_esp_true.setter
+    def f_esp_true(self, f_val):
+        """
+        set rumo verdadeiro
+        """
+        # check input
+        # assert 0. <= f_val <= 360.
+
+        # rumo
+        self.__f_esp_true = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

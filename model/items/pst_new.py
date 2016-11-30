@@ -73,7 +73,8 @@ class CPstNEW(model.CPstModel):
         # herdado de CPstModel
         # self.v_pst_ok      # (bool)
         # self.s_pst_indc    # identificação da pista (indicativo)
-        # self.i_pst_rumo    # rumo magnético da pista
+        # self.f_pst_rumo    # rumo magnético da pista
+        # self.f_pst_true    # rumo verdadeiro da pista
         # self.f_pst_x       # X (m)
         # self.f_pst_y       # Y (m)
         # self.f_pst_z       # Y (m)/elevação
@@ -187,7 +188,7 @@ class CPstNEW(model.CPstModel):
 
         # coord (posição) (lat, lng)
         if "coord" in fdct_data:
-            # salva a latitude e longitude
+            # latitude e longitude
             self.__f_pst_lat, self.__f_pst_lng = self.__model.coords.from_dict(fdct_data["coord"])
 
             # cabeceira oposta
@@ -206,8 +207,8 @@ class CPstNEW(model.CPstModel):
 
         # rumo magnético (gr)
         if "rumo" in fdct_data:
-            # salva o rumo (gr)
-            self.i_pst_rumo = int(fdct_data["rumo"])
+            # rumo magnético (gr)
+            self.f_pst_rumo = float(fdct_data["rumo"])
 
         # (bool)
         self.v_pst_ok = True

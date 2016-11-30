@@ -2,7 +2,7 @@
 <!DOCTYPE exercicios>
 <exercicios VERSION="0001" CODE="1961" FORMAT="NEWTON">
 
-    <exercicio nExe="SBBR002">
+    <exercicio nExe="SBBR001">
         <descricao>Teste Operacional</descricao>
         <horainicio>06:00</horainicio>
     </exercicio>

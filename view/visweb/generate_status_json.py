@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-generate_status_json.
+generate_status_json
 
 DOCUMENT ME!
 
@@ -40,46 +40,36 @@ import time
 # model
 import model.newton.defs_newton as ldefs
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # ------------------------------------------------------------------------------------------------
-
 def generate_status_json(fdct_flight, fs_callsign):
     """
     DOCUMENT ME!
+
     @param fdct_flight: dicionário de flight engines
     @param fs_callsign: aircraft callsign
     """
-    # logger
-    # M_LOG.info("generate_status_json:>>")
-
-    # check input parameters
+    # check input
     assert fdct_flight is not None
     assert fs_callsign
 
-    # M_LOG.debug("generate_status_json::fs_callsign:[{}]".format(fs_callsign))
-
-    # aeronave existe no dicionário ?
+    # aeronave existe ?
     l_anv = fdct_flight.get(fs_callsign, None)
 
     if l_anv is None:
-
         # logger
         l_log = logging.getLogger("generate_status_json")
-        l_log.setLevel(logging.NOTSET)
-        l_log.error(u"E01: aeronave {} não existe no dicionário.".format(fs_callsign))
+        l_log.setLevel(logging.ERROR)
+        l_log.error(u"<E01: aeronave {} não existe.".format(fs_callsign))
                                                 
         # return
         return None
 
-    # M_LOG.debug("generate_status_json:en_trf_fnc_ope:[{}]".format(ldefs.DCT_FNC_OPE[l_anv.en_trf_fnc_ope]))
-
+    # procedimento
     li_prc_id = 0
+
+    # em procedimento ?
     if l_anv.ptr_trf_prc is not None:
+        # procedimento
         li_prc_id = l_anv.ptr_trf_prc.i_prc_id
 
     # monta um dicionário com o status
@@ -87,13 +77,7 @@ def generate_status_json(fdct_flight, fs_callsign):
                     "prc_id": li_prc_id,
                   }
 
-    ls_buf = json.dumps(ldct_status)
-    # M_LOG.debug("generate_status_json:ls_buf:[{}]".format(ls_buf))
-
-    # logger
-    # M_LOG.info("generate_status_json:<<")
-
     # return
-    return ls_buf
+    return json.dumps(ldct_status)
 
 # < the end >--------------------------------------------------------------------------------------

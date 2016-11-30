@@ -33,7 +33,6 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
 import os
 
 import SimpleHTTPServer
@@ -155,5 +154,14 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         except IOError:
             # send error
             self.send_error(404, "File Not Found:[{}]".format(self.path))
+
+    # ---------------------------------------------------------------------------------------------
+    def log_error(self, format, *args): pass
+
+    # ---------------------------------------------------------------------------------------------
+    def log_message(self, format, *args): pass
+
+    # ---------------------------------------------------------------------------------------------
+    def log_request(self, code='-', size='-'): pass
 
 # < the end >--------------------------------------------------------------------------------------

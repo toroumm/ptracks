@@ -93,7 +93,7 @@ class CAerNEW(model.CAerModel):
         self.__f_aer_lng = 0.
                                 
         # declinação magnética (gr)
-        self.__f_aer_decl_mag = 0.
+        self.__f_aer_dcl_mag = 0.
 
         # dicionário de pistas
         self.__dct_aer_pistas = {}
@@ -209,7 +209,7 @@ class CAerNEW(model.CAerModel):
         self.__f_aer_lng = f_aer.f_aer_lng
                                 
         # declinação magnética (gr)
-        self.__f_aer_decl_mag = f_aer.f_aer_decl_mag
+        self.__f_aer_dcl_mag = f_aer.f_aer_dcl_mag
 
         # flag ok (bool)
         self.v_aer_ok = f_aer.v_aer_ok
@@ -262,7 +262,7 @@ class CAerNEW(model.CAerModel):
         # declinação magnética (gr)
         if "declmag" in fdct_data:
             # declinação magnética em graus
-            self.__f_aer_decl_mag = float(fdct_data["declmag"])
+            self.__f_aer_dcl_mag = float(fdct_data["declmag"])
 
         # elevação (m)
         if "elevacao" in fdct_data:
@@ -275,7 +275,6 @@ class CAerNEW(model.CAerModel):
 
         # pistas do aeródromo
         if "pistas" in fdct_data:
-
             # para todas pistas do aeródromo...
             for l_pst in fdct_data["pistas"]:
                 # obtém a identificação da pista
@@ -285,6 +284,15 @@ class CAerNEW(model.CAerModel):
                     # cria pista
                     self.__dct_aer_pistas[li_pst] = pstnew.CPstNEW(self.__model, self, l_pst)
                     assert self.__dct_aer_pistas[li_pst]
+
+                    # ajusta rumo magnético e verdadeiro
+                    self.__dct_aer_pistas[li_pst].f_pst_true = self.__dct_aer_pistas[li_pst].f_pst_rumo + self.__f_aer_dcl_mag
+
+                    # normaliza o rumo
+                    if self.__dct_aer_pistas[li_pst].f_pst_true < 0.:   
+                        self.__dct_aer_pistas[li_pst].f_pst_true += 360. 
+                    elif self.__dct_aer_pistas[li_pst].f_pst_true > 360.:
+                        self.__dct_aer_pistas[li_pst].f_pst_true -= 360.
 
             # calcula a cabeceira oposta de cada pista
             self.calc_cab_oposta()
@@ -298,18 +306,18 @@ class CAerNEW(model.CAerModel):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def f_aer_decl_mag(self):
+    def f_aer_dcl_mag(self):
         """
         get declinação magnética
         """
-        return self.__f_aer_decl_mag
+        return self.__f_aer_dcl_mag
 
-    @f_aer_decl_mag.setter
-    def f_aer_decl_mag(self, f_val):
+    @f_aer_dcl_mag.setter
+    def f_aer_dcl_mag(self, f_val):
         """
         set declinação magnética
         """
-        self.__f_aer_decl_mag = f_val
+        self.__f_aer_dcl_mag = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property
