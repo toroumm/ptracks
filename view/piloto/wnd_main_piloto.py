@@ -27,7 +27,7 @@ initial release (Linux/Python)
 ---------------------------------------------------------------------------------------------------
 """
 __version__ = "$revision: 0.2$"
-__author__ = "Milton Abrunhosa"
+__author__ = "mlabru, sophosoft"
 __date__ = "2015/12"
 
 # < imports >--------------------------------------------------------------------------------------
@@ -39,6 +39,9 @@ import random
 import sys
 import time
 
+import sip
+sip.setapi('QString', 2)
+
 # PyQt library
 from PyQt4 import QtCore
 from PyQt4 import QtGui
@@ -48,7 +51,7 @@ import model.glb_defs as gdefs
 
 import model.piloto.aircraft_piloto as anv
 import model.piloto.defs_piloto as ldefs
-import model.piloto.strip_model as mstp
+# import model.piloto.strip_model as mstp
 import model.piloto.strip_table_model as stm
 
 # view
@@ -57,21 +60,31 @@ import view.piloto.strip_visil as strips
 import view.piloto.wnd_main_piloto_ui as wndmain_ui
 
 import view.piloto.dlg_altitude as dlgalt
+import view.piloto.dlg_decolagem as dlgdep
 import view.piloto.dlg_direcao as dlgdir
+import view.piloto.dlg_dir_fixo as dlgfix
+import view.piloto.dlg_espera as dlgesp
+import view.piloto.dlg_pouso as dlgarr
+import view.piloto.dlg_subida as dlgsub
+import view.piloto.dlg_trajetoria as dlgtrj
 import view.piloto.dlg_velocidade as dlgvel
 
 # control
+import control.control_debug as dbg
+
 import control.events.events_basic as events
 import control.events.events_config as evtcfg
 
 # resources
-import icons_rc
-import resources_visil_rc
+# import icons_rc
+# import resources_visil_rc
 
-# < class CWndMainPiloto >-------------------------------------------------------------------------
+# < class CWndMainPiloto >---------------------------------------------------------------------------
 
 class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
-
+    """
+    DOCUMENT ME!
+    """
     # ---------------------------------------------------------------------------------------------
     # signals
     # C_SIG_STRIP_CHG = QtCore.pyqtSignal(anv.CAircraftPiloto)
@@ -94,9 +107,33 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.__control = f_control
         assert self.__control
 
+        # salva a lista de pousos
+        self.__lst_arr = f_control.model.lst_arr_dep
+        assert self.__lst_arr is not None
+
+        # salva a lista de decolagens
+        self.__lst_dep = f_control.model.lst_arr_dep
+        assert self.__lst_dep is not None
+
+        # salva o dicionário de esperas
+        self.__dct_esp = f_control.model.dct_esp
+        assert self.__dct_esp is not None
+
+        # salva o dicionário de fixos
+        self.__dct_fix = f_control.model.dct_fix
+        assert self.__dct_fix is not None
+
         # salva o dicionário de performances
         self.__dct_prf = f_control.model.dct_prf
         assert self.__dct_prf is not None
+
+        # salva o dicionário de subidas
+        self.__dct_sub = f_control.model.dct_sub
+        assert self.__dct_sub is not None
+
+        # salva o dicionário de trajetórias
+        self.__dct_trj = f_control.model.dct_trj
+        assert self.__dct_trj is not None
 
         # salva o dicionário de aeronaves
         self.__dct_flight = f_control.model.emula_model.dct_flight
@@ -128,11 +165,11 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.setWindowTitle(self.tr("Piloto 0.1 [Pilotagem]", None))
 
         # create windows elements
-        self.__statusbar = statusbar.CStatusBarPiloto(self)
-        assert self.__statusbar
+        self.status_bar = statusbar.CStatusBarPiloto(self)
+        assert self.status_bar
 
         # config statusBar
-        self.setStatusBar(self.__statusbar)
+        self.setStatusBar(self.status_bar)
 
         # create windows elements
         self.__config_strips()
@@ -158,7 +195,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # XXX
         self.xxx()
 
-        # fetch anv data timer (1s cycle)
+        # fetch aircrafts data timer (1s cycle)
         self.__i_timer_fetch = self.startTimer(1000)
 
         # fetch status data timer (2s cycle)
@@ -215,22 +252,54 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
-        # groupBox
-        # self.gbx_comandos.setEnabled(False)
-
-        ###
-        # dialogs
-
-        self.__dlg_altitude = None
-        self.__dlg_direcao = None
-        self.__dlg_velocidade = None
-
         ###
         # buttons
 
-        self.btn_cmd_altitude.setEnabled(True)
-        self.btn_cmd_direcao.setEnabled(True)
-        self.btn_cmd_velocidade.setEnabled(True)
+        # nenhuma aeronave selecionada ?
+        if self.__strip_cur is None:
+            # disable all buttons
+            self.btn_cancela.setEnabled(False)
+
+            self.btn_cmd_altitude.setEnabled(False)
+            self.btn_cmd_direcao.setEnabled(False)
+            self.btn_cmd_velocidade.setEnabled(False)
+
+            self.btn_prc_ape.setEnabled(False)
+            self.btn_prc_apx.setEnabled(False)
+            self.btn_prc_arr.setEnabled(False)
+            self.btn_prc_dep.setEnabled(False)
+            self.btn_prc_dir_fixo.setEnabled(False)
+            self.btn_prc_esp.setEnabled(False)
+            self.btn_prc_ils.setEnabled(False)
+            # self.btn_prc_sub.setEnabled(False)
+            self.btn_prc_trj.setEnabled(False)
+
+            self.btn_cod_emg.setEnabled(False)
+            self.btn_cod_spi.setEnabled(False)
+            self.btn_cod_ssr.setEnabled(False)
+
+        # senão, tem aeronave selecionada
+        else:
+            # enable buttons
+            self.btn_cancela.setEnabled(False)
+
+            self.btn_cmd_altitude.setEnabled(True)
+            self.btn_cmd_direcao.setEnabled(True)
+            self.btn_cmd_velocidade.setEnabled(True)
+
+            self.btn_prc_ape.setEnabled(False)
+            self.btn_prc_apx.setEnabled(False)
+            self.btn_prc_arr.setEnabled(self.__strip_cur.f_alt > 0.)
+            self.btn_prc_dep.setEnabled(self.__strip_cur.f_alt == 0.)
+            self.btn_prc_dir_fixo.setEnabled(True)
+            self.btn_prc_esp.setEnabled(True)
+            self.btn_prc_ils.setEnabled(False)
+            # self.btn_prc_sub.setEnabled(True)
+            self.btn_prc_trj.setEnabled(True)
+
+            self.btn_cod_emg.setEnabled(False)
+            self.btn_cod_spi.setEnabled(False)
+            self.btn_cod_ssr.setEnabled(False)
 
     # ---------------------------------------------------------------------------------------------
     def __config_strips(self):
@@ -299,12 +368,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         @param f_strip: strip selecionada
         """
-        # check input
+        # check input parameters
         # assert f_strip
 
         # nenhuma strip selecionada ?
         if f_strip is None:
-            # return
+            # nenhuma strip selecionada. return
             return
 
         # monta o request de status
@@ -320,22 +389,25 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             # dbg.M_DBG.debug("__get_status:l_status:[{}]".format(l_status))
 
             if (l_status is not None) and (l_status != ""):
-                # salva os dados nos widgets
+                # obtém os dados de status
                 ldct_status = json.loads(l_status)
                 # dbg.M_DBG.debug("__get_status:ldct_status:[{}]".format(ldct_status))
+
+                # salva os dados nos widgets
+                self.__set_status(ldct_status)
 
             # senão, não achou no servidor...
             else:
                 # logger
                 l_log = logging.getLogger("CWndMainPiloto::__get_status")
-                l_log.setLevel(logging.ERROR)
+                l_log.setLevel(logging.NOTSET)
                 l_log.error(u"<E01: aeronave({}) não existe no servidor.".format(f_strip.s_callsign))
 
         # senão, não achou endereço do servidor
         else:
             # logger
             l_log = logging.getLogger("CWndMainPiloto::__get_status")
-            l_log.setLevel(logging.WARNING)
+            l_log.setLevel(logging.NOTSET)
             l_log.warning(u"<E02: srv.addr não existe na configuração.")
 
     # ---------------------------------------------------------------------------------------------
@@ -379,6 +451,13 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.btn_cmd_direcao.clicked.connect(self.__on_btn_cmd_direcao)
         self.btn_cmd_velocidade.clicked.connect(self.__on_btn_cmd_velocidade)
 
+        self.btn_prc_arr.clicked.connect(self.__on_btn_prc_arr)
+        self.btn_prc_dep.clicked.connect(self.__on_btn_prc_dep)
+        self.btn_prc_dir_fixo.clicked.connect(self.__on_btn_prc_dir_fixo)
+        self.btn_prc_esp.clicked.connect(self.__on_btn_prc_esp)
+        # self.btn_prc_sub.clicked.connect(self.__on_btn_prc_sub)
+        self.btn_prc_trj.clicked.connect(self.__on_btn_prc_trj)
+
         # verifica condições de execução
         assert self.btn_send
 
@@ -408,12 +487,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # recebeu um aviso de configuração de exercício ?
         elif isinstance(f_evt, evtcfg.CConfigExe):
             # atualiza exercício
-            self.__statusbar.update_exe(f_evt.s_exe)
+            self.status_bar.update_exe(f_evt.s_exe)
 
         # recebeu um aviso de hora de simulação ?
         elif isinstance(f_evt, evtcfg.CConfigHora):
             # atualiza horário
-            self.__statusbar.update_hora(f_evt.t_hora)
+            self.status_bar.update_hora(f_evt.t_hora)
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -441,8 +520,8 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
-            else:
-                pass  # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -452,11 +531,9 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
-            # já existe a dialog de direção ?
-            if self.__dlg_direcao is None:
-                # cria a dialog de direção
-                self.__dlg_direcao = dlgdir.CDlgDirecao(self.__strip_cur.f_proa, self)
-                assert self.__dlg_direcao
+            # cria a dialog de direção
+            self.__dlg_direcao = dlgdir.CDlgDirecao(self.__strip_cur.f_proa, self)
+            assert self.__dlg_direcao
 
             # exibe a dialog de direção
             if self.__dlg_direcao.exec_():
@@ -468,8 +545,8 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
-            else:
-                pass  # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -480,11 +557,11 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
             # obtém os dados de performance
-            ldct_prf = self.__dct_prf.get(self.__strip_cur.s_prf, None)
-            # dbg.M_DBG.debug("ldct_prf:[{}]".format(ldct_prf))
+            ldat_prf = self.__dct_prf.get(self.__strip_cur.s_prf, None)
+            # dbg.M_DBG.debug("ldat_prf:[{}]".format(ldat_prf))
 
             # cria a dialog de velocidade
-            self.__dlg_velocidade = dlgvel.CDlgVelocidade(self.__strip_cur, ldct_prf, self)
+            self.__dlg_velocidade = dlgvel.CDlgVelocidade(self.__strip_cur, ldat_prf, self)
             assert self.__dlg_velocidade
 
             # exibe a dialog de velocidade
@@ -497,8 +574,161 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
-            else:
-                pass  # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_arr(self):
+        """
+        callback do botão procedimento de pouso da botoeira
+        """
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de pouso
+            ldlg_pouso = dlgarr.CDlgPouso(self.__sck_http, self.__dct_config, self.__strip_cur, self.__lst_arr, self)
+            assert ldlg_pouso
+
+            # exibe a dialog de pouso
+            if ldlg_pouso.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_pouso.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(ldlg_pouso.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_dep(self):
+        """
+        callback do botão procedimento de decolagem da botoeira
+        """
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de decolagem
+            ldlg_decolagem = dlgdep.CDlgDecolagem(self.__sck_http, self.__dct_config, self.__strip_cur, self.__lst_dep, self)
+            assert ldlg_decolagem
+
+            # exibe a dialog de pouso
+            if ldlg_decolagem.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_decolagem.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(ldlg_decolagem.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_dir_fixo(self):
+        """
+        callback do botão procedimento de direcionamento a fixo da botoeira
+        """
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de espera
+            ldlg_dir_fixo = dlgfix.CDlgDirFixo(self.__sck_http, self.__dct_config, self.__strip_cur, self.__dct_fix, self)
+            assert ldlg_dir_fixo
+
+            # exibe a dialog de direcionamento a fixo
+            if ldlg_dir_fixo.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_dir_fixo.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(ldlg_dir_fixo.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_esp(self):
+        """
+        callback do botão procedimento de espera da botoeira
+        """
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de espera
+            ldlg_espera = dlgesp.CDlgEspera(self.__sck_http, self.__dct_config, self.__strip_cur, self.__dct_esp, self)
+            assert ldlg_espera
+
+            # exibe a dialog de espera
+            if ldlg_espera.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_espera.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(ldlg_espera.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_sub(self):
+        """
+        callback do botão procedimento de subida da botoeira
+        """
+        # logger
+        # dbg.M_DBG.info("__on_btn_prc_sub:>>")
+
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de subida
+            ldlg_subida = dlgsub.CDlgSubida(self.__sck_http, self.__dct_config, self.__strip_cur, self.__dct_sub, self)
+            assert ldlg_subida
+
+            # exibe a dialog de subida
+            if ldlg_subida.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_subida.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(ldlg_subida.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_trj(self):
+        """
+        callback do botão procedimento de trajetória da botoeira
+        """
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de trajetória
+            ldlg_trajetoria = dlgtrj.CDlgTrajetoria(self.__sck_http, self.__dct_config, self.__strip_cur, self.__dct_trj, self)
+            assert ldlg_trajetoria
+
+            # exibe a dialog de trajetória
+            if ldlg_trajetoria.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_trajetoria.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(ldlg_trajetoria.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
+                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -542,6 +772,9 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
+        # logger
+        # dbg.M_DBG.info("__on_strip_add:>>")
+
         # check exec conditions
         assert self.__scene
         assert self.__stp_model
@@ -584,6 +817,9 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.qtv_stp.setFocus()
         self.qtv_stp.setCurrentIndex(l_index)
         self.qtv_stp.edit(l_index)
+
+        # logger
+        # dbg.M_DBG.info("__on_strip_add:>>")
     '''
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot(QtCore.QModelIndex,QtCore.QModelIndex)
@@ -622,6 +858,9 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # dbg.M_DBG.debug("strip: " + str(self.__strip_cur))
 
+        # reconfig buttons
+        self.__config_buttons()
+
     # ---------------------------------------------------------------------------------------------
     '''
     @QtCore.pyqtSlot(QtCore.QModelIndex, QtCore.QModelIndex)
@@ -630,7 +869,10 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         @param f_index_tl: topLeft index
         @param f_index_br: bottomRight index
         """
-        # check input
+        # logger
+        # dbg.M_DBG.info("__on_strip_data_changed:>>")
+
+        # check input parameters
         assert f_index_tl
 
         # check exec conditions
@@ -639,13 +881,15 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # is index valid ?
         if f_index_tl.isValid():
-
             # get strip
             l_strip = self.__stp_model.lst_strips[f_index_tl.row()]
             assert l_strip
 
             # change strip on scene
             # self.__scene.strip_changed(l_strip)
+
+        # logger
+        # dbg.M_DBG.info("__on_strip_data_changed:<<")
     '''
     # ---------------------------------------------------------------------------------------------
     '''
@@ -654,6 +898,9 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
+        # logger
+        # dbg.M_DBG.info("__on_strip_remove:>>")
+
         # check exec conditions
         assert self.__scene
         assert self.__stp_model
@@ -704,13 +951,16 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # remove strip from scene
         self.__scene.remove_item(l_strip)
+
+        # logger
+        # dbg.M_DBG.info("__on_strip_remove:>>")
     '''
     # ---------------------------------------------------------------------------------------------
     def __read_settings(self):
         """
         DOCUMENT ME!
         """
-        l_settings = QtCore.QSettings("sophosoft", "piloto")
+        l_settings = QtCore.QSettings("ICEA", "Piloto")
 
         l_pos = l_settings.value("pos", QtCore.QPoint(200, 200)).toPoint()
         l_size = l_settings.value("size", QtCore.QSize(400, 400)).toSize()
@@ -733,6 +983,20 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # retorna NÃO
         return False
+
+    # ---------------------------------------------------------------------------------------------
+    def __set_status(self, fdct_status):
+        """
+        DOCUMENT ME!
+        """
+        # obtém a função operacional atual
+        ls_fnc_ope = fdct_status.get("fnc_ope", None)
+
+        # obtém o número do procedimento
+        ls_prc_id = fdct_status.get("prc_id", None)
+
+        # set label
+        self.lbl_prc.setText("{}/{}".format(ls_fnc_ope, ls_prc_id))
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot(QtCore.QTimerEvent)
@@ -785,7 +1049,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
-        l_settings = QtCore.QSettings("sophosoft", "piloto")
+        l_settings = QtCore.QSettings("ICEA", "Piloto")
 
         l_settings.setValue("pos", self.pos())
         l_settings.setValue("size", self.size())
@@ -801,7 +1065,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # dbg.M_DBG.debug("xxx:dct_flight: " + str(self.__dct_flight))
 
         # build the list widgets
-        for i in xrange(8):
+        for i in xrange(10):
             listItem = QtGui.QListWidgetItem(self.qlw_strips)
             listItem.setSizeHint(QtCore.QSize(300, 63))  # Or else the widget items will overlap(irritating bug)
 

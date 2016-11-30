@@ -53,8 +53,9 @@ class CComandoPil(inst.CInstruction):
 
         # herdados de CInstruction
         # self.en_cmd_ope    # comando
-        # self.f_param_1     # parâmetro 1
-        # self.f_param_2     # parâmetro 2
+        # self.f_param_1     # grau / velocidade / altitude
+        # self.f_param_2     # proa / nivel
+        # self.f_param_3     # razão
         # self.v_running     # flag em execução
         # self.s_text        # texto do comando
 
@@ -104,6 +105,11 @@ class CComandoPil(inst.CInstruction):
             self.en_cmd_ope = ldefs.E_CESQ
 
         # parâmetro menor ?
+        elif "MNR" == flst_tok[0]:
+            # comando curva esquerda
+            self.en_cmd_ope = ldefs.E_CMNR
+
+        # senão,...
         else:
             # comando curva menor
             self.en_cmd_ope = ldefs.E_CMNR
@@ -151,7 +157,7 @@ class CComandoPil(inst.CInstruction):
         self.en_cmd_ope = ldefs.E_NIV
 
         # nível
-        self.f_param_1 = float(flst_tok[0])
+        self.f_param_2 = float(flst_tok[0])
 
         # parâmetro razão ?
         if "RAZ" == flst_tok[1]:
@@ -167,7 +173,7 @@ class CComandoPil(inst.CInstruction):
         assert flst_tok
         
         # proa
-        self.f_param_1 = float(flst_tok[0])
+        self.f_param_2 = float(flst_tok[0])
 
         # parâmetro razão ?
         if "RAZ" == flst_tok[1]:
@@ -183,7 +189,7 @@ class CComandoPil(inst.CInstruction):
         assert flst_tok
         
         # razão
-        self.f_param_2 = float(flst_tok[0])
+        self.f_param_3 = float(flst_tok[0])
 
     # ---------------------------------------------------------------------------------------------
     def __cmd_velocidade(self, flst_tok):

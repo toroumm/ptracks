@@ -69,6 +69,7 @@ class CAirspaceNewton(airs.CAirspaceBasic):
         # self.event           # event manager
         # self.config          # config manager
         # self.dct_aer         # dicionário de aeródromos
+        # self.lst_arr_dep     # lista de pousos/decolagens
         # self.dct_fix         # dicionário de fixos
         # self.dct_fix_indc    # dicionário de fixos por indicativo
 

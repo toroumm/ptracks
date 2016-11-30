@@ -55,8 +55,13 @@ class CInstruction(object):
         self.__en_cmd_ope = 0
 
         # parâmetros
+
+        # grau / velocidade / altitude
         self.__f_param_1 = 0.
+        # proa / nivel
         self.__f_param_2 = 0.
+        # razão
+        self.__f_param_3 = 0.
 
         # texto da instrução
         self.__s_text = ""
@@ -116,6 +121,21 @@ class CInstruction(object):
         set parâmetro 2
         """
         self.__f_param_2 = f_val
+                                                        
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def f_param_3(self):
+        """
+        get parâmetro 3
+        """
+        return self.__f_param_3
+                                                        
+    @f_param_3.setter
+    def f_param_3(self, f_val):
+        """
+        set parâmetro 3
+        """
+        self.__f_param_3 = f_val
                                                         
     # ---------------------------------------------------------------------------------------------
     @property

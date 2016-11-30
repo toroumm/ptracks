@@ -132,55 +132,38 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
 
         # comando ainda não está em execução ?
         if not l_cmd_pil.v_running:
-            # força aeronave a abandonar qualquer procedimento
-            abnd.abort_prc(f_atv)
-
-            # obtém o primeiro parâmetro (altitude/nível)
-            lf_param_1 = l_cmd_pil.f_param_1
-            # dbg.M_DBG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
-
-            # obtém o terceiro parâmetro (razão)
-            lf_param_3 = l_cmd_pil.f_param_3
-            # dbg.M_DBG.debug("__comando_pilotagem:lf_param_3:[{}]".format(lf_param_3))
-
             # obtém a altitude desejada (demanda)
             if ldefs.E_ALT == len_cmd_ope:
-                # ajusta demanda
-                f_atv.f_atv_alt_dem = lf_param_1 * cdefs.D_CNV_FT2M
-
-                # razão ?
-                if (lf_param_3 is not None) and (lf_param_3 != 0.):
-                    # ajusta razão de subida/descida
-                    f_atv.f_atv_raz_sub = lf_param_3
+                # ajusta demanda pelo primeiro parâmetro (altitude)
+                f_atv.f_atv_alt_dem = l_cmd_pil.f_param_1 * cdefs.D_CNV_FT2M
 
             # obtém a altitude desejada (demanda)
             elif ldefs.E_NIV == len_cmd_ope:
-                # ajusta demanda
-                f_atv.f_atv_alt_dem = lf_param_1 * 100 * cdefs.D_CNV_FT2M
-
-                # razão ?
-                if (lf_param_3 is not None) and (lf_param_3 != 0.):
-                    # ajusta razão de subida/descida
-                    f_atv.f_atv_raz_sub = lf_param_3
+                # ajusta demanda pelo segundo parâmetro (nível)
+                f_atv.f_atv_alt_dem = l_cmd_pil.f_param_2 * 100 * cdefs.D_CNV_FT2M
 
             # senão,...
             else:
-                # ajusta demanda
-                pass  # f_atv.f_atv_alt_dem = lf_param_1 * cdefs.D_CNV_FT2M
+                # logger
+                l_log = logging.getLogger("CFlightEngine::__cmd_pil_altitude")
+                l_log.setLevel(logging.ERROR)
+                l_log.error(u"<E01: comando operacional ({}) não existe.".format(len_cmd_ope))
 
-            # dbg.M_DBG.debug("__comando_pilotagem:atv_alt_dem:[{}/{}]".format(f_atv.f_atv_alt_dem, f_atv.f_atv_raz_sub))
+            # obtém o terceiro parâmetro (razão)
+            lf_param_3 = l_cmd_pil.f_param_3
+
+            # razão ?
+            if (lf_param_3 is not None) and (lf_param_3 != 0.):
+                # ajusta razão de subida/descida
+                f_atv.f_atv_raz_sub = lf_param_3
 
             # comando em execução
             l_cmd_pil.v_running = True
-
-        # dbg.M_DBG.debug("__comando_pilotagem:alt:[{} ==> {}]".format(f_atv.f_trf_alt_atu, f_atv.f_atv_alt_dem))
 
         # atingiu a altitude desejada ?
         if f_atv.f_trf_alt_atu == f_atv.f_atv_alt_dem:
@@ -199,8 +182,6 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
 
@@ -211,15 +192,12 @@ class CFlightEngine(threading.Thread):
 
             # obtém o primeiro parâmetro (graus)
             lf_param_1 = l_cmd_pil.f_param_1
-            # dbg.M_DBG.debug("__cmd_pil_curva:lf_param_1:[{}]".format(lf_param_1))
 
             # obtém o segundo parâmetro (proa)
             lf_param_2 = l_cmd_pil.f_param_2
-            # dbg.M_DBG.debug("__cmd_pil_curva:lf_param_2:[{}]".format(lf_param_2))
 
             # obtém o terceiro parâmetro (razão)
             lf_param_3 = l_cmd_pil.f_param_3
-            # dbg.M_DBG.debug("__cmd_pil_curva:lf_param_3:[{}]".format(lf_param_3))
 
             # coloca a aeronave em manual
             f_atv.en_trf_fnc_ope = ldefs.E_MANUAL
@@ -227,7 +205,7 @@ class CFlightEngine(threading.Thread):
             # curva a direita ?
             if ldefs.E_CDIR == len_cmd_ope:
                 # graus ?
-                if lf_param_1 is not None:
+                if (lf_param_1 is not None) and (lf_param_1 != 0.):
                     # obtém a proa desejada (demanda)
                     f_atv.f_atv_pro_dem = (360. + f_atv.f_trf_pro_atu + lf_param_1) % 360.
 
@@ -242,7 +220,7 @@ class CFlightEngine(threading.Thread):
                     f_atv.f_atv_pro_dem *= -1
 
                 # razão ?
-                if lf_param_3 is not None:
+                if (lf_param_3 is not None) and (lf_param_3 != 0.):
                     # curva direita (razão positiva)
                     f_atv.f_atv_raz_crv = abs(lf_param_3)
 
@@ -253,7 +231,7 @@ class CFlightEngine(threading.Thread):
             # curva a esquerda ?
             elif ldefs.E_CESQ == len_cmd_ope:
                 # graus ?
-                if lf_param_1 is not None:
+                if (lf_param_1 is not None) and (lf_param_1 != 0.):
                     # obtém a proa desejada (demanda)
                     f_atv.f_atv_pro_dem = (360. + f_atv.f_trf_pro_atu - lf_param_1) % 360.
 
@@ -268,7 +246,7 @@ class CFlightEngine(threading.Thread):
                     f_atv.f_atv_pro_dem *= -1
 
                 # razão ?
-                if lf_param_3 is not None:
+                if (lf_param_3 is not None) and (lf_param_3 != 0.):
                     # curva esquerda (razão negativa)
                     f_atv.f_atv_raz_crv = -abs(lf_param_3)
 
@@ -278,8 +256,29 @@ class CFlightEngine(threading.Thread):
 
             # curva pelo menor ângulo ?
             elif ldefs.E_CMNR == len_cmd_ope:
-                # obtém a proa desejada (demanda)
-                f_atv.f_atv_pro_dem = lf_param_2
+                # graus ?
+                if (lf_param_1 is not None) and (lf_param_1 != 0.):
+                    # obtém a proa desejada (demanda)
+                    f_atv.f_atv_pro_dem = (360. + f_atv.f_trf_pro_atu + lf_param_1) % 360.
+
+                # proa ?
+                elif lf_param_2 is not None:
+                    # obtém a proa desejada (demanda)
+                    f_atv.f_atv_pro_dem = lf_param_2 % 360.
+
+                # senão, curva indefinida... !!!REVER!!!
+                else:
+                    # proa negativa
+                    f_atv.f_atv_pro_dem *= -1
+
+                # razão ?
+                if (lf_param_3 is not None) and (lf_param_3 != 0.):
+                    # razão de curva
+                    f_atv.f_atv_raz_crv = abs(lf_param_3)
+
+                else:
+                    # razão de curva
+                    f_atv.f_atv_raz_crv = abs(f_atv.f_atv_raz_crv)
 
                 # força a curva pelo menor ângulo
                 scrv.sentido_curva(f_atv)
@@ -292,12 +291,15 @@ class CFlightEngine(threading.Thread):
                 # força a curva pelo menor ângulo
                 scrv.sentido_curva(f_atv)
 
-            # dbg.M_DBG.debug("__cmd_pil_curva:atv_pro_dem:[{}]".format(f_atv.f_atv_pro_dem))
+            # senão,...
+            else:
+                # logger
+                l_log = logging.getLogger("CFlightEngine::__cmd_pil_curva")
+                l_log.setLevel(logging.CRITICAL)
+                l_log.critical(u"<E01: comando operacional ({}) não existe.".format(len_cmd_ope))
 
             # comando em execução
             l_cmd_pil.v_running = True
-
-        # dbg.M_DBG.debug("__cmd_pil_curva:proa:[{} ==> {}]".format(f_atv.f_trf_pro_atu, f_atv.f_atv_pro_dem))
 
         # atingiu a proa desejada ?
         if f_atv.f_trf_pro_atu == f_atv.f_atv_pro_dem:
@@ -346,7 +348,7 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
+        # check go/nogo (I)
         assert self.__cine_data
 
         # obtém o comando de pilotagem atual
@@ -383,7 +385,7 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
+        # check go/nogo (I)
         assert self.__model
 
         # obtém o comando de pilotagem atual
@@ -415,7 +417,7 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
+        # check go/nogo (I)
         assert self.__model
 
         # obtém o comando de pilotagem atual
@@ -452,7 +454,7 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
+        # check go/nogo (I)
         assert self.__model
 
         # obtém o comando de pilotagem atual
@@ -484,15 +486,9 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
-        # assert self.__exe
-        # assert self.__exe.v_exe_ok
-
         # obtém o comando de pilotagem atual
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
-
-        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
@@ -500,36 +496,33 @@ class CFlightEngine(threading.Thread):
         # comando ainda não está em execução ?
         if not l_cmd_pil.v_running:
             # força aeronave a abandonar qualquer procedimento
-            abnd.abort_prc(f_atv)
-
-            # obtém o primeiro parâmetro (graus)
-            lf_param_1 = l_cmd_pil.f_param_1
-            # dbg.M_DBG.debug("__cmd_pil_velocidade:lf_param_1:[{}]".format(lf_param_1))
+            # abnd.abort_prc(f_atv)
 
             # velocidade IAS ?
             if ldefs.E_IAS == len_cmd_ope:
-
                 # obtém a velocidade desejada (demanda)
-                f_atv.f_atv_vel_dem = lf_param_1 * cdefs.D_CNV_KT2MS
-                # dbg.M_DBG.debug("__cmd_pil_velocidade:f_atv.f_atv_vel_dem:[{}]".format(f_atv.f_atv_vel_dem))
+                f_atv.f_atv_vel_dem = l_cmd_pil.f_param_1 * cdefs.D_CNV_KT2MS
 
             # velocidade MACH ?
             elif ldefs.E_MACH == len_cmd_ope:
                 # if f_atv.f_trf_alt_atu >= self.__exe.f_exe_niv_apr_mac:
-
                     # obtém a velocidade desejada (demanda)
-                    # f_atv.f_trf_vel_mac_dem = lf_param_1
+                    # f_atv.f_trf_vel_mac_dem = l_cmd_pil.f_param_1
 
                     # f_atv.f_atv_vel_dem = calcIASDemanda(f_atv.f_trf_vel_mac_dem,
                     #                                      f_atv.f_atv_alt_dem,
                     #                                      self.__exe.f_exe_var_temp_isa)
-
                 pass
+
+            # senão,...
+            else:
+                # logger
+                l_log = logging.getLogger("CFlightEngine::__cmd_pil_velocidade")
+                l_log.setLevel(logging.CRITICAL)
+                l_log.critical(u"<E01: comando operacional ({}) não existe.".format(len_cmd_ope))
 
             # comando em execução
             l_cmd_pil.v_running = True
-
-        # dbg.M_DBG.debug("__cmd_pil_velocidade:f_atv.f_trf_vel_atu:[{}]".format(f_atv.f_trf_vel_atu))
 
         # velocidade IAS ?
         if ldefs.E_IAS == len_cmd_ope:
@@ -553,15 +546,12 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
+        # check go/nogo
         assert self.__cine_data
 
-        # verifica condições para execução (II)
+        # aeronave ativa ?
         if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-            # logger
-            # dbg.M_DBG.info(u"__comando_pilotagem:<E01: aeronave não ativa.")
-
-            # cai fora...
+            # aeronave não ativa. cai fora...
             return
 
         # (f_atv.en_trf_fnc_ope in [ldefs.E_NOPROC, ldefs.E_MANUAL, ldefs.E_DIRFIXO]):
@@ -666,7 +656,7 @@ class CFlightEngine(threading.Thread):
         # check input
         assert fs_cmd
 
-        # verifica condições para execução
+        # check go/nogo
         assert self.__atv
 
         # coloca o comando na lista do tráfego
@@ -681,12 +671,9 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução
+        # aeronave ativa ?
         if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-            # logger
-            # dbg.M_DBG.info(u"__move_no_solo:<E01: aeronave não ativa.")
-
-            # cai fora...
+            # aeronave não ativa. cai fora...
             return
 
         # muda a função operacional para decolagem
@@ -703,18 +690,15 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # verifica condições para execução (I)
+        # check go/nogo
         assert self.__cine_data
         assert self.__cine_voo
 
         # dbg.M_DBG.debug("__procedimentos:en_trf_fnc_ope:[{}]".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
 
-        # verifica condições para execução (II)
+        # aeronave ativa ?
         if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
-            # logger
-            # dbg.M_DBG.info(u"__procedimentos:<E01: aeronave não ativa.")
-
-            # cai fora...
+            # aeronave não ativa. cai fora...
             return
 
         # função operacional é aproximação ?
@@ -731,14 +715,12 @@ class CFlightEngine(threading.Thread):
         # Y - "toque e arremetida" ?
         # Z - arremeter para a perna do vento ?
         # elif f_atv.c_atv_status_voo in ['X', 'Y', 'Z']:
-
             # procedimento de arremetida
             # self.__cine_voo.prc_arremeter ()
 
         # K - circuito, entrada pela perna do contra vento ?
         # V - circuito, entrada pela perna do vento ?
         # elif f_atv.c_atv_status_voo in ['K', 'V']:
-
             # procedimento de circuito
             # self.__cine_voo.prc_circuito ()
 
@@ -809,14 +791,14 @@ class CFlightEngine(threading.Thread):
             # logger
             l_log = logging.getLogger("CFlightEngine::__procedimentos")
             l_log.setLevel(logging.WARNING)
-            l_log.warning("<E02: função operacional {} desconhecida".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
+            l_log.warning(u"<E02: função operacional {} desconhecida".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
 
     # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         updates the position of all flights in the flight list
         """
-        # verifica condições para execução
+        # check go/nogo
         assert self.__atv
         # assert self.__cine_solo
         assert self.__cine_voo
