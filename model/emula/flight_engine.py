@@ -53,11 +53,8 @@ import model.emula.cine.sentido_curva as scrv
 import model.newton.defs_newton as ldefs
 import model.piloto.comando_piloto as cmdpil
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
+# control
+import control.control_debug as dbg
 
 # < class CFlightEngine >--------------------------------------------------------------------------
 
@@ -66,7 +63,6 @@ class CFlightEngine(threading.Thread):
     the object holding all information concerning a flight
     """
     # ---------------------------------------------------------------------------------------------
-
     # contador global de loops
     # C_COUNT = 0L
 
@@ -74,16 +70,12 @@ class CFlightEngine(threading.Thread):
     # C_LATE = 0L
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_control, f_atv):
         """
         @param f_control: control manager
         @param f_atv: aeronave ativa
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # check input parameters
+        # check input
         assert f_control
         assert f_atv
 
@@ -128,26 +120,19 @@ class CFlightEngine(threading.Thread):
         self.__cine_voo = cinvoo.CCineVoo(self, f_control)
         assert self.__cine_voo
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_altitude(self, f_atv):
         """
         comando de pilotagem de altitude
         """
-        # logger
-        # M_LOG.info("__cmd_pil_altitude:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # obtém o comando de pilotagem atual
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
@@ -159,11 +144,11 @@ class CFlightEngine(threading.Thread):
 
             # obtém o primeiro parâmetro (altitude/nível)
             lf_param_1 = l_cmd_pil.f_param_1
-            # M_LOG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
+            # dbg.M_DBG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
 
             # obtém o terceiro parâmetro (razão)
             lf_param_3 = l_cmd_pil.f_param_3
-            # M_LOG.debug("__comando_pilotagem:lf_param_3:[{}]".format(lf_param_3))
+            # dbg.M_DBG.debug("__comando_pilotagem:lf_param_3:[{}]".format(lf_param_3))
 
             # obtém a altitude desejada (demanda)
             if ldefs.E_ALT == len_cmd_ope:
@@ -190,38 +175,31 @@ class CFlightEngine(threading.Thread):
                 # ajusta demanda
                 pass  # f_atv.f_atv_alt_dem = lf_param_1 * cdefs.D_CNV_FT2M
 
-            # M_LOG.debug("__comando_pilotagem:atv_alt_dem:[{}/{}]".format(f_atv.f_atv_alt_dem, f_atv.f_atv_raz_sub))
+            # dbg.M_DBG.debug("__comando_pilotagem:atv_alt_dem:[{}/{}]".format(f_atv.f_atv_alt_dem, f_atv.f_atv_raz_sub))
 
             # comando em execução
             l_cmd_pil.v_running = True
 
-        # M_LOG.debug("__comando_pilotagem:alt:[{} ==> {}]".format(f_atv.f_trf_alt_atu, f_atv.f_atv_alt_dem))
+        # dbg.M_DBG.debug("__comando_pilotagem:alt:[{} ==> {}]".format(f_atv.f_trf_alt_atu, f_atv.f_atv_alt_dem))
 
         # atingiu a altitude desejada ?
         if f_atv.f_trf_alt_atu == f_atv.f_atv_alt_dem:
             # aponta para o próximo comando
             del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_altitude:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_curva(self, f_atv):
         """
         comando de pilotagem de curva
         """
-        # logger
-        # M_LOG.info("__cmd_pil_curva:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # obtém o comando de pilotagem atual
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
@@ -233,15 +211,15 @@ class CFlightEngine(threading.Thread):
 
             # obtém o primeiro parâmetro (graus)
             lf_param_1 = l_cmd_pil.f_param_1
-            # M_LOG.debug("__cmd_pil_curva:lf_param_1:[{}]".format(lf_param_1))
+            # dbg.M_DBG.debug("__cmd_pil_curva:lf_param_1:[{}]".format(lf_param_1))
 
             # obtém o segundo parâmetro (proa)
             lf_param_2 = l_cmd_pil.f_param_2
-            # M_LOG.debug("__cmd_pil_curva:lf_param_2:[{}]".format(lf_param_2))
+            # dbg.M_DBG.debug("__cmd_pil_curva:lf_param_2:[{}]".format(lf_param_2))
 
             # obtém o terceiro parâmetro (razão)
             lf_param_3 = l_cmd_pil.f_param_3
-            # M_LOG.debug("__cmd_pil_curva:lf_param_3:[{}]".format(lf_param_3))
+            # dbg.M_DBG.debug("__cmd_pil_curva:lf_param_3:[{}]".format(lf_param_3))
 
             # coloca a aeronave em manual
             f_atv.en_trf_fnc_ope = ldefs.E_MANUAL
@@ -314,46 +292,39 @@ class CFlightEngine(threading.Thread):
                 # força a curva pelo menor ângulo
                 scrv.sentido_curva(f_atv)
 
-            # M_LOG.debug("__cmd_pil_curva:atv_pro_dem:[{}]".format(f_atv.f_atv_pro_dem))
+            # dbg.M_DBG.debug("__cmd_pil_curva:atv_pro_dem:[{}]".format(f_atv.f_atv_pro_dem))
 
             # comando em execução
             l_cmd_pil.v_running = True
 
-        # M_LOG.debug("__cmd_pil_curva:proa:[{} ==> {}]".format(f_atv.f_trf_pro_atu, f_atv.f_atv_pro_dem))
+        # dbg.M_DBG.debug("__cmd_pil_curva:proa:[{} ==> {}]".format(f_atv.f_trf_pro_atu, f_atv.f_atv_pro_dem))
 
         # atingiu a proa desejada ?
         if f_atv.f_trf_pro_atu == f_atv.f_atv_pro_dem:
             # aponta para o próximo comando
             del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_curva:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_decolagem(self, f_atv):
         """
         comando de pilotagem de decolagem
         """
-        # logger
-        # M_LOG.info("__cmd_pil_decolagem:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # obtém o comando de pilotagem atual
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o primeiro parâmetro (aeródromo)
         lf_aer = l_cmd_pil.f_param_1
-        # M_LOG.debug("__cmd_pil_decolagem:lf_aer:[{}]".format(lf_aer))
+        # dbg.M_DBG.debug("__cmd_pil_decolagem:lf_aer:[{}]".format(lf_aer))
 
         # obtém o segundo parâmetro (pista)
         lf_pst = l_cmd_pil.f_param_2
-        # M_LOG.debug("__cmd_pil_decolagem:lf_pst:[{}]".format(lf_pst))
+        # dbg.M_DBG.debug("__cmd_pil_decolagem:lf_pst:[{}]".format(lf_pst))
 
         # aeródromo e pista da decolagem
         f_atv.ptr_atv_aer, f_atv.ptr_atv_pst = self.__model.airspace.get_aer_pst(lf_aer, lf_pst)
@@ -367,19 +338,12 @@ class CFlightEngine(threading.Thread):
         # aponta para o próximo comando
         del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_decolagem:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_dir_fixo(self, f_atv):
         """
         comando de pilotagem de dir_fixo
         """
-        # logger
-        # M_LOG.info("__cmd_pil_dir_fixo:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
@@ -389,7 +353,7 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o dicionário de fixos
         ldct_fix = self.__cine_voo.dct_fix
@@ -397,7 +361,7 @@ class CFlightEngine(threading.Thread):
 
         # obtém fixo a bloquear
         f_atv.ptr_atv_fix_prc = ldct_fix.get(l_cmd_pil.f_param_1, None)
-        # M_LOG.debug("__cmd_pil_dir_fixo:ptr_atv_fix_prc:[{}/{}]".format(f_atv.ptr_atv_fix_prc.i_fix_id, f_atv.ptr_atv_fix_prc.s_fix_desc))
+        # dbg.M_DBG.debug("__cmd_pil_dir_fixo:ptr_atv_fix_prc:[{}/{}]".format(f_atv.ptr_atv_fix_prc.i_fix_id, f_atv.ptr_atv_fix_prc.s_fix_desc))
 
         # status da interceptação ao fixo
         self.__cine_data.v_interceptou_fixo = False
@@ -411,19 +375,12 @@ class CFlightEngine(threading.Thread):
         # aponta para o próximo comando
         del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_dir_fixo:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_espera(self, f_atv):
         """
         comando de pilotagem de espera
         """
-        # logger
-        # M_LOG.info("__cmd_pil_espera:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
@@ -433,16 +390,16 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o primeiro parâmetro (número da espera)
         lf_param_1 = int(l_cmd_pil.f_param_1)
-        # M_LOG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
+        # dbg.M_DBG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
 
         # procedimento e função operacional
         f_atv.ptr_trf_prc, f_atv.en_trf_fnc_ope = self.__model.airspace.get_ptr_prc("ESP{:03d}".format(lf_param_1))
-        # M_LOG.debug("ptr_trf_prc...: " + str("ESP{:03d}".format(lf_param_1)))
-        # M_LOG.debug("en_trf_fnc_ope: " + str(f_atv.en_trf_fnc_ope))
+        # dbg.M_DBG.debug("ptr_trf_prc...: " + str("ESP{:03d}".format(lf_param_1)))
+        # dbg.M_DBG.debug("en_trf_fnc_ope: " + str(f_atv.en_trf_fnc_ope))
 
         # fase de verificar condições
         f_atv.en_atv_fase = ldefs.E_FASE_ZERO
@@ -450,19 +407,12 @@ class CFlightEngine(threading.Thread):
         # aponta para o próximo comando
         del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_espera:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_pouso(self, f_atv):
         """
         comando de pilotagem de pouso
         """
-        # logger
-        # M_LOG.info("__cmd_pil_pouso:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
@@ -472,15 +422,15 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o primeiro parâmetro (aeródromo)
         lf_aer = l_cmd_pil.f_param_1
-        # M_LOG.debug("__comando_pilotagem:lf_aer:[{}]".format(lf_aer))
+        # dbg.M_DBG.debug("__comando_pilotagem:lf_aer:[{}]".format(lf_aer))
 
         # obtém o segundo parâmetro (pista)
         lf_pst = l_cmd_pil.f_param_2
-        # M_LOG.debug("__comando_pilotagem:lf_pst:[{}]".format(lf_pst))
+        # dbg.M_DBG.debug("__comando_pilotagem:lf_pst:[{}]".format(lf_pst))
 
         # aeródromo e pista do pouso
         f_atv.ptr_atv_aer, f_atv.ptr_atv_pst = self.__model.airspace.get_aer_pst(lf_aer, lf_pst)
@@ -494,19 +444,12 @@ class CFlightEngine(threading.Thread):
         # aponta para o próximo comando
         del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_pouso:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_trajetoria(self, f_atv):
         """
         comando de pilotagem de trajetória
         """
-        # logger
-        # M_LOG.info("__cmd_pil_trajetoria:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
@@ -516,16 +459,16 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o primeiro parâmetro (número da trajetória)
         lf_param_1 = int(l_cmd_pil.f_param_1)
-        # M_LOG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
+        # dbg.M_DBG.debug("__comando_pilotagem:lf_param_1:[{}]".format(lf_param_1))
 
         # procedimento e função operacional
         f_atv.ptr_trf_prc, f_atv.en_trf_fnc_ope = self.__model.airspace.get_ptr_prc("TRJ{:03d}".format(lf_param_1))
-        # M_LOG.debug("ptr_trf_prc...: " + str("TRJ{:03d}".format(lf_param_1)))
-        # M_LOG.debug("en_trf_fnc_ope: " + str(f_atv.en_trf_fnc_ope))
+        # dbg.M_DBG.debug("ptr_trf_prc...: " + str("TRJ{:03d}".format(lf_param_1)))
+        # dbg.M_DBG.debug("en_trf_fnc_ope: " + str(f_atv.en_trf_fnc_ope))
 
         # fase de verificar condições
         f_atv.en_atv_fase = ldefs.E_FASE_ZERO
@@ -533,19 +476,12 @@ class CFlightEngine(threading.Thread):
         # aponta para o próximo comando
         del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_trajetoria:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __cmd_pil_velocidade(self, f_atv):
         """
         comando de pilotagem de velocidade
         """
-        # logger
-        # M_LOG.info("__cmd_pil_velocidade:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
@@ -556,7 +492,7 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
@@ -568,14 +504,14 @@ class CFlightEngine(threading.Thread):
 
             # obtém o primeiro parâmetro (graus)
             lf_param_1 = l_cmd_pil.f_param_1
-            # M_LOG.debug("__cmd_pil_velocidade:lf_param_1:[{}]".format(lf_param_1))
+            # dbg.M_DBG.debug("__cmd_pil_velocidade:lf_param_1:[{}]".format(lf_param_1))
 
             # velocidade IAS ?
             if ldefs.E_IAS == len_cmd_ope:
 
                 # obtém a velocidade desejada (demanda)
                 f_atv.f_atv_vel_dem = lf_param_1 * cdefs.D_CNV_KT2MS
-                # M_LOG.debug("__cmd_pil_velocidade:f_atv.f_atv_vel_dem:[{}]".format(f_atv.f_atv_vel_dem))
+                # dbg.M_DBG.debug("__cmd_pil_velocidade:f_atv.f_atv_vel_dem:[{}]".format(f_atv.f_atv_vel_dem))
 
             # velocidade MACH ?
             elif ldefs.E_MACH == len_cmd_ope:
@@ -593,7 +529,7 @@ class CFlightEngine(threading.Thread):
             # comando em execução
             l_cmd_pil.v_running = True
 
-        # M_LOG.debug("__cmd_pil_velocidade:f_atv.f_trf_vel_atu:[{}]".format(f_atv.f_trf_vel_atu))
+        # dbg.M_DBG.debug("__cmd_pil_velocidade:f_atv.f_trf_vel_atu:[{}]".format(f_atv.f_trf_vel_atu))
 
         # velocidade IAS ?
         if ldefs.E_IAS == len_cmd_ope:
@@ -609,19 +545,12 @@ class CFlightEngine(threading.Thread):
                 # aponta para o próximo comando
                 del f_atv.lst_atv_cmd_pil[0]
 
-        # logger
-        # M_LOG.info("__cmd_pil_velocidade:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __comando_pilotagem(self, f_atv):
         """
         checa se a aeronave segue vários comandos de pilotagem
         """
-        # logger
-        # M_LOG.info("__comando_pilotagem:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
@@ -630,7 +559,7 @@ class CFlightEngine(threading.Thread):
         # verifica condições para execução (II)
         if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
             # logger
-            # M_LOG.info(u"__comando_pilotagem:<E01: aeronave não ativa.")
+            # dbg.M_DBG.info(u"__comando_pilotagem:<E01: aeronave não ativa.")
 
             # cai fora...
             return
@@ -648,7 +577,7 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # M_LOG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
+        # dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
 
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
@@ -727,21 +656,14 @@ class CFlightEngine(threading.Thread):
             # inicia função operacional
             f_atv.en_trf_fnc_ope = len_cmd_ope
 
-        # logger
-        # M_LOG.info("__comando_pilotagem:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def instruction(self, fs_cmd):
         """
         faz o parse da mensagem de pilotagem recebida
 
         @param fs_cmd: mensagem
         """
-        # logger
-        # M_LOG.info("instruction:>>")
-
-        # check input parameters
+        # check input
         assert fs_cmd
 
         # verifica condições para execução
@@ -749,27 +671,20 @@ class CFlightEngine(threading.Thread):
 
         # coloca o comando na lista do tráfego
         self.__atv.lst_atv_cmd_pil.append(cmdpil.CComandoPil(fs_cmd))
-        # M_LOG.debug("instruction:lst_atv_cmd_pil:[{}]".format(self.__atv.lst_atv_cmd_pil))
-
-        # logger
-        # M_LOG.info("instruction:<<")
+        # dbg.M_DBG.debug("instruction:lst_atv_cmd_pil:[{}]".format(self.__atv.lst_atv_cmd_pil))
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __move_no_solo(self, f_atv):
         """
         move uma aeronave no solo
         """
-        # logger
-        # M_LOG.info("__move_no_solo:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução
         if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
             # logger
-            # M_LOG.info(u"__move_no_solo:<E01: aeronave não ativa.")
+            # dbg.M_DBG.info(u"__move_no_solo:<E01: aeronave não ativa.")
 
             # cai fora...
             return
@@ -780,31 +695,24 @@ class CFlightEngine(threading.Thread):
         # fase de preparação
         f_atv.en_atv_fase = ldefs.E_FASE_ZERO
 
-        # logger
-        # M_LOG.info("__move_no_solo:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __procedimentos(self, f_atv):
         """
         verificar e direcionar a aeronave a um procedimento
         """
-        # logger
-        # M_LOG.info("__procedimentos:>>")
-
-        # check input parameters
+        # check input
         assert f_atv
 
         # verifica condições para execução (I)
         assert self.__cine_data
         assert self.__cine_voo
 
-        # M_LOG.debug("__procedimentos:en_trf_fnc_ope:[{}]".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
+        # dbg.M_DBG.debug("__procedimentos:en_trf_fnc_ope:[{}]".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
 
         # verifica condições para execução (II)
         if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
             # logger
-            # M_LOG.info(u"__procedimentos:<E01: aeronave não ativa.")
+            # dbg.M_DBG.info(u"__procedimentos:<E01: aeronave não ativa.")
 
             # cai fora...
             return
@@ -903,18 +811,11 @@ class CFlightEngine(threading.Thread):
             l_log.setLevel(logging.WARNING)
             l_log.warning("<E02: função operacional {} desconhecida".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
 
-        # logger
-        # M_LOG.info("__procedimentos:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def run(self):
         """
         updates the position of all flights in the flight list
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # verifica condições para execução
         assert self.__atv
         # assert self.__cine_solo
@@ -930,7 +831,7 @@ class CFlightEngine(threading.Thread):
 
         # timestamp of the last turn
         self.__atv.l_atv_time_ant = self.__sim_time.obtem_hora_sim()
-        # M_LOG.debug("l_atv_time_ant:[{}]".format(self.__atv.l_atv_time_ant))
+        # dbg.M_DBG.debug("l_atv_time_ant:[{}]".format(self.__atv.l_atv_time_ant))
 
         # inicia o timer
         lf_call_time = time.time()
@@ -943,12 +844,12 @@ class CFlightEngine(threading.Thread):
             # aeronave em movimento ?
             if 1:  # self.__atv.v_atv_movi:
                 if self.__atv.ptr_trf_prc is not None:
-                    pass  # M_LOG.debug("run:en_trf_fnc_ope.:[{}/{}/{}]".format(self.__atv.s_trf_ind, ldefs.DCT_FNC_OPE[self.__atv.en_trf_fnc_ope], self.__atv.ptr_trf_prc.i_prc_id))
+                    pass  # dbg.M_DBG.debug("run:en_trf_fnc_ope.:[{}/{}/{}]".format(self.__atv.s_trf_ind, ldefs.DCT_FNC_OPE[self.__atv.en_trf_fnc_ope], self.__atv.ptr_trf_prc.i_prc_id))
 
                 else:
-                    pass  # M_LOG.debug("run:en_trf_fnc_ope.:[{}/{}]".format(self.__atv.s_trf_ind, ldefs.DCT_FNC_OPE[self.__atv.en_trf_fnc_ope]))
+                    pass  # dbg.M_DBG.debug("run:en_trf_fnc_ope.:[{}/{}]".format(self.__atv.s_trf_ind, ldefs.DCT_FNC_OPE[self.__atv.en_trf_fnc_ope]))
 
-                # M_LOG.debug("run:lst_atv_cmd_pil:[{}]".format(self.__atv.lst_atv_cmd_pil))
+                # dbg.M_DBG.debug("run:lst_atv_cmd_pil:[{}]".format(self.__atv.lst_atv_cmd_pil))
 
                 # existem comandos de pilotagem ?
                 if len(self.__atv.lst_atv_cmd_pil) > 0:
@@ -963,7 +864,7 @@ class CFlightEngine(threading.Thread):
                 # atualiza dados dinâmicos da aeronave
                 self.__cine_voo.update_cinematica()
 
-                # M_LOG.debug("run:en_trf_fnc_ope(2):[{}]".format(ldefs.DCT_FNC_OPE[self.__atv.en_trf_fnc_ope]))
+                # dbg.M_DBG.debug("run:en_trf_fnc_ope(2):[{}]".format(ldefs.DCT_FNC_OPE[self.__atv.en_trf_fnc_ope]))
 
                 # tem procedimento ?
                 if ldefs.E_NOPROC != self.__atv.en_trf_fnc_ope:
@@ -993,13 +894,10 @@ class CFlightEngine(threading.Thread):
 
                 # calcula o percentual de erro
                 # lf_erro = (float(CFlightEngine.C_LATE) / float(CFlightEngine.C_COUNT)) * 100.
-                # M_LOG.error(">>>>>>>>>>>> ERRO GLOBAL {}/{} = {} !!!!!!!! <<<<<<<<<<<<<<<<<<".format(CFlightEngine.C_LATE, CFlightEngine.C_COUNT, lf_erro))
+                # dbg.M_DBG.error(">>>>>>>>>>>> ERRO GLOBAL {}/{} = {} !!!!!!!! <<<<<<<<<<<<<<<<<<".format(CFlightEngine.C_LATE, CFlightEngine.C_COUNT, lf_erro))
 
                 # reinicia o timer
                 lf_call_time = time.time()
-
-        # logger
-        # M_LOG.info("run:<<")
 
     # =============================================================================================
     # data

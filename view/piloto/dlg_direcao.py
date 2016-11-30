@@ -3,7 +3,8 @@
 """
 ---------------------------------------------------------------------------------------------------
 dlg_direcao
-mantém as informações sobre a dialog de direção.
+
+mantém as informações sobre a dialog de direção
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,20 +33,17 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
 import os
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # view
 import view.piloto.dlg_direcao_ui as dlg
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# control
+import control.control_debug as dbg
 
 # < class CDlgDirecao >----------------------------------------------------------------------------
 
@@ -54,15 +52,11 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
     mantém as informações sobre a dialog de direção
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, ff_proa, f_parent=None):
         """
-        @param f_control: control manager.
-        @param f_parent: janela pai.
+        @param f_control: control manager
+        @param f_parent: janela pai
         """
-        # logger
-        M_LOG.info("__init__:>>")
-
         # init super class
         super(CDlgDirecao, self).__init__(f_parent)
 
@@ -91,18 +85,11 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
         # inicia os parâmetros da direção
         self.__update_command()
 
-        # logger
-        M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
-        # logger
-        M_LOG.info("__config_connects:>>")
-
         # conecta groupBox
         self.gbx_sentido.clicked.connect(self.__on_gbx_clicked)
         self.gbx_direcao.clicked.connect(self.__on_gbx_clicked)
@@ -125,43 +112,27 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
         # conecta botão Cancela da edição de direção
         # self.bbx_direcao.rejected.connect(self.__reject)
 
-        # logger
-        M_LOG.info("__config_connects:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_texts(self):
-
-        # logger
-        M_LOG.info("__config_texts:>>")
-
+        """
+        DOCUMENT ME!
+        """
         # configura títulos e mensagens
         self.__txt_settings = "CDlgDirecao"
 
-        # logger
-        M_LOG.info("__config_texts:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def get_data(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("get_data:><")
-
         # return command line
         return self.lbl_comando.text()
 
     # ---------------------------------------------------------------------------------------------
-
     def __restore_settings(self):
         """
         restaura as configurações salvas para esta janela
         """
-        # logger
-        M_LOG.info("__restore_settings:>>")
-
         # obtém os settings
         l_set = QtCore.QSettings("sophosoft", "piloto")
         assert l_set
@@ -169,18 +140,11 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
         # restaura geometria da janela
         self.restoreGeometry(l_set.value("%s/Geometry" % (self.__txt_settings)).toByteArray())
 
-        # logger
-        M_LOG.info("__restore_settings:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __update_command(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__update_command:>>")
-
         # inicia o comando
         ls_cmd = "CURVA "
 
@@ -198,7 +162,6 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
 
         # direção ?
         if self.gbx_direcao.isChecked():
-
             # graus ?
             if self.rbt_grau.isChecked():
                 ls_cmd += "{} GRAUS ".format(self.sbx_dir.value())
@@ -214,59 +177,35 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
         # coloca o comando no label
         self.lbl_comando.setText(ls_cmd)
 
-        # logger
-        M_LOG.info("__update_command:<<")
-
     # =============================================================================================
     # edição de campos
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("bool")
     def __on_gbx_clicked(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_gbx_clicked:>>")
-
         # atualiza comando
         self.__update_command()
 
-        # logger
-        M_LOG.info("__on_gbx_clicked:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("bool")
     def __on_rbt_clicked(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_rbt_clicked:>>")
-
         # atualiza comando
         self.__update_command()
 
-        # logger
-        M_LOG.info("__on_rbt_clicked:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("int")
     def __on_sbx_valueChanged(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_sbx_valueChanged:>>")
-
         # atualiza comando
         self.__update_command()
-
-        # logger
-        M_LOG.info("__on_sbx_valueChanged:<<")
 
 # < the end >--------------------------------------------------------------------------------------

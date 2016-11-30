@@ -55,6 +55,7 @@ class CComandoPil(inst.CInstruction):
         # self.en_cmd_ope    # comando
         # self.f_param_1     # parâmetro 1
         # self.f_param_2     # parâmetro 2
+        # self.v_running     # flag em execução
         # self.s_text        # texto do comando
 
         # recebeu uma mensagem ?

@@ -37,7 +37,8 @@ import logging
 import os
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # libs
 import libs.coords.coord_defs as cdefs
@@ -45,11 +46,8 @@ import libs.coords.coord_defs as cdefs
 # view
 import view.piloto.dlg_altitude_ui as dlg
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# control
+import control.control_debug as dbg
 
 # < class CDlgAltitude >---------------------------------------------------------------------------
 
@@ -58,17 +56,13 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
     mantém as informações sobre a dialog de altitude
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_strip_cur, fdct_prf, f_parent=None):
         """
         @param f_strip_cur: strip selecionada
         @param fdct_prf: dicionário de performances
         @param f_parent: janela pai
         """
-        # logger
-        M_LOG.info("__init__:>>")
-
-        # check input parameters
+        # check input
         assert f_strip_cur
 
         # init super class
@@ -101,16 +95,15 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
 
         # performance existe ?
         if fdct_prf is not None:
-
             # faixa de razão
             self.sbx_raz.setRange(2.0, self.__dct_prf["raz_max_sub_crz"])
-            M_LOG.debug("__on_rbt_raz_clicked:raz_max:[{}]".format(self.__dct_prf["raz_max_sub_crz"]))
+            dbg.M_DBG.debug("__on_rbt_raz_clicked:raz_max:[{}]".format(self.__dct_prf["raz_max_sub_crz"]))
 
         # senão,...
         else:
             # faixa de razão
             self.sbx_raz.setRange(2.0, 25.)
-            M_LOG.debug("__on_rbt_raz_clicked:raz_max:[25]")
+            dbg.M_DBG.debug("__on_rbt_raz_clicked:raz_max:[25]")
 
         # configura botões
         self.bbx_altitude.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancela")
@@ -119,18 +112,11 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # inicia os parâmetros da altitude
         self.__update_command()
 
-        # logger
-        M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
-        # logger
-        M_LOG.info("__config_connects:>>")
-
         # conecta groupBox
         self.gbx_razao.clicked.connect(self.__on_gbx_clicked)
 
@@ -148,43 +134,27 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # conecta botão Cancela da edição de altitude
         # self.bbx_altitude.rejected.connect(self.__reject)
 
-        # logger
-        M_LOG.info("__config_connects:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_texts(self):
-
-        # logger
-        M_LOG.info("__config_texts:>>")
-
+        """
+        DOCUMENT ME!
+        """
         # configura títulos e mensagens
         self.__txt_settings = "CDlgAltitude"
 
-        # logger
-        M_LOG.info("__config_texts:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def get_data(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("get_data:><")
-
         # return command line
         return self.lbl_comando.text()
 
     # ---------------------------------------------------------------------------------------------
-
     def __restore_settings(self):
         """
         restaura as configurações salvas para esta janela
         """
-        # logger
-        M_LOG.info("__restore_settings:>>")
-
         # obtém os settings
         l_set = QtCore.QSettings("sophosoft", "piloto")
         assert l_set
@@ -192,18 +162,11 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # restaura geometria da janela
         self.restoreGeometry(l_set.value("%s/Geometry" % (self.__txt_settings)).toByteArray())
 
-        # logger
-        M_LOG.info("__restore_settings:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __update_command(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__update_command:>>")
-
         # direita ?
         if self.rbt_alt.isChecked():
             ls_cmd = "ALT {} ".format(self.sbx_alt.value())
@@ -219,62 +182,46 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # coloca o comando no label
         self.lbl_comando.setText(ls_cmd)
 
-        # logger
-        M_LOG.info("__update_command:<<")
-
     # =============================================================================================
     # edição de campos
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("bool")
     def __on_gbx_clicked(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_gbx_clicked:>>")
-
         # atualiza comando
         self.__update_command()
 
-        # logger
-        M_LOG.info("__on_gbx_clicked:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("bool")
     def __on_rbt_alt_clicked(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_rbt_alt_clicked:>>")
-
         # obtém o valor atual do campo
         li_val = self.sbx_alt.value()
-        M_LOG.debug("__on_rbt_alt_clicked:li_val:[{}]".format(li_val))
+        dbg.M_DBG.debug("__on_rbt_alt_clicked:li_val:[{}]".format(li_val))
 
         # performance existe ?
         if self.__dct_prf is not None:
-
             # altitude máxima é o teto de serviço
             self.sbx_alt.setRange(0, self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT)
-            M_LOG.debug("__on_rbt_alt_clicked:alt_max:[{}]".format(self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT))
+            dbg.M_DBG.debug("__on_rbt_alt_clicked:alt_max:[{}]".format(self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT))
 
         # senão,...
         else:
             # altitude máxima é 50000 ft
             self.sbx_alt.setRange(0, 50000)
-            M_LOG.debug("__on_rbt_alt_clicked:alt_max:[50000]")
+            dbg.M_DBG.debug("__on_rbt_alt_clicked:alt_max:[50000]")
 
         # config spinBox
         self.sbx_alt.setSingleStep(1000)
 
         # está em modo razão ?
         if not self.__v_flag_alt:
-
             # converte para altitude
             self.sbx_alt.setValue(li_val * 100)
 
@@ -284,29 +231,21 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # atualiza comando
         self.__update_command()
 
-        # logger
-        M_LOG.info("__on_rbt_alt_clicked:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("bool")
     def __on_rbt_niv_clicked(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_rbt_niv_clicked:>>")
-
         # obtém o valor atual do campo
         li_val = self.sbx_alt.value()
-        M_LOG.debug("__on_rbt_niv_clicked:li_val:[{}]".format(li_val))
+        dbg.M_DBG.debug("__on_rbt_niv_clicked:li_val:[{}]".format(li_val))
 
         # performance existe ?
         if self.__dct_prf is not None:
-
             # calcula o nível 
             li_nivel = int((self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT) / 100.)
-            M_LOG.debug("__on_rbt_niv_clicked:niv_max:[{}]".format(li_nivel))
+            dbg.M_DBG.debug("__on_rbt_niv_clicked:niv_max:[{}]".format(li_nivel))
 
             # altitude máxima é o teto de serviço
             self.sbx_alt.setRange(0, li_nivel)
@@ -315,14 +254,13 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         else:
             # nível máximo é 500
             self.sbx_alt.setRange(0, 500)
-            M_LOG.debug("__on_rbt_niv_clicked:niv_max:[500]")
+            dbg.M_DBG.debug("__on_rbt_niv_clicked:niv_max:[500]")
 
         # config spinBox
         self.sbx_alt.setSingleStep(10)
 
         # está em modo altitude ?
         if self.__v_flag_alt:
-
             # converte para altitude
             self.sbx_alt.setValue(int(li_val / 100.))
 
@@ -332,9 +270,6 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # atualiza comando
         self.__update_command()
 
-        # logger
-        M_LOG.info("__on_rbt_niv_clicked:<<")
-
     # ---------------------------------------------------------------------------------------------
 
     @QtCore.pyqtSignature("int")
@@ -342,13 +277,7 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_sbx_valueChanged:>>")
-
         # atualiza comando
         self.__update_command()
-
-        # logger
-        M_LOG.info("__on_sbx_valueChanged:<<")
 
 # < the end >--------------------------------------------------------------------------------------

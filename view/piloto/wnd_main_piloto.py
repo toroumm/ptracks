@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-wnd_main_piloto.
+wnd_main_piloto
 
 DOCUMENT ME!
 
@@ -68,16 +68,11 @@ import control.events.events_config as evtcfg
 import icons_rc
 import resources_visil_rc
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
-# < class CWndMainPiloto >---------------------------------------------------------------------------
+# < class CWndMainPiloto >-------------------------------------------------------------------------
 
 class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
+    # ---------------------------------------------------------------------------------------------
     # signals
     # C_SIG_STRIP_CHG = QtCore.pyqtSignal(anv.CAircraftPiloto)
     # C_SIG_STRIP_DEL = QtCore.pyqtSignal(anv.CAircraftPiloto)
@@ -85,15 +80,11 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
     C_SIG_STRIP_SEL = QtCore.pyqtSignal(anv.CAircraftPiloto)
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_control):
         """
-        @param f_control: control manager.
+        @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
+        # check input
         assert f_control
 
         # inicia a super classe
@@ -177,18 +168,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.qtv_stp.setFocus()
         self.qtv_stp.setCurrentIndex(self.__stp_model.index(0, 0))
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
     def about(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("about:>>")
-
         # show about box
         QtGui.QMessageBox.about(self, self.tr("About Piloto", None),
                                       self.tr("Activate runways for arrival in the Settings. Runway Config Dialog\n"
@@ -199,21 +184,14 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
                                               "[vertical navigation and departing aircraft not yet implemented]\n"
                                               "pre-alpha release! Please report bugs to openapproach@aufroof.org", None))
 
-        # logger
-        # M_LOG.info("about:<<")
-
     # ---------------------------------------------------------------------------------------------
     # @QtCore.pyqtSlot()
     def closeEvent(self, f_evt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("closeEvent:>>")
-
         # really quit ?
         if self.__really_quit():
-
             # salva a configuração atual
             self.__write_settings()
 
@@ -232,18 +210,11 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             # ignore
             f_evt.ignore()
 
-        # logger
-        # M_LOG.info("closeEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __config_buttons(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__config_buttons:>>")
-
         # groupBox
         # self.gbx_comandos.setEnabled(False)
 
@@ -261,18 +232,11 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.btn_cmd_direcao.setEnabled(True)
         self.btn_cmd_velocidade.setEnabled(True)
 
-        # logger
-        # M_LOG.info("__config_buttons:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __config_strips(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__config_strips:>>")
-
         ###
         # strips
 
@@ -300,21 +264,14 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # self.btn_stp_ins.clicked.connect(self.__on_strip_add)
         # self.btn_stp_del.clicked.connect(self.__on_strip_remove)
 
-        # logger
-        # M_LOG.info("__config_strips:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __get_current_strip(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__get_current_strip:>>")
-
         # get current index
         l_index = self.qtv_stp.currentIndex()
-                
+
         if not l_index.isValid():
             # return
             return None
@@ -329,80 +286,63 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # get strip info
         # l_info = self.__stp_model.data(self.__stp_model.index(l_row, ldefs.D_FIX_INFO)).toString()
 
-        # M_LOG.debug("__on_strip_remove:l_strip.info: " + str(l_strip.s_info))
-        # M_LOG.debug("__on_strip_remove:l_strip.info: " + str(l_info))
-
-        # logger
-        # M_LOG.info("__get_current_strip:<<")
+        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_strip.s_info))
+        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_info))
 
         # return current strip
         return self.__strip_cur
-        
+
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __get_status(self, f_strip):
         """
         DOCUMENT ME!
 
         @param f_strip: strip selecionada
         """
-        # logger
-        # M_LOG.info("__get_status:>>")
-
-        # check input parameters
+        # check input
         # assert f_strip
 
         # nenhuma strip selecionada ?
         if f_strip is None:
-            # logger
-            # M_LOG.info("__get_status:<E01: nenhuma strip selecionada.")
-
             # return
             return
 
         # monta o request de status
         ls_req = "data/status.json?{}".format(f_strip.s_callsign)
-        # M_LOG.debug("__get_status:ls_req:[{}]".format(ls_req))
+        # dbg.M_DBG.debug("__get_status:ls_req:[{}]".format(ls_req))
 
         # get server address
         l_srv = self.__dct_config.get("srv.addr", None)
-        
+
         if l_srv is not None:
             # obtém os dados de status da aneronave
             l_status = self.__sck_http.get_data(l_srv, ls_req)
-            # M_LOG.debug("__get_status:l_status:[{}]".format(l_status))
+            # dbg.M_DBG.debug("__get_status:l_status:[{}]".format(l_status))
 
             if (l_status is not None) and (l_status != ""):
                 # salva os dados nos widgets
                 ldct_status = json.loads(l_status)
-                # M_LOG.debug("__get_status:ldct_status:[{}]".format(ldct_status))
+                # dbg.M_DBG.debug("__get_status:ldct_status:[{}]".format(ldct_status))
 
             # senão, não achou no servidor...
             else:
                 # logger
                 l_log = logging.getLogger("CWndMainPiloto::__get_status")
-                l_log.setLevel(logging.NOTSET)
+                l_log.setLevel(logging.ERROR)
                 l_log.error(u"<E01: aeronave({}) não existe no servidor.".format(f_strip.s_callsign))
 
         # senão, não achou endereço do servidor
         else:
             # logger
             l_log = logging.getLogger("CWndMainPiloto::__get_status")
-            l_log.setLevel(logging.NOTSET)
+            l_log.setLevel(logging.WARNING)
             l_log.warning(u"<E02: srv.addr não existe na configuração.")
 
-        # logger
-        # M_LOG.info("__get_status:<<")
-        
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __make_connections(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__make_connections:>>")
-
         # verifica condições de execução
         # assert self._oWeather is not None
         # assert self._widPageWeatherConfig is not None
@@ -433,7 +373,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         assert self.btn_cmd_altitude
         assert self.btn_cmd_direcao
         assert self.btn_cmd_velocidade
-        
+
         # buttons connection
         self.btn_cmd_altitude.clicked.connect(self.__on_btn_cmd_altitude)
         self.btn_cmd_direcao.clicked.connect(self.__on_btn_cmd_direcao)
@@ -445,29 +385,23 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # send connection
         self.btn_send.clicked.connect(self.__on_btn_send)
 
-        # logger
-        # M_LOG.info("__make_connections:<<")
-
     # ---------------------------------------------------------------------------------------------
     # @QtCore.pyqtSlot()
     def notify(self, f_evt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("notify:>>")
-
-        # verifica parâmetros de entrada
+        # check input
         assert f_evt
-                
+
         # recebeu um aviso de término da aplicação ?
         if isinstance(f_evt, events.CQuit):
             # para todos os processos
             # gdata.G_KEEP_RUN = False
-                                                                        
+
             # aguarda o término das tasks
             time.sleep(1)
-                                                                                                        
+
             # termina a aplicação
             # sys.exit()
 
@@ -481,43 +415,34 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             # atualiza horário
             self.__statusbar.update_hora(f_evt.t_hora)
 
-        # logger
-        # M_LOG.info("notify:<<")
-
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
     def __on_btn_cmd_altitude(self):
         """
         callback do botão altitude da botoeira
         """
-        # logger
-        # M_LOG.info("__on_btn_cmd_altitude:>>")
-
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
             # obtém os dados de performance
             ldct_prf = self.__dct_prf.get(self.__strip_cur.s_prf, None)
-            # M_LOG.debug("ldct_prf:[{}]".format(ldct_prf))
+            # dbg.M_DBG.debug("ldct_prf:[{}]".format(ldct_prf))
 
             # cria a dialog de altitude
             self.__dlg_altitude = dlgalt.CDlgAltitude(self.__strip_cur, ldct_prf, self)
             assert self.__dlg_altitude
-                                                                                                    
+
             # exibe a dialog de altitude
             if self.__dlg_altitude.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, self.__dlg_altitude.get_data()))
-                # M_LOG.debug("dialog data: " + str(self.lbl_comando.text()))
+                # dbg.M_DBG.debug("dialog data: " + str(self.lbl_comando.text()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else:
-                pass  # M_LOG.debug("dialog data: REJECTED !!!!")
-
-        # logger
-        # M_LOG.info("__on_btn_cmd_altitude:<<")
+                pass  # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -525,9 +450,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         callback do botão direção da botoeira
         """
-        # logger
-        # M_LOG.info("__on_btn_cmd_direcao:>>")
-
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
             # já existe a dialog de direção ?
@@ -535,22 +457,19 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
                 # cria a dialog de direção
                 self.__dlg_direcao = dlgdir.CDlgDirecao(self.__strip_cur.f_proa, self)
                 assert self.__dlg_direcao
-                                                                                                    
+
             # exibe a dialog de direção
             if self.__dlg_direcao.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, self.__dlg_direcao.get_data()))
-                # M_LOG.debug("dialog data: " + str(self.__dlg_direcao.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(self.__dlg_direcao.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else:
-                pass  # M_LOG.debug("dialog data: REJECTED !!!!")
-
-        # logger
-        # M_LOG.info("__on_btn_cmd_direcao:<<")
+                pass  # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -558,34 +477,28 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         callback do botão velocidade da botoeira
         """
-        # logger
-        # M_LOG.info("__on_btn_cmd_velocidade:>>")
-
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
             # obtém os dados de performance
             ldct_prf = self.__dct_prf.get(self.__strip_cur.s_prf, None)
-            # M_LOG.debug("ldct_prf:[{}]".format(ldct_prf))
+            # dbg.M_DBG.debug("ldct_prf:[{}]".format(ldct_prf))
 
             # cria a dialog de velocidade
             self.__dlg_velocidade = dlgvel.CDlgVelocidade(self.__strip_cur, ldct_prf, self)
             assert self.__dlg_velocidade
-                                                                                                    
+
             # exibe a dialog de velocidade
             if self.__dlg_velocidade.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, self.__dlg_velocidade.get_data()))
-                # M_LOG.debug("dialog data: " + str(self.__dlg_velocidade.get_data()))
+                # dbg.M_DBG.debug("dialog data: " + str(self.__dlg_velocidade.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else:
-                pass  # M_LOG.debug("dialog data: REJECTED !!!!")
-
-        # logger
-        # M_LOG.info("__on_btn_cmd_velocidade:<<")
+                pass  # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -593,18 +506,15 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         callback do botão send
         """
-        # logger
-        # M_LOG.info("__on_btn_send:>>")
-        
         # obtém o comando do label
         ls_cmd = self.lbl_comando.text()
-        # M_LOG.debug("send command: " + str(self.lbl_comando.text()))
+        # dbg.M_DBG.debug("send command: " + str(self.lbl_comando.text()))
 
         # monta o buffer de envio
         ls_buff = str(gdefs.D_MSG_VRS) + gdefs.D_MSG_SEP + \
                   str(gdefs.D_MSG_PIL) + gdefs.D_MSG_SEP + \
-                  str(ls_cmd)                
-        # M_LOG.debug("ls_buff: " + str(ls_buff))
+                  str(ls_cmd)
+        # dbg.M_DBG.debug("ls_buff: " + str(ls_buff))
 
         # envia o comando
         self.__sck_snd_cpil.send_data(ls_buff)
@@ -625,9 +535,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             # limpa o comando
             self.lbl_comando.setText("")
 
-        # logger
-        # M_LOG.info("__on_btn_send:<<")
-
     # ---------------------------------------------------------------------------------------------
     '''
     # @QtCore.pyqtSlot()
@@ -635,9 +542,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__on_strip_add:>>")
-
         # check exec conditions
         assert self.__scene
         assert self.__stp_model
@@ -680,9 +584,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.qtv_stp.setFocus()
         self.qtv_stp.setCurrentIndex(l_index)
         self.qtv_stp.edit(l_index)
-
-        # logger
-        # M_LOG.info("__on_strip_add:>>")
     '''
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot(QtCore.QModelIndex,QtCore.QModelIndex)
@@ -690,16 +591,13 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__on_strip_row_changed:>>")
-
         # is index valid ?
         if f_index_old.isValid():
             # get old strip
             l_strip_old = self.__stp_model.lst_strips[f_index_old.row()]
             assert l_strip_old
 
-            # M_LOG.debug("old strip callsign: " + str(l_strip_old.s_callsign))
+            # dbg.M_DBG.debug("old strip callsign: " + str(l_strip_old.s_callsign))
 
         # is index valid ?
         if f_index_new.isValid():
@@ -722,10 +620,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             # emit signal
             self.C_SIG_STRIP_SEL.emit(self.__strip_cur)
 
-        # M_LOG.debug("strip: " + str(self.__strip_cur))
-
-        # logger
-        # M_LOG.info("__on_strip_row_changed:<<")
+        # dbg.M_DBG.debug("strip: " + str(self.__strip_cur))
 
     # ---------------------------------------------------------------------------------------------
     '''
@@ -735,10 +630,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         @param f_index_tl: topLeft index
         @param f_index_br: bottomRight index
         """
-        # logger
-        # M_LOG.info("__on_strip_data_changed:>>")
-
-        # check input parameters
+        # check input
         assert f_index_tl
 
         # check exec conditions
@@ -754,9 +646,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
             # change strip on scene
             # self.__scene.strip_changed(l_strip)
-
-        # logger
-        # M_LOG.info("__on_strip_data_changed:<<")
     '''
     # ---------------------------------------------------------------------------------------------
     '''
@@ -765,9 +654,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__on_strip_remove:>>")
-
         # check exec conditions
         assert self.__scene
         assert self.__stp_model
@@ -792,8 +678,8 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # get strip info
         l_info = self.__stp_model.data(self.__stp_model.index(l_row, ldefs.D_FIX_INFO)).toString()
 
-        # M_LOG.debug("__on_strip_remove:l_strip.info: " + str(l_strip.s_info))
-        # M_LOG.debug("__on_strip_remove:l_strip.info: " + str(l_info))
+        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_strip.s_info))
+        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_info))
 
         # ask user if it's ok
         if QtGui.QMessageBox.No == QtGui.QMessageBox.question(self, "Remove Strip",
@@ -818,19 +704,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # remove strip from scene
         self.__scene.remove_item(l_strip)
-
-        # logger
-        # M_LOG.info("__on_strip_remove:>>")
     '''
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __read_settings(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__read_settings:>>")
-
         l_settings = QtCore.QSettings("sophosoft", "piloto")
 
         l_pos = l_settings.value("pos", QtCore.QPoint(200, 200)).toPoint()
@@ -839,48 +718,33 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.resize(l_size)
         self.move(l_pos)
 
-        # logger
-        # M_LOG.info("__read_settings:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __really_quit(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__really_quit:>>")
-
         l_ret = QtGui.QMessageBox.warning(self, self.tr("Piloto", None),
                                                 self.tr("Do you want to quit Pilot ?", None),
                                                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.Default, QtGui.QMessageBox.No)
 
         if QtGui.QMessageBox.Yes == l_ret:
-            # logger
-            # M_LOG.info("__really_quit:<E01")
-
             # retorna SIM
             return True
-
-        # logger
-        # M_LOG.info("__really_quit:<<")
 
         # retorna NÃO
         return False
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     @QtCore.pyqtSlot(QtCore.QTimerEvent)
     def timerEvent(self, f_evt):
-
-        # logger
-        # M_LOG.info("timerEvent:>>")
-
+        """
+        DOCUMENT ME!
+        """
         # timer de fetch de dados de aeronave acionado ?
         if f_evt.timerId() == self.__i_timer_fetch:
             # for all flights...
             for l_callsign, l_flight in self.__dct_flight.iteritems():
-                # M_LOG.debug("timerEvent:l_callsign: " + str(l_callsign))
+                # dbg.M_DBG.debug("timerEvent:l_callsign: " + str(l_callsign))
 
                 # new flight ?
                 if l_flight not in self.__stp_model.lst_strips:
@@ -897,7 +761,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
                 # else:
                     # select strip
                     # self.__on_strip_data_changed(self.qtv_stp.currentIndex(), self.qtv_stp.currentIndex())
-                
+
                     # reset flag de modificações
                     # self.__stp_model.v_dirty = True
 
@@ -916,39 +780,25 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             # obtém o status da aeronave selecionada
             self.__get_status(self.__strip_cur)
 
-        # logger
-        # M_LOG.info("timerEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __write_settings(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__write_settings:>>")
-
         l_settings = QtCore.QSettings("sophosoft", "piloto")
 
         l_settings.setValue("pos", self.pos())
         l_settings.setValue("size", self.size())
 
-        # logger
-        # M_LOG.info("__write_settings:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def xxx(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("xxx:>>")
-
         ###
         # strips
 
-        # M_LOG.debug("xxx:dct_flight: " + str(self.__dct_flight))
+        # dbg.M_DBG.debug("xxx:dct_flight: " + str(self.__dct_flight))
 
         # build the list widgets
         for i in xrange(8):
@@ -956,8 +806,5 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             listItem.setSizeHint(QtCore.QSize(300, 63))  # Or else the widget items will overlap(irritating bug)
 
             self.qlw_strips.setItemWidget(listItem, strips.CWidStrip(self.__control, i, self))
-
-        # logger
-        # M_LOG.info("xxx:<<")
 
 # < the end >--------------------------------------------------------------------------------------

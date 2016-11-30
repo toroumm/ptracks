@@ -37,7 +37,6 @@ class CInstruction(object):
     DOCUMENT ME
     """
     # ---------------------------------------------------------------------------------------------
-
     # C_APPROACH = 0
     # C_DIRECT = 1
     # C_HDG = 2
@@ -62,6 +61,9 @@ class CInstruction(object):
         # texto da instrução
         self.__s_text = ""
  
+        # em execução
+        self.__v_running = False
+
         # self.__i_type = 0
         # self.__f_number = 0.
         # self.__o_react_time = None
@@ -114,6 +116,21 @@ class CInstruction(object):
         set parâmetro 2
         """
         self.__f_param_2 = f_val
+                                                        
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def v_running(self):
+        """
+        get flag running
+        """
+        return self.__v_running
+                                                        
+    @v_running.setter
+    def v_running(self, f_val):
+        """
+        set flag running
+        """
+        self.__v_running = f_val
                                                         
     # ---------------------------------------------------------------------------------------------
     @property

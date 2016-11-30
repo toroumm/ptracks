@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-statusbar_piloto.
+statusbar_piloto
 
 DOCUMENT ME!
 
@@ -32,17 +32,10 @@ __date__ = "2015/12"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
 # pyQt library
-from PyQt4 import Qt, QtCore, QtGui
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
+from PyQt4 import Qt
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # < class CStatusBarPiloto >-----------------------------------------------------------------------
 
@@ -51,14 +44,10 @@ class CStatusBarPiloto(QtGui.QStatusBar):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_parent=None):
         """
-        constructor.
+        constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # verifica parâmetros de entrada
         assert f_parent
 
@@ -92,18 +81,11 @@ class CStatusBarPiloto(QtGui.QStatusBar):
         # show temporary message (5s)
         self.showMessage(self.tr("Ready..."), 5000)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __create_statusbar_labels(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__create_statusbar_labels:>>")
-
         # mensagem
         self.__lbl_msg = QtGui.QLabel()
         assert self.__lbl_msg
@@ -137,78 +119,50 @@ class CStatusBarPiloto(QtGui.QStatusBar):
 
         self.__lbl_hora.setPalette(l_pal)
 
-        # logger
-        # M_LOG.info("__create_statusbar_labels:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def update_exe(self, fs_exe, fv_update=True):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("update_exe:>>")
-
         # flag update ?
         if fv_update:
-
             # independant mode ?
             self.__lbl_exe.setText(fs_exe)
 
             # update status bar
             self.update()
 
-        # logger
-        # M_LOG.info("update_exe:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def update_hora(self, fs_hora, fv_update=True):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("update_hora:>>")
-
         # set hora label
         self.__lbl_hora.setText(fs_hora)
 
         # flag update ?
         if fv_update:
-
             # update status bar
             self.update()
 
-        # logger
-        # M_LOG.info("update_hora:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def update_msg(self, fs_msg, fv_update=True):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("update_msg:>>")
-
         # flag update ?
         if fv_update:
-
             # set message label
             self.__lbl_msg.setText(fs_msg)
 
             # update status bar
             self.update()
 
-        # logger
-        # M_LOG.info("update_msg:<<")
-
     # =============================================================================================
     # dados
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def lbl_exe(self):
         """
@@ -224,7 +178,6 @@ class CStatusBarPiloto(QtGui.QStatusBar):
         self.__lbl_exe = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def lbl_hora(self):
         """
@@ -240,7 +193,6 @@ class CStatusBarPiloto(QtGui.QStatusBar):
         self.__lbl_hora = f_val
 
     # ---------------------------------------------------------------------------------------------
-
     @property
     def lbl_msg(self):
         """

@@ -3,7 +3,8 @@
 """
 ---------------------------------------------------------------------------------------------------
 dlg_velocidade
-mantém as informações sobre a dialog de velocidade.
+
+mantém as informações sobre a dialog de velocidade
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,16 +37,14 @@ import logging
 import os
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # view
 import view.piloto.dlg_velocidade_ui as dlg
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# control
+import control.control_debug as dbg
 
 # < class CDlgVelocidade >----------------------------------------------------------------------------
 
@@ -54,16 +53,12 @@ class CDlgVelocidade(QtGui.QDialog, dlg.Ui_CDlgVelocidade):
     mantém as informações sobre a dialog de velocidade
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_strip_cur, fdct_prf, f_parent=None):
         """
         @param f_strip_cur: strip selecionada
         @param fdct_prf: dicionário de performances
         @param f_parent: janela pai.
         """
-        # logger
-        M_LOG.info("__init__:>>")
-
         # init super class
         super(CDlgVelocidade, self).__init__(f_parent)
 
@@ -93,16 +88,15 @@ class CDlgVelocidade(QtGui.QDialog, dlg.Ui_CDlgVelocidade):
         
         # performance existe ?
         if fdct_prf is not None:
-
             # faixa de velocidade
             self.sbx_vel.setRange(1., self.__dct_prf["vel_max_crz"])
-            M_LOG.debug("__on_rbt_vel_clicked:vel_max:[{}]".format(self.__dct_prf["vel_max_crz"]))
+            dbg.M_DBG.debug("__on_rbt_vel_clicked:vel_max:[{}]".format(self.__dct_prf["vel_max_crz"]))
 
         # senão,...
         else:
             # faixa de velocidade
             self.sbx_vel.setRange(1., 500.)
-            M_LOG.debug("__on_rbt_vel_clicked:vel_max:[500]")
+            dbg.M_DBG.debug("__on_rbt_vel_clicked:vel_max:[500]")
 
         # configura botões
         self.bbx_velocidade.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancela")
@@ -111,18 +105,11 @@ class CDlgVelocidade(QtGui.QDialog, dlg.Ui_CDlgVelocidade):
         # inicia os parâmetros da velocidade
         self.__update_command()
 
-        # logger
-        M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
-        # logger
-        M_LOG.info("__config_connects:>>")
-
         # conecta spinBox
         self.sbx_vel.valueChanged.connect(self.__on_sbx_valueChanged)
 
@@ -132,43 +119,27 @@ class CDlgVelocidade(QtGui.QDialog, dlg.Ui_CDlgVelocidade):
         # conecta botão Cancela da edição de velocidade
         # self.bbx_velocidade.rejected.connect(self.__reject)
 
-        # logger
-        M_LOG.info("__config_connects:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __config_texts(self):
-
-        # logger
-        M_LOG.info("__config_texts:>>")
-
+        """
+        DOCUMENT ME!
+        """
         # configura títulos e mensagens
         self.__txt_settings = "CDlgVelocidade"
 
-        # logger
-        M_LOG.info("__config_texts:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def get_data(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("get_data:><")
-
         # return command line
         return self.lbl_comando.text()
 
     # ---------------------------------------------------------------------------------------------
-
     def __restore_settings(self):
         """
         restaura as configurações salvas para esta janela
         """
-        # logger
-        M_LOG.info("__restore_settings:>>")
-
         # obtém os settings
         l_set = QtCore.QSettings("sophosoft", "piloto")
         assert l_set
@@ -176,45 +147,28 @@ class CDlgVelocidade(QtGui.QDialog, dlg.Ui_CDlgVelocidade):
         # restaura geometria da janela
         self.restoreGeometry(l_set.value("%s/Geometry" % (self.__txt_settings)).toByteArray())
 
-        # logger
-        M_LOG.info("__restore_settings:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def __update_command(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__update_command:>>")
-
         # inicia o comando
         ls_cmd = "VEL {} ".format(self.sbx_vel.value())
 
         # coloca o comando no label
         self.lbl_comando.setText(ls_cmd)
 
-        # logger
-        M_LOG.info("__update_command:<<")
-
     # =============================================================================================
     # edição de campos
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSignature("int")
     def __on_sbx_valueChanged(self, f_val):
         """
         DOCUMENT ME!
         """
-        # logger
-        M_LOG.info("__on_sbx_valueChanged:>>")
-
         # atualiza comando
         self.__update_command()
-
-        # logger
-        M_LOG.info("__on_sbx_valueChanged:<<")
 
 # < the end >--------------------------------------------------------------------------------------

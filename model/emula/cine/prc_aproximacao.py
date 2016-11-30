@@ -36,7 +36,7 @@ __date__ = "2016/10"
 import logging
 
 # control
-import control.control_debug as dbg
+# import control.control_debug as dbg
 
 # model
 import model.newton.defs_newton as ldefs

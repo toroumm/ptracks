@@ -37,8 +37,8 @@ import logging
 
 # < module data >----------------------------------------------------------------------------------
 
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# debugger
+M_DBG = logging.getLogger(__name__)
+M_DBG.setLevel(logging.DEBUG)
 
 # < the end >--------------------------------------------------------------------------------------
