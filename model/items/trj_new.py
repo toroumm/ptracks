@@ -43,12 +43,6 @@ import model.items.brk_new as brktrj
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CTrjNEW >--------------------------------------------------------------------------------
 
 class CTrjNEW(model.CPrcModel):
@@ -64,16 +58,12 @@ class CTrjNEW(model.CPrcModel):
     </trajetoria>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
         @param f_model: model manager
         @param f_data: dados do procedimento de trajetória
         @param fs_ver: versão do formato
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CTrjNEW, self).__init__()
 
@@ -111,11 +101,7 @@ class CTrjNEW(model.CPrcModel):
                 # copia a procedimento de trajetória
                 self.copy_trj(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_trj(self, f_trj):
         """
         copy constructor.
@@ -123,9 +109,6 @@ class CTrjNEW(model.CPrcModel):
 
         @param f_trj: procedimento de trajetória a ser copiada
         """
-        # logger
-        # M_LOG.info("copy_trj:>>")
-
         # check input
         assert f_trj
 
@@ -138,11 +121,7 @@ class CTrjNEW(model.CPrcModel):
         # lista de break-points
         self.__lst_trj_brk = list(f_trj.lst_trj_brk)
 
-        # logger
-        # M_LOG.info("copy_trj:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __load_trj(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados de procedimento de trajetória a partir de um dicionário (formato 0001)
@@ -150,9 +129,6 @@ class CTrjNEW(model.CPrcModel):
         @param fdct_data: dicionário com os dados do procedimento de trajetória
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("__load_trj:>>")
-
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a procedimento de trajetória
@@ -175,39 +151,29 @@ class CTrjNEW(model.CPrcModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("__load_trj:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __make_trj(self, fdct_data):
         """
         carrega os dados de procedimento de trajetória a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados do procedimento de trajetória
         """
-        # logger
-        # M_LOG.info("__make_trj:>>")
-
         # identificação do procedimento de trajetória
         if "nTrj" in fdct_data:
             self.i_prc_id = int(fdct_data["nTrj"])
-            # M_LOG.debug("self.i_prc_id: " + str(self.i_prc_id))
+            self.s_prc_desc = "Trajetória {:03d}".format(fdct_data["nTrj"])            
 
         # descrição
         if "descricao" in fdct_data:
             self.s_prc_desc = fdct_data["descricao"]
-            # M_LOG.debug("self.s_prc_desc: " + str(self.s_prc_desc))
 
         # star
         if "star" in fdct_data:
             self.__v_trj_star = ('S' == fdct_data["star"].strip().upper())
-            # M_LOG.debug("self.__v_trj_star: " + str(self.__v_trj_star))
 
         # proa
         if "proa" in fdct_data:
             self.__f_trj_proa = float(fdct_data["proa"].strip().upper())
-            # M_LOG.debug("self.__f_trj_proa: " + str(self.__f_trj_proa))
 
         # break-points da trajetória
         if "breakpoints" in fdct_data:
@@ -222,9 +188,6 @@ class CTrjNEW(model.CPrcModel):
 
         # (bool)
         self.v_prc_ok = True
-
-        # logger
-        # M_LOG.info("__make_trj:<<")
 
     # =============================================================================================
     # data

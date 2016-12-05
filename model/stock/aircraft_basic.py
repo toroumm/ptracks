@@ -33,7 +33,6 @@ __date__ = "2016/01"
 # < imports >--------------------------------------------------------------------------------------
 
 # Python library
-import logging
 import random
 import sys
 import time
@@ -67,6 +66,7 @@ class CAircraftBasic(sanv.CAircraft):
         # self.s_callsign     # callsign
         # self.s_icao_addr    # icao address
         # self.pos            # posição lat/lng
+        # self.s_status       # situação
 
         # herdado de CADIRU
         # self.adiru.f_alt             # altitude
@@ -347,5 +347,20 @@ class CAircraftBasic(sanv.CAircraft):
         set transponder code
         """
         self.__i_ssr = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def lst_trail(self):
+        """
+        get trail list
+        """
+        return self.__lst_trail
+
+    @lst_trail.setter
+    def lst_trail(self, f_val):
+        """
+        set trail list
+        """
+        self.__lst_trail = f_val
 
 # < the end >--------------------------------------------------------------------------------------

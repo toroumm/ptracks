@@ -54,6 +54,7 @@ class CEspData(dict):
     mantém as informações sobre o dicionário de procedimento de espera
 
     <espera nEsp="1">
+        <descricao>Espera IND (274D)</descricao>
         <fixo>IND</fixo>
         <sentido>D</sentido>
         <rumo>274</rumo>

@@ -45,7 +45,7 @@ from PyQt4 import QtXml
 import libs.coords.pos_lat_lng as pll
 
 # model
-import model.stock.airspace_basic as airs
+import model.newton.airspace_newton as airs
 import model.stock.fix as cfix
 import model.stock.flight_plan_item as cfpi
 import model.stock.holding as cesp
@@ -59,7 +59,7 @@ import model.items.trj_data as trjdata
 
 # < class CAirspaceVisil >------------------------------------------------------------------------------
 
-class CAirspaceVisil(airs.CAirspaceBasic):
+class CAirspaceVisil(airs.CAirspaceNewton):
     """
     represent an airspace
     """
@@ -69,7 +69,7 @@ class CAirspaceVisil(airs.CAirspaceBasic):
     C_DEPARTURE = 1
 
     # ---------------------------------------------------------------------------------------------
-    def __init__(self, f_model, fs_dir, fs_location):
+    def __init__(self, f_model):
         """
         read datafile for specified location (airport)
         """
@@ -81,14 +81,19 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # init super class
         super(CAirspaceVisil, self).__init__(f_model)
 
-        # herdados de CAirspaceBase
-        # self.config         # config manager
-        # self.dct_config     # dicionário de configuração
+        # herdado de CAirspaceBasic
+        # self.model          # model manager 
         # self.event          # event manager
-        # self.model          # model manager
+        # self.config         # config manager
         # self.dct_aer        # dicionário de aeródromos
         # self.dct_fix        # dicionário de fixos
-        # self.dct_fix_indc   # dicionário de indicativos
+        # self.lst_arr_dep    # lista de pousos/decolagens
+                                                       
+        # herdado de CAirspaceNewton
+        # self.dct_apx    # procedimentos de aproximação
+        # self.dct_esp    # procedimentos de espera
+        # self.dct_sub    # procedimentos de subida   
+        # self.dct_trj    # procedimentos de trajetória
 
         # dicionários locais
         self.__dct_dme = {}
@@ -96,12 +101,8 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         self.__dct_vor = {}
         self.__dct_wpt = {}
 
-        self.__dct_apx = {}
         self.__dct_dep = {}
-        self.__dct_esp = {}
         self.__dct_pso = {}
-        self.__dct_sub = {}
-        self.__dct_trj = {}
 
         self.__dct_rwy = {}
         self.__dct_arr_runways = {}
@@ -185,12 +186,12 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # check input
         # assert f_model
 
-        if fi_ndx >= len(self.___dep):
+        if fi_ndx >= len(self.__dct_dep):
             # return
             return None
 
         # return
-        return self.___dep[fi_ndx]
+        return self.__dct_dep[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
     def departureRunway(self, fi_ndx):
@@ -223,31 +224,19 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         return self.__dct_dme[fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
-    def getPosition(self, fs_indc):
+    def get_position(self, fs_indc):
         """
         get position of a waypoint/vor/ndb/... named as specified
         """
         # check input
         # assert f_model
 
-        # pesquisa aeródromos
-        l_aer = self.dct_aer.get(fs_indc, None)
+        # pesquisa aeródromos/fixos
+        l_pos = super(CAirspaceVisil, self).get_position(fs_indc)
 
-        if l_aer is not None:
+        if l_pos is not None:
             # return
-            return pll.CPosLatLng(l_aer.f_aer_lat, l_aer.f_aer_lng)
-
-        # pesquisa fixos
-        l_key = self.dct_fix_indc.get(fs_indc, None)
-
-        if l_key is not None:
-
-            # acessa o fixo pela key
-            l_fix = self.dct_fix[l_key]
-            assert l_fix
-
-            # return
-            return pll.CPosLatLng(l_fix.f_fix_lat, l_fix.f_fix_lng)
+            return l_pos
 
         # pesquisa runway's
         for l_item in self.__dct_rwy:
@@ -276,39 +265,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
 
         # return
         return None
-
-    # ---------------------------------------------------------------------------------------------
-    def load_dicts(self):
-        """
-        DOCUMENT ME!
-        """
-        # pathname of approach procedures table
-        ls_path = os.path.join(self.dct_config["dir.prc"], self.dct_config["tab.apx"])
-
-        # load approach procedures table in dictionary
-        self.__dct_apx = apxdata.CApxData(self.model, ls_path)
-        assert self.__dct_apx is not None
-
-        # pathname of holding procedures table
-        ls_path = os.path.join(self.dct_config["dir.prc"], self.dct_config["tab.esp"])
-
-        # load holding procedures table in dictionary
-        self.__dct_esp = espdata.CEspData(self.model, ls_path)
-        assert self.__dct_esp is not None
-
-        # pathname of climb procedures table
-        ls_path = os.path.join(self.dct_config["dir.prc"], self.dct_config["tab.sub"])
-
-        # load climb procedures table in dictionary
-        self.__dct_sub = subdata.CSubData(self.model, ls_path)
-        assert self.__dct_sub is not None
-
-        # pathname of trajectory procedures table
-        ls_path = os.path.join(self.dct_config["dir.prc"], self.dct_config["tab.trj"])
-
-        # load trajectory procedures table in dictionary
-        self.__dct_trj = trjdata.CTrjData(self.model, ls_path)
-        assert self.__dct_trj is not None
 
     # ---------------------------------------------------------------------------------------------
     def load_xml(self, fs_filename):
@@ -461,7 +417,7 @@ class CAirspaceVisil(airs.CAirspaceBasic):
                                                        QtCore.QString("")).toLocal8Bit().data(), l_inb, l_dir)
             assert l_hold is not None
 
-            self.__dct_esp.append(l_hold)
+            self.dct_esp.append(l_hold)
 
         # handle case of standard route
         elif (f_element.tagName() == QtCore.QString("departure")) or \
@@ -522,7 +478,7 @@ class CAirspaceVisil(airs.CAirspaceBasic):
                 ls_rt.addItem(l_fpItem)
 
             if f_element.tagName() == QtCore.QString("departure"):
-                self.___dep.append(ls_rt)
+                self.__dct_dep.append(ls_rt)
 
             if f_element.tagName() == QtCore.QString("arrival"):
                 self.__dct_pso.append(ls_rt)
@@ -543,7 +499,7 @@ class CAirspaceVisil(airs.CAirspaceBasic):
                 # return
                 return self.arrival(l_iI)
 
-        for l_iI in xrange(len(self.___dep)):
+        for l_iI in xrange(len(self.__dct_dep)):
             if self.departure(l_iI).s_indc == fs_indc:
                 # return
                 return self.departure(l_iI)
@@ -669,21 +625,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def dct_apx(self):
-        """
-        get aproximações
-        """
-        return self.__dct_apx
-
-    @dct_apx.setter
-    def dct_apx(self, f_val):
-        """
-        set aproximações
-        """
-        self.__dct_apx = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
     def f_elevation(self):
         """
         get aerodrome elevation
@@ -696,51 +637,6 @@ class CAirspaceVisil(airs.CAirspaceBasic):
         # set aerodrome elevation
         # """
         # self.__f_elevation = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
-    def dct_esp(self):
-        """
-        get esperas
-        """
-        return self.__dct_esp
-
-    @dct_esp.setter
-    def dct_esp(self, f_val):
-        """
-        set esperas
-        """
-        self.__dct_esp = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
-    def dct_sub(self):
-        """
-        get subidas
-        """
-        return self.__dct_sub
-
-    @dct_sub.setter
-    def dct_sub(self, f_val):
-        """
-        set subidas
-        """
-        self.__dct_sub = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
-    def dct_trj(self):
-        """
-        get trajetórias
-        """
-        return self.__dct_trj
-
-    @dct_trj.setter
-    def dct_trj(self, f_val):
-        """
-        set trajetórias
-        """
-        self.__dct_trj = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

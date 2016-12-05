@@ -63,6 +63,8 @@ class CModelVisil(model.CModelManager):
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_control):
         """
+        constructor
+        
         @param f_control: control manager
         """
         # init super class
@@ -102,40 +104,6 @@ class CModelVisil(model.CModelManager):
         assert self.__emula_model
 
     # ---------------------------------------------------------------------------------------------
-    def __load_cenario(self, fs_cena):
-        """
-        abre/cria as tabelas do sistema
-
-        @param fs_cena: cenário
-
-        @return flag e mensagem
-        """
-        # carrega o landscape
-        lv_ok, ls_msg = self.__load_land(fs_cena)
-
-        # tudo Ok ?
-        if lv_ok:
-            # carrega o airspace
-            lv_ok, ls_msg = self.__load_air(fs_cena)
-
-        # houve erro em alguma fase ?
-        if not lv_ok:
-            # logger
-            l_log = logging.getLogger("CModelVisil::__load_cenario")
-            l_log.setLevel(logging.CRITICAL)
-            l_log.critical(u"<E01: erro na carga da base de dados: {}".format(ls_msg))
-
-            # cria um evento de quit
-            l_evt = event.CQuit()
-            assert l_evt
-
-            # dissemina o evento
-            self.event.post(l_evt)
-
-            # termina a aplicação
-            sys.exit(1)
-
-    # ---------------------------------------------------------------------------------------------
     def __load_air(self, fs_cena):
         """
         faz a carga do airspace
@@ -164,7 +132,7 @@ class CModelVisil(model.CModelManager):
             os.mkdir(ls_dir)
 
         # create airspace
-        self.__airspace = airs.CAirspaceVisil(self, ls_dir, fs_cena)
+        self.__airspace = airs.CAirspaceVisil(self)
         assert self.__airspace
 
         # carrega os dicionários
@@ -172,6 +140,40 @@ class CModelVisil(model.CModelManager):
 
         # retorna ok
         return True, None
+
+    # ---------------------------------------------------------------------------------------------
+    def __load_cenario(self, fs_cena):
+        """
+        abre/cria as tabelas do sistema
+
+        @param fs_cena: cenário
+
+        @return flag e mensagem
+        """
+        # carrega o landscape
+        lv_ok, ls_msg = self.__load_land(fs_cena)
+
+        # tudo Ok ?
+        if lv_ok:
+            # carrega o airspace
+            lv_ok, ls_msg = self.__load_air(fs_cena)
+
+        # houve erro em alguma fase ?
+        if not lv_ok:
+            # logger
+            l_log = logging.getLogger("CModelVisil::__load_cenario")
+            l_log.setLevel(logging.CRITICAL)
+            l_log.critical(u"<E01: erro na carga da base de dados: {}.".format(ls_msg))
+
+            # cria um evento de quit
+            l_evt = event.CQuit()
+            assert l_evt
+
+            # dissemina o evento
+            self.event.post(l_evt)
+
+            # termina a aplicação
+            sys.exit(1)
 
     # ---------------------------------------------------------------------------------------------
     def __load_land(self, fs_cena):
@@ -222,7 +224,7 @@ class CModelVisil(model.CModelManager):
         return
         
     # =============================================================================================
-    # dados
+    # data
     # =============================================================================================
 
     # ---------------------------------------------------------------------------------------------

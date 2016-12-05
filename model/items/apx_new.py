@@ -50,7 +50,7 @@ class CApxNEW(model.CPrcModel):
     mantém as informações específicas sobre procedimento de aproximação
 
     <aproximacao nApx="1">
-      <nome>FINAL H3</nome>
+      <descricao>FINAL H3</descricao>
       <aerodromo>SBSP</aerodromo>
       <pista>17R</pista>
       <ils>N</ils>
@@ -187,10 +187,11 @@ class CApxNEW(model.CPrcModel):
         # identificação do procedimento de aproximação
         if "nApx" in fdct_data:
             self.i_prc_id = int(fdct_data["nApx"])
+            self.s_prc_desc = "Aproximação {:03d}".format(fdct_data["nApx"])
 
         # descrição do procedimento de aproximação
-        if "nome" in fdct_data:
-            self.s_prc_desc = fdct_data["nome"].strip()
+        if "descricao" in fdct_data:
+            self.s_prc_desc = fdct_data["descricao"].strip()
 
         # aeródromo da aproximação
         if "aerodromo" in fdct_data:

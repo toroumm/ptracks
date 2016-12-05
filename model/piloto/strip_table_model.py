@@ -44,7 +44,7 @@ import libs.coords.coord_defs as cdefs
 
 #import model.glb_data as gdata
 import model.piloto.defs_piloto as ldefs
-import model.piloto.aircraft_piloto as anvmdl
+import model.visil.aircraft_visil as anvmdl
 
 # < class CStripTableModel >-----------------------------------------------------------------------
 
@@ -71,22 +71,24 @@ class CStripTableModel(QtCore.QAbstractTableModel):
     # ---------------------------------------------------------------------------------------------
     def columnCount(self, f_parent=QtCore.QModelIndex()):
         """
-        @return the number of columns for the children of the given parent.
+        @return the number of columns for the children of the given parent
         """
         # return
-        return 12
+        return 13
 
     # ---------------------------------------------------------------------------------------------
     def data(self, f_index, f_role=QtCore.Qt.DisplayRole):
         """
-        @return the data stored under the given role for the strip referred to by the index.
+        @return the data stored under the given role for the strip referred to by the index
         """
         # index or row invalid ?
         if not f_index.isValid() or not (0 <= f_index.row() < len(self.__lst_strips)):
+            # return
             return QtCore.QVariant()
 
         # get strip
         l_anv = self.__lst_strips[f_index.row()]
+        assert l_anv
 
         # get attribute (column)
         l_column = f_index.column()
@@ -96,59 +98,77 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
             # icao id ?
             if l_column == ldefs.D_STP_ID:
+                # return
                 return QtCore.QVariant(l_anv.s_icao_addr)
 
             # indicativo ?
             elif l_column == ldefs.D_STP_IND:
+                # return
                 return QtCore.QVariant(l_anv.s_callsign)
 
             # código transponder ?
             elif l_column == ldefs.D_STP_SSR:
+                # return
                 return QtCore.QVariant(l_anv.i_ssr)
 
             # performance ?
             elif l_column == ldefs.D_STP_PRF:
+                # return
                 return QtCore.QVariant(l_anv.s_prf)
 
             # latitude ?
             elif l_column == ldefs.D_STP_LAT:
+                # return
                 return QtCore.QVariant(cconv.format_ica_lat(l_anv.f_lat))
 
             # longitude ?
             elif l_column == ldefs.D_STP_LNG:
+                # return
                 return QtCore.QVariant(cconv.format_ica_lng(l_anv.f_lng))
 
             # altitude ?
             elif l_column == ldefs.D_STP_ALT:
+                # return
                 return QtCore.QVariant(int(l_anv.f_alt))
 
             # proa ?
             elif l_column == ldefs.D_STP_PROA:
+                # return
                 return QtCore.QVariant(int(l_anv.f_proa))
 
             # velocidade ?
             elif l_column == ldefs.D_STP_VEL:
+                # return
                 return QtCore.QVariant(int(l_anv.f_vel))
 
             # razão descida/subida ?
             elif l_column == ldefs.D_STP_RAZ:
+                # return
                 return QtCore.QVariant(round(l_anv.f_raz, 1))
 
             # hora ?
             elif l_column == ldefs.D_STP_HORA:
+                # return
                 return QtCore.QVariant(round(l_anv.i_hora))
+
+            # status ?
+            elif l_column == ldefs.D_STP_STATUS:
+                # return
+                return QtCore.QVariant(l_anv.s_status)
 
         # text alignment role ?
         elif f_role == QtCore.Qt.TextAlignmentRole:
-
             # indicativo ?
             if l_column == ldefs.D_STP_IND:
+                # return
                 return QtCore.QVariant(int(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter))
 
             # performance ?
             elif l_column == ldefs.D_STP_PRF:
+                # return
                 return QtCore.QVariant(int(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter))
 
+            # return
             return QtCore.QVariant(int(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter))
         ''' 
         # text color role e código transponder ?
@@ -235,68 +255,86 @@ class CStripTableModel(QtCore.QAbstractTableModel):
     def headerData(self, f_section, f_orientation, f_role=QtCore.Qt.DisplayRole):
         """
         for horizontal headers, the section number corresponds to the column number. Similarly,
-        for vertical headers, the section number corresponds to the row number.
+        for vertical headers, the section number corresponds to the row number
 
-        @return the data for the given role and section in the header with the specified orientation.
+        @return the data for the given role and section in the header with the specified orientation
         """
         # text alignment role ?
         if f_role == QtCore.Qt.TextAlignmentRole:
             # horizontal ?
             if f_orientation == QtCore.Qt.Horizontal:
+                # return
                 return QtCore.QVariant(int(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter))
 
+            # return
             return QtCore.QVariant(int(QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter))
 
         # not display role ?
         if f_role != QtCore.Qt.DisplayRole:
+            # return
             return QtCore.QVariant()
 
         # horizontal ?
         if f_orientation == QtCore.Qt.Horizontal:
-
             # icao id ?
             if f_section == ldefs.D_STP_ID:
+                # return
                 return QtCore.QVariant(u"ICAO ID")
 
             # indicativo ?
             elif f_section == ldefs.D_STP_IND:
+                # return
                 return QtCore.QVariant("Callsign")
 
             # código transponder ?
             elif f_section == ldefs.D_STP_SSR:
+                # return
                 return QtCore.QVariant("SSR")
 
             # performance ?
             elif f_section == ldefs.D_STP_PRF:
+                # return
                 return QtCore.QVariant("Prf")
 
             # latitude ?
             elif f_section == ldefs.D_STP_LAT:
+                # return
                 return QtCore.QVariant("Latitude")
 
             # longitude ?
             elif f_section == ldefs.D_STP_LNG:
+                # return
                 return QtCore.QVariant("Longitude")
 
             # altitude ?
             elif f_section == ldefs.D_STP_ALT:
+                # return
                 return QtCore.QVariant("Altitude")
 
             # proa ?
             elif f_section == ldefs.D_STP_PROA:
+                # return
                 return QtCore.QVariant("Proa")
 
             # velocidade ?
             elif f_section == ldefs.D_STP_VEL:
+                # return
                 return QtCore.QVariant("Veloc.")
 
             # razão descida/subida ?
             elif f_section == ldefs.D_STP_RAZ:
+                # return
                 return QtCore.QVariant(u"Razão")
 
             # hora ?
             elif f_section == ldefs.D_STP_HORA:
+                # return
                 return QtCore.QVariant("Age")
+
+            # status ?
+            elif f_section == ldefs.D_STP_STATUS:
+                # return
+                return QtCore.QVariant("Status")
 
         # return
         return QtCore.QVariant(int(f_section + 1))
@@ -321,7 +359,7 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         for l_row in xrange(f_count):
 
             # rows are prepended to any existing rows
-            self.__lst_strips.insert(f_row + l_row, anvmdl.CAircraftPiloto({}))
+            self.__lst_strips.insert(f_row + l_row, anvmdl.CAircraftVisil({}))
 
             # posiciona o strip !!!REVER!!!
             self.__lst_strips[f_row + l_row].point = QtCore.QPointF(gdata.G_CTR_LAT, gdata.G_CTR_LNG)
@@ -386,9 +424,9 @@ class CStripTableModel(QtCore.QAbstractTableModel):
     '''
     def setData(self, f_index, f_value, f_role=QtCore.Qt.EditRole):
         """
-        sets the role data for the strip at index to value.
+        sets the role data for the strip at index to value
 
-        @return true if successful; otherwise returns false.
+        @return true if successful; otherwise returns false
         """
         if f_index.isValid() and (0 <= f_index.row() < len(self.__lst_strips)):
 

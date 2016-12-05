@@ -44,6 +44,7 @@ import libs.coords.pos_lat_lng as pll
 # model
 import model.tMath as tmath
 import model.stock.aircraft_basic as sanv
+import model.piloto.strip_model as mstp
 
 #import model.visadsb.auto_pilot as CAutoPilot
 #import model.visadsb.fms as CFMS
@@ -73,19 +74,16 @@ class CAircraftVisil(sanv.CAircraftBasic):
         # self.s_callsign     # callsign
         # self.s_icao_addr    # icao address
         # self.pos            # posição lat/lng
+        # self.s_status       # situação
 
-        # import foreign objects
-        self.__airspace = f_emula.model.airspace
-        assert self.__airspace
-
+        # herdado de CAircraftBasic
+        # self.airspace            # airspace
+        # self.lst_trail           # trail list
+        # self.lst_instructions    # instructions list
+        # self.v_uninitialized     # flag uninitialized
+        
         # self.__weather = f_emula.model.weather
         # assert self.__weather
-
-        # create vectors
-        self.__lst_trail = []
-        self.__lst_instructions = []
-
-        self.__v_uninitialized = True
 
         # create aircraft components
 
@@ -134,10 +132,10 @@ class CAircraftVisil(sanv.CAircraftBasic):
         tas = self._fms.TAS()
 
         # any instructions ?
-        for l_inst in self.__lst_instructions:
+        for l_inst in self.lst_instructions:
             if l_inst._oReactTime <= time.time():
                 self._pilot.accept(l_inst)
-                self.__lst_instructions.remove(l_inst)
+                self.lst_instructions.remove(l_inst)
 
         # make FMS decisions
         self._fms.decide()
@@ -164,135 +162,20 @@ class CAircraftVisil(sanv.CAircraftBasic):
         self._auto_pilot.move(tmath.trackOpposite(0.), 0., t / 2000.)
         '''
     # ---------------------------------------------------------------------------------------------
+    def get_strip(self):
+        """
+        return flight strip
+        """
+        # return
+        return mstp.CStripModel()
+
+    # ---------------------------------------------------------------------------------------------
     def init_position(self, f_oPos):
         """
         set initial position and radar position
         """
         # check input
         # assert f_control
-
-    # ---------------------------------------------------------------------------------------------
-    def instructAltitude(self, f_fAlt):
-        """
-        give instruction for an altitude
-        TODO: FL/ALT
-        """
-        # TODO
-
-    # ---------------------------------------------------------------------------------------------
-    def instructApproach(self, f_appName):
-        """
-        give instruction for an approach procedure
-        """
-        # check input
-        # assert f_control
-        '''
-        if (f_appName == ""):
-            # logger
-            # M_LOG.info("<E01")
-
-            return
-
-        l_inst = CInstruction.CInstruction()
-        assert l_inst is not None
-
-        l_inst._iType = CInstruction.CInstruction._APPROACH
-        l_inst._oReactTime = time.time() + 2 + (random.random() * 9)
-
-        if self.__v_uninitialized:
-            l_inst._oReactTime = 0
-            self.__v_uninitialized = False
-
-        l_inst._sText = f_appName
-        self.__lst_instructions.append(l_inst)
-        '''
-    # ---------------------------------------------------------------------------------------------
-    def instructDirect(self, f_ptName):
-        """
-        give instruction for a direct (or shortcut)
-        """
-        # check input
-        # assert f_control
-        '''
-        if (f_ptName == ""):
-            # logger
-            # M_LOG.info("<E01")
-
-            return
-
-        l_inst = CInstruction.CInstruction()
-        assert l_inst is not None
-
-        l_inst._iType = CInstruction.CInstruction._DIRECT
-        l_inst._oReactTime = time.time() + 2 + (random.random() * 9)
-
-        if self.__v_uninitialized:
-            l_inst._oReactTime = 0
-            self.__v_uninitialized = False
-
-        l_inst._sText = f_ptName
-
-        self.__lst_instructions.append(l_inst)
-        '''
-    # ---------------------------------------------------------------------------------------------
-    def instructHeading(self, f_hdg):
-        """
-        give instruction for a heading
-        """
-        # check input
-        # assert f_control
-        '''
-        if (f_hdg == 360):
-            f_hdg = 0
-
-        l_inst = CInstruction.CInstruction()
-        assert l_inst is not None
-
-        l_inst._iType = CInstruction.CInstruction._HDG
-        l_inst._oReactTime = time.time() + 2 + (random.random() * 9)
-
-        if self.__v_uninitialized:
-            l_inst._oReactTime = 0
-            self.__v_uninitialized = False
-
-        l_inst._fNumber = f_hdg
-
-        self.__lst_instructions.append(l_inst)
-        '''
-    # ---------------------------------------------------------------------------------------------
-    def instructRoute(self, f_sRtName):
-        """
-        give instruction for a standard route
-        """
-        # check input
-        # assert f_control
-        '''
-        if (f_sRtName == ""):
-            # logger
-            # M_LOG.info("<E01")
-
-            return
-
-        l_inst = CInstruction.CInstruction()
-        assert l_inst is not None
-
-        l_inst._iType = CInstruction.CInstruction._ROUTE
-        l_inst._oReactTime = time.time() + 2 + (random.random() * 9)
-
-        if self.__v_uninitialized:
-            l_inst._oReactTime = 0
-            self.__v_uninitialized = False
-
-        l_inst._sText = f_sRtName
-
-        self.__lst_instructions.append(l_inst)
-        '''
-    # ---------------------------------------------------------------------------------------------
-    def instructSpeed(self, ff_ias):
-        """
-        give instruction for a speed
-        """
-        # TODO
 
     # ---------------------------------------------------------------------------------------------
     def isClimbing(self):
@@ -389,12 +272,12 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         determine groundspeed from radar history
         """
-        if len(self.__lst_trail) < 3:
+        if len(self.lst_trail) < 3:
             # return
             return 0
 
         # calculate ground speed
-        l_gs = tmath.distLL(self.__lst_trail[-1], self.pos) / (self.__f_trail_interval / 1000.) * 3600.
+        l_gs = tmath.distLL(self.lst_trail[-1], self.pos) / (self.__f_trail_interval / 1000.) * 3600.
 
         # return
         return l_gs
@@ -404,12 +287,12 @@ class CAircraftVisil(sanv.CAircraftBasic):
         """
         determine magnetic track from radar history
         """
-        if len(self.__lst_trail) < 3:
+        if len(self.lst_trail) < 3:
             # return
             return 0
 
         # determine magnetic track
-        l_tr = round(tmath.track(self.__lst_trail[-1], self.pos) + self.__airspace.f_variation, 0)
+        l_tr = round(tmath.track(self.lst_trail[-1], self.pos) + self.__airspace.f_variation, 0)
 
         # need normalize ?
         if l_tr < 0:
@@ -425,17 +308,17 @@ class CAircraftVisil(sanv.CAircraftBasic):
         get position of radar history point #n
         """
         # exists trail ?
-        if not self.__lst_trail:
+        if not self.lst_trail:
             # return
             return None
 
         # index out of range ?
-        if fi_ndx >= len(self.__lst_trail):
+        if fi_ndx >= len(self.lst_trail):
             # return
             return None
 
         # return
-        return self.__lst_trail[len(self.__lst_trail) - 1 - fi_ndx]
+        return self.lst_trail[len(self.lst_trail) - 1 - fi_ndx]
 
     # ---------------------------------------------------------------------------------------------
     def update_data(self, f_data):
@@ -458,7 +341,7 @@ class CAircraftVisil(sanv.CAircraftBasic):
         assert l_last_pos is not None
 
         # coloca no rastro
-        self.__lst_trail.append(l_last_pos)
+        self.lst_trail.append(l_last_pos)
 
         # atualiza a posição da aeronave
         self.pos = self.adiru.pos

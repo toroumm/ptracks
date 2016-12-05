@@ -3,7 +3,7 @@
 <subidas VERSION="0001" CODE="1961" FORMAT="NEWTON">
 
   <subida nSub="53">
-    <nome>MOXEP 1B</nome>
+    <descricao>MOXEP 1B</descricao>
     <aerodromo>SBSJ</aerodromo>
     <pista>33</pista>
 
@@ -39,7 +39,7 @@
   </subida>
 
   <subida nSub="55">
-    <nome>MOXEP 1B</nome>
+    <descricao>MOXEP 1B</descricao>
     <aerodromo>SBSJ</aerodromo>
     <pista>15</pista>
 
@@ -73,7 +73,7 @@
   </subida>
 
   <subida nSub="57">
-    <nome>KOTRU 1B</nome>
+    <descricao>KOTRU 1B</descricao>
     <aerodromo>SBSJ</aerodromo>
     <pista>33</pista>
 
@@ -110,7 +110,7 @@
   </subida>
 
   <subida nSub="79">
-    <nome>NISTO 1A LITUK</nome>
+    <descricao>NISTO 1A LITUK</descricao>
     <aerodromo>SBSP</aerodromo>
     <pista>17R</pista>
 
@@ -164,7 +164,7 @@
   </subida>
 
   <subida nSub="381">
-    <nome>PBN ANDOR</nome>
+    <descricao>PBN ANDOR</descricao>
     <aerodromo>SBSP</aerodromo>
     <pista>17L</pista>
 
@@ -198,7 +198,7 @@
   </subida>
 
   <subida nSub="1100">
-    <nome>SBBR</nome>
+    <descricao>SBBR</descricao>
     <aerodromo>SBBR</aerodromo>
     <pista>11L</pista>
 
@@ -223,7 +223,7 @@
     </breakpoint>
 
   <subida nSub="1101">
-    <nome>SBGR</nome>
+    <descricao>SBGR</descricao>
     <aerodromo>SBGR</aerodromo>
     <pista>09L</pista>
 

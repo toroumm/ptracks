@@ -54,12 +54,15 @@ import model.glb_defs as gdefs
 import model.model_visil as model
 
 # view 
-import view.view_visil as view
+import view.visil.view_visil as view
 
 # control 
+import control.control_debug as dbg
 import control.control_basic as control
 
 import control.config.config_visil as config
+
+import control.events.events_config as events
 
 import control.network.get_address as gaddr
 import control.network.net_listener as listener
@@ -75,7 +78,7 @@ class CControlVisil(control.CControlBasic):
     # ---------------------------------------------------------------------------------------------
     def __init__(self):
         """
-        DOCUMENT ME!
+        constructor
         """
         # inicia a super classe
         super(CControlVisil, self).__init__()
@@ -156,17 +159,17 @@ class CControlVisil(control.CControlBasic):
         self.app = QtGui.QApplication(sys.argv)
         assert self.app
 
-        # M_LOG.debug("currentThread:{}".format(threading.currentThread()))
+        # dbg.M_DBG.debug("currentThread:{}".format(threading.currentThread()))
 
         # setup application parameters
         self.app.setOrganizationName("sophosoft")
         self.app.setOrganizationDomain("sophosoft.com.br")
         self.app.setApplicationName("visil")
 
-        self.app.setWindowIcon(QtGui.QIcon(os.path.join(self.__dct_config["dir.img"], "icon_app.png")))
+        self.app.setWindowIcon(QtGui.QIcon(os.path.join(self.__dct_config["dir.img"], "icon.png")))
 
         # load logo
-        l_pix_logo = QtGui.QPixmap(os.path.join(self.__dct_config["dir.img"], "logo_python.png"))
+        l_pix_logo = QtGui.QPixmap(os.path.join(self.__dct_config["dir.img"], "logo.png"))
         assert l_pix_logo
 
         # create splash screen
@@ -200,6 +203,7 @@ class CControlVisil(control.CControlBasic):
         drive application
         """
         # verifica condições de execução (I)
+        assert self.event
         assert self.__emula_model
         assert self.__q_rcv_cnfg
         assert self.__sck_rcv_cnfg
@@ -227,10 +231,11 @@ class CControlVisil(control.CControlBasic):
             try:
                 # obtém um item da queue de configuração
                 llst_data = self.__q_rcv_cnfg.get(False)
-                # M_LOG.debug("llst_data:[{}]",format(llst_data))
+                dbg.M_DBG.debug("llst_data:[{}]".format(llst_data))
 
                 # queue tem dados ?
                 if llst_data:
+                    # dbg.M_DBG.debug("llst_data[0]:[{}]".format(llst_data[0]))
 
                     # mensagem de aceleração ?
                     if gdefs.D_MSG_ACC == int(llst_data[0]):
@@ -242,18 +247,17 @@ class CControlVisil(control.CControlBasic):
                         # liga/desliga call-sign
                         pass  # self._oView.cbkToggleCallSign()
 
-                        # M_LOG.debug("liga/desliga callsign")
-
                     # mensagem configuração de exercício ?
                     elif gdefs.D_MSG_EXE == int(llst_data[0]):
+                        # cria um evento de configuração de exercício
+                        l_evt = events.CConfigExe(llst_data[1])
+                        assert l_evt
 
-                        # liga/desliga call-sign
-                        pass  # self._oView.cbkToggleCallSign()
-
-                        # M_LOG.debug("configuração de exercício")
-
+                        # dissemina o evento
+                        self.event.post(l_evt)
+                                                
                     # mensagem de fim de execução ?
-                    if gdefs.D_MSG_FIM == int(llst_data[0]):
+                    elif gdefs.D_MSG_FIM == int(llst_data[0]):
                         # termina a aplicação
                         self.cbk_termina()
 
@@ -267,19 +271,29 @@ class CControlVisil(control.CControlBasic):
                         # liga/desliga range mark
                         pass  # self._oView.cbkToggleRangeMark()
 
-                        # M_LOG.debug("liga/desliga range mark")
-
+                    # mensagem de endereço do servidor ?
+                    elif gdefs.D_MSG_SRV == int(llst_data[0]):
+                        # salva o endereço do servidor
+                        self.__dct_config["srv.addr"] = str(llst_data[1])
+                                                                                        
                     # mensagem de hora ?
                     elif gdefs.D_MSG_TIM == int(llst_data[0]):
-                        # M_LOG.debug("llst_data[1]:(%s)" % str(llst_data[1]))
+                        # dbg.M_DBG.debug("llst_data[1]:(%s)" % str(llst_data[1]))
 
                         # monta uma tupla com a mensagem de hora
                         lt_hora = tuple(int(l_s) for l_s in llst_data[1][1: -1].split(','))
-                        # M_LOG.debug("lt_hora:(%s)" % str(lt_hora))
+                        # dbg.M_DBG.debug("lt_hora:(%s)" % str(lt_hora))
 
                         # seta a hora de simulação
                         self.sim_time.set_hora(lt_hora)
-
+                                                                                                                                        
+                        # cria um evento de configuração de hora de simulação
+                        l_evt = events.CConfigHora(self.sim_time.get_hora_format())
+                        assert l_evt
+                                                                                                                                                                                                                
+                        # dissemina o evento
+                        self.event.post(l_evt)
+                                                                                                                                                                                                                                                                
                     # mensagem de descongelamento ?
                     elif gdefs.D_MSG_UFZ == int(llst_data[0]):
                         # defreeze application
@@ -294,7 +308,6 @@ class CControlVisil(control.CControlBasic):
 
             # em caso de não haver mensagens...
             except Queue.Empty:
-
                 # salva o tempo anterior
                 lf_ant = lf_now
 

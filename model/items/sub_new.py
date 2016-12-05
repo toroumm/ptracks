@@ -43,12 +43,6 @@ import model.items.brk_new as brknew
 # control
 import control.events.events_basic as event
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CSubNEW >--------------------------------------------------------------------------------
 
 class CSubNEW(model.CPrcModel):
@@ -56,7 +50,7 @@ class CSubNEW(model.CPrcModel):
     mantém as informações específicas sobre procedimento de subida
 
     <subida nSub="1">
-      <nome>BGC 2A</nome>
+      <descricao>BGC 2A</descricao>
       <aerodromo>SBGR</aerodromo>
       <pista>09R</pista>
 
@@ -64,16 +58,12 @@ class CSubNEW(model.CPrcModel):
     </subida>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
         @param f_model: model manager
         @param f_data: dados do procedimento de subida
         @param fs_ver: versão do formato
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_model
 
@@ -114,11 +104,7 @@ class CSubNEW(model.CPrcModel):
                 # copia a procedimento de subida
                 self.copy_sub(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_sub(self, f_sub):
         """
         copy constructor
@@ -126,9 +112,6 @@ class CSubNEW(model.CPrcModel):
 
         @param f_sub: procedimento de subida a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_sub:>>")
-
         # check input
         assert f_sub
 
@@ -147,11 +130,7 @@ class CSubNEW(model.CPrcModel):
         # lista de break-points da subida
         self.__lst_sub_brk = list(f_sub.lst_sub_brk)
 
-        # logger
-        # M_LOG.info("copy_sub:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __load_sub(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados de procedimento de subida a partir de um dicionário (formato 0001)
@@ -159,9 +138,6 @@ class CSubNEW(model.CPrcModel):
         @param fdct_data: dicionário com os dados do procedimento de subida
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("__load_sub:>>")
-
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a procedimento de subida
@@ -184,29 +160,21 @@ class CSubNEW(model.CPrcModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("__load_sub:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __make_sub(self, fdct_data):
         """
         carrega os dados de procedimento de subida a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados do procedimento de subida
         """
-        # logger
-        # M_LOG.info("__make_sub:>>")
-
         # identificação do procedimento de subida
         if "nSub" in fdct_data:
             self.i_prc_id = int(fdct_data["nSub"])
-            # M_LOG.debug("self.i_prc_id: " + str(self.i_prc_id))
+            self.s_prc_desc = "Subida {:03d}".format(fdct_data["nSub"])
 
         # descrição
-        if "nome" in fdct_data:
-            self.s_prc_desc = fdct_data["nome"]
-            # M_LOG.debug("self.s_prc_desc: " + str(self.s_prc_desc))
+        if "descricao" in fdct_data:
+            self.s_prc_desc = fdct_data["descricao"]
 
         # aeródromo da subida
         if "aerodromo" in fdct_data:
@@ -215,7 +183,6 @@ class CSubNEW(model.CPrcModel):
 
             # obtém o indicativo do aeródromo
             ls_aer_id = fdct_data["aerodromo"]
-            # M_LOG.debug("ls_aer_id: " + str(ls_aer_id))
 
             # obtém o aeródromo de subida
             self.__ptr_sub_aer = ldct_aer.get(ls_aer_id, None)
@@ -236,7 +203,6 @@ class CSubNEW(model.CPrcModel):
 
                 # obtém o indicativo do aeródromo
                 ls_pis_id = fdct_data["pista"]
-                # M_LOG.debug("ls_pis_id: " + str(ls_pis_id))
 
                 # obtém o pista de subida
                 self.__ptr_sub_pis = ldct_pis.get(ls_pis_id, None)
@@ -261,9 +227,6 @@ class CSubNEW(model.CPrcModel):
 
         # (bool)
         self.v_prc_ok = True
-
-        # logger
-        # M_LOG.info("__make_sub:<<")
 
     # =============================================================================================
     # data

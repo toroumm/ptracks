@@ -54,7 +54,7 @@ class CApxData(dict):
     mantém as informações sobre o dicionário de procedimento de aproximação
 
     <aproximacao nApx="1">
-        <nome>FINAL H3</nome>
+        <descricao>FINAL H3</descricao>
         <aerodromo>SBSP</aerodromo>
         <pista>17R</pista>
         <ils>N</ils>

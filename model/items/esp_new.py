@@ -50,6 +50,7 @@ class CEspNEW(model.CPrcModel):
     mantém as informações específicas sobre um procedimento de espera
 
     <espera nEsp="1">
+        <descricao>Espera MUMOP (274D)</descricao>
         <fixo>MUMOP</fixo>
         <sentido>D</sentido>
         <rumo>274</rumo>
@@ -78,6 +79,7 @@ class CEspNEW(model.CPrcModel):
         # herados de CPrcModel
         # self.v_prc_ok    # (bool)
         # self.i_prc_id    # identificação do procedimento de espera
+        # self.s_prc_desc  # descrição do procedimento de espera
 
         # fixo da espera
         self.__ptr_esp_fix = None
@@ -177,6 +179,10 @@ class CEspNEW(model.CPrcModel):
             self.i_prc_id = int(fdct_data["nEsp"])
             self.s_prc_desc = "Espera {:02d}".format(fdct_data["nEsp"])
 
+        # descrição da espera
+        if "descricao" in fdct_data:
+            self.s_prc_desc = fdct_data["descricao"]
+
         # fixo da espera
         if "fixo" in fdct_data:
             # obtém o dicionário de fixos
@@ -209,6 +215,7 @@ class CEspNEW(model.CPrcModel):
             # normaliza o rumo
             if self.__f_esp_true < 0.:
                 self.__f_esp_true += 360.
+
             elif self.__f_esp_true > 360.:
                 self.__f_esp_true -= 360.
 

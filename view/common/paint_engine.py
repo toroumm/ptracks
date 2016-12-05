@@ -32,9 +32,6 @@ __date__ = "2015/12"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-import logging
-
 # PyQt library
 from PyQt4 import QtCore
 from PyQt4 import QtGui
@@ -49,12 +46,6 @@ import model.tMath as tMath
 
 import model.stock.fix as cfix
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CPaintEngine >---------------------------------------------------------------------------
 
 class CPaintEngine(object):
@@ -62,38 +53,23 @@ class CPaintEngine(object):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # check input
-        # assert f_control
-
         # init super class
         super(CPaintEngine, self).__init__()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_aerodromo(self, fo_widget, f_aer):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_aerodromo:>>")
-
         # check input
         assert fo_widget
 
         # obtém a posição do aeródromo
         l_pos = fo_widget.viewport.translate_pos(pll.CPosLatLng(f_aer.f_aer_lat, f_aer.f_aer_lng))
-        # M_LOG.debug("[{}] L/L:[{}]/[{}]".format(f_aer.s_aer_indc, f_aer.f_aer_lat, f_aer.f_aer_lng))
 
         # X/Y do aeródromo
         lf_x = l_pos.f_x
@@ -119,17 +95,14 @@ class CPaintEngine(object):
 
         # desenha o texto (indicativo do aeródromo)
         lo_painter.drawText(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2), f_aer.s_aer_indc)
-        # M_LOG.debug("X/Y:[{}]/[{}]".format(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2)))
 
         # para todas as pistas do aeródromo...
         for l_pis in f_aer.dct_aer_pistas.values():
             # obtém a posição da cabeceira da pista
             l_cab = fo_widget.viewport.translate_pos(pll.CPosLatLng(l_pis.f_pst_lat, l_pis.f_pst_lng))
-            # M_LOG.debug("[{}] L/L:[{}]/[{}]".format(f_aer.s_aer_indc, l_pis.f_pst_lat, l_pis.f_pst_lng))
 
             # obtém a posição da cabeceira oposta da pista
             l_cab_opos = fo_widget.viewport.translate_pos(pll.CPosLatLng(l_pis.f_pst_cab_opos_lat, l_pis.f_pst_cab_opos_lng))
-            # M_LOG.debug("[{}] L/L:[{}]/[{}]".format(f_aer.s_aer_indc, l_pis.f_pst_cab_opos_lat, l_pis.f_pst_cab_opos_lng))
 
             # cria uma caneta 
             l_pen = QtGui.QPen()
@@ -148,18 +121,11 @@ class CPaintEngine(object):
         # libera o QPainter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_aerodromo:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawApproach(self, fo_widget, f_anv, f_name):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawApproach:>>")
-
         # check input
         assert fo_widget
 
@@ -204,18 +170,11 @@ class CPaintEngine(object):
 
         del lo_painter
 
-        # logger
-        # M_LOG.info("drawApproach:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_aproximacao(self, fo_widget, f_apx):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_aproximacao:>>")
-
         # check input
         assert fo_widget
 
@@ -234,7 +193,6 @@ class CPaintEngine(object):
         for l_ndx, l_brk in enumerate(f_apx.lst_apx_brk):
             # get breakpoint id
             ls_id = (ldefs.D_FMT_APX + "-{}").format(f_apx.i_prc_id, l_brk.i_brk_id)
-            # M_LOG.debug("ls_id: " + str(ls_id))
 
             # breakpoint position
             l_pos = fo_widget.viewport.translate_pos(pll.CPosLatLng(l_brk.f_brk_lat, l_brk.f_brk_lng))
@@ -265,22 +223,13 @@ class CPaintEngine(object):
         # remove o painter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_aproximacao:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_arp(self, fo_widget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_arp:>>")
-
         # check input
         assert fo_widget
-
-        # M_LOG.debug("L/L:[{}]/[{}]".format(fo_widget.viewport.center.f_lat, fo_widget.viewport.center.f_lng))
 
         # get ARP position
         l_pos = fo_widget.viewport.translate_pos(fo_widget.viewport.center)
@@ -309,32 +258,22 @@ class CPaintEngine(object):
 
         # draw text (indicativo)
         lo_painter.drawText(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2), "ARP")
-        # M_LOG.debug("X/Y:[{}]/[{}]".format(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2)))
 
         # free QPainter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_arp:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawArrival(self, fo_widget, rt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawArrival:>>")
-
         # check input
         assert fo_widget
-        # M_LOG.debug("aoItem: " + str ( rt._aoItem ))
 
         i = 0
         while i < len(rt._aoItem):
 
             name = rt._aoItem[i].sName
-            # M_LOG.debug("name: " + str ( name ))
 
             lo_painter = QtGui.QPainter(fo_widget)
             assert lo_painter is not None
@@ -365,18 +304,11 @@ class CPaintEngine(object):
 
             i += 1
 
-        # logger
-        # M_LOG.info("drawArrival:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_background(self, fo_widget, fo_painter):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_background:>>")
-
         # check input
         assert fo_widget
         assert fo_painter
@@ -384,28 +316,19 @@ class CPaintEngine(object):
         # fill background
         fo_painter.fillRect(QtCore.QRect(0, 0, fo_widget.width() - 1, fo_widget.height() - 1), gdata.G_DCT_COLORS["radar_background"])
 
-        # logger
-        # M_LOG.info("draw_background:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_blip(self, fo_widget, f_anv):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_blip:>>")
-
         # check input
         assert fo_widget
 
         # converte a posição lat/lng da aeronave para x/y
         l_pos = fo_widget.viewport.translate_pos(f_anv.position)
-        # M_LOG.debug("l_pos:[{}]".format(l_pos))
                         
         lf_x = l_pos.f_x
         lf_y = l_pos.f_y
-        # M_LOG.debug("l_pos: x:[{}] y:[{}]".format(l_pos.f_x, l_pos.f_y))
 
         # tamanho do blip
         lf_blip_size = fo_widget.viewport.f_blip_size
@@ -493,18 +416,11 @@ class CPaintEngine(object):
         # remove o painter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_blip:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawDeparture(self, fo_widget, rt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawDeparture:>>")
-
         # check input
         assert fo_widget
 
@@ -544,18 +460,11 @@ class CPaintEngine(object):
 
             i += 1
 
-        # logger
-        # M_LOG.info("drawDeparture:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawDirect(self, fo_widget, f_anv, f_name):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawDirect:>>")
-
         # check input
         assert fo_widget
 
@@ -579,18 +488,11 @@ class CPaintEngine(object):
 
         del lo_painter
 
-        # logger
-        # M_LOG.info("drawDirect:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_navaid(self, fo_widget, f_fix, f_kind=None):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_navaid:>>")
-
         # check input
         assert fo_widget
 
@@ -650,23 +552,15 @@ class CPaintEngine(object):
 
             # draw waypoint name (indicativo do fixo)
             lo_painter.drawText(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2), f_fix.s_fix_indc)
-            # M_LOG.debug("X/Y:[{}]/[{}]".format(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2)))
 
         # free QPainter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_navaid:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawRoute(self, fo_widget, f_anv, f_name):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawRoute:>>")
-
         # check input
         assert fo_widget
 
@@ -699,18 +593,11 @@ class CPaintEngine(object):
 
         del lo_painter
 
-        # logger
-        # M_LOG.info("drawRoute:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawRunway(self, fo_widget, f_rwy):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawRunway:>>")
-
         # check input
         assert fo_widget
 
@@ -746,18 +633,11 @@ class CPaintEngine(object):
         # libera o painter
         del lo_painter
 
-        # logger
-        # M_LOG.info("drawRunway:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_subida(self, fo_widget, f_sub):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_subida:>>")
-
         # check input
         assert fo_widget
 
@@ -776,7 +656,6 @@ class CPaintEngine(object):
         for l_ndx, l_brk in enumerate(f_sub.lst_sub_brk):
             # get breakpoint id
             ls_id = (ldefs.D_FMT_SUB + "-{}").format(f_sub.i_prc_id, l_brk.i_brk_id)
-            # M_LOG.debug("ls_id: " + str(ls_id))
 
             # breakpoint position
             l_pos = fo_widget.viewport.translate_pos(pll.CPosLatLng(l_brk.f_brk_lat, l_brk.f_brk_lng))
@@ -807,24 +686,14 @@ class CPaintEngine(object):
         # remove o painter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_subida:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (QWidget, CTrajetoria)
     def draw_trajetoria(self, fo_widget, f_trj):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_trajetoria:>>")
-
         # check input
         assert fo_widget
         assert f_trj
-
-        # M_LOG.debug("draw_trajetoria:i_prc_id:[{}]".format(f_trj.i_prc_id))
-        # M_LOG.debug("draw_trajetoria:lst_trj_brk:[{}]".format(f_trj.lst_trj_brk))
 
         # get blip size
         lf_blip_size = fo_widget.viewport.f_blip_size
@@ -841,7 +710,6 @@ class CPaintEngine(object):
         for l_ndx, l_brk in enumerate(f_trj.lst_trj_brk):
             # get breakpoint id
             ls_id = (ldefs.D_FMT_TRJ + "-{}").format(f_trj.i_prc_id, l_brk.i_brk_id)
-            # M_LOG.debug("ls_id: " + str(ls_id))
 
             # breakpoint position
             l_pos = fo_widget.viewport.translate_pos(pll.CPosLatLng(l_brk.f_brk_lat, l_brk.f_brk_lng))
@@ -872,18 +740,11 @@ class CPaintEngine(object):
         # free painter
         del lo_painter
 
-        # logger
-        # M_LOG.info("draw_trajetoria:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawTransition(self, fo_widget, rt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawTransition:>>")
-
         # check input
         assert fo_widget
 
@@ -911,18 +772,11 @@ class CPaintEngine(object):
 
             i += 1
 
-        # logger
-        # M_LOG.info("drawTransition:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def drawVector(self, fo_widget, f_anv, rv):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("drawVector:>>")
-
         # check input
         assert fo_widget
 
@@ -955,36 +809,22 @@ class CPaintEngine(object):
 
         del lo_painter
 
-        # logger
-        # M_LOG.info("drawVector:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def draw_waypoint(self, fo_widget, f_obj, fv_nameless):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("draw_waypoint:>>")
-
         if isinstance(f_obj, str):
             self.__draw_waypoint_name(fo_widget, f_obj, fv_nameless)
 
         elif isinstance(f_obj, cfix.CFix):
             self.__draw_waypoint_fix(fo_widget, f_obj, fv_nameless)
 
-        # logger
-        # M_LOG.info("draw_waypoint:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __draw_waypoint_name(self, fo_widget, f_name, fv_nameless):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__draw_waypoint_name:>>")
-
         pos = fo_widget._airspace.getPosition(f_name)
 
         l_fix = cfix.CFix(f_name, pos._fLat, pos._fLng)
@@ -994,18 +834,11 @@ class CPaintEngine(object):
 
         del l_fix
 
-        # logger
-        # M_LOG.info("__draw_waypoint_name:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __draw_waypoint_fix(self, fo_widget, f_fix, fv_nameless):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__draw_waypoint_fix:>>")
-
         # check input
         assert fo_widget
 
@@ -1030,18 +863,11 @@ class CPaintEngine(object):
 
         del lo_painter
 
-        # logger
-        # M_LOG.info("__draw_waypoint_fix:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def invert(self, f_clr):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("invert:>>")
-
         # check input
         assert f_clr
 
@@ -1049,18 +875,11 @@ class CPaintEngine(object):
         f_clr.setGreen(255 - f_clr.green())
         f_clr.setBlue(255 - f_clr.blue())
 
-        # logger
-        # M_LOG.info("invert:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def setColors(self, fv_inverted):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("setColors:>>")
-
         if fv_inverted:
             self.invert(gdata.G_DCT_COLORS["aerodromo"])
             self.invert(gdata.G_DCT_COLORS["arp"])
@@ -1080,8 +899,5 @@ class CPaintEngine(object):
             self.invert(gdata.G_DCT_COLORS["vor"])
 
             gdata.G_DCT_COLORS["navaid"] = QtGui.QColor(200, 0, 0, 255)
-
-        # logger
-        # M_LOG.info("setColors:<<")
 
 # < the end >--------------------------------------------------------------------------------------

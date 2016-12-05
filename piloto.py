@@ -45,7 +45,6 @@ sip.setapi('QString', 2)
 import control.control_piloto as control
 
 # -------------------------------------------------------------------------------------------------
-# void (void)
 def main():
 
     # instancia o controller
@@ -61,7 +60,7 @@ def main():
 
     # ativa a viewer
     l_view.run()
-
+    '''
     print "threadings:", threading.enumerate ()
 
     import traceback
@@ -73,7 +72,7 @@ def main():
                 name = thread.name
 
         traceback.print_stack ( frame )
-
+    '''
     # termina
     sys.exit()
 

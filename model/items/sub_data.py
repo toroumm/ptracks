@@ -60,7 +60,7 @@ class CSubData(dict):
     mantém as informações sobre o dicionário de procedimento de subida
 
     <subida nSub="1">
-        <nome>BGC 2A</nome>
+        <descricao>BGC 2A</descricao>
         <aerodromo>SBGR</aerodromo>
         <pista>09R</pista>
 

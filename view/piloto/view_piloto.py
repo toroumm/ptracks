@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-view_dbedit
+view_piloto
 
-code for the view manager
+DOCUMENT ME!
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,88 +37,109 @@ import os
 import sys
 
 # PyQt library
-from PyQt4 import QtGui
+from PyQt4 import QtCore
 
 # view
-import view.view_manager as view
-
-# view
-import view.dbedit.wnd_main_dbedit as wmain
+import view.common.color_manager as clrm
+import view.common.view_manager as view
+import view.piloto.wnd_main_piloto as wmain
 
 # control
 import control.events.events_basic as events
 
-# < class CViewDBEdit >----------------------------------------------------------------------------
+# < class CViewPiloto >----------------------------------------------------------------------------
 
-class CViewDBEdit(view.CViewManager):
+class CViewPiloto(view.CViewManager):
     """
-    módulo view do editor da base de dados.  É a classe de interface.  Trata as interações com o
-    usuário.
+    the interface to configuration piloto. Handles all interaction with user
     """
     # ---------------------------------------------------------------------------------------------
-    def __init__(self, f_control):
+    def __init__(self, f_control, f_model):
         """
-        @param f_control: control manager
+        constructor
+
+        @param f_control: control
+        @param f_model: model
         """
         # check input
         assert f_control
+        assert f_model
 
-        # inicia a super classe
-        super(CViewDBEdit, self).__init__(f_control)
+        # initialize super class
+        super(CViewPiloto, self).__init__(f_control)
 
         # herdados de CViewManager
+        # self.app           # the application
         # self.config        # config manager
         # self.dct_config    # dicionário de configuração
         # self.control       # control manager
         # self.event         # event manager
         # self.model         # model manager
 
-        # cria a aplicação
-        self.__app = QtGui.QApplication(sys.argv)
-        assert self.__app
+        # model
+        self.model = f_model
 
-        # parâmetros
-        self.__app.setOrganizationName("sophosoft")
-        self.__app.setOrganizationDomain("sophosoft.com.br")
-        self.__app.setApplicationName("dbEdit")
-        self.__app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))
-
-        # cria o menu principal
-        self.__wmain = wmain.CWndMainDBEdit(f_control)
-        assert self.__wmain
-
-        # configura estado inicial
-        # self._szState = "intro"
-
-        # flag started
-        # self._bStarted = False
-
+        # show message
+        self.control.splash.showMessage("loading colour table...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+                        
+        # color manager
+        self.__colors = clrm.CColorManager(self.config)
+                        
     # ---------------------------------------------------------------------------------------------
-    def notify(self, f_event):
+    def notify(self, f_evt):
         """
         callback de recebimento de eventos
 
-        @param f_event: event
+        @param f_evt: event
         """
-        # check input 
-        assert f_event
+        # check input
+        assert f_evt
 
-        if isinstance(f_event, events.CTick):
+        # clock tick event ?
+        if isinstance(f_evt, events.CTick):
+            # events.CTick
             pass
-                
+
+        # quit event ?
+        elif isinstance(f_evt, events.CQuit):
+            # para todos os processos
+            # glb_data.G_KEEP_RUN = False
+
+            # events.CQuit
+            pass
+
     # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         executa a aplicação
         """
-        # verifica condições de execução
-        assert self.__app
-        assert self.__wmain
+        # clear to go
+        assert self.app
+        assert self.control
 
-        # exibe o menu principal
-        self.__wmain.show()
+        # cria a visualização
+        l_wmain = wmain.CWndMainPiloto(self.control)
+        assert l_wmain
 
+        # exibe o configurador de simulação
+        l_wmain.show()
+
+        # dismiss splash screen
+        self.control.splash.finish(l_wmain)
+                
         # processa a aplicação
-        self.__app.exec_()
+        self.app.exec_()
+
+    # =============================================================================================
+    # data
+    # =============================================================================================
+            
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def colors(self):
+        """
+        get color manager
+        """
+        return self.__colors
 
 # < the end >--------------------------------------------------------------------------------------

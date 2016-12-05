@@ -37,13 +37,6 @@ class CInstruction(object):
     DOCUMENT ME
     """
     # ---------------------------------------------------------------------------------------------
-    # C_APPROACH = 0
-    # C_DIRECT = 1
-    # C_HDG = 2
-    # C_HOLD = 3
-    # C_ROUTE = 4
-
-    # ---------------------------------------------------------------------------------------------
     def __init__(self):
         """
         constructor
@@ -72,6 +65,15 @@ class CInstruction(object):
         # self.__i_type = 0
         # self.__f_number = 0.
         # self.__o_react_time = None
+
+    # ---------------------------------------------------------------------------------------------
+    def __str__(self):
+        """
+        object's human-readable representation
+        """
+        # return
+        return "text:[{}] = {}/{}/{}/{}".format(self.__s_text, self.__en_cmd_ope, self.__f_param_1,
+                                                self.__f_param_2, self.__f_param_3)
 
     # =============================================================================================
     # data

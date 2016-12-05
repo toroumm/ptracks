@@ -40,6 +40,7 @@ import os
 import model.data as data
 
 # control
+# import control.control_debug as dbg
 import control.config.config_manager as config
 
 # < class CConfigPiloto >--------------------------------------------------------------------------
@@ -50,7 +51,7 @@ class CConfigPiloto(config.CConfigManager):
     """
     # informações comuns de configuração
     __CFG_PILOTO = {"tab.aer": "tabAer",    # tabela de aeródromos
-                    "tab.esp": "tabApx",    # tabela de procedimentos de aproximação
+                    "tab.apx": "tabApx",    # tabela de procedimentos de aproximação
                     "tab.esp": "tabEsp",    # tabela de procedimentos de espera
                     "tab.fix": "tabFix",    # tabela de fixos
                     "tab.prf": "tabPrf",    # tabela de performances
@@ -68,15 +69,13 @@ class CConfigPiloto(config.CConfigManager):
         # init super class
         super(CConfigPiloto, self).__init__(fs_config)
 
-        # herdados de ConfigTracks
+        # herdados de CConfigManager
         # self.dct_config    # config manager data dictionary
 
         # carrega os atributos locais no dicionário de configuração
         for l_key in self.__CFG_PILOTO.keys():
             if l_key not in self.dct_config:
                 self.dct_config[l_key] = self.__CFG_PILOTO[l_key]
-
-        # l_log.info("self.dct_config: " + str ( self.dct_config ))
 
         # cria um parser para os argumentos
         l_parser = argparse.ArgumentParser(description="Piloto (C) 2014-2016.")

@@ -36,7 +36,7 @@ __date__ = "2015/11"
 import model.model_dbedit as model
 
 # view 
-import view.view_dbedit as view
+import view.dbedit.view_dbedit as view
 
 # control 
 import control.control_manager as control

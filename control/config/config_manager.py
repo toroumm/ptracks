@@ -49,6 +49,9 @@ import libs.coords.coord_defs as cdefs
 import model.glb_data as gdata
 import model.glb_defs as gdefs
 
+# control
+# import control.control_debug as dbg
+
 # < class CConfigManager >-------------------------------------------------------------------------
 
 class CConfigManager(object):
@@ -105,6 +108,9 @@ class CConfigManager(object):
 
         @param fs_path: full path do arquivo de configuração
         """
+        # check input
+        assert fs_path
+        
         # load default values in dictionary
         self.__dct_config = self.__CFG_COMMON.copy()
         assert self.__dct_config is not None
@@ -122,7 +128,7 @@ class CConfigManager(object):
             for l_section in l_cp.sections():
                 for l_option in l_cp.options(l_section):
                     self.__dct_config[str(l_section.lower() + '.' + l_option.lower())] = l_cp.get(l_section, l_option)
-
+        
     # =============================================================================================
     # data
     # =============================================================================================

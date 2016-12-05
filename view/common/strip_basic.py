@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-strip_visil
+strip_basic
 
 DOCUMENT ME!
 
@@ -36,7 +36,8 @@ __date__ = "2015/12"
 import logging
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # < variáveis globais >----------------------------------------------------------------------------
 
@@ -79,9 +80,9 @@ g_SH = ["background-color: rgb(255, 200,  20);",
         "background-color: rgb(255,  40, 180);",
         "background-color: rgb(255,  20, 200);"]
 
-# < class CWidStrip >------------------------------------------------------------------------------
+# < class CWidStripBasic >-------------------------------------------------------------------------
 
-class CWidStrip(QtGui.QWidget):
+class CWidStripBasic(QtGui.QWidget):
     """
     widget de uma strip
     """
@@ -95,13 +96,8 @@ class CWidStrip(QtGui.QWidget):
         @param f_control: control manager
         @param f_parent: janela vinculada ou None
         """
-        # logger
-        # l_log = logging.getLogger("CWidStrip::__init__")
-        # l_log.setLevel(w_logLvl)
-        # l_log.debug(">>")
-
         # init super class
-        super(CWidStrip, self).__init__()
+        super(CWidStripBasic, self).__init__()
 
         # verifica parâmetros de entrada
         assert f_control
@@ -120,18 +116,8 @@ class CWidStrip(QtGui.QWidget):
         # create main Ui
         self.setupUi(f_iI % len(g_Callsign))
 
-        # logger
-        # l_log.debug("<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def setupUi(self, f_iI):
-
-        # logger
-        # l_log = logging.getLogger("CWidStrip::setupUi")
-        # l_log.setLevel(w_logLvl)
-        # l_log.debug(">>")
-
         # cria a fonte
         l_font = QtGui.QFont()
         assert l_font
@@ -317,8 +303,5 @@ class CWidStrip(QtGui.QWidget):
         l_hloStrip.addWidget(self._lblCallsign)
         # l_hloStrip.addWidget ( l_lineV )
         l_hloStrip.addWidget(l_widDir)
-
-        # logger
-        # l_log.debug("<<")
 
 # < the end >--------------------------------------------------------------------------------------

@@ -70,9 +70,13 @@ class CColorData(object):
     """
     DOCUMENT ME!
     """
+    # ---------------------------------------------------------------------------------------------
     def __init__(self):
+        """
+        constructor
+        """
         # (str) 
-        self.s_remarks = ""
+        self.s_descricao = ""
         # (tuple) 
         self.t_color = None
         # (int) 
@@ -267,7 +271,8 @@ class CColorManager(object):
             # have content ?
             if len(ls_line) > 0:
                 # comment or empty line ? 
-                if ls_line.startswith('#') or ls_line.startswith(';') or ls_line.startswith("--") or ls_line.startswith('\n'):
+                if (ls_line.startswith('#') or ls_line.startswith(';') or 
+                    ls_line.startswith("--") or ls_line.startswith('\n')):
                     # next line
                     continue
 
@@ -316,11 +321,11 @@ class CColorManager(object):
 
             # windows category ?
             if M_WindowsCategory == fi_category:
-                pass  # CAsdApp::GetApp().SetColors()
+                pass  # setColors()
 
             # mouse category ?
             if M_MouseCategory == fi_category:
-                pass  # CAsdApp::GetApp().SetCursorColors()
+                pass  # setCursorColors()
 
     # ---------------------------------------------------------------------------------------------
     def transform_color(self, ft_color, fi_category):

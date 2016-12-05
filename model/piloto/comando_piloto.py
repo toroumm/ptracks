@@ -53,8 +53,8 @@ class CComandoPil(inst.CInstruction):
 
         # herdados de CInstruction
         # self.en_cmd_ope    # comando
-        # self.f_param_1     # grau / velocidade / altitude
-        # self.f_param_2     # proa / nivel
+        # self.f_param_1     # grau / velocidade / altitude / aeródromo
+        # self.f_param_2     # proa / nivel / pista
         # self.f_param_3     # razão
         # self.v_running     # flag em execução
         # self.s_text        # texto do comando
@@ -66,6 +66,14 @@ class CComandoPil(inst.CInstruction):
 
             # parse mensagem
             self.__parse_comando(fs_msg)
+
+    # ---------------------------------------------------------------------------------------------
+    def __str__(self):
+        """
+        object's human-readable representation
+        """
+        # return super classe
+        return super(CComandoPil, self).__str__()
 
     # ---------------------------------------------------------------------------------------------
     def __cmd_altitude(self, flst_tok):
@@ -130,6 +138,26 @@ class CComandoPil(inst.CInstruction):
             self.__cmd_razao(flst_tok[2:])
 
     # ---------------------------------------------------------------------------------------------
+    def __cmd_decolagem(self, flst_tok):
+        """
+        DOCUMENT ME!
+        """
+        # check input
+        assert flst_tok
+
+        # comando
+        self.en_cmd_ope = ldefs.E_DECOLAGEM
+
+        # aeródromo/pista (AAAA/PPP)
+        llst_param = flst_tok[0].split('/')
+
+        # aeródromo
+        self.f_param_1 = str(llst_param[0].strip())  # .upper())
+
+        # pista
+        self.f_param_2 = str(llst_param[1].strip())  # .upper())
+
+    # ---------------------------------------------------------------------------------------------
     def __cmd_graus(self, flst_tok):
         """
         DOCUMENT ME!
@@ -192,27 +220,13 @@ class CComandoPil(inst.CInstruction):
         self.f_param_3 = float(flst_tok[0])
 
     # ---------------------------------------------------------------------------------------------
-    def __cmd_velocidade(self, flst_tok):
-        """
-        DOCUMENT ME!
-        """
-        # check input
-        assert flst_tok
-
-        # comando
-        self.en_cmd_ope = ldefs.E_IAS
-
-        # velocidade
-        self.f_param_1 = float(flst_tok[0])
-
-    # ---------------------------------------------------------------------------------------------
     def __parse_comando(self, fs_cmd=""):
         """
         DOCUMENT ME!
         """
         # recebeu um comando ?
         if "" == fs_cmd:
-            # return
+            # linha de comando vazia. cai fora...
             return
 
         # faz o split do comando
@@ -223,20 +237,65 @@ class CComandoPil(inst.CInstruction):
             # parse command
             self.__cmd_altitude(llst_tok[1:])
 
+        # pouso ?
+        elif "ARR" == llst_tok[0]:
+            # parse command
+            self.__cmd_pouso(llst_tok[1:])
+
         # comando de curva ?
         elif "CURVA" == llst_tok[0]:
             # parse command
             self.__cmd_curva(llst_tok[1:])
+
+        # decolagem ?
+        elif "DEP" == llst_tok[0]:
+            # parse command
+            self.__cmd_decolagem(llst_tok[1:])
+
+        # comando de espera ?
+        elif "ESP" == llst_tok[0]:
+            # comando
+            self.en_cmd_ope = ldefs.E_ESPERA
+
+            # espera
+            self.f_param_1 = float(llst_tok[1])
+
+        # comando de direcionamento a fixo ?
+        elif "FIX" == llst_tok[0]:
+            # comando
+            self.en_cmd_ope = ldefs.E_DIRFIXO
+
+            # número do fixo
+            self.f_param_1 = int(llst_tok[1])
 
         # comando de nível ?
         elif "NIV" == llst_tok[0]:
             # parse command
             self.__cmd_nivel(llst_tok[1:])
 
+        # comando de subida ?
+        elif "SUB" == llst_tok[0]:
+            # comando
+            self.en_cmd_ope = ldefs.E_SUBIDA
+
+            # subida
+            self.f_param_1 = float(llst_tok[1])
+
+        # comando de trajetória ?
+        elif "TRJ" == llst_tok[0]:
+            # comando
+            self.en_cmd_ope = ldefs.E_TRAJETORIA
+
+            # trajetória
+            self.f_param_1 = float(llst_tok[1])
+
         # comando de velocidade ?
         elif "VEL" == llst_tok[0]:
-            # parse command
-            self.__cmd_velocidade(llst_tok[1:])
+            # comando
+            self.en_cmd_ope = ldefs.E_IAS
+
+            # velocidade
+            self.f_param_1 = float(flst_tok[0])
 
     # =============================================================================================
     # data

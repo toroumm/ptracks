@@ -66,32 +66,32 @@ class CViewWizard(view.CViewManager):
         super(CViewWizard, self).__init__(f_control)
 
         # herdados de CViewManager
-        # self.config        # config manager
+        # self.config        # config
         # self.dct_config    # dicionário de configuração
-        # self.control       # control manager
-        # self.event         # event manager
-        # self.model         # model manager
+        # self.control       # control
+        # self.event         # event
+        # self.model         # model
 
-        # salva o control manager localmente
+        # control
         self.control = f_control
         assert self.control
 
-        # salva o model manager localmente
+        # model
         # self.model = f_control.model
         # assert self._model
 
-        # obtém o event manager
+        # event
         self.event = f_control.event
         assert self.event
 
         # registra a sí próprio como recebedor de eventos
         # self._event.register_listener(self)
 
-        # obtém o config manager
+        # config
         self.config = f_control.config
         assert self.config
 
-        # obtém o dicionário de configuração
+        # dicionário de configuração
         self.dct_config = self.config.dct_config
         assert self.dct_config
 
@@ -102,7 +102,7 @@ class CViewWizard(view.CViewManager):
         # configura alguns parâmetros da aplicação
         self._app.setOrganizationName("sophosoft")
         self._app.setOrganizationDomain("sophosoft.com.br")
-        self._app.setApplicationName("Merlin")
+        self._app.setApplicationName("merlin")
 
         self._app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))
 

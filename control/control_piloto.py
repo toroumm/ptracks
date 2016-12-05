@@ -35,18 +35,29 @@ __date__ = "2016/03"
 # python library
 import logging
 import multiprocessing
+import os
 import Queue
+import sys
 import time
+
+import sip
+sip.setapi('QString', 2)
+
+# PyQt library
+from PyQt4 import QtCore
+from PyQt4 import QtGui 
 
 # model 
 import model.glb_data as gdata
 import model.glb_defs as gdefs
+
 import model.model_piloto as model
 
 # view 
-import view.view_piloto as view
+import view.piloto.view_piloto as view
 
 # control 
+import control.control_debug as dbg
 import control.control_basic as control
 
 import control.config.config_piloto as config
@@ -75,6 +86,7 @@ class CControlPiloto(control.CControlBasic):
         super(CControlPiloto, self).__init__()
 
         # herdados de CControlManager
+        # self.app       # the application
         # self.event     # event manager
         # self.config    # opções de configuração
         # self.model     # model manager
@@ -83,6 +95,7 @@ class CControlPiloto(control.CControlBasic):
 
         # herdados de CControlBasic
         # self.ctr_flight    # flight control
+        # self.sck_send      # net sender
         # self.sim_stat      # simulation statistics
         # self.sim_time      # simulation timer
 
@@ -94,6 +107,9 @@ class CControlPiloto(control.CControlBasic):
         self.__dct_config = self.config.dct_config
         assert self.__dct_config
 
+        # create application
+        self.__create_app()
+                
         # create simulation statistics control
         # self.sim_stat = stats.SimStats()
         # assert self.sim_stat
@@ -113,31 +129,31 @@ class CControlPiloto(control.CControlBasic):
         self.__sck_snd_cpil = sender.CNetSender(lt_ifce, ls_addr, li_port, self.__q_snd_cpil)
         assert self.__sck_snd_cpil
 
-        # cria a queue de recebimento de configuração
+        # cria a queue de recebimento de comando/controle/configuração
         self.__q_rcv_cnfg = multiprocessing.Queue()
         assert self.__q_rcv_cnfg
 
-        # obtém o endereço de envio
+        # obtém o endereço de recebimento
         lt_ifce, ls_addr, li_port = gaddr.get_address(self.config, "net.cnfg")
 
-        # cria o socket de recebimento de configuração
+        # cria o socket de recebimento de comando/controle/configuração
         self.__sck_rcv_cnfg = listener.CNetListener(lt_ifce, ls_addr, li_port, self.__q_rcv_cnfg)
         assert self.__sck_rcv_cnfg
-
-        # cria o socket de acesso ao servidor
-        self.__sck_http = httpsrv.CNetHttpGet(self.event, self.config)
-        assert self.__sck_http
 
         # cria a queue de recebimento de pistas
         self.__q_rcv_trks = multiprocessing.Queue()
         assert self.__q_rcv_trks
 
-        # obtém o endereço de envio
+        # obtém o endereço de recebimento
         lt_ifce, ls_addr, li_port = gaddr.get_address(self.config, "net.trks")
 
         # cria o socket de recebimento de pistas
         self.__sck_rcv_trks = listener.CNetListener(lt_ifce, ls_addr, li_port, self.__q_rcv_trks)
         assert self.__sck_rcv_trks
+
+        # cria o socket de acesso ao servidor
+        self.__sck_http = httpsrv.CNetHttpGet(self.event, self.config)
+        assert self.__sck_http
 
         # instancia o modelo
         self.model = model.CModelPiloto(self)
@@ -152,20 +168,67 @@ class CControlPiloto(control.CControlBasic):
         assert self.view
 
     # ---------------------------------------------------------------------------------------------
+    def __create_app(self):
+        """
+        DOCUMENT ME!
+        """
+        # create application
+        self.app = QtGui.QApplication(sys.argv)
+        assert self.app
+
+        # dbg.M_DBG.debug("currentThread:{}".format(threading.currentThread()))
+
+        # setup application parameters
+        self.app.setOrganizationName("sophosoft")
+        self.app.setOrganizationDomain("sophosoft.com.br")
+        self.app.setApplicationName("piloto")
+
+        self.app.setWindowIcon(QtGui.QIcon(os.path.join(self.__dct_config["dir.img"], "icon.png")))
+
+        # load logo
+        l_pix_logo = QtGui.QPixmap(os.path.join(self.__dct_config["dir.img"], "logo.png"))
+        assert l_pix_logo
+
+        # create splash screen
+        self.splash = QtGui.QSplashScreen(l_pix_logo, QtCore.Qt.WindowStaysOnTopHint)
+        assert self.splash
+
+        self.splash.setMask(l_pix_logo.mask())
+
+        # create the progress bar
+        # self.progressBar = QtGui.QProgressBar(self.splash)
+        # self.progressBar.setGeometry(    self.splash.width() / 10, 8 * self.splash.height() / 10,
+        #                              8 * self.splash.width() / 10,     self.splash.height() / 10)
+
+        # message = 'hello'
+        # label = QtGui.QLabel("<font color=red size=72><b>{0}</b></font>".format(message), self.splash)
+        # label.setGeometry(1 * self.splash.width() / 10, 8 * self.splash.height() / 10,
+        #                   8 * self.splash.width() / 10, 1 * self.splash.height() / 10)
+
+        # show splash screen
+        self.splash.show()
+
+        # update the progress bar
+        # self.progressBar.setValue(50)
+
+        # process events (before main loop)
+        self.app.processEvents()
+
+    # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         drive application
         """
-        # verifica condições de execução (I)
+        # model and view ok ?
         if (self.model is None) or (self.view is None):
             # termina a aplicação sem confirmação e sem envio de fim
             self.cbk_termina()
 
-        # verifica condições de execução (I)
+        # clear to go
         assert self.event
+        assert self.__emula_model
         assert self.__q_rcv_cnfg
         assert self.__sck_rcv_cnfg
-        assert self.__emula_model
 
         # temporização de scheduler
         lf_tim_rrbn = self.config.dct_config["tim.rrbn"]
@@ -190,11 +253,11 @@ class CControlPiloto(control.CControlBasic):
             try:
                 # obtém um item da queue de configuração (nowait)
                 llst_data = self.__q_rcv_cnfg.get(False)
-                # M_LOG.debug("llst_data:[{}]".format(llst_data))
+                dbg.M_DBG.debug("llst_data:[{}]".format(llst_data))
 
                 # queue tem dados ?
                 if llst_data:
-                    # M_LOG.debug("llst_data[0]:[{}]".format(llst_data[0]))
+                    # dbg.M_DBG.debug("llst_data[0]:[{}]".format(llst_data[0]))
 
                     # mensagem de aceleração ?
                     if gdefs.D_MSG_ACC == int(llst_data[0]):
@@ -278,12 +341,11 @@ class CControlPiloto(control.CControlBasic):
         """
         DOCUMENT ME!
         """
-        # verifica condições de execução
-        # assert self.sim_time
+        # clear to go
+        assert self.sim_time
 
         # inicia o relógio da simulação
-        # self.sim_time.set_hora_ini((0, 0, 0))
-        pass
+        self.sim_time.set_hora((0, 0, 0))
 
     # =============================================================================================
     # data

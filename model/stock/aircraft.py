@@ -69,6 +69,9 @@ class CAircraft(object):
         self.__pos = pll.CPosLatLng()
         assert self.__pos is not None
 
+        # status
+        self.__s_status = "N/A"
+
     # ---------------------------------------------------------------------------------------------
     def copy(self):
         """
@@ -200,6 +203,21 @@ class CAircraft(object):
         set proa
         """
         self.__adiru.f_proa = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def s_status(self):
+        """
+        get status
+        """
+        return self.__s_status
+
+    @s_status.setter
+    def s_status(self, f_val):
+        """
+        set status
+        """
+        self.__s_status = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

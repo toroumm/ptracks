@@ -48,7 +48,7 @@ import model.glb_defs as gdefs
 import model.model_newton as model
 
 # view 
-import view.view_newton as view
+import view.newton.view_newton as view
 
 # control 
 import control.control_basic as control

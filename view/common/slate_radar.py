@@ -33,10 +33,7 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
 import math
-import random
-import sys
 
 # PyQt library
 from PyQt4 import QtCore
@@ -52,14 +49,8 @@ import model.newton.defs_newton as ldefs
 import model.tMath as tMath
 
 # view
-import view.visil.viewport as vwp
-import view.visil.paint_engine as peng
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+import view.common.paint_engine as peng
+import view.common.viewport as vwp
 
 # < class CSlateRadar >----------------------------------------------------------------------------
 
@@ -75,7 +66,6 @@ class CSlateRadar(QtGui.QWidget):
     C_LMODE_RTE = 3
 
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def __init__(self, f_control, f_parent=None):
         """
         constructor
@@ -83,9 +73,6 @@ class CSlateRadar(QtGui.QWidget):
         @param f_control: control manager
         @param f_parent: parent widget
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_control
         assert f_parent
@@ -138,8 +125,7 @@ class CSlateRadar(QtGui.QWidget):
         assert self.__viewport
 
         # get reference center
-        self.__viewport.center = self.__airspace.getPosition("SBSJ") #16
-        # M_LOG.debug("__init__:center:[{}]/[{}]".format(self.__viewport.center.f_lat, self.__viewport.center.f_lng))
+        self.__viewport.center = self.__airspace.get_position("SBSJ") #16
 
         # create paint engine
         self.__paint_engine = peng.CPaintEngine()
@@ -186,154 +172,19 @@ class CSlateRadar(QtGui.QWidget):
         # monta a lista de aeronaves ativas
         #self.__build_aircraft_list()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    '''
-    def __build_aircraft_list(self):
-        """
-        DOCUMENT ME!
-        """
-        # logger
-        # M_LOG.info("__build_aircraft_list:>>")
-
-        # testing
-        # csc = ""
-
-        # init aircrafts list
-        self.__dct_flight = []
-
-        # trava a lista de vôos
-        # locData.g_lckFlight.acquire ()
-
-        # try:
-        if (1):
-
-            # inicia o contador de strips
-            li_ndx = 0
-
-            # obtém o dicionário de vôos ativos
-            ldct_flight = self.__emula_model.dct_flight
-
-            # for all vôos ativos...
-            for l_key, l_atv in ldct_flight.iteritems():
-
-                # cria uma aeronave
-                l_anv = clsAircraft.clsAircraft(self.__airspace, self.__weather)
-                assert l_anv is not None
-
-                # p = int(random.random () * 19.)
-                # n = int(random.random () * 10000.)
-
-                # seta o callsign da aeronave
-                l_anv.setCallSign(l_key)
-                """
-                self.__s_route = self.__airspace.arrival(li_ndx)
-
-                if self.__s_route is None:
-                    l_log.fatal("FlightPlan error: standard route unknown.")
-                    sys.exit(1)
-                """
-                """
-                pos1 = self.__airspace.getPosition(self.__s_route._aoItem [ 0 ]._sName)
-
-                if pos1 is None:
-                    l_log.fatal("FlightPlan error (1): waypoint \"%s\" unknown." % self.__s_route._aoItem [ 0 ]._sName)
-                    sys.exit(1)
-
-                pos2 = self.__airspace.getPosition(self.__s_route._aoItem [ 1 ]._sName)
-
-                if pos2 is None:
-                    l_log.fatal("FlightPlan error (2): waypoint \"%s\" unknown." % self.__s_route._aoItem [ 0 ]._sName)
-                    sys.exit(1)
-
-                tr = tMath.track(pos2, pos1)
-                """
-                lf_lat, lf_lng = l_atv.tPosicao
-
-                # cria a posição de referência
-                """
-                pos = pll.posLatLngRef(self.__airspace.getPosition(self.__s_route._aoItem [ 0 ]._sName),
-                                               self.__airspace.variation (),
-                                               tr - 60 + random.random () * 120,
-                                               1 + random.random () * 20)
-                """
-                l_pos = pll.posLatLng(lf_lat, lf_lng)
-                assert l_pos is not None
-
-                # posiciona a aeronave
-                l_anv.initPosition(l_pos)
-
-                del l_pos
-                """
-                # coloca a aeronave em rota
-                l_anv.instructRoute(self.__s_route.getName ())
-                """
-                # inclui a aeronave na lista
-                self.__dct_flight.append(l_anv)
-
-            # incrementa o contador de strips
-            li_ndx += 1
-
-        # finally:
-            # libera a lista de vôos
-            # locData.g_lckFlight.release ()
-
-        # M_LOG.debug("self.__dct_flight(bld): %s" % str(self.__dct_flight))
-
-        # logger
-        # M_LOG.info("__build_aircraft_list:<<")
-    '''
-    # ---------------------------------------------------------------------------------------------
-    '''
-    def findMap(self, f_sName):
-        """
-        DOCUMENT ME!
-        """
-        # logger
-        # M_LOG.info("findMap:>>")
-
-        # for all mapas da lista...
-        for l_map in self.__lst_view_maps:
-            # achou o mapa procurado ?
-            if f_sName == l_map.oTitle["text"]:
-                # logger
-                # M_LOG.info("findMap:<<")
-
-                # retorna o pointer para o mapa
-                return l_map
-
-        # logger
-        # M_LOG.info("findMap:<E01: Map not found.")
-
-        # retorna erro
-        return None
-    '''
-    # ---------------------------------------------------------------------------------------------
-    # void (???)
     def hideLateral(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("hideLateral:>>")
-
         self.__i_active_ac = -1
         self.setMouseTracking(False)
 
-        # logger
-        # M_LOG.info("hideLateral:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def makeApproach(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("makeApproach:>>")
-
         # check input
         # assert f_control
 
@@ -365,18 +216,11 @@ class CSlateRadar(QtGui.QWidget):
         self.__s_approach = l_sClosest
         self.__i_lateral_mode = self.C_LMODE_APP
 
-        # logger
-        # M_LOG.info("makeApproach:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def makeDirect(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("makeDirect:>>")
-
         # check input
         # assert f_control
 
@@ -452,18 +296,11 @@ class CSlateRadar(QtGui.QWidget):
         self.__s_direct = l_sClosest
         self.__i_lateral_mode = self.C_LMODE_DCT
 
-        # logger
-        # M_LOG.info("makeDirect:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def makeRoute(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("makeRoute:>>")
-
         # check input
         # assert f_control
 
@@ -597,18 +434,11 @@ class CSlateRadar(QtGui.QWidget):
         self.__s_route = l_sClosest
         self.__i_lateral_mode = self.C_LMODE_RTE
 
-        # logger
-        # M_LOG.info("makeRoute:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def makeVector(self, f_iVal):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("makeVector:>>")
-
         # check input
         # assert f_control
 
@@ -617,10 +447,6 @@ class CSlateRadar(QtGui.QWidget):
 
         # verifica se o índice é válido
         if (f_iVal < 0) or (f_iVal >= len(self.__dct_flight)):
-
-            # logger
-            # M_LOG.info("makeVector:<E01. índice inválido.")
-
             # cai fora...
             return
 
@@ -648,25 +474,15 @@ class CSlateRadar(QtGui.QWidget):
 
         self.__i_lateral_mode = self.C_LMODE_HDG
 
-        # logger
-        # M_LOG.info("makeVector:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def notify(self, f_evt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("notify:>>")
-
-        pass
-
-        # logger
-        # M_LOG.info("notify:<<")
+        # return
+        return
 
     # ---------------------------------------------------------------------------------------------
-    # void(QPainter *)
     def __on_draw(self, fo_painter):
         """
         called to draw the radar window content. calls the __on_draw function for every graphical
@@ -677,9 +493,6 @@ class CSlateRadar(QtGui.QWidget):
 
         @param fo_painter: painting device
         """
-        # logger
-        # M_LOG.info("__on_draw:>>")
-
         # check input
         assert fo_painter
 
@@ -841,24 +654,14 @@ class CSlateRadar(QtGui.QWidget):
             # M_LOG.debug("self.m_pModifElem: ", + str(self.m_pModifElem))
             self.m_pModifElem.__on_draw(fo_painter, 0)
         '''
-        # logger
-        # M_LOG.info("__on_draw:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (???)
     def showLateral(self, f_iVal):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("showLateral:>>")
-
         self.__i_active_ac = f_iVal
 
         self.setMouseTracking(True)
-
-        # logger
-        # M_LOG.info("showLateral:<<")
 
     # =============================================================================================
     # Qt Slots
@@ -870,17 +673,11 @@ class CSlateRadar(QtGui.QWidget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("invert:>>")
-
         # inverte as cores dos elementos
         self.__paint_engine.setColors(f_vInverted)
 
         # redraw everything
         self.repaint()
-
-        # logger
-        # M_LOG.info("invert:<<")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot(bool)
@@ -888,9 +685,6 @@ class CSlateRadar(QtGui.QWidget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("pause:>>")
-
         self.__v_paused = f_vVal
 
         if self.__v_paused:
@@ -901,22 +695,13 @@ class CSlateRadar(QtGui.QWidget):
             self.__i_radar_timer = self.startTimer(tMath.round(self.__f_radar_interval, 0))
             self.__i_aircraft_timer = self.startTimer(tMath.round(self.__f_update_interval, 0))
 
-        # logger
-        # M_LOG.info("pause:<<")
-
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
     def showRange(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("showRange:>>")
-
-        self.__parent.status_bar.lblRange.setText("R%d" % int(self.__viewport.f_zoom))
-
-        # logger
-        # M_LOG.info("showRange:<<")
+        self.__parent.status_bar.lbl_range.setText("R%d" % int(self.__viewport.f_zoom))
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -924,17 +709,11 @@ class CSlateRadar(QtGui.QWidget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("zoom_in:>>")
-
         # change zoom  
         self.__viewport.f_zoom = round(self.__viewport.f_zoom / math.sqrt(2.), 0)
                 
         # update scope
         self.repaint()
-
-        # logger
-        # M_LOG.info("zoom_in:<<")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -942,17 +721,11 @@ class CSlateRadar(QtGui.QWidget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("zoom_out:>>")
-
         # change zoom
         self.__viewport.f_zoom = round(self.__viewport.f_zoom * math.sqrt(2.), 0)
                 
         # update scope
         self.repaint()
-
-        # logger
-        # M_LOG.info("zoom_out:<<")
 
     # =============================================================================================
     # Qt Events
@@ -964,17 +737,10 @@ class CSlateRadar(QtGui.QWidget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("keyReleaseEvent:>>")
-
         # check input
         assert f_evt
         
         if self.__i_active_ac < 0:
-
-            # logger
-            # M_LOG.info("keyReleaseEvent:<E01: not active")
-
             # return
             return
 
@@ -1002,9 +768,6 @@ class CSlateRadar(QtGui.QWidget):
         else:
             f_evt.ignore()
 
-        # logger
-        # M_LOG.info("keyReleaseEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
     # void (QMouseMoveEvent)
     def mouseMoveEvent(self, f_evt):
@@ -1013,9 +776,6 @@ class CSlateRadar(QtGui.QWidget):
 
         @param  f_evt: QMouseEvent*, not used in this function
         """
-        # logger
-        # M_LOG.info("mouseMoveEvent:>>")
-
         # check input
         assert f_evt
         
@@ -1102,7 +862,7 @@ class CSlateRadar(QtGui.QWidget):
                         assert l_oGeo
 
                         # atualiza a statusBar
-                        self.__parent.status_bar.updateCoordinates(unicode(l_oGeo) + " (%d, %d)" % (f_evt.x(), f_evt.y()))
+                        self.__parent.status_bar.update_coordinates(unicode(l_oGeo) + " (%d, %d)" % (f_evt.x(), f_evt.y()))
 
                         # libera a área alocada
                         del l_oGeo
@@ -1205,18 +965,12 @@ class CSlateRadar(QtGui.QWidget):
                 '''
                 pass
 
-        # logger
-        # M_LOG.info("mouseMoveEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
     # void (QMouseReleaseEvent)
     def mouseReleaseEvent(self, f_evt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("mouseReleaseEvent:>>")
-
         # check input
         assert f_evt
 
@@ -1279,18 +1033,12 @@ class CSlateRadar(QtGui.QWidget):
                 self.hideLateral()
                 self.repaint()
 
-        # logger
-        # M_LOG.info("mouseReleaseEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
     # void (QPaintEvent)
     def paintEvent(self, f_evt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("paintEvent:>>")
-
         # check input
         assert f_evt
         
@@ -1325,26 +1073,17 @@ class CSlateRadar(QtGui.QWidget):
             # restore painter
             lo_painter.restore()
 
-        # logger
-        # M_LOG.info("paintEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
     # void (QResizeEvent)
     def resizeEvent(self, f_evt):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("resizeEvent:>>")
-
         # check input
         assert f_evt
         
         # update size
         self.__viewport.update_size(self.width() - 1, self.height() - 1)
-
-        # logger
-        # M_LOG.info("resizeEvent:<<")
 
     # ---------------------------------------------------------------------------------------------
     # void (QTimerEvent)
@@ -1352,9 +1091,6 @@ class CSlateRadar(QtGui.QWidget):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("timerEvent:>>")
-
         # check input
         assert f_evt
         
@@ -1382,9 +1118,6 @@ class CSlateRadar(QtGui.QWidget):
             for l_atv in self.__dct_flight.values():
                 # faz a cinemática da aeronave
                 l_atv.fly(self.__f_simulation_speed * self.__f_update_interval)
-
-        # logger
-        # M_LOG.info("timerEvent:<<")
 
     # =============================================================================================
     # dados

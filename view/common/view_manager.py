@@ -43,12 +43,12 @@ class CViewManager(object):
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_control):
         """
-        @param f_control: control manager
+        @param f_control: control
         """
         # check input
         assert f_control
 
-        # save control manager
+        # control
         self.__control = f_control
 
         # register as listener
@@ -80,38 +80,38 @@ class CViewManager(object):
     @property
     def app(self):
         """
-        get app manager
+        get app
         """
         return self.__control.app
 
     @app.setter
     def app(self, f_val):
         """
-        set app manager
+        set app
         """
         # check input
         assert f_val
 
-        # save app manager
+        # app
         self.__control.app = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property
     def config(self):
         """
-        get config manager
+        get config
         """
         return self.__control.config
 
     @config.setter
     def config(self, f_val):
         """
-        set config manager
+        set config
         """
         # check input
         assert f_val
 
-        # save config manager
+        # config
         self.__control.config = f_val
 
     # ---------------------------------------------------------------------------------------------
@@ -130,7 +130,7 @@ class CViewManager(object):
         # check input
         assert f_val
 
-        # save configuration dictionary
+        # configuration dictionary
         self.__control.config.dct_config = f_val
 
     # ---------------------------------------------------------------------------------------------
@@ -138,57 +138,57 @@ class CViewManager(object):
     @property
     def control(self):
         """
-        get control manager
+        get control
         """
         return self.__control
 
     @control.setter
     def control(self, f_val):
         """
-        set control manager
+        set control
         """
         # check input
         assert f_val
 
-        # save control manager
+        # control
         self.__control = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property
     def event(self):
         """
-        get event manager
+        get event
         """
         return self.__control.event
 
     @event.setter
     def event(self, f_val):
         """
-        set event manager
+        set event
         """
         # check input
         assert f_val
 
-        # save event manager
+        # event
         self.__control.event = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property
     def model(self):
         """
-        get model manager
+        get model
         """
         return self.__control.model
 
     @model.setter
     def model(self, f_val):
         """
-        set model manager
+        set model
         """
         # check input
         assert f_val
 
-        # save model manager
+        # model
         self.__control.model = f_val
 
 # < the end >--------------------------------------------------------------------------------------

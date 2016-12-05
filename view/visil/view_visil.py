@@ -40,8 +40,9 @@ import sys
 from PyQt4 import QtCore
 
 # view
-import view.color_manager as clrm
-import view.view_manager as view
+import view.common.color_manager as clrm
+import view.common.view_manager as view
+
 import view.visil.wnd_main_visil as wmain
 
 # control
@@ -73,7 +74,7 @@ class CViewVisil(view.CViewManager):
         # self.event         # event manager
         # self.model         # model manager
 
-        # save model manager
+        # model
         self.model = f_model
 
         # show message
@@ -110,7 +111,7 @@ class CViewVisil(view.CViewManager):
         """
         exec application
         """
-        # checks
+        # clear to go
         assert self.control
         assert self.app
 

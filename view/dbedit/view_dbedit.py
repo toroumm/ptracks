@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-view_piloto
+view_dbedit
 
-DOCUMENT ME!
+code for the view manager
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,122 +37,86 @@ import os
 import sys
 
 # PyQt library
-from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
 import view.view_manager as view
-import view.piloto.wnd_main_piloto as wmain
+
+# view
+import view.dbedit.wnd_main_dbedit as wmain
 
 # control
 import control.events.events_basic as events
 
-# < class CViewPiloto >----------------------------------------------------------------------------
+# < class CViewDBEdit >----------------------------------------------------------------------------
 
-class CViewPiloto(view.CViewManager):
+class CViewDBEdit(view.CViewManager):
     """
-    the interface to configuration piloto. Handles all interaction with user.
+    módulo view do editor da base de dados.  É a classe de interface.  Trata as interações com o
+    usuário.
     """
     # ---------------------------------------------------------------------------------------------
-    def __init__(self, f_control, f_model):
+    def __init__(self, f_control):
         """
-        constructor
+        @param f_control: control manager
         """
         # check input
         assert f_control
-        assert f_model
 
-        # initialize super class
-        super(CViewPiloto, self).__init__(f_control)
+        # inicia a super classe
+        super(CViewDBEdit, self).__init__(f_control)
 
         # herdados de CViewManager
         # self.config        # config manager
-        # self.control       # control manager
         # self.dct_config    # dicionário de configuração
+        # self.control       # control manager
         # self.event         # event manager
         # self.model         # model manager
-
-        # salva o model localmente
-        self.model = f_model
-        assert self.model
 
         # cria a aplicação
         self.__app = QtGui.QApplication(sys.argv)
         assert self.__app
 
-        # configura alguns parâmetros da aplicação
+        # parâmetros
         self.__app.setOrganizationName("sophosoft")
         self.__app.setOrganizationDomain("sophosoft.com.br")
-        self.__app.setApplicationName("piloto")
-
+        self.__app.setApplicationName("dbEdit")
         self.__app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))
 
-        # carrega o logo
-        l_pix_logo = QtGui.QPixmap(os.path.join(self.dct_config["dir.img"], "logo.jpg"))
-        assert l_pix_logo
+        # cria o menu principal
+        self.__wmain = wmain.CWndMainDBEdit(f_control)
+        assert self.__wmain
 
-        # cria a tela de apresentação
-        self.__splash = QtGui.QSplashScreen(l_pix_logo, QtCore.Qt.WindowStaysOnTopHint)
-        assert self.__splash
+        # configura estado inicial
+        # self._szState = "intro"
 
-        self.__splash.setMask(l_pix_logo.mask())
-
-        # exibe a tela de apresentação
-        self.__splash.show()
-
-        # trata os eventos (antes do loop principal)
-        self.__app.processEvents()
+        # flag started
+        # self._bStarted = False
 
     # ---------------------------------------------------------------------------------------------
-    def notify(self, f_evt):
+    def notify(self, f_event):
         """
         callback de recebimento de eventos
 
-        @param f_evt: event
+        @param f_event: event
         """
-        # check input
-        assert f_evt
+        # check input 
+        assert f_event
 
-        # o evento recebido foi um Tick ?
-        if isinstance(f_evt, events.CTick):
-            # events.CTick
+        if isinstance(f_event, events.CTick):
             pass
-
-        # o evento recebido foi um aviso de término da aplicação ?
-        elif isinstance(f_evt, events.CQuit):
-            # para todos os processos
-            # glb_data.G_KEEP_RUN = False
-
-            # events.CQuit
-            pass
-
+                
     # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         executa a aplicação
         """
-        # verifica condições de execução
+        # clear to go
         assert self.__app
-        assert self.control
-        assert self.model
+        assert self.__wmain
 
-        # obtém o airspace
-        # l_airspace = self._model.oAirspace
-        # assert l_airspace
-
-        # obtém o landscape
-        # l_landscape = self._model.oLandscape
-        # assert l_landscape
-
-        # cria a visualização
-        l_wmain = wmain.CWndMainPiloto(self.control)
-        assert l_wmain
-
-        # exibe o configurador de simulação
-        l_wmain.show()
-
-        # fecha a tela de apresentação
-        self.__splash.finish(l_wmain)
+        # exibe o menu principal
+        self.__wmain.show()
 
         # processa a aplicação
         self.__app.exec_()

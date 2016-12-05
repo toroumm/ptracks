@@ -61,16 +61,16 @@ class CAirspaceBasic(object):
         # init super class
         super(CAirspaceBasic, self).__init__()
 
-        # salva o model manager localmente
+        # model manager
         self.__model = f_model
 
-        # salva o event manager localmente
+        # event manager
         self.__event = f_model.event
 
         # registra-se como recebedor de eventos
         self.__event.register_listener(self)
 
-        # salva o config manager localmente
+        # config manager
         self.__config = f_model.config
 
         # inicia dicionários
@@ -92,6 +92,7 @@ class CAirspaceBasic(object):
 
         # carrega a tabela de fixos em um dicionário
         self.dct_fix = fixdata.CFixData(self.model, ls_path)
+        assert self.dct_fix is not None
 
         # cria o dicionário de fixos por indicativo
         # self.dct_fix_indc = {fix.s_fix_indc:key for key, fix in self.dct_fix.iteritems()}
@@ -114,6 +115,43 @@ class CAirspaceBasic(object):
             for l_pst in l_aer_data.dct_aer_pistas:                
                 # salva a tupla (aeródromo, pista)
                 self.__lst_arr_dep.append("{}/{}".format(l_aer, l_pst))
+
+    # ---------------------------------------------------------------------------------------------
+    def get_aer_pst(self, fs_aer, fs_pst):
+        """
+        obtém o pointer para o aeródromo e pista
+
+        @param fs_aer: indicativo do aeródromo
+        @param fs_pst: indicativo da pista
+
+        @return pointer para o aeródromo e pista
+        """
+        # obtém o aeródromo
+        l_aer = self.__dct_aer.get(fs_aer, None)
+
+        if l_aer is None:
+            # logger
+            l_log = logging.getLogger("CAirspaceBasic::get_aer_pst")
+            l_log.setLevel(logging.ERROR)
+            l_log.error(u"<E01: não existe aeródromo [{}].".format(fs_aer))
+
+            # retorna pointers
+            return None, None
+
+        # obtém a pista
+        l_pst = l_aer.dct_aer_pistas.get(fs_pst, None)
+
+        if l_pst is None:
+            # logger
+            l_log = logging.getLogger("CAirspaceBasic::get_aer_pst")
+            l_log.setLevel(logging.ERROR)
+            l_log.error(u"<E02: não existe pista [{}] no aeródromo [{}].".format(fs_pst, fs_aer))
+
+            # retorna pointers
+            return l_aer, None
+
+        # retorna pointers
+        return l_aer, l_pst
 
     # ---------------------------------------------------------------------------------------------
     def notify(self, f_event):

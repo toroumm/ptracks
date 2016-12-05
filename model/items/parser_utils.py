@@ -226,9 +226,9 @@ def parse_aproximacao(f_element):
     # inicia o dicionário de dados
     ldct_tmp = {}
 
-    # handle nome
-    if "nome" == f_element.tagName():
-        ldct_tmp["nome"] = f_element.text()
+    # handle descricao
+    if "descricao" == f_element.tagName():
+        ldct_tmp["descricao"] = f_element.text()
 
     # handle aeródromo
     if "aerodromo" == f_element.tagName():
@@ -424,8 +424,12 @@ def parse_espera(f_element):
     # inicia o dicionário de dados
     ldct_tmp = {}
 
+    # handle descricao (nome)
+    if "descricao" == f_element.tagName():
+        ldct_tmp["descricao"] = f_element.text()
+
     # handle fixo (descrição)
-    if "fixo" == f_element.tagName():
+    elif "fixo" == f_element.tagName():
         ldct_tmp["fixo"] = f_element.text()
 
     # handle sentido
@@ -1070,7 +1074,7 @@ def parse_subida(f_element):
     helper function to the constructor, parses xml entries
 
     <subida nSub="1">
-      <nome>BGC 2A</nome>
+      <descricao>BGC 2A</descricao>
       <aerodromo>SBGR</aerodromo>
       <pista>09R</pista>
                            
@@ -1082,9 +1086,9 @@ def parse_subida(f_element):
     # inicia o dicionário de dados
     ldct_tmp = {}
 
-    # handle nome (descrição)
-    if "nome" == f_element.tagName():
-        ldct_tmp["nome"] = f_element.text()
+    # handle descricao (nome)
+    if "descricao" == f_element.tagName():
+        ldct_tmp["descricao"] = f_element.text()
 
     # handle aeródromo
     elif "aerodromo" == f_element.tagName():

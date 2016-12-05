@@ -44,6 +44,7 @@ import model.glb_data as gdata
 import model.glb_defs as gdefs
 
 # control
+# import control.control_debug as dbg
 import control.events.events_basic as events
 
 # < class CSimTime >-------------------------------------------------------------------------------
@@ -213,7 +214,7 @@ class CSimTime(threading.Thread):
         lf_hora_dif = self.__f_hora_atu - self.__f_zero_sys
 
         # incrementa a hora zero da simulação e retorna
-        return self.__f_zero_sim + (lf_hora_dif * self.__dct_config["tim.accl"])
+        return self.__f_zero_sim + (lf_hora_dif * float(self.__dct_config["tim.accl"]))
 
     # ---------------------------------------------------------------------------------------------
     def run(self):

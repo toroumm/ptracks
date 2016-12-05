@@ -54,10 +54,10 @@ class CViewNewton(threading.Thread):
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_model, f_control):
         """
-        init newton view manager
+        init newton view
 
-        @param f_model: model manager
-        @param f_control: control manager
+        @param f_model: model
+        @param f_control: control
         """
         # check input
         assert f_model
@@ -66,10 +66,10 @@ class CViewNewton(threading.Thread):
         # init super class
         super(CViewNewton, self).__init__()
 
-        # model manager
+        # model
         self.__model = f_model
 
-        # control manager
+        # control
         self.__control = f_control
 
         # obtém o MPI rank
