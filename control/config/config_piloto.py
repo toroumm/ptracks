@@ -37,7 +37,7 @@ import argparse
 import os
 
 # model 
-import model.data as data
+import model.common.data as data
 
 # control
 # import control.control_debug as dbg

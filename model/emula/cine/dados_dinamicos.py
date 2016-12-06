@@ -40,16 +40,13 @@ import math
 import libs.coords.coord_defs as cdefs
 
 # model
-import model.glb_data as gdata
+import model.common.glb_data as gdata
 import model.newton.defs_newton as ldefs
 
 import model.emula.cine.calc_proa_demanda as cpd
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
+# control
+import control.control_debug as dbg
 
 # -------------------------------------------------------------------------------------------------
 def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
@@ -62,14 +59,11 @@ def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
 
     @return o ângulo calculado e o flag 'on demand'
     """
-    # logger
-    # M_LOG.info("__atualiza_altitude:>>")
-
     # check input
     assert f_atv
 
     # checks
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::__atualiza_altitude")
         l_log.setLevel(logging.ERROR) 
@@ -78,8 +72,8 @@ def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
         # cai fora...
         return 0, False
 
-    # M_LOG.debug("alt. atual..:[{}]".format(f_atv.f_trf_alt_atu))
-    # M_LOG.debug("alt. demanda:[{}]".format(f_atv.f_atv_alt_dem))
+    # cdbg.M_DBG.debug("alt. atual..:[{}]".format(f_atv.f_trf_alt_atu))
+    # cdbg.M_DBG.debug("alt. demanda:[{}]".format(f_atv.f_atv_alt_dem))
 
     # está variando a altitude ?
     if f_atv.f_trf_alt_atu != f_atv.f_atv_alt_dem:
@@ -88,21 +82,21 @@ def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
             # obtém a razão de descida atual (performance)
             # lf_vel_z = f_atv.ptr_trf_prf.f_prf_raz_des_apx
             lf_vel_z = f_atv.f_atv_raz_sub
-            # M_LOG.debug("razão de descida: " + str(lf_vel_z))
+            # cdbg.M_DBG.debug("razão de descida: " + str(lf_vel_z))
 
         # está subindo ?
         elif f_atv.f_trf_alt_atu < f_atv.f_atv_alt_dem:
             # obtém a razão de subida (performance)
             # lf_vel_z = f_atv.ptr_trf_prf.f_prf_raz_sub_crz
             lf_vel_z = f_atv.f_atv_raz_sub
-            # M_LOG.debug("razão de subida: " + str(lf_vel_z))
+            # cdbg.M_DBG.debug("razão de subida: " + str(lf_vel_z))
 
         # otherwise, está descendo
         else:
             # obtém a razão de descida (performance)
             # lf_vel_z = f_atv.ptr_trf_prf.f_prf_raz_des_crz
             lf_vel_z = f_atv.f_atv_raz_sub
-            # M_LOG.debug("razão de descida: " + str(lf_vel_z))
+            # cdbg.M_DBG.debug("razão de descida: " + str(lf_vel_z))
 
         # está subindo ?
         if f_atv.f_trf_alt_atu < f_atv.f_atv_alt_dem:
@@ -171,19 +165,19 @@ def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
                 f_atv.f_atv_vel_mac_dem = calcMACH(f_atv.f_atv_vel_tas, f_atv.f_trf_alt_atu, gdata.G_EXE_VAR_TEMP_ISA)
             '''
         # !REVER!
-        # M_LOG.debug("lf_vel_z.........: " + str(lf_vel_z))
-        # M_LOG.debug("ff_vel_med.......: " + str(ff_vel_med))
+        # cdbg.M_DBG.debug("lf_vel_z.........: " + str(lf_vel_z))
+        # cdbg.M_DBG.debug("ff_vel_med.......: " + str(ff_vel_med))
 
         # originalmente sem teste !
         if lf_vel_z < ff_vel_med:
-            # M_LOG.debug("ângulo de ataque: " + str(lf_vel_z / ff_vel_med))
+            # cdbg.M_DBG.debug("ângulo de ataque: " + str(lf_vel_z / ff_vel_med))
 
             # calcula o ângulo de ataque (atitude)
             lf_alfa = math.asin(lf_vel_z / ff_vel_med)  # este é o original...
 
         # otherwise,... 
         else:
-            # M_LOG.debug("ângulo de ataque: " + str(ff_vel_med / lf_vel_z))
+            # cdbg.M_DBG.debug("ângulo de ataque: " + str(ff_vel_med / lf_vel_z))
 
             # calcula o ângulo de ataque (atitude)
             lf_alfa = math.asin(ff_vel_med / lf_vel_z)  # alterado para "dar certo..."
@@ -199,9 +193,6 @@ def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):
         # seta flag 'on demand'
         lv_flag = False
 
-    # logger
-    # M_LOG.info("__atualiza_altitude:<<")
-
     # retorna o ângulo calculado e o flag 'on demand'
     return lf_alfa, lv_flag
 
@@ -212,14 +203,11 @@ def __atualiza_mach(f_atv):
     
     @param f_atv: pointer para struct aeronaves
     """
-    # logger
-    # M_LOG.info("__atualiza_mach:>>")
-
     # check input
     assert f_atv
 
     # checks
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::__atualiza_mach")
         l_log.setLevel(logging.ERROR) 
@@ -275,9 +263,6 @@ def __atualiza_mach(f_atv):
     # atualiza velocidade de demanda da aeronave
     f_atv.f_atv_vel_dem = f_atv.f_trf_vel_atu
 
-    # logger
-    # M_LOG.info("__atualiza_mach:<<")
-
 # -------------------------------------------------------------------------------------------------
 def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
     """
@@ -287,15 +272,12 @@ def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
     @param ff_vel_med: velocidade media
     @param ff_alfa: ângulo de ataque (atitude)
     """
-    # logger
-    # M_LOG.info("__atualiza_posicao:>>")
-
     # check input
     assert f_atv
     assert f_cine_data
 
     # checks
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::__atualiza_posicao")
         l_log.setLevel(logging.ERROR) 
@@ -304,16 +286,16 @@ def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
         # cai fora...
         return
 
-    # M_LOG.debug("Tempo decorrido.: " + str(fl_delta_t))
-    # M_LOG.debug("Velocidade média: " + str(ff_vel_med))
-    # M_LOG.debug("Angulo de ataque: " + str(ff_alfa))
-    # M_LOG.debug("PosicaoAtu......: " + str((f_atv.f_trf_x, f_atv.f_trf_y)))
+    # cdbg.M_DBG.debug("Tempo decorrido.: " + str(fl_delta_t))
+    # cdbg.M_DBG.debug("Velocidade média: " + str(ff_vel_med))
+    # cdbg.M_DBG.debug("Angulo de ataque: " + str(ff_alfa))
+    # cdbg.M_DBG.debug("PosicaoAtu......: " + str((f_atv.f_trf_x, f_atv.f_trf_y)))
 
     # vôo nivelado ?
     if f_atv.f_trf_alt_atu == f_atv.f_atv_alt_dem:
         # atualiza a velocidade de solo da aeronave
         f_atv.f_atv_vel_gnd = f_atv.f_atv_vel_tas
-        # M_LOG.debug("vel. gnd:[{}]".format(f_atv.f_atv_vel_gnd))
+        # cdbg.M_DBG.debug("vel. gnd:[{}]".format(f_atv.f_atv_vel_gnd))
 
     # otherwise,subindo ou descendo
     else:
@@ -322,7 +304,7 @@ def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
 
         # retorna o módulo do vetor velocidade
         f_atv.f_atv_vel_gnd = math.sqrt(lf_vel_anv) if lf_vel_anv > 0. else 0.
-        # M_LOG.debug("f_atv_vel_gnd.:[{}]".format(f_atv.f_atv_vel_gnd))
+        # cdbg.M_DBG.debug("f_atv_vel_gnd.:[{}]".format(f_atv.f_atv_vel_gnd))
 
     # converte a direção atual para radianos
     # lf_dir_atu = math.radians(f_atv.f_atv_dir_atu)
@@ -335,7 +317,7 @@ def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
     # decompõem a velocidade em seus componentes x e y
     # lf_vel_x = ff_vel_med * math.cos(ff_alfa) * math.cos(lf_dir_atu)
     # lf_vel_y = ff_vel_med * math.cos(ff_alfa) * math.sin(lf_dir_atu)
-    # M_LOG.debug("velocidade: x:[{}] y:[{}]".format(lf_vel_x, lf_vel_y))
+    # cdbg.M_DBG.debug("velocidade: x:[{}] y:[{}]".format(lf_vel_x, lf_vel_y))
 
     # verifica se há variação de velocidade (aceleração)...
     if f_atv.f_trf_vel_atu != f_atv.f_atv_vel_dem:
@@ -364,15 +346,12 @@ def __atualiza_posicao(f_atv, f_cine_data, fl_delta_t, ff_vel_med, ff_alfa):
     # calcula os componentes x e y da posição atual (x = xo + vt)
     # lf_atu_x = f_atv.f_trf_x + (lf_vel_x * fl_delta_t)
     # lf_atu_y = f_atv.f_trf_y + (lf_vel_y * fl_delta_t)
-    # M_LOG.debug(u"posição atu: x:[{}] y:[{}]".format(lf_atu_x, lf_atu_y))
+    # cdbg.M_DBG.debug(u"posição atu: x:[{}] y:[{}]".format(lf_atu_x, lf_atu_y))
 
     # atualiza as coordenadas (x, y) da aeronave (x = xo + vot + 1/2 at^2)
     f_atv.f_trf_x += f_cine_data.f_delta_x
     f_atv.f_trf_y += f_cine_data.f_delta_y
-    # M_LOG.debug("coords atu: x:[{}] y:[{}]".format(f_atv.f_trf_x, f_atv.f_trf_y))
-
-    # logger
-    # M_LOG.info("__atualiza_posicao:<<")
+    # cdbg.M_DBG.debug("coords atu: x:[{}] y:[{}]".format(f_atv.f_trf_x, f_atv.f_trf_y))
 
 # -------------------------------------------------------------------------------------------------
 def __atualiza_proa(f_atv, ff_delta_t):
@@ -382,14 +361,11 @@ def __atualiza_proa(f_atv, ff_delta_t):
     @param f_atv: pointer para struct aeronaves
     @param ff_delta_t: delta de tempo desde a ultima atualização
     """
-    # logger
-    # M_LOG.info("__atualiza_proa:>>")
-
     # check input
     assert f_atv
 
     # checks (II)
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::__atualiza_proa")
         l_log.setLevel(logging.ERROR) 
@@ -398,8 +374,8 @@ def __atualiza_proa(f_atv, ff_delta_t):
         # cai fora...
         return False
 
-    # M_LOG.debug("__atualiza_proa:proa atual..:[{}]".format(f_atv.f_trf_pro_atu))
-    # M_LOG.debug("__atualiza_proa:proa demanda:[{}]".format(f_atv.f_atv_pro_dem))
+    # cdbg.M_DBG.debug("__atualiza_proa:proa atual..:[{}]".format(f_atv.f_trf_pro_atu))
+    # cdbg.M_DBG.debug("__atualiza_proa:proa demanda:[{}]".format(f_atv.f_atv_pro_dem))
 
     # está em vôo normal ?
     if 'N' == f_atv.c_atv_status_voo:
@@ -411,7 +387,7 @@ def __atualiza_proa(f_atv, ff_delta_t):
         # razão de curva no tráfego
         pass  # f_atv.f_atv_raz_crv = f_atv.ptr_trf_prf.f_prf_raz_crv_trf
 
-    # M_LOG.debug("__atualiza_proa:razão de curva:[{}]".format(f_atv.f_atv_raz_crv))
+    # cdbg.M_DBG.debug("__atualiza_proa:razão de curva:[{}]".format(f_atv.f_atv_raz_crv))
 
     # se proa demanda < 0 ?
     if f_atv.f_atv_pro_dem < 0.:
@@ -431,7 +407,7 @@ def __atualiza_proa(f_atv, ff_delta_t):
     # aeronave curvando ?
     elif f_atv.f_trf_pro_atu != f_atv.f_atv_pro_dem:
         # obtém o sentido de curva
-        # M_LOG.debug("__atualiza_proa:en_atv_sentido_curva:[{}]".format(ldefs.DCT_SENTIDOS_CURVA[f_atv.en_atv_sentido_curva]))
+        # cdbg.M_DBG.debug("__atualiza_proa:en_atv_sentido_curva:[{}]".format(ldefs.DCT_SENTIDOS_CURVA[f_atv.en_atv_sentido_curva]))
         assert f_atv.en_atv_sentido_curva in ldefs.SET_SENTIDOS_CURVA
 
         # curva pelo menor ângulo ?
@@ -511,11 +487,8 @@ def __atualiza_proa(f_atv, ff_delta_t):
     # converte a proa atual em direção
     # f_atv.f_atv_dir_atu = cincalc.conv_proa2direcao(f_atv.f_trf_pro_atu)
 
-    # M_LOG.debug("nova proa atual:[{}]".format(f_atv.f_trf_pro_atu))
-    # M_LOG.debug("nova direção atual:[{}]".format(f_atv.f_atv_dir_atu))
-
-    # logger
-    # M_LOG.info("__atualiza_proa:<<")
+    # cdbg.M_DBG.debug("nova proa atual:[{}]".format(f_atv.f_trf_pro_atu))
+    # cdbg.M_DBG.debug("nova direção atual:[{}]".format(f_atv.f_atv_dir_atu))
 
     # retorna flag 'on demand'
     return True
@@ -528,14 +501,11 @@ def __atualiza_velocidade(f_atv, ff_delta_t):
     @param f_atv: pointer para struct aeronaves
     @param ff_delta_t: delta de tempo desde a última atualização
     """
-    # logger
-    # M_LOG.info("__atualiza_velocidade:>>")
-
     # check input
     assert f_atv
 
     # checks (II)
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::__atualiza_velocidade")
         l_log.setLevel(logging.ERROR) 
@@ -544,8 +514,8 @@ def __atualiza_velocidade(f_atv, ff_delta_t):
         # cai fora...
         return 0.0001, False
 
-    # M_LOG.debug("__atualiza_velocidade:vel. atual..:[{}]".format(f_atv.f_trf_vel_atu))
-    # M_LOG.debug("__atualiza_velocidade:vel. demanda:[{}]".format(f_atv.f_atv_vel_dem))
+    # cdbg.M_DBG.debug("__atualiza_velocidade:vel. atual..:[{}]".format(f_atv.f_trf_vel_atu))
+    # cdbg.M_DBG.debug("__atualiza_velocidade:vel. demanda:[{}]".format(f_atv.f_atv_vel_dem))
 
     # salva velocidade atual para o cálculo da velocidade média
     lf_vel_ant = f_atv.f_trf_vel_atu
@@ -556,13 +526,13 @@ def __atualiza_velocidade(f_atv, ff_delta_t):
         # if f_atv.c_atv_status_solo in ['S', 'T']:
             # obtém a desaceleração máxima de pouso (performance)
             # f_atv.f_atv_acel = f_atv.ptr_trf_prf.f_prf_desacel_max_arr
-            # M_LOG.debug("desaceleração pouso: " + str(f_atv.f_atv_acel))
+            # cdbg.M_DBG.debug("desaceleração pouso: " + str(f_atv.f_atv_acel))
 
         # está acelerando ?
         if f_atv.f_trf_vel_atu < f_atv.f_atv_vel_dem:
             # aumenta a velocidade (v = vo + at)
             f_atv.f_trf_vel_atu += f_atv.f_atv_acel * ff_delta_t
-            # M_LOG.debug("__atualiza_velocidade:nova velocidade (ACC): " + str(f_atv.f_trf_vel_atu))
+            # cdbg.M_DBG.debug("__atualiza_velocidade:nova velocidade (ACC): " + str(f_atv.f_trf_vel_atu))
 
             # se ultrapassou a demanda, assume a demanda
             f_atv.f_trf_vel_atu = min(f_atv.f_trf_vel_atu, f_atv.f_atv_vel_dem)
@@ -571,14 +541,14 @@ def __atualiza_velocidade(f_atv, ff_delta_t):
         elif f_atv.f_trf_vel_atu > f_atv.f_atv_vel_dem:
             # diminui a velocidade da aeronave (v = vo - at)
             f_atv.f_trf_vel_atu -= f_atv.f_atv_acel * ff_delta_t
-            # M_LOG.debug("__atualiza_velocidade:nova velocidade (FRE): " + str(f_atv.f_trf_vel_atu))
+            # cdbg.M_DBG.debug("__atualiza_velocidade:nova velocidade (FRE): " + str(f_atv.f_trf_vel_atu))
 
             # se ultrapassou a demanda, assume a demanda
             f_atv.f_trf_vel_atu = max(f_atv.f_trf_vel_atu, f_atv.f_atv_vel_dem)
 
         # calcula a velocidade média do percurso
         lf_vel_med = (lf_vel_ant + f_atv.f_trf_vel_atu) / 2.
-        # M_LOG.debug("__atualiza_velocidade:velocidade média: " + str(lf_vel_med))
+        # cdbg.M_DBG.debug("__atualiza_velocidade:velocidade média: " + str(lf_vel_med))
 
         # atualiza as velocidades TAS e MACH atual e demanda da aeronave
         f_atv.f_atv_vel_tas = f_atv.f_trf_vel_atu  # calcTAS (f_atv.f_trf_vel_atu, f_atv.f_trf_alt_atu, gdata.G_EXE_VAR_TEMP_ISA)
@@ -601,9 +571,6 @@ def __atualiza_velocidade(f_atv, ff_delta_t):
         # evita divisão por zero
         lf_vel_med = 0.0001
 
-    # logger
-    # M_LOG.info("__atualiza_velocidade:<<")
-
     # retorna a velocidade media calculada e o flag 'on demand'
     return lf_vel_med, lv_flag
 
@@ -614,14 +581,11 @@ def __calcula_tod(f_atv):
     
     @param f_atv: pointer para struct aeronaves
     """
-    # logger
-    # M_LOG.info("__calcula_tod:>>")
-
     # check input
     assert f_atv
 
     # checks (II)
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::__calcula_tod")
         l_log.setLevel(logging.ERROR) 
@@ -729,9 +693,6 @@ def __calcula_tod(f_atv):
         # reinicia campo de quantas NM faltam para chegar ao TOD
         f_atv.f_atv_dst_anv_tod = 0.
 
-    # logger
-    # M_LOG.info("__calcula_tod:<<")
-
 # -------------------------------------------------------------------------------------------------
 def dados_dinamicos(f_atv, f_cine_data, ff_delta_t, f_stime):
     """
@@ -741,16 +702,13 @@ def dados_dinamicos(f_atv, f_cine_data, ff_delta_t, f_stime):
     @param f_cine_data: pointer para CINDATA
     @param f_stime: pointer para sim_time
     """
-    # logger
-    # M_LOG.info("dados_dinamicos:>>")
-
     # check input
     assert f_atv
     assert f_cine_data
     assert f_stime
 
     # checks (II)
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("dados_dinamicos::dados_dinamicos")
         l_log.setLevel(logging.ERROR) 
@@ -867,8 +825,5 @@ def dados_dinamicos(f_atv, f_cine_data, ff_delta_t, f_stime):
         # if f_atv.f_anv_dst_tod > 0:
             # calcula o Ponto Ideal de Descida
             # __calcula_tod(f_atv)
-
-    # logger
-    # M_LOG.info("dados_dinamicos:<<")
 
 # < the end >--------------------------------------------------------------------------------------

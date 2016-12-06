@@ -42,7 +42,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-import view.view_manager as view
+import view.common.view_manager as view
 import view.wizard.dlg_wizard as wzd
 
 # control
@@ -131,7 +131,7 @@ class CViewWizard(view.CViewManager):
         ll_start = time.time()
 
         # carrega o logo
-        l_pix_logo = QtGui.QPixmap(os.path.join(self.dct_config["dir.img"], "merlinLogo_2.png"))
+        l_pix_logo = QtGui.QPixmap(os.path.join(self.dct_config["dir.img"], "logo.png"))
         assert l_pix_logo
 
         # cria a tela de apresentação

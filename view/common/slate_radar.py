@@ -44,9 +44,10 @@ import libs.coords.pos_lat_lng as pll
 import libs.coords.pos_xy as pxy
 
 # model
-import model.glb_data as gdata
+import model.common.glb_data as gdata
+import model.common.tMath as tMath
+
 import model.newton.defs_newton as ldefs
-import model.tMath as tMath
 
 # view
 import view.common.paint_engine as peng
@@ -110,12 +111,6 @@ class CSlateRadar(QtGui.QWidget):
                         
         # save airspace
         self.__airspace = l_model.airspace
-
-        # save landscape
-        self.__landscape = l_model.landscape
-
-        # lista de views de mapas
-        # self.__lst_view_maps = [viewMap.viewMap(l_map) for l_map in self.__landscape.lstMaps]
 
         # save weather
         # self.__weather = l_model.getWeather()

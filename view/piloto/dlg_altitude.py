@@ -68,7 +68,7 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # init super class
         super(CDlgAltitude, self).__init__(f_parent)
 
-        # salva o dicionário de performances
+        # dicionário de performances
         self.__dct_prf = fdct_prf
 
         # flag altitude 
@@ -97,13 +97,11 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         if fdct_prf is not None:
             # faixa de razão
             self.sbx_raz.setRange(2.0, self.__dct_prf["raz_max_sub_crz"])
-            dbg.M_DBG.debug("__on_rbt_raz_clicked:raz_max:[{}]".format(self.__dct_prf["raz_max_sub_crz"]))
 
         # senão,...
         else:
             # faixa de razão
             self.sbx_raz.setRange(2.0, 25.)
-            dbg.M_DBG.debug("__on_rbt_raz_clicked:raz_max:[25]")
 
         # configura botões
         self.bbx_altitude.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancela")
@@ -127,12 +125,6 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         # conecta spinBox
         self.sbx_alt.valueChanged.connect(self.__on_sbx_valueChanged)
         self.sbx_raz.valueChanged.connect(self.__on_sbx_valueChanged)
-
-        # conecta botão Ok da edição de altitude
-        # self.bbx_altitude.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de altitude
-        # self.bbx_altitude.rejected.connect(self.__reject)
 
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
@@ -203,19 +195,16 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         """
         # obtém o valor atual do campo
         li_val = self.sbx_alt.value()
-        dbg.M_DBG.debug("__on_rbt_alt_clicked:li_val:[{}]".format(li_val))
 
         # performance existe ?
         if self.__dct_prf is not None:
             # altitude máxima é o teto de serviço
             self.sbx_alt.setRange(0, self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT)
-            dbg.M_DBG.debug("__on_rbt_alt_clicked:alt_max:[{}]".format(self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT))
 
         # senão,...
         else:
             # altitude máxima é 50000 ft
             self.sbx_alt.setRange(0, 50000)
-            dbg.M_DBG.debug("__on_rbt_alt_clicked:alt_max:[50000]")
 
         # config spinBox
         self.sbx_alt.setSingleStep(1000)
@@ -239,13 +228,11 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         """
         # obtém o valor atual do campo
         li_val = self.sbx_alt.value()
-        dbg.M_DBG.debug("__on_rbt_niv_clicked:li_val:[{}]".format(li_val))
 
         # performance existe ?
         if self.__dct_prf is not None:
             # calcula o nível 
             li_nivel = int((self.__dct_prf["teto_sv"] * cdefs.D_CNV_M2FT) / 100.)
-            dbg.M_DBG.debug("__on_rbt_niv_clicked:niv_max:[{}]".format(li_nivel))
 
             # altitude máxima é o teto de serviço
             self.sbx_alt.setRange(0, li_nivel)
@@ -254,7 +241,6 @@ class CDlgAltitude(QtGui.QDialog, dlg.Ui_CDlgAltitude):
         else:
             # nível máximo é 500
             self.sbx_alt.setRange(0, 500)
-            dbg.M_DBG.debug("__on_rbt_niv_clicked:niv_max:[500]")
 
         # config spinBox
         self.sbx_alt.setSingleStep(10)

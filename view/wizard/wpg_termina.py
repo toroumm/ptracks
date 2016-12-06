@@ -32,9 +32,6 @@ __date__ = "2016/01"
             
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
 # PyQt library
 from PyQt4 import QtCore
 from PyQt4 import QtGui
@@ -42,12 +39,6 @@ from PyQt4 import QtGui
 # wizard
 import view.wizard.wizard_page_model as wpm
 import view.wizard.wpg_termina_ui as wterm_ui
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CWPagTermina >---------------------------------------------------------------------------
 
@@ -60,9 +51,6 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
 
         @param f_dlg_wizard: DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # inicia super classe
         super(CWPagTermina, self).__init__(f_dlg_wizard)
 
@@ -84,27 +72,21 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         # configurações de conexões slot/signal
         self.setup_connects()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def is_complete(self):
         """
         verifica se a form está aceitável
         """
-        # logger
-        # M_LOG.info("is_complete:><")
-
-        # verifica condições de execução
+        # clear to go
         assert self.ckbAgree
         return self.ckbAgree.isChecked()
 
     # ---------------------------------------------------------------------------------------------
     def is_last_page(self):
-
-        # logger
-        # M_LOG.info("is_last_page:><")
-
+        """
+        DOCUMENT ME!
+        """
+        # return
         return True
 
     # ---------------------------------------------------------------------------------------------
@@ -112,9 +94,6 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         """
         reseta os campos da form
         """
-        # logger
-        # M_LOG.info("reset_page:>>")
-
         # exercício
         self.txtExe.setText(str(self.dct_config["glb.exe"].s_exe_id))
 
@@ -124,21 +103,12 @@ class CWPagTermina(wpm.CWizardPageModel, wterm_ui.Ui_WPagTermina):
         # check box
         self.ckbAgree.setChecked(False)
 
-        # logger
-        # M_LOG.info("reset_page:<<")
-
     # ---------------------------------------------------------------------------------------------
     def setup_connects(self):
         """
         configura as conexões slot/signal
         """
-        # logger
-        # M_LOG.info("setup_connects:>>")
-
         self.connect(self.ckbAgree, QtCore.SIGNAL("toggled(bool)"),
                      self, QtCore.SIGNAL("completeStateChanged()"))
-
-        # logger
-        # M_LOG.info("setup_connects:<<")
 
 # < the end >--------------------------------------------------------------------------------------

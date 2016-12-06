@@ -97,14 +97,14 @@ class CPstModel(object):
         """
         get identificação da pista (indicativo)
         """
-        return self.__s_pst_indc  # .decode ( "utf-8" )
+        return self.__s_pst_indc
 
     @s_pst_indc.setter
     def s_pst_indc(self, f_val):
         """
         set identificação da pista (indicativo)
         """
-        self.__s_pst_indc = f_val.strip().upper()  # .encode ( "utf-8" )
+        self.__s_pst_indc = f_val.strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     @property

@@ -40,11 +40,11 @@ from PyQt4 import QtGui
 import libs.coords.pos_lat_lng as pll
 
 # model
-import model.glb_data as gdata
-import model.newton.defs_newton as ldefs
-import model.tMath as tMath
+import model.common.glb_data as gdata
+import model.common.tMath as tMath
+import model.common.fix as cfix
 
-import model.stock.fix as cfix
+import model.newton.defs_newton as ldefs
 
 # < class CPaintEngine >---------------------------------------------------------------------------
 

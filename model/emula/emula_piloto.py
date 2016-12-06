@@ -39,15 +39,12 @@ import threading
 import time
 
 # model
-import model.glb_data as gdata
-import model.glb_defs as gdefs
-
+import model.common.glb_data as gdata
 import model.emula.emula_model as model
-
-import model.piloto.data_piloto as ldata
 import model.visil.aircraft_visil as canv
 
 # control
+import control.common.glb_defs as gdefs
 import control.events.events_flight as events
 
 # < class CEmulaPiloto >---------------------------------------------------------------------------
@@ -119,7 +116,6 @@ class CEmulaPiloto(model.CEmulaModel):
                 
         # obtém o callsign da aeronave
         ls_callsign = flst_data[10]
-        # dbg.M_DBG.debug("__msg_trk:callsign:[{}]".format(ls_callsign))
                             
         # trava a lista de vôos
         gdata.G_LCK_FLIGHT.acquire()
@@ -142,14 +138,12 @@ class CEmulaPiloto(model.CEmulaModel):
 
         # obtém o indicativo da performance
         ls_prf_ind = flst_data[11]
-        # dbg.M_DBG.debug("__msg_trk:ls_prf_ind:[{}]".format(ls_prf_ind))
                             
         # performance não está no dicionário ?
         if self.__dct_prf.get(ls_prf_ind, None) is None:
 
             # monta o request da performance
             ls_req = "data/prf.json?{}".format(ls_prf_ind)
-            # dbg.M_DBG.debug("__msg_trk:ls_req:[{}]".format(ls_req))
 
             # get server address
             l_srv = self.dct_config.get("srv.addr", None)
@@ -157,12 +151,10 @@ class CEmulaPiloto(model.CEmulaModel):
             if l_srv is not None:
                 # obtém os dados de performance do servidor
                 l_prf = self.__sck_http.get_data(l_srv, ls_req)
-                # dbg.M_DBG.debug("__msg_trk:l_prf:[{}]".format(l_prf))
 
                 if (l_prf is not None) and (l_prf != ""):
                     # salva a performance no dicionário
                     self.__dct_prf[ls_prf_ind] = json.loads(l_prf)
-                    # dbg.M_DBG.debug("__msg_trk:dct_prf:[{}]".format(self.__dct_prf))
 
                 # senão, não achou no servidor...
                 else:
@@ -208,7 +200,6 @@ class CEmulaPiloto(model.CEmulaModel):
         while gdata.G_KEEP_RUN:
             # obtém um item da queue de entrada
             llst_data = self.__q_rcv_trks.get()
-            # dbg.M_DBG.debug("llst_data: (%s)" % str(llst_data))
 
             # queue tem dados ?
             if llst_data:
@@ -220,10 +211,9 @@ class CEmulaPiloto(model.CEmulaModel):
                 # mensagem de eliminação de aeronave ?
                 elif gdefs.D_MSG_Kll == int(llst_data[0]):
                     # coloca a mensagem na queue
-                    # dbg.M_DBG.debug("Elimina: (%s)" % str(ls_callsign))
 
                     # trava a lista de vôos
-                    ldata.G_LCK_FLIGHT.acquire()
+                    gdata.G_LCK_FLIGHT.acquire()
 
                     try:
                         # aeronave está no dicionário ?
@@ -233,7 +223,7 @@ class CEmulaPiloto(model.CEmulaModel):
 
                     finally:
                         # libera a lista de vôos
-                        ldata.G_LCK_FLIGHT.release()
+                        gdata.G_LCK_FLIGHT.release()
 
                     # cria um evento de eliminação de aeronave
                     l_evt = events.FlightKill(ls_callsign)

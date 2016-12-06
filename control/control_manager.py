@@ -39,12 +39,17 @@ __date__ = "2016/08"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
+import os
 import sys
 import threading
 import time
 
+# PyQt library
+from PyQt4 import QtCore
+from PyQt4 import QtGui
+
 # model 
-import model.glb_data as gdata
+import model.common.glb_data as gdata
 
 # control
 import control.events.events_manager as evtmgr
@@ -96,7 +101,7 @@ class CControlManager(threading.Thread):
         """
         termina a aplicação
         """
-        # verifica condições de execução
+        # clear to go
         assert self.__event
 
         # cria um evento de quit
@@ -107,18 +112,63 @@ class CControlManager(threading.Thread):
         self.__event.post(l_evt)
 
     # ---------------------------------------------------------------------------------------------
-    @staticmethod
-    def notify(f_event):
+    def create_app(self, fs_name):
         """
-        callback de tratamento de eventos recebidos.
+        DOCUMENT ME!
+        """
+        # create application
+        self.__app = QtGui.QApplication(sys.argv)
+        assert self.__app
 
-        @param f_event: event.
+        # setup application parameters
+        self.__app.setOrganizationName("sophosoft")
+        self.__app.setOrganizationDomain("sophosoft.com.br")
+        self.__app.setApplicationName(fs_name)
+
+        self.__app.setWindowIcon(QtGui.QIcon(":/images/logos/icon.png"))
+
+        # load logo
+        l_pix_logo = QtGui.QPixmap(":/images/logos/logo.png")
+        assert l_pix_logo
+
+        # create splash screen
+        self.__splash = QtGui.QSplashScreen(l_pix_logo, QtCore.Qt.WindowStaysOnTopHint)
+        assert self.__splash
+
+        self.__splash.setMask(l_pix_logo.mask())
+
+        # create the progress bar
+        # self.progressBar = QtGui.QProgressBar(self.__splash)
+        # self.progressBar.setGeometry(    self.__splash.width() / 10, 8 * self.__splash.height() / 10,
+        #                              8 * self.__splash.width() / 10,     self.__splash.height() / 10)
+
+        # message = 'hello'
+        # label = QtGui.QLabel("<font color=red size=72><b>{0}</b></font>".format(message), self.__splash)
+        # label.setGeometry(1 * self.__splash.width() / 10, 8 * self.__splash.height() / 10,
+        #                   8 * self.__splash.width() / 10, 1 * self.__splash.height() / 10)
+
+        # show splash screen
+        self.__splash.show()
+
+        # update the progress bar
+        # self.progressBar.setValue(50)
+
+        # process events (before main loop)
+        self.__app.processEvents()
+
+    # ---------------------------------------------------------------------------------------------
+    @staticmethod
+    def notify(f_evt):
+        """
+        callback de tratamento de eventos recebidos
+
+        @param f_evt: event
         """
         # check input
-        assert f_event
+        assert f_evt
 
         # recebeu um aviso de término da aplicação ?
-        if isinstance(f_event, events.CQuit):
+        if isinstance(f_evt, events.CQuit):
             # para todos os processos
             gdata.G_KEEP_RUN = False
 

@@ -40,23 +40,19 @@ import math
 import libs.coords.coord_defs as cdefs
 
 # model
-import model.glb_defs as gdefs
 import model.newton.defs_newton as ldefs
 
 # import model.items.esp_trk as esptrk
 import model.items.trj_new as trjnew
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
+# control
+import control.common.glb_defs as gdefs
 
 # < class CCineModel >-----------------------------------------------------------------------------
 
 class CCineModel(object):
     """
-    the object holding all information concerning a flight.
+    the object holding all information concerning a flight
     """
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_engine, f_control):
@@ -64,10 +60,7 @@ class CCineModel(object):
         @param f_engine: flight engine da aeronave
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # check input parameters
+        # check input
         assert f_engine
         assert f_control
 
@@ -133,18 +126,12 @@ class CCineModel(object):
         # self.__exe_met = self.__exe.exe_met
         # assert self.__exe_met
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def send_trks(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("send_trks:>>")
-
-        # verifica condições para execução
+        # clear to go
         assert self.__atv
         assert self.__sim_time
         assert self.__sck_snd_trks
@@ -157,7 +144,6 @@ class CCineModel(object):
         # converte para lat/long
         lf_lat, lf_lng, lf_alt = self.__coords.xyz2geo(self.__atv.f_trf_x, self.__atv.f_trf_y, self.atv.f_trf_z)
         lf_alt = self.__atv.f_trf_alt_atu * cdefs.D_CNV_M2FT
-        # M_LOG.debug("coords:lat:[{}] / lng:[{}] / alt:[{}]".format(lf_lat, lf_lng, lf_alt))
 
         # monta o buffer de envio
         # ls_buff = str(gdefs.D_MSG_VRS) + gdefs.D_MSG_SEP + \
@@ -171,7 +157,6 @@ class CCineModel(object):
         #           str(round(lf_alt, 1)) + gdefs.D_MSG_SEP + \
         #           str(round(self.__atv.f_trf_pro_atu, 1)) + gdefs.D_MSG_SEP + \
         #           str(round(self.__atv.f_trf_vel_atu * cdefs.D_CNV_MS2KT, 1))
-        # M_LOG.debug("ls_buff: " + str(ls_buff))
 
         # monta o buffer de envio
         ls_buff = str(gdefs.D_MSG_VRS) + \
@@ -188,13 +173,9 @@ class CCineModel(object):
                   gdefs.D_MSG_SEP + str(self.__atv.s_trf_ind) + \
                   gdefs.D_MSG_SEP + str(self.__atv.ptr_trf_prf.s_prf_id) + \
                   gdefs.D_MSG_SEP + str(self.__sim_time.obtem_hora_sim())
-        # M_LOG.debug("ls_buff: " + str(ls_buff))
 
         # envia os dados de pista
         self.__sck_snd_trks.send_data(ls_buff)
-
-        # logger
-        # M_LOG.info("send_trks:<<")
 
     # =============================================================================================
     # data

@@ -30,17 +30,6 @@ __version__ = "$revision: 0.2$"
 __author__ = "Milton Abrunhosa"
 __date__ = "2015/11"
 
-# < imports >--------------------------------------------------------------------------------------
-
-# python library
-# import logging
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CTrfModel >------------------------------------------------------------------------------
 
 class CTrfModel(object):
@@ -48,14 +37,10 @@ class CTrfModel(object):
     mantém os detalhes comuns de um tráfego
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_data=None):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # flag ok (bool)
         self.__v_trf_ok = False
 
@@ -98,11 +83,7 @@ class CTrfModel(object):
                 # copia o tráfego
                 self.copy_trf(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_trf(self, f_trf):
         """
         copy constructor
@@ -110,9 +91,6 @@ class CTrfModel(object):
 
         @param f_trf: tráfego a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_trf:>>")
-
         # check input
         assert f_trf
 
@@ -129,11 +107,9 @@ class CTrfModel(object):
         self.__f_trf_x = f_trf.f_trf_x
         self.__f_trf_y = f_trf.f_trf_y
         self.__f_trf_z = f_trf.f_trf_z
-        # M_LOG.debug("posição atual: " + str((self.__f_trf_x, self.__f_trf_y, self.__f_trf_z)))
 
         # altitude (m)
         self.__f_trf_alt_atu = f_trf.f_trf_alt_atu
-        # M_LOG.debug("altitude atual: " + str(self.__f_trf_alt_atu))
         # nível autorizado (ft/100)
         self.__i_trf_niv_aut = f_trf.i_trf_niv_aut
         # proa (gr)
@@ -146,9 +122,6 @@ class CTrfModel(object):
 
         # flag ok (bool)
         self.__v_trf_ok = f_trf.v_trf_ok
-
-        # logger
-        # M_LOG.info("copy_trf:<<")
 
     # =============================================================================================
     # data
@@ -205,14 +178,14 @@ class CTrfModel(object):
         """
         get indicativo
         """
-        return self.__s_trf_ind.decode("utf-8")
+        return self.__s_trf_ind
 
     @s_trf_ind.setter
     def s_trf_ind(self, f_val):
         """
         set indicativo
         """
-        self.__s_trf_ind = f_val.strip().upper().encode("utf-8")
+        self.__s_trf_ind = f_val.strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     @property

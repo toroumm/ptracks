@@ -41,7 +41,7 @@ import os
 import socket
 
 # model 
-import model.data as data
+import model.common.data as data
 
 # control
 import control.config.config_manager as config

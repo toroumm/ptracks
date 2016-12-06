@@ -41,9 +41,12 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-from . import dlg_dir_fixo_ui as dlg
+import view.piloto.dlg_dir_fixo_ui as dlg
 
-# < class CDlgDirFixo >-----------------------------------------------------------------------------
+# control
+import control.control_debug as cdbg
+
+# < class CDlgDirFixo >----------------------------------------------------------------------------
 
 class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
     """
@@ -61,18 +64,15 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
         # init super class
         super(CDlgDirFixo, self).__init__(f_parent)
 
-        # salva o control manager localmente
-        # self.__control = f_control
-
-        # salva o socket de comunicação
+        # socket de comunicação
         self.__sck_http = fsck_http
         assert self.__sck_http
 
-        # salva o dicionário de configuração
+        # dicionário de configuração
         self.__dct_config = fdct_config
         assert self.__dct_config is not None
 
-        # salva o dicionário de fixos
+        # dicionário de fixos
         self.__dct_fix = self.__load_fix(fdct_fix)
         assert self.__dct_fix is not None
 
@@ -109,12 +109,6 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
         # conecta spinBox
         self.cbx_fix.currentIndexChanged.connect(self.__on_cbx_currentIndexChanged)
 
-        # conecta botão Ok da edição de direcionamento a fixo
-        # self.bbx_dir_fixo.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de direcionamento a fixo
-        # self.bbx_dir_fixo.rejected.connect(self.__reject)
-
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
         """
@@ -136,12 +130,11 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
         """
         carrega o dicionário de fixos
         """
-        # check input
-        # assert f_strip_cur
-
-        # check for requirements
+        # clear to go
         assert self.__sck_http is not None
         assert self.__dct_config is not None
+
+        cdbg.M_DBG.debug("dct_fix:{}".format(fdct_fix))
 
         # resposta
         ldct_ans = {}
@@ -150,7 +143,6 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
         if not fdct_fix:
             # monta o request dos fixos
             ls_req = "data/fix.json"
-            # dbg.M_DBG.debug("__load_fix:ls_req:[{}]".format(ls_req))
 
             # get server address
             l_srv = self.__dct_config.get("srv.addr", None)
@@ -158,12 +150,10 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
             if l_srv is not None:
                 # obtém os dados dos fixos do servidor
                 l_data = self.__sck_http.get_data(l_srv, ls_req)
-                # dbg.M_DBG.debug("__load_fix:l_data:[{}]".format(l_data))
 
                 if l_data is not None:
-                    # salva os fixos no dicionário
+                    # coloca os fixos no dicionário
                     ldct_ans = json.loads(l_data)
-                    # dbg.M_DBG.debug("__load_fix:dct_fix:[{}]".format(ldct_ans))
 
                 # senão, não achou no servidor...
                 else:
@@ -184,7 +174,7 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
             # para todas os fixos...
             for l_fix in fdct_fix.values():
                 # coloca na resposta
-                ldct_ans[l_fix.i_fix_id] = l_fix.s_fix_desc
+                ldct_ans[l_fix.s_fix_indc] = l_fix.s_fix_desc
 
         # return
         return ldct_ans
@@ -208,11 +198,8 @@ class CDlgDirFixo(QtGui.QDialog, dlg.Ui_CDlgDirFixo):
         """
         # para todas as fixos...
         for l_key, l_fix in self.__dct_fix.iteritems():
-            # dbg.M_DBG.debug("l_key:[{}]".format(l_key))
-            # dbg.M_DBG.debug("l_fix:[{}]".format(l_fix))
-
             # é o fixo selecionado ?
-            if unicode(self.cbx_fix.currentText()) == unicode(l_fix):
+            if self.cbx_fix.currentText() == l_fix:
                 break
 
         # inicia o comando

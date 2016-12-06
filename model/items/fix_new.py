@@ -33,7 +33,6 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import sys
 
 # libs
@@ -46,12 +45,6 @@ import model.newton.defs_newton as ldefs
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
 # < class CFixNEW >--------------------------------------------------------------------------------
 
 class CFixNEW(model.CFixModel):
@@ -59,19 +52,14 @@ class CFixNEW(model.CFixModel):
     mantém as informações específicas sobre fixo
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None, fs_ver="0001"):
         """
         @param f_model: event manager
         @param f_data: dados do fixo
         @param fs_ver: versão do formato dos dados
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_model
-        # M_LOG.debug("f_data: " + str(f_data))
 
         # init super class
         super(CFixNEW, self).__init__()
@@ -100,7 +88,7 @@ class CFixNEW(model.CFixModel):
         self.__f_fix_elev = 0.
 
         # freqüência
-        # self.__f_fix_freq = 0.
+        self.__f_fix_freq = 0.
 
         # recebeu dados ?
         if f_data is not None:
@@ -114,20 +102,13 @@ class CFixNEW(model.CFixModel):
                 # copia o fixo
                 self.copy_fix(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_fix(self, f_fix):
         """
         copy constructor. Copia para este fixo os dados de um outro fixo
 
         @param f_fix: fixo a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_fix:>>")
-
         # check input
         assert f_fix
 
@@ -142,13 +123,9 @@ class CFixNEW(model.CFixModel):
         self.__f_fix_elev = f_fix.f_fix_elev
 
         # freqüência
-        # self.__f_fix_freq = f_fix.f_fix_freq
-
-        # logger
-        # M_LOG.info("copy_fix:<<")
+        self.__f_fix_freq = f_fix.f_fix_freq
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def load_fix(self, fdct_data, fs_ver="0001"):
         """
         carrega os dados do fixo a partir de um dicionário (formato 0001)
@@ -156,9 +133,6 @@ class CFixNEW(model.CFixModel):
         @param fdct_data: dicionário com os dados do fixo
         @param fs_ver: versão do formato
         """
-        # logger
-        # M_LOG.info("load_fix:>>")
-
         # formato versão 0.01 ?
         if "0001" == fs_ver:
             # cria a fixo
@@ -169,7 +143,7 @@ class CFixNEW(model.CFixModel):
             # logger
             l_log = logging.getLogger("CFixNEW::load_fix")
             l_log.setLevel(logging.CRITICAL)
-            l_log.critical(u"<E01: formato desconhecido.")
+            l_log.critical(u"<E01: formato {} desconhecido.".format(fs_ver))
 
             # cria um evento de quit
             l_evt = events.CQuit()
@@ -181,20 +155,13 @@ class CFixNEW(model.CFixModel):
             # cai fora...
             sys.exit(1)
 
-        # logger
-        # M_LOG.info("load_fix:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def make_fix(self, fdct_data):
         """
         carrega os dados de fixo a partir de um dicionário (formato 0001)
 
         @param fdct_data: dicionário com os dados do fixo
         """
-        # logger
-        # M_LOG.info("make_fix:>>")
-
         # identificação do fixo
         if "nFix" in fdct_data:
             self.s_fix_indc = fdct_data["nFix"]
@@ -204,9 +171,9 @@ class CFixNEW(model.CFixModel):
             self.s_fix_desc = fdct_data["descricao"]
 
         # freqüência
-        if "frequencia" in fdct_data: pass
-            # salva a freqüência
-            # self.f_fix_freq = float(fdct_data [ "frequencia" ])
+        if "frequencia" in fdct_data:
+            # freqüência
+            self.f_fix_freq = float(fdct_data["frequencia"])
 
         # tipo
         if "tipo" in fdct_data:
@@ -215,28 +182,22 @@ class CFixNEW(model.CFixModel):
 
             # valida o sentido de curva
             self.en_fix_tipo = ldefs.DCT_TIPOS_FIXOS_INV.get(lc_tipo, ldefs.E_BRANCO)
-            # M_LOG.debug("en_fix_tipo: {}".format(ldefs.DCT_TIPOS_FIXOS[self.en_fix_tipo]))
 
         # coord (lat, lng)
         if "coord" in fdct_data:
-            # salva a latitude e longitude
+            # latitude e longitude
             self.__f_fix_lat, self.__f_fix_lng = self.__model.coords.from_dict(fdct_data["coord"])
-            # M_LOG.debug("fix_lat:[{}] fix_lng:[{}] id:[{}]".format(self.__f_fix_lat, self.__f_fix_lng, self.i_fix_id))
 
         # elevação (m)
         if "elevacao" in fdct_data:
-            # salva elevação (m)
+            # elevação (m)
             self.f_fix_elev = float(fdct_data["elevacao"]) * cdefs.D_CNV_FT2M
 
         # converte para xyz
         self.f_fix_x, self.f_fix_y, self.f_fix_z = self.__model.coords.geo2xyz(self.__f_fix_lat, self.__f_fix_lng, 0.)
-        # M_LOG.debug("fix_x:[{}] fix_y:[{}] fix_z:[{}]".format(self.f_fix_x, self.f_fix_y, self.f_fix_z))
 
         # (bool)
         self.v_fix_ok = True
-
-        # logger
-        # M_LOG.info("make_fix:<<")
 
     # =============================================================================================
     # data
@@ -258,7 +219,7 @@ class CFixNEW(model.CFixModel):
         self.__f_fix_elev = f_val
 
     # ---------------------------------------------------------------------------------------------
-    '''@property
+    @property
     def f_fix_freq(self):
         """
         get freqüência do fixo
@@ -271,7 +232,7 @@ class CFixNEW(model.CFixModel):
         set freqüência do fixo
         """
         self.__f_fix_freq = f_val
-    '''
+
     # ---------------------------------------------------------------------------------------------
     @property
     def f_fix_lat(self):

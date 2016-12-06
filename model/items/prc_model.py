@@ -80,14 +80,14 @@ class CPrcModel(object):
         """
         get descrição
         """
-        return self.__s_prc_desc  # .decode ( "utf-8" )
+        return self.__s_prc_desc
 
     @s_prc_desc.setter
     def s_prc_desc(self, f_val):
         """
         set descrição
         """
-        self.__s_prc_desc = f_val.strip()  # .encode ( "utf-8" )
+        self.__s_prc_desc = f_val.strip()
 
     # ---------------------------------------------------------------------------------------------
     @property

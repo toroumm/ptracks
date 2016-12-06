@@ -41,7 +41,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-from . import dlg_subida_ui as dlg
+import view.piloto.dlg_subida_ui as dlg
 
 # < class CDlgSubida >-----------------------------------------------------------------------------
 
@@ -61,18 +61,15 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
         # init super class
         super(CDlgSubida, self).__init__(f_parent)
 
-        # salva o control manager localmente
-        # self.__control = f_control
-
-        # salva o socket de comunicação
+        # socket de comunicação
         self.__sck_http = fsck_http
         assert self.__sck_http
 
-        # salva o dicionário de configuração
+        # dicionário de configuração
         self.__dct_config = fdct_config
         assert self.__dct_config is not None
 
-        # salva o dicionário de subidas
+        # dicionário de subidas
         self.__dct_sub = fdct_sub
         assert self.__dct_sub is not None
 
@@ -97,7 +94,7 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
             self.__load_sub()
 
         # inicia valores
-        self.cbx_sub.addItems(self.__dct_sub.values())
+        self.cbx_sub.addItems(sorted(self.__dct_sub.values()))
 
         # configura botões
         self.bbx_subida.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancela")
@@ -113,12 +110,6 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
         """
         # conecta spinBox
         self.cbx_sub.currentIndexChanged.connect(self.__on_cbx_currentIndexChanged)
-
-        # conecta botão Ok da edição de subida
-        # self.bbx_subida.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de subida
-        # self.bbx_subida.rejected.connect(self.__reject)
 
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
@@ -141,9 +132,6 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
         """
         carrega o dicionário de subidas
         """
-        # check input
-        # assert f_strip_cur
-
         # check for requirements
         assert self.__sck_http is not None
         assert self.__dct_config is not None
@@ -151,7 +139,6 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
 
         # monta o request das subidas
         ls_req = "data/sub.json"
-        # dbg.M_DBG.debug("__load_sub:ls_req:[{}]".format(ls_req))
 
         # get server address
         l_srv = self.__dct_config.get("srv.addr", None)
@@ -159,12 +146,10 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
         if l_srv is not None:
             # obtém os dados de subidas do servidor
             l_dict = self.__sck_http.get_data(l_srv, ls_req)
-            # dbg.M_DBG.debug("__load_sub:l_dict:[{}]".format(l_dict))
 
             if l_dict is not None:
-                # salva a subidas no dicionário
+                # coloca a subidas no dicionário
                 self.__dct_sub.update(json.loads(l_dict))
-                # dbg.M_DBG.debug("__load_sub:dct_sub:[{}]".format(self.__dct_sub))
 
             # senão, não achou no servidor...
             else:
@@ -199,11 +184,8 @@ class CDlgSubida(QtGui.QDialog, dlg.Ui_CDlgSubida):
         """
         # para todas as subidas...
         for l_key, l_sub in self.__dct_sub.iteritems():
-            # dbg.M_DBG.debug("l_key:[{}]".format(l_key))
-            # dbg.M_DBG.debug("l_sub:[{}]".format(l_sub))
-
             # é a subida selecionada ?
-            if unicode(self.cbx_sub.currentText()) == unicode(l_sub):
+            if self.cbx_sub.currentText() == l_sub:
                 break
 
         # inicia o comando

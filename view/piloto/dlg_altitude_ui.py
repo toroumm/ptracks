@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_altitude.ui'
 #
-# Created: Sun Dec  4 02:45:25 2016
+# Created: Tue Dec  6 11:23:22 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -92,7 +92,7 @@ class Ui_CDlgAltitude(object):
         QtCore.QMetaObject.connectSlotsByName(CDlgAltitude)
 
     def retranslateUi(self, CDlgAltitude):
-        CDlgAltitude.setWindowTitle(_translate("CDlgAltitude", "Direção", None))
+        CDlgAltitude.setWindowTitle(_translate("CDlgAltitude", "Altitude", None))
         self.gbx_altitude.setTitle(_translate("CDlgAltitude", "Altitude", None))
         self.rbt_alt.setText(_translate("CDlgAltitude", "Altitude (ft)", None))
         self.rbt_niv.setText(_translate("CDlgAltitude", "Nível", None))

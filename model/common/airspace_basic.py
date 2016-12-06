@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-landscape_basic
+airspace_basic
 
 basic model manager
 load from one configuration file all configured tables
@@ -37,47 +37,46 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
+import logging
 import os
 
 # model
 import model.items.aer_data as aerdata
 import model.items.fix_data as fixdata
 
-# < class CLandscapeBasic >------------------------------------------------------------------------
+# < class CAirspaceBasic >-------------------------------------------------------------------------
 
-class CLandscapeBasic(object):
+class CAirspaceBasic(object):
     """
-    basic landscape model manager
+    basic airspace model manager
     """
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_model):
         """
-        constructor
-        
         @param f_model: model manager
         """
         # check input
         assert f_model
 
         # init super class
-        super(CLandscapeBasic, self).__init__()
+        super(CAirspaceBasic, self).__init__()
 
-        # save model manager 
+        # model manager
         self.__model = f_model
 
-        # save event manager 
+        # event manager
         self.__event = f_model.event
 
         # registra-se como recebedor de eventos
         self.__event.register_listener(self)
 
-        # save config manager 
+        # config manager
         self.__config = f_model.config
 
         # inicia dicionários
         self.__dct_aer = {}
+        self.__lst_arr_dep = []
         self.__dct_fix = {}
-        self.__dct_fix_indc = {}
 
         # carrega as tabelas de dados nos dicionários
         self.__load_dicts()
@@ -92,13 +91,10 @@ class CLandscapeBasic(object):
 
         # carrega a tabela de fixos em um dicionário
         self.dct_fix = fixdata.CFixData(self.model, ls_path)
-
-        # cria o dicionário de fixos por indicativo
-        self.dct_fix_indc = {fix.s_fix_indc:key for key, fix in self.dct_fix.iteritems()}
+        assert self.dct_fix is not None
 
         # salva referência da tabela de fixos no sistema de coordenadas
         self.model.coords.dct_fix = self.dct_fix
-        self.model.coords.dct_fix_indc = self.dct_fix_indc
 
         # monta o nome da tabela de aeródromos
         ls_path = os.path.join(self.dct_config["dir.tab"], self.dct_config["tab.aer"])
@@ -106,15 +102,62 @@ class CLandscapeBasic(object):
         # carrega a tabela de aeródromos em um dicionário
         self.dct_aer = aerdata.CAerData(self.model, ls_path)
 
+        # monta a lista de pousos/decolagens
+
+        # para todos os aeródromos...
+        for l_aer, l_aer_data in self.dct_aer.iteritems():
+            # para todas as pistas...
+            for l_pst in l_aer_data.dct_aer_pistas:                
+                # salva a tupla (aeródromo, pista)
+                self.__lst_arr_dep.append("{}/{}".format(l_aer, l_pst))
+
     # ---------------------------------------------------------------------------------------------
-    def notify(self, f_evt):
+    def get_aer_pst(self, fs_aer, fs_pst):
+        """
+        obtém o pointer para o aeródromo e pista
+
+        @param fs_aer: indicativo do aeródromo
+        @param fs_pst: indicativo da pista
+
+        @return pointer para o aeródromo e pista
+        """
+        # obtém o aeródromo
+        l_aer = self.__dct_aer.get(fs_aer, None)
+
+        if l_aer is None:
+            # logger
+            l_log = logging.getLogger("CAirspaceBasic::get_aer_pst")
+            l_log.setLevel(logging.ERROR)
+            l_log.error(u"<E01: não existe aeródromo [{}].".format(fs_aer))
+
+            # retorna pointers
+            return None, None
+
+        # obtém a pista
+        l_pst = l_aer.dct_aer_pistas.get(fs_pst, None)
+
+        if l_pst is None:
+            # logger
+            l_log = logging.getLogger("CAirspaceBasic::get_aer_pst")
+            l_log.setLevel(logging.ERROR)
+            l_log.error(u"<E02: não existe pista [{}] no aeródromo [{}].".format(fs_pst, fs_aer))
+
+            # retorna pointers
+            return l_aer, None
+
+        # retorna pointers
+        return l_aer, l_pst
+
+    # ---------------------------------------------------------------------------------------------
+    def notify(self, f_event):
         """
         callback de tratamento de eventos recebidos
 
-        @param f_evt: evento recebido
+        @param f_event: evento recebido
         """
+        # return
         return
-
+        
     # =============================================================================================
     # data
     # =============================================================================================
@@ -133,6 +176,21 @@ class CLandscapeBasic(object):
         set aeródromos
         """
         self.__dct_aer = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def lst_arr_dep(self):
+        """
+        get pousos/decolagens
+        """
+        return self.__lst_arr_dep
+
+    @lst_arr_dep.setter
+    def lst_arr_dep(self, f_val):
+        """
+        set pousos/decolagens
+        """
+        self.__lst_arr_dep = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -179,21 +237,6 @@ class CLandscapeBasic(object):
         set fixos
         """
         self.__dct_fix = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
-    def dct_fix_indc(self):
-        """
-        get fixos by indicativo
-        """
-        return self.__dct_fix_indc
-
-    @dct_fix_indc.setter
-    def dct_fix_indc(self, f_val):
-        """
-        set fixos by indicativo
-        """
-        self.__dct_fix_indc = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

@@ -41,7 +41,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-from . import dlg_pouso_ui as dlg
+import view.piloto.dlg_pouso_ui as dlg
 
 # < class CDlgPouso >------------------------------------------------------------------------------
 
@@ -61,19 +61,19 @@ class CDlgPouso(QtGui.QDialog, dlg.Ui_CDlgPouso):
         # init super class
         super(CDlgPouso, self).__init__(f_parent)
 
-        # salva o socket de comunicação
+        # socket de comunicação
         self.__sck_http = fsck_http
         assert self.__sck_http
 
-        # salva o dicionário de configuração
+        # dicionário de configuração
         self.__dct_config = fdct_config
         assert self.__dct_config is not None
 
-        # salva a strip atual
+        # strip atual
         self.__strip_cur = f_strip_cur
         assert self.__strip_cur is not None
 
-        # salva o lista de pousos
+        # lista de pousos
         self.__lst_pouso = flst_pouso
         assert self.__lst_pouso is not None
 
@@ -98,7 +98,6 @@ class CDlgPouso(QtGui.QDialog, dlg.Ui_CDlgPouso):
             self.__load_pouso()
 
         # inicia valores
-        # self.cbx_pouso.addItems(["{}/{}".format(ldep[0], ldep[1]) for ldep in self.__lst_pouso])
         self.cbx_pouso.addItems(sorted(self.__lst_pouso))
 
         # configura botões
@@ -115,12 +114,6 @@ class CDlgPouso(QtGui.QDialog, dlg.Ui_CDlgPouso):
         """
         # conecta comboBox
         self.cbx_pouso.currentIndexChanged.connect(self.__on_cbx_currentIndexChanged)
-
-        # conecta botão Ok da edição de pouso
-        # self.bbx_pouso.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de pouso
-        # self.bbx_pouso.rejected.connect(self.__reject)
 
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
@@ -150,7 +143,6 @@ class CDlgPouso(QtGui.QDialog, dlg.Ui_CDlgPouso):
 
         # monta o request dos pousos
         ls_req = "data/arr.json"
-        # # dbg.M_DBG.debug("__load_pouso:ls_req:[{}]".format(ls_req))
 
         # get server address
         l_srv = self.__dct_config.get("srv.addr", None)
@@ -158,12 +150,10 @@ class CDlgPouso(QtGui.QDialog, dlg.Ui_CDlgPouso):
         if l_srv is not None:
             # obtém os dados de pousos do servidor
             l_data = self.__sck_http.get_data(l_srv, ls_req)
-            # # dbg.M_DBG.debug("__load_pouso:l_data:[{}]".format(l_data))
 
             if l_data is not None:
-                # salva o pouso na lista
+                # coloca o pouso na lista
                 self.__lst_pouso.update(json.loads(l_data))
-                # # dbg.M_DBG.debug("__load_pouso:lst_pouso:[{}]".format(self.__lst_pouso))
 
             # senão, não achou no servidor...
             else:

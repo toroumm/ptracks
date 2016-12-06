@@ -32,17 +32,8 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
-# model
-import model.glb_defs as gdefs
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
+# control
+import control.common.glb_defs as gdefs
 
 # < class CExeModel >------------------------------------------------------------------------------
 
@@ -51,12 +42,10 @@ class CExeModel(object):
     mantém as informações comuns sobre os exercícios
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
+        """
+        constructor
+        """
         # flag ok (bool)
         self.__v_exe_ok = False
 
@@ -66,11 +55,7 @@ class CExeModel(object):
         # descrição
         self.__s_exe_desc = ""
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_exe(self, f_exe):
         """
         copy constructor
@@ -80,9 +65,6 @@ class CExeModel(object):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("copy_exe:>>")
-
         # identificação
         self.__s_exe_id = f_exe.s_exe_id
 
@@ -92,24 +74,14 @@ class CExeModel(object):
         # flag ok (bool)
         self.__v_exe_ok = f_exe.v_exe_ok
 
-        # logger
-        # M_LOG.info("copy_exe:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def send_exe(self, f_sender):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("send_exe:>>")
-
         # envia os dados de configuração
         f_sender.send_data(str(gdefs.D_MSG_VRS) + gdefs.D_MSG_SEP +
                            str(gdefs.D_MSG_EXE) + gdefs.D_MSG_SEP + self.__s_exe_id)
-
-        # logger
-        # M_LOG.info("send_exe:<<")
 
     # =============================================================================================
     # data
@@ -121,7 +93,6 @@ class CExeModel(object):
         """
         get descrição do exercício
         """
-        # return self.__s_exe_desc.decode("utf-8")
         return self.__s_exe_desc
 
     @s_exe_desc.setter
@@ -129,7 +100,7 @@ class CExeModel(object):
         """
         set descrição do exercício
         """
-        self.__s_exe_desc = f_val.strip()  # encode("utf-8").strip()
+        self.__s_exe_desc = f_val.strip()
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -137,7 +108,6 @@ class CExeModel(object):
         """
         get ID do exercício
         """
-        # return self.__s_exe_id.decode("utf-8")
         return self.__s_exe_id
 
     @s_exe_id.setter
@@ -145,7 +115,7 @@ class CExeModel(object):
         """
         set ID do exercício
         """
-        self.__s_exe_id = f_val.strip().upper()  # encode("utf-8").strip().upper()
+        self.__s_exe_id = f_val.strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     @property

@@ -46,11 +46,11 @@ import libs.coords.pos_lat_lng as pll
 
 # model
 import model.newton.airspace_newton as airs
-import model.stock.fix as cfix
-import model.stock.flight_plan_item as cfpi
-import model.stock.holding as cesp
-import model.stock.runway as crun
-import model.stock.standard_route as stdrt
+import model.common.fix as cfix
+import model.common.flight_plan_item as cfpi
+import model.common.holding as cesp
+import model.common.runway as crun
+import model.common.standard_route as stdrt
 
 import model.items.apx_data as apxdata
 import model.items.esp_data as espdata

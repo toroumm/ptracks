@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-model_visil
+model_piloto
 
-DOCUMENT ME!
+model manager da pilotagem
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,13 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 revision 0.2  2015/nov  mlabru
 pep8 style conventions
 
-revision 0.1  2015/fev  mlabru
+revision 0.1  2014/nov  mlabru
 initial release (Linux/Python)
 ---------------------------------------------------------------------------------------------------
 """
 __version__ = "$revision: 0.2$"
-__author__ = "Milton Abrunhosa"
-__date__ = "2015/12"
+__author__ = "mlabru, sophosoft"
+__date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
@@ -44,21 +44,20 @@ from PyQt4 import QtCore
 import libs.coords.coord_sys as coords
 
 # model
-import model.glb_defs as gdefs
 import model.model_manager as model
 
-import model.emula.emula_visil as emula
-import model.visil.airspace_visil as airs
-import model.visil.landscape_visil as lands
+import model.emula.emula_piloto as emula
+import model.newton.airspace_newton as airs
 
 # control
-import control.events.events_basic as event
+# import control.events.events_basic as events
+import control.common.glb_defs as gdefs
 
-# < class CModelVisil >----------------------------------------------------------------------------
+# < class CModelPiloto >---------------------------------------------------------------------------
 
-class CModelVisil(model.CModelManager):
+class CModelPiloto(model.CModelManager):
     """
-    visir model object
+    piloto model object
     """
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_control):
@@ -67,49 +66,54 @@ class CModelVisil(model.CModelManager):
         
         @param f_control: control manager
         """
+        # check input
+        assert f_control
+
         # init super class
-        super(CModelVisil, self).__init__(f_control)
+        super(CModelPiloto, self).__init__(f_control)
 
         # herdados de CModelManager
         # self.app           # the application
-        # self.config        # config manager
-        # self.dct_config    # dicionário de configuração
         # self.control       # control manager
         # self.event         # event manager
+        # self.config        # config manager
+        # self.dct_config    # dicionário de configuração
 
         self.control.splash.showMessage("creating coordinate system...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-        
+                
         # obtém as coordenadas de referência
         lf_ref_lat = float(self.dct_config["map.lat"])
         lf_ref_lng = float(self.dct_config["map.lng"])
         lf_dcl_mag = float(self.dct_config["map.dcl"])
-
+                                                                
+        self.control.splash.showMessage("loading cenary...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        
         # coordinate system
         self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)
         assert self.__coords
 
-        self.control.splash.showMessage("loading cenary...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-
         # variáveis de instância
         self.__airspace = None
-        self.__landscape = None
 
-        # carrega as tabelas do sistema
+        # dicionário de performances
+        self.__dct_prf = {}
+                
+        # carrega o cenário (airspace & landscape)
         self.__load_cenario("SBSP")
 
         self.control.splash.showMessage("creating emulation model...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
-
+                        
         # create emula model
-        self.__emula_model = emula.CEmulaVisil(self, f_control)
+        self.__emula_model = emula.CEmulaPiloto(self, f_control)
         assert self.__emula_model
-
+                        
     # ---------------------------------------------------------------------------------------------
     def __load_air(self, fs_cena):
         """
         faz a carga do airspace
 
         @param fs_cena: cenário
-
+        
         @return flag e mensagem
         """
         # obtém o diretório padrão de airspaces
@@ -132,7 +136,7 @@ class CModelVisil(model.CModelManager):
             os.mkdir(ls_dir)
 
         # create airspace
-        self.__airspace = airs.CAirspaceVisil(self)
+        self.__airspace = airs.CAirspaceNewton(self)
         assert self.__airspace
 
         # carrega os dicionários
@@ -147,21 +151,16 @@ class CModelVisil(model.CModelManager):
         abre/cria as tabelas do sistema
 
         @param fs_cena: cenário
-
+        
         @return flag e mensagem
         """
-        # carrega o landscape
-        lv_ok, ls_msg = self.__load_land(fs_cena)
-
-        # tudo Ok ?
-        if lv_ok:
-            # carrega o airspace
-            lv_ok, ls_msg = self.__load_air(fs_cena)
-
+        # carrega o airspace
+        lv_ok, ls_msg = self.__load_air(fs_cena)
+                                                        
         # houve erro em alguma fase ?
         if not lv_ok:
             # logger
-            l_log = logging.getLogger("CModelVisil::__load_cenario")
+            l_log = logging.getLogger("CModelPiloto::__load_cenario")
             l_log.setLevel(logging.CRITICAL)
             l_log.critical(u"<E01: erro na carga da base de dados: {}.".format(ls_msg))
 
@@ -176,44 +175,6 @@ class CModelVisil(model.CModelManager):
             sys.exit(1)
 
     # ---------------------------------------------------------------------------------------------
-    def __load_land(self, fs_cena):
-        """
-        faz a carga do landscape
-
-        @param fs_cena: cenário
-
-        @return flag e mensagem
-        """
-        # obtém o diretório padrão de landscapes
-        ls_dir = self.dct_config["dir.map"]
-
-        # nome do diretório vazio ?
-        if ls_dir is None:
-            # diretório padrão de landscapes
-            self.dct_config["dir.map"] = gdefs.D_DIR_MAP
-
-            # diretório padrão de landscapes
-            ls_dir = gdefs.D_DIR_MAP
-
-        # expand user (~)
-        ls_dir = os.path.expanduser(ls_dir)
-
-        # diretório não existe ?
-        if not os.path.exists(ls_dir):
-            # cria o diretório
-            os.mkdir(ls_dir)
-
-        # create landscape
-        self.__landscape = lands.CLandscapeVisil(self, ls_dir, fs_cena)
-        assert self.__landscape
-
-        # carrega os dicionários
-        self.__landscape.load_dicts()
-
-        # retorna ok
-        return True, None
-
-    # ---------------------------------------------------------------------------------------------
     def notify(self, f_evt):
         """
         callback de tratamento de eventos recebidos
@@ -221,8 +182,8 @@ class CModelVisil(model.CModelManager):
         @param f_evt: evento recebido
         """
         # return
-        return
-        
+        return  
+                
     # =============================================================================================
     # data
     # =============================================================================================
@@ -231,9 +192,25 @@ class CModelVisil(model.CModelManager):
     @property
     def airspace(self):
         """
-        get airspace
+        airspace
         """
         return self.__airspace
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def dct_apx(self):
+        """
+        get dicionário de aproximações
+        """
+        return self.__airspace.dct_apx
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def lst_arr_dep(self):
+        """
+        get lista de pousos/decolagens
+        """
+        return self.__airspace.lst_arr_dep
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -243,18 +220,18 @@ class CModelVisil(model.CModelManager):
         """
         return self.__coords
 
-    @coords.setter
+    '''@coords.setter
     def coords(self, f_val):
         """
         set coordinate system
         """
-        self.__coords = f_val
+        self.__coords = f_val'''
 
     # ---------------------------------------------------------------------------------------------
     @property
     def emula_model(self):
         """
-        get emula model
+        flight model
         """
         return self.__emula_model
 
@@ -262,23 +239,31 @@ class CModelVisil(model.CModelManager):
     @property
     def dct_esp(self):
         """
-        get esperas
+        get dicionário de esperas
         """
         return self.__airspace.dct_esp
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def landscape(self):
+    def dct_fix(self):
         """
-        get landscape
+        get dicionário de fixos
         """
-        return self.__landscape
+        return self.__airspace.dct_fix
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def dct_prf(self):
+        """
+        get dicionário de performances
+        """
+        return self.__dct_prf
 
     # ---------------------------------------------------------------------------------------------
     @property
     def dct_sub(self):
         """
-        get subidas
+        get dicionário de subidas
         """
         return self.__airspace.dct_sub
 
@@ -286,7 +271,7 @@ class CModelVisil(model.CModelManager):
     @property
     def dct_trj(self):
         """
-        get trajetórias
+        get dicionário de trajetórias
         """
         return self.__airspace.dct_trj
 

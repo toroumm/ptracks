@@ -42,10 +42,10 @@ import time
 from mpi4py import MPI
 
 # model 
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
+import control.common.glb_defs as gdefs
 
-import model.model_newton as model
+import model.newton.model_newton as model
 
 # view 
 import view.newton.view_newton as view

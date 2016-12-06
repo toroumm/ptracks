@@ -42,7 +42,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-from . import dlg_espera_ui as dlg
+import view.piloto.dlg_espera_ui as dlg
 
 # < class CDlgEspera >-----------------------------------------------------------------------------
 
@@ -62,18 +62,15 @@ class CDlgEspera(QtGui.QDialog, dlg.Ui_CDlgEspera):
         # init super class
         super(CDlgEspera, self).__init__(f_parent)
 
-        # salva o control manager localmente
-        # self.__control = f_control
-
-        # salva o socket de comunicação
+        # socket de comunicação
         self.__sck_http = fsck_http
         assert self.__sck_http
 
-        # salva o dicionário de configuração
+        # dicionário de configuração
         self.__dct_config = fdct_config
         assert self.__dct_config is not None
 
-        # salva o dicionário de esperas
+        # dicionário de esperas
         self.__dct_esp = self.__load_esp(fdct_esp)
         assert self.__dct_esp is not None
 
@@ -110,12 +107,6 @@ class CDlgEspera(QtGui.QDialog, dlg.Ui_CDlgEspera):
         # conecta spinBox
         self.cbx_esp.currentIndexChanged.connect(self.__on_cbx_currentIndexChanged)
 
-        # conecta botão Ok da edição de espera
-        # self.bbx_espera.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de espera
-        # self.bbx_espera.rejected.connect(self.__reject)
-
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
         """
@@ -137,10 +128,7 @@ class CDlgEspera(QtGui.QDialog, dlg.Ui_CDlgEspera):
         """
         carrega o dicionário de esperas
         """
-        # check input parameters
-        # assert f_strip_cur
-
-        # check for requirements
+        # clear to go
         assert self.__sck_http is not None
         assert self.__dct_config is not None
 
@@ -151,7 +139,6 @@ class CDlgEspera(QtGui.QDialog, dlg.Ui_CDlgEspera):
         if not fdct_esp:
             # monta o request das esperas
             ls_req = "data/esp.json"
-            # dbg.M_DBG.debug("__load_esp:ls_req:[{}]".format(ls_req))
 
             # get server address
             l_srv = self.__dct_config.get("srv.addr", None)
@@ -159,12 +146,10 @@ class CDlgEspera(QtGui.QDialog, dlg.Ui_CDlgEspera):
             if l_srv is not None:
                 # obtém os dados de esperas do servidor
                 l_data = self.__sck_http.get_data(l_srv, ls_req)
-                # dbg.M_DBG.debug("__load_esp:l_data:[{}]".format(l_data))
 
                 if l_data is not None:
-                    # salva a esperas no dicionário
+                    # coloca a esperas no dicionário
                     ldct_ans = json.loads(l_data)
-                    # dbg.M_DBG.debug("__load_esp:dct_esp:[{}]".format(ldct_ans))
 
                 # senão, não achou no servidor...
                 else:
@@ -209,11 +194,8 @@ class CDlgEspera(QtGui.QDialog, dlg.Ui_CDlgEspera):
         """
         # para todas as esperas...
         for l_key, l_esp in self.__dct_esp.iteritems():
-            # dbg.M_DBG.debug("l_key:[{}]".format(l_key))
-            # dbg.M_DBG.debug("l_esp:[{}]".format(l_esp))
-
             # é a espera selecionada ?
-            if unicode(self.cbx_esp.currentText()) == unicode(l_esp):
+            if self.cbx_esp.currentText() == l_esp:
                 break
 
         # inicia o comando

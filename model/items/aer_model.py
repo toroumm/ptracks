@@ -101,14 +101,14 @@ class CAerModel(object):
         """
         get identificação do aeródromo (indicativo)
         """
-        return self.__s_aer_indc  # .decode ( "utf-8" )
+        return self.__s_aer_indc
 
     @s_aer_indc.setter
     def s_aer_indc(self, f_val):
         """
         set identificação do aeródromo (indicativo)
         """
-        self.__s_aer_indc = f_val.strip().upper()  # .encode ( "utf-8" )
+        self.__s_aer_indc = f_val.strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -116,14 +116,14 @@ class CAerModel(object):
         """
         get descrição
         """
-        return self.__s_aer_desc  # .decode ( "utf-8" )
+        return self.__s_aer_desc
 
     @s_aer_desc.setter
     def s_aer_desc(self, f_val):
         """
         set descrição
         """
-        self.__s_aer_desc = f_val.strip()  # .encode ( "utf-8" )
+        self.__s_aer_desc = f_val.strip()
 
     # ---------------------------------------------------------------------------------------------
     @property

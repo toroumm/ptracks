@@ -40,9 +40,9 @@ import sys
 from PyQt4 import QtCore
 
 # view
-import view.common.color_manager as clrm
-import view.common.view_manager as view
+import view.view_manager as view
 
+import view.common.color_manager as clrm
 import view.visil.wnd_main_visil as wmain
 
 # control

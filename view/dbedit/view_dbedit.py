@@ -40,9 +40,8 @@ import sys
 from PyQt4 import QtGui
 
 # view
-import view.view_manager as view
+import view.common.view_manager as view
 
-# view
 import view.dbedit.wnd_main_dbedit as wmain
 
 # control
@@ -53,11 +52,13 @@ import control.events.events_basic as events
 class CViewDBEdit(view.CViewManager):
     """
     módulo view do editor da base de dados.  É a classe de interface.  Trata as interações com o
-    usuário.
+    usuário
     """
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_control):
         """
+        constructor
+        
         @param f_control: control manager
         """
         # check input
@@ -67,6 +68,7 @@ class CViewDBEdit(view.CViewManager):
         super(CViewDBEdit, self).__init__(f_control)
 
         # herdados de CViewManager
+        # self.app           # the application
         # self.config        # config manager
         # self.dct_config    # dicionário de configuração
         # self.control       # control manager

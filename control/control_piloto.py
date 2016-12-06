@@ -48,10 +48,8 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui 
 
 # model 
-import model.glb_data as gdata
-import model.glb_defs as gdefs
-
-import model.model_piloto as model
+import model.common.glb_data as gdata
+import model.piloto.model_piloto as model
 
 # view 
 import view.piloto.view_piloto as view
@@ -60,8 +58,8 @@ import view.piloto.view_piloto as view
 import control.control_debug as dbg
 import control.control_basic as control
 
+import control.common.glb_defs as gdefs
 import control.config.config_piloto as config
-
 import control.events.events_config as events
 
 import control.network.get_address as gaddr
@@ -108,7 +106,7 @@ class CControlPiloto(control.CControlBasic):
         assert self.__dct_config
 
         # create application
-        self.__create_app()
+        self.create_app("piloto")
                 
         # create simulation statistics control
         # self.sim_stat = stats.SimStats()
@@ -168,53 +166,6 @@ class CControlPiloto(control.CControlBasic):
         assert self.view
 
     # ---------------------------------------------------------------------------------------------
-    def __create_app(self):
-        """
-        DOCUMENT ME!
-        """
-        # create application
-        self.app = QtGui.QApplication(sys.argv)
-        assert self.app
-
-        # dbg.M_DBG.debug("currentThread:{}".format(threading.currentThread()))
-
-        # setup application parameters
-        self.app.setOrganizationName("sophosoft")
-        self.app.setOrganizationDomain("sophosoft.com.br")
-        self.app.setApplicationName("piloto")
-
-        self.app.setWindowIcon(QtGui.QIcon(os.path.join(self.__dct_config["dir.img"], "icon.png")))
-
-        # load logo
-        l_pix_logo = QtGui.QPixmap(os.path.join(self.__dct_config["dir.img"], "logo.png"))
-        assert l_pix_logo
-
-        # create splash screen
-        self.splash = QtGui.QSplashScreen(l_pix_logo, QtCore.Qt.WindowStaysOnTopHint)
-        assert self.splash
-
-        self.splash.setMask(l_pix_logo.mask())
-
-        # create the progress bar
-        # self.progressBar = QtGui.QProgressBar(self.splash)
-        # self.progressBar.setGeometry(    self.splash.width() / 10, 8 * self.splash.height() / 10,
-        #                              8 * self.splash.width() / 10,     self.splash.height() / 10)
-
-        # message = 'hello'
-        # label = QtGui.QLabel("<font color=red size=72><b>{0}</b></font>".format(message), self.splash)
-        # label.setGeometry(1 * self.splash.width() / 10, 8 * self.splash.height() / 10,
-        #                   8 * self.splash.width() / 10, 1 * self.splash.height() / 10)
-
-        # show splash screen
-        self.splash.show()
-
-        # update the progress bar
-        # self.progressBar.setValue(50)
-
-        # process events (before main loop)
-        self.app.processEvents()
-
-    # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         drive application
@@ -253,12 +204,9 @@ class CControlPiloto(control.CControlBasic):
             try:
                 # obtém um item da queue de configuração (nowait)
                 llst_data = self.__q_rcv_cnfg.get(False)
-                dbg.M_DBG.debug("llst_data:[{}]".format(llst_data))
 
                 # queue tem dados ?
                 if llst_data:
-                    # dbg.M_DBG.debug("llst_data[0]:[{}]".format(llst_data[0]))
-
                     # mensagem de aceleração ?
                     if gdefs.D_MSG_ACC == int(llst_data[0]):
                         # acelera/desacelera a aplicação

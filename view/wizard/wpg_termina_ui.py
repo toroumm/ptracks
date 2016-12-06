@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'wpg_termina.ui'
 #
-# Created: Tue Jan 26 00:48:04 2016
+# Created: Mon Dec  5 14:48:51 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,7 +34,7 @@ class Ui_WPagTermina(object):
         self.label.setMinimumSize(QtCore.QSize(0, 0))
         self.label.setMaximumSize(QtCore.QSize(240, 16777215))
         self.label.setText(_fromUtf8(""))
-        self.label.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/wpgTermina.jpg")))
+        self.label.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/wizard/wpgTermina.jpg")))
         self.label.setScaledContents(True)
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout.addWidget(self.label, 0, 0, 3, 1)
@@ -126,4 +126,4 @@ class Ui_WPagTermina(object):
         self.lblCanal.setText(_translate("WPagTermina", "Canal:", None))
         self.ckbAgree.setText(_translate("WPagTermina", "Dados corretos para simulação", None))
 
-import qrc_resources_rc
+import resources_rc

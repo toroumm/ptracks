@@ -48,10 +48,8 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # model 
-import model.glb_data as gdata
-import model.glb_defs as gdefs
-
-import model.model_visil as model
+import model.common.glb_data as gdata
+import model.visil.model_visil as model
 
 # view 
 import view.visil.view_visil as view
@@ -60,8 +58,8 @@ import view.visil.view_visil as view
 import control.control_debug as dbg
 import control.control_basic as control
 
+import control.common.glb_defs as gdefs
 import control.config.config_visil as config
-
 import control.events.events_config as events
 
 import control.network.get_address as gaddr
@@ -106,7 +104,7 @@ class CControlVisil(control.CControlBasic):
         assert self.__dct_config
 
         # create application
-        self.__create_app()
+        self.create_app("visil")
 
         # create simulation statistics control
         # self.sim_stat = simStats.simStats()
@@ -151,53 +149,6 @@ class CControlVisil(control.CControlBasic):
         assert self.view
 
     # ---------------------------------------------------------------------------------------------
-    def __create_app(self):
-        """
-        DOCUMENT ME!
-        """
-        # create application
-        self.app = QtGui.QApplication(sys.argv)
-        assert self.app
-
-        # dbg.M_DBG.debug("currentThread:{}".format(threading.currentThread()))
-
-        # setup application parameters
-        self.app.setOrganizationName("sophosoft")
-        self.app.setOrganizationDomain("sophosoft.com.br")
-        self.app.setApplicationName("visil")
-
-        self.app.setWindowIcon(QtGui.QIcon(os.path.join(self.__dct_config["dir.img"], "icon.png")))
-
-        # load logo
-        l_pix_logo = QtGui.QPixmap(os.path.join(self.__dct_config["dir.img"], "logo.png"))
-        assert l_pix_logo
-
-        # create splash screen
-        self.splash = QtGui.QSplashScreen(l_pix_logo, QtCore.Qt.WindowStaysOnTopHint)
-        assert self.splash
-
-        self.splash.setMask(l_pix_logo.mask())
-
-        # create the progress bar
-        # self.progressBar = QtGui.QProgressBar(self.splash)
-        # self.progressBar.setGeometry(    self.splash.width() / 10, 8 * self.splash.height() / 10,
-        #                              8 * self.splash.width() / 10,     self.splash.height() / 10)
-
-        # message = 'hello'
-        # label = QtGui.QLabel("<font color=red size=72><b>{0}</b></font>".format(message), self.splash)
-        # label.setGeometry(1 * self.splash.width() / 10, 8 * self.splash.height() / 10,
-        #                   8 * self.splash.width() / 10, 1 * self.splash.height() / 10)
-
-        # show splash screen
-        self.splash.show()
-
-        # update the progress bar
-        # self.progressBar.setValue(50)
-
-        # process events (before main loop)
-        self.app.processEvents()
-
-    # ---------------------------------------------------------------------------------------------
     def run(self):
         """
         drive application
@@ -231,12 +182,9 @@ class CControlVisil(control.CControlBasic):
             try:
                 # obtém um item da queue de configuração
                 llst_data = self.__q_rcv_cnfg.get(False)
-                dbg.M_DBG.debug("llst_data:[{}]".format(llst_data))
 
                 # queue tem dados ?
                 if llst_data:
-                    # dbg.M_DBG.debug("llst_data[0]:[{}]".format(llst_data[0]))
-
                     # mensagem de aceleração ?
                     if gdefs.D_MSG_ACC == int(llst_data[0]):
                         # acelera/desacelera a aplicação
@@ -278,11 +226,8 @@ class CControlVisil(control.CControlBasic):
                                                                                         
                     # mensagem de hora ?
                     elif gdefs.D_MSG_TIM == int(llst_data[0]):
-                        # dbg.M_DBG.debug("llst_data[1]:(%s)" % str(llst_data[1]))
-
                         # monta uma tupla com a mensagem de hora
                         lt_hora = tuple(int(l_s) for l_s in llst_data[1][1: -1].split(','))
-                        # dbg.M_DBG.debug("lt_hora:(%s)" % str(lt_hora))
 
                         # seta a hora de simulação
                         self.sim_time.set_hora(lt_hora)

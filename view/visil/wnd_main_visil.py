@@ -42,13 +42,13 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # model
-import model.glb_data as gdata
-import model.newton.defs_newton as ndefs
+import model.common.glb_data as gdata
+import model.common.defs_strips as ldefs
+import model.common.strip_model as mstp
+import model.common.strip_table_model as stm
 
-import model.visil.defs_visil as ldefs
+import model.newton.defs_newton as ndefs
 import model.visil.aircraft_visil as anv
-import model.visil.strip_model as mstp
-import model.visil.strip_table_model as stm
 
 # view
 import view.common.dock_procedures as dckprc
@@ -65,7 +65,6 @@ import control.events.events_basic as events
 import control.events.events_config as evtcfg
 
 # resources
-import view.resources.icons_rc
 import view.resources.resources_rc
 
 # < class CWndMainVisil >--------------------------------------------------------------------------

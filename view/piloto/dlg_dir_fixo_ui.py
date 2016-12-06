@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_dir_fixo.ui'
 #
-# Created: Sun Dec  4 02:45:25 2016
+# Created: Tue Dec  6 11:23:23 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -54,7 +54,7 @@ class Ui_CDlgDirFixo(object):
         QtCore.QMetaObject.connectSlotsByName(CDlgDirFixo)
 
     def retranslateUi(self, CDlgDirFixo):
-        CDlgDirFixo.setWindowTitle(_translate("CDlgDirFixo", "Direção", None))
+        CDlgDirFixo.setWindowTitle(_translate("CDlgDirFixo", "Direcionamento à fixo", None))
         self.gbx_dir_fixo.setTitle(_translate("CDlgDirFixo", "Fixos", None))
         self.lbl_comando.setText(_translate("CDlgDirFixo", "FIX 1001", None))
 

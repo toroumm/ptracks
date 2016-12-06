@@ -42,9 +42,9 @@ import time
 import libs.coords.pos_lat_lng as pll
 
 # model
-import model.tMath as tmath
-import model.stock.aircraft_basic as sanv
-import model.piloto.strip_model as mstp
+import model.common.tMath as tmath
+import model.common.aircraft_basic as sanv
+import model.common.strip_model as mstp
 
 #import model.visadsb.auto_pilot as CAutoPilot
 #import model.visadsb.fms as CFMS

@@ -63,30 +63,19 @@ import view.dbedit.dlg_aer_data_new_ui as dlgdata
 
 # import view.dbedit.dlgView as dlgView
 
-# control / events
+# control
 import control.events.events_basic as events
-
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-M_LOG_LVL = logging.DEBUG
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(M_LOG_LVL)
 
 # < class CDlgAerDataNEW >---------------------------------------------------------------------------
 
-
 class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
     """
-    mantém as informações sobre a dialog de edição de aeródromos.
+    mantém as informações sobre a dialog de edição de aeródromos
     """
     # galileu dbus service server
     # cSRV_Path = "org.documentroot.Galileu"
 
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_parent=None):
         """
         @param f_control: control manager
@@ -114,7 +103,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe uma parent window ?
         if self.__parent is not None:
-
             # esconde a parent window
             self.__parent.setVisible(False)
 
@@ -160,15 +148,12 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         QtCore.QTimer.singleShot(0, self.load_initial)
 
     # ---------------------------------------------------------------------------------------------
-
     def accept(self):
         """
-        callback de btn_ok da dialog de edição.
-        faz o accept da dialog.
+        callback de btn_ok da dialog de edição. faz o accept da dialog
         """
         # ok para continuar ?
         if self.okToContinue():
-
             # faz o "accept"
             QtGui.QDialog.accept(self)
 
@@ -176,11 +161,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
             self.close()
 
     # ---------------------------------------------------------------------------------------------
-
     def aerDel(self):
         """
-        callback de btn_del da dialog de edição.
-        deleta um aeródromo da lista.
+        callback de btn_del da dialog de edição. deleta um aeródromo da lista
         """
         # verifica condições de execução
         assert self.qtw_aer_tab is not None
@@ -190,7 +173,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.__aer = self.getCurrentSel(self.__dct_aer, self.qtw_aer_tab)
 
         if self.__aer is not None:
-
             # apaga a aeródromo atual ?
             if QtGui.QMessageBox.Yes == QtGui.QMessageBox.question(self,
                                                                    self._txtDelAerTit,
@@ -201,11 +183,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.aerRemove(self.__aer)
     '''
     # ---------------------------------------------------------------------------------------------
-
     def aerEdit(self):
         """
-        callback de btnEdit da dialog de edição.
-        edita um aeródromo da QTableWidget.
+        callback de btnEdit da dialog de edição. edita um aeródromo da QTableWidget
         """
         # verifica condições de execução
         assert self.qtw_aer_tab is not None
@@ -215,14 +195,12 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.__aer = self.getCurrentSel(self.__dct_aer, self.qtw_aer_tab)
 
         if(self.__aer is not None):
-
             # cria a dialog de edição de aeródromos
             l_Dlg = dlgAerEditNEW.dlgAerEditNEW(self.__control, self.__aer, self)
             assert l_Dlg
 
             # processa a dialog de edição de aeródromos (modal)
             if(l_Dlg.exec_ ()):
-
                 # salva em disco as alterações na aeródromo
                 # self.__aer.save2Disk(self.__aer._sPN)
 
@@ -230,11 +208,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.aerUpdateWidget ()
     '''
     # ---------------------------------------------------------------------------------------------
-
     def aerNew(self):
         """
-        callback de btnNew da dialog de edição.
-        cria um novo aeródromo na lista.
+        callback de btnNew da dialog de edição. cria um novo aeródromo na lista
         """
         # cria a dialog de edição de aeródromos
         l_Dlg = dlgAerEditNEW.dlgAerEditNEW(self.__control, None, self)
@@ -242,13 +218,11 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # processa a dialog de edição de aeródromos (modal)
         if l_Dlg.exec_():
-
             # obtém os dados da edição
             self.__aer = l_Dlg.getData()
 
             # aeródromo existente ?
             if (self.__aer is not None) and (self.__dct_aer is not None):
-
                 # insere a aeródromo na lista
                 self.__dct_aer.append(self.__aer)
 
@@ -259,12 +233,11 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.aerUpdateWidget()
 
     # ---------------------------------------------------------------------------------------------
-
     def aerRemove(self, f_oAer):
         """
-        remove o aeródromo selecionado.
+        remove o aeródromo selecionado
 
-        @param f_oAer: pointer para o aeródromo a remover.
+        @param f_oAer: pointer para o aeródromo a remover
         """
         # verifica condições de execução
         assert f_oAer is not None
@@ -281,7 +254,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         l_sFN = l_sPN + ".fig"
 
         if (( l_sFN is not None) and os.path.exists(l_sFN) and os.path.isfile(l_sFN)):
-
             l_log.info(u"removeu figuras: " + str(l_sFN))
 
             # remove o arquivo
@@ -291,7 +263,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         l_sFN = l_sPN + ".pns"
 
         if (( l_sFN is not None) and os.path.exists(l_sFN) and os.path.isfile(l_sFN)):
-
             l_log.info(u"removeu pns: " + str(l_sFN))
 
             # remove o arquivo
@@ -301,7 +272,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         l_sFN = l_sPN + ".pst"
 
         if (( l_sFN is not None) and os.path.exists(l_sFN) and os.path.isfile(l_sFN)):
-
             l_log.info(u"removeu pistas: " + str(l_sFN))
 
             # remove o arquivo
@@ -309,10 +279,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         '''
 
     # ---------------------------------------------------------------------------------------------
-
     def aerSelect(self):
         """
-        seleciona um aeródromo a editar.
+        seleciona um aeródromo a editar
         """
         # verifica condições de execução
         assert self.__dct_aer is not None
@@ -326,10 +295,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.aerUpdateSel()
 
     # ---------------------------------------------------------------------------------------------
-
     def aerUpdateList(self):
         """
-        atualiza na tela os dados da lista de aeródromos.
+        atualiza na tela os dados da lista de aeródromos
         """
         # verifica condições de execução
         assert self.__dct_aer is not None
@@ -343,14 +311,12 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         # assert self.__aer
 
     # ---------------------------------------------------------------------------------------------
-
     def aerUpdateSel(self):
         """
-        atualiza na tela os dados do aeródromo selecionado.
+        atualiza na tela os dados do aeródromo selecionado
         """
         # aeródromo selecionado existe ?
         if self.__aer is not None:
-
             # indicativo do aeródromo
             ls_aer_id = self.__aer.s_aer_id
 
@@ -392,15 +358,13 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
             '''
         # senão, o aeródromo não existe
         else:
-
             # posiciona cursor no início do formulário
             self.txtAerID.setFocus()
 
     # ---------------------------------------------------------------------------------------------
-
     def aerUpdateWidget(self):
         """
-        atualiza na tela os dados da QTableWidget de aeródromos.
+        atualiza na tela os dados da QTableWidget de aeródromos
         """
         # verifica condições de execução
         assert self.qtw_aer_tab is not None
@@ -431,7 +395,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # para cada aeródromo no dicionário...
         for l_iNdx, ls_aer_id in enumerate(sorted(self.__dct_aer.keys())):
-
             # indicativo do aeródromo
             l_twiAerID = QtGui.QTableWidgetItem(ls_aer_id)
             l_twiAerID.setData(QtCore.Qt.UserRole, QtCore.QVariant(ls_aer_id))
@@ -440,7 +403,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
             # é o aeródromo selecionado ?
             if ((self.__aer is not None) and(self.__aer.s_aer_id == ls_aer_id)):
-
                 # salva pointer para o item selecionado
                 l_oSItem = l_twiAerID
 
@@ -455,7 +417,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe um aeródromo selecionado ?
         if(self.__aer is not None):
-
             # seleciona o item
             self.qtw_aer_tab.setCurrentItem(l_oSItem)
 
@@ -467,7 +428,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # senão, não existe um aeródromo selecionado
         else:
-
             # seleciona a primeira linha
             self.qtw_aer_tab.selectRow(0)
 
@@ -482,11 +442,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.qtw_aer_tab.setSortingEnabled(True)
     '''
     # ---------------------------------------------------------------------------------------------
-
     def aerView(self):
         """
-        callback de btnView da dialog de edição.
-        abre a dialog de configuração da visualização de aeródromos.
+        callback de btnView da dialog de edição. abre a dialog de configuração da visualização de aeródromos
         """
         # cria a dialog de configuração da visualização de aeródromos
         l_Dlg = dlgView.dlgView(self.__control, self, self._lstView)
@@ -496,11 +454,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         l_Dlg.exec_ ()
 
     # ---------------------------------------------------------------------------------------------
-
     def cabEdit(self):
         """
-        callback de btnEdit da dialog de edição.
-        edita uma cabeceira da QTableWidget.
+        callback de btnEdit da dialog de edição. edita uma cabeceira da QTableWidget
         """
         # verifica condições de execução
         assert self.qtwTabCab is not None
@@ -511,14 +467,12 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         l_log.info("self._oCab: " + str(self._oCab))
 
         if(self._oCab is not None):
-
             # cria a dialog de edição de cabeceiras
             l_Dlg = dlgCabCAD.dlgCabCAD(self.__control, self._oCab, self)
             assert l_Dlg
 
             # processa a dialog de edição de cabeceiras (modal)
             if(l_Dlg.exec_ ()):
-
                 # salva em disco as alterações na cabeceira
                 #self._dctCab.save2Disk(self._dctCab._sPN)
                 l_log.info("Salvou cabeceira em disco: ")
@@ -527,16 +481,14 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.updateCabWidget ()
     '''
     # ---------------------------------------------------------------------------------------------
-
     def closeEvent(self, event):
         """
-        callback de tratamento do evento Close.
+        callback de tratamento do evento Close
 
         @param event: ...
         """
         # ok para continuar ?
         if self.okToContinue():
-
             # obtém os settings
             l_set = QtCore.QSettings()
             assert l_set
@@ -552,21 +504,18 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
             # existe a parent window ?
             if(self.__parent is not None):
-
                 # exibe a parent window
                 self.__parent.setVisible(True)
 
         # senão, ignora o request
         else:
-
             # ignora o evento
             event.ignore()
 
     # ---------------------------------------------------------------------------------------------
-
     def config_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
         # aeródromo
 
@@ -646,10 +595,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.connect(self.btnPNSNew, QtCore.SIGNAL("clicked()"), self.pnsNew)
         '''
     # ---------------------------------------------------------------------------------------------
-
     def config_texts(self):
         """
-        configura títulos e mensagens.
+        configura títulos e mensagens
         """
         self._txtSettings = "CDlgAerDataNEW"
 
@@ -673,10 +621,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         '''
     '''
     # ---------------------------------------------------------------------------------------------
-
     def connectDBus(self):
         """
-        inicia o DBUS services server (Galileu).
+        inicia o DBUS services server (Galileu)
         """
         # start dbus services
         l_bus = dbus.SessionBus ()
@@ -706,11 +653,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
             sys.exit(1)
 
     # ---------------------------------------------------------------------------------------------
-
     def figDel(self):
         """
-        callback de btn_del da dialog de edição.
-        deleta uma figura da lista.
+        callback de btn_del da dialog de edição. deleta uma figura da lista
         """
         # verifica condições de execução
         assert self._dctFig is not None
@@ -742,17 +687,10 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self._dctFig.save2Disk ()
 
     # ---------------------------------------------------------------------------------------------
-
     def figEdit(self):
-
         """
-        callback de btnEdit da dialog de edição.
-        edita uma figura da QTableWidget.
+        callback de btnEdit da dialog de edição. edita uma figura da QTableWidget
         """
-
-        # logger
-        l_log.info("__init__:>>")
-
         # verifica condições de execução
         assert self.qtwTabFig is not None
         assert self._dctFig is not None
@@ -761,14 +699,12 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._oFig = self.getCurrentSel(self._dctFig, self.qtwTabFig)
 
         if(self._oFig is not None):
-
             # cria a dialog de edição de figuras
             l_Dlg = dlgFig.dlgFig(self.__control, self, self._oFig)
             assert l_Dlg
 
             # processa a dialog de edição de figuras (modal)
             if(l_Dlg.exec_ ()):
-
                 # salva em disco as alterações na lista de figuras
                 self._dctFig.save2Disk ()
 
@@ -776,11 +712,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 #self.updateFigWidget ()
 
     # ---------------------------------------------------------------------------------------------
-
     def figNew(self):
         """
-        callback de btnNew da dialog de edição.
-        cria uma nova figura na lista.
+        callback de btnNew da dialog de edição. cria uma nova figura na lista
         """
         # cria a dialog de edição de figuras
         l_Dlg = dlgFig.dlgFig(self.__control, self , None)
@@ -788,13 +722,11 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # processa a dialog de edição de figuras (modal)
         if(l_Dlg.exec_ ()):
-
             # obtém os dados da edição
             self._oFig = l_Dlg.getData ()
 
             # figura existe ?
             if (( self._oFig is not None) and(self._dctFig is not None)):
-
                 # insere a figura na lista
                 self._dctFig.append(self._oFig)
 
@@ -805,10 +737,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 #self.updateFigWidget ()
     '''
     # ---------------------------------------------------------------------------------------------
-
     def getCurrentData(self, f_qtwTab, f_iCol):
         """
-        retorna os dados associados a linha selecionada.
+        retorna os dados associados a linha selecionada
         """
         # verifica condições de execução
         assert f_qtwTab is not None
@@ -823,7 +754,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe uma linha selecionada ?
         if l_oItem is not None:
-
             # obtém o dado associado a linha
             l_sData = l_oItem.data(QtCore.Qt.UserRole).toString()
             l_log.info("l_sData: " + str(l_sData))
@@ -832,10 +762,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         return l_sData
 
     # ---------------------------------------------------------------------------------------------
-
     def getCurrentItem(self, f_qtwTab, f_iCol):
         """
-        retorna o item associado a linha selecionada.
+        retorna o item associado a linha selecionada
         """
         # o item selecionado
         l_oItem = None
@@ -850,7 +779,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe uma linha selecionada ?
         if l_iRow > -1:
-
             # obtém o item associado
             l_oItem = f_qtwTab.item(l_iRow, f_iCol)
             l_log.info("l_oItem: " + str(l_oItem))
@@ -1148,11 +1076,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.removePst(self._oPst)
 
     # ---------------------------------------------------------------------------------------------
-
     def pstEdit(self):
         """
-        callback de btnEdit da dialog de edição.
-        edita uma pista da QTableWidget.
+        callback de btnEdit da dialog de edição. edita uma pista da QTableWidget
         """
         # verifica condições de execução
         assert self.qtwTabPst is not None
@@ -1163,14 +1089,12 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         l_log.info("self._oPst: " + str(self._oPst))
 
         if(self._oPst is not None):
-
             # cria a dialog de edição de pistas
             l_Dlg = dlgPstCAD.dlgPstCAD(self.__control, self._oPst, self)
             assert l_Dlg
 
             # processa a dialog de edição de pistas (modal)
             if(l_Dlg.exec_ ()):
-
                 # salva em disco as alterações na pista
                 #self._dctPst.save2Disk(self._dctPst._sPN)
                 l_log.info("Salvou pista em disco: " + self._dctPst._sPN)
@@ -1179,11 +1103,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.updatePstWidget ()
 
     # ---------------------------------------------------------------------------------------------
-
     def pstNew(self):
         """
-        callback de btnNew da dialog de edição.
-        cria uma nova pista na lista.
+        callback de btnNew da dialog de edição. cria uma nova pista na lista
         """
         # cria a dialog de edição de pistas
         l_Dlg = dlgPstCAD.dlgPstCAD(self.__control, None, self)
@@ -1212,9 +1134,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
                 self.updatePstWidget ()
     '''
     # ---------------------------------------------------------------------------------------------
-
     def reject(self):
-
+        """
+        """
         self.__aer = None
 
         # faz o "reject"
@@ -1223,10 +1145,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.close()
     '''
     # ---------------------------------------------------------------------------------------------
-
     def removeFig(self, f_oFig):
         """
-        remove a figura selecionada.
+        remove a figura selecionada
 
         @param f_oFig: pointer para a figura a remover.
         """
@@ -1242,12 +1163,11 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._dctFig.remove(f_oFig)
 
     # ---------------------------------------------------------------------------------------------
-
     def removePNS(self, f_oPNS):
         """
         remove o pns selecionado.
 
-        @param f_oPNS: pointer para o pns a remover.
+        @param f_oPNS: pointer para o pns a remover
         """
         # verifica condições de execução
         assert f_oPNS is not None
@@ -1261,12 +1181,11 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._dctPNS.remove(f_oPNS)
 
     # ---------------------------------------------------------------------------------------------
-
     def removePst(self, f_oPst):
         """
         remove a pista selecionada.
 
-        @param f_oPst: pointer para a pista a remover.
+        @param f_oPst: pointer para a pista a remover
         """
         # verifica condições de execução
         assert f_oPst is not None
@@ -1280,10 +1199,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._dctPst.remove(f_oPst)
     '''
     # ---------------------------------------------------------------------------------------------
-
     def restore_settings(self):
         """
-        restaura as configurações salvas para esta janela.
+        restaura as configurações salvas para esta janela
         """
         # obtém os settings
         l_set = QtCore.QSettings("sophosoft", "dbedit")
@@ -1295,10 +1213,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         return True
     '''
     # ---------------------------------------------------------------------------------------------
-
     def selectCab(self):
         """
-        seleciona uma cabeceira a editar.
+        seleciona uma cabeceira a editar
         """
         # verifica condições de execução
         assert self._dctCab is not None
@@ -1313,10 +1230,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         #self.updateCabSel ()
 
     # ---------------------------------------------------------------------------------------------
-
     def selectFig(self):
         """
-        seleciona uma figura a editar.
+        seleciona uma figura a editar
         """
         # verifica condições de execução
         assert self._dctFig is not None
@@ -1337,10 +1253,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         #self.updateFigSel ()
 
     # ---------------------------------------------------------------------------------------------
-
     def selectPst(self):
         """
-        seleciona uma pista a editar.
+        seleciona uma pista a editar
         """
         # verifica condições de execução
         assert self._dctPst is not None
@@ -1355,10 +1270,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         #self.updatePstSel ()
 
     # ---------------------------------------------------------------------------------------------
-
     def selectPNS(self):
         """
-        seleciona um pns a editar.
+        seleciona um pns a editar
         """
         # verifica condições de execução
         assert self._dctPNS is not None
@@ -1381,10 +1295,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         #self.updatePNSSel ()
 
     # ---------------------------------------------------------------------------------------------
-
     def updateCabList(self):
         """
-        atualiza na tela os dados da lista de cabeceiras.
+        atualiza na tela os dados da lista de cabeceiras
         """
         # verifica condições de execução
         assert self._dctCab is not None
@@ -1397,10 +1310,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._oCab = self.getCurrentSel(self._dctCab, self.qtwTabCab)
 
     # ---------------------------------------------------------------------------------------------
-
     def updateCabWidget(self):
         """
-        atualiza na tela os dados da lista de cabeceiras.
+        atualiza na tela os dados da lista de cabeceiras
         """
         # linha 0 (objeto cabeceira)
         l_oC0 = None
@@ -1433,7 +1345,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # percorre a lista de cabeceiras
         for l_iNdx, l_oCab in enumerate(self._dctCab):
-
             # salva uma referência para a cabeceira se for a primeira linha da lista
             l_oC0 = l_oCab if(0 == l_iNdx) else None
 
@@ -1445,7 +1356,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
             # a cabeceira selecionada é a atual ?
             if (( self._oCab is not None) and(id(self._oCab) == id(l_oCab))):
-
                 # marca como selecionado
                 l_oSItem = l_oItem
 
@@ -1456,7 +1366,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe uma cabeceira selecionada ?
         if(l_oSItem is not None):
-
             # flag selecionado
             l_oSItem.setSelected(True)
 
@@ -1468,7 +1377,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # senão, não existe uma cabeceira selecionada
         else:
-
             # seleciona a primeira cabeceira
             self.qtwTabCab.selectRow(0)
 
@@ -1482,10 +1390,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.qtwTabCab.setSortingEnabled(True)
 
     # ---------------------------------------------------------------------------------------------
-
     def updateFigList(self):
         """
-        atualiza na tela os dados da lista de figuras.
+        atualiza na tela os dados da lista de figuras
         """
         # verifica condições de execução
         assert self._dctFig is not None)
@@ -1498,10 +1405,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._oFig = self.getCurrentSel(self._dctFig, self.qtwTabFig)
 
     # ---------------------------------------------------------------------------------------------
-
     def updateFigWidget(self):
         """
-        atualiza na tela a QTableWidget de figuras.
+        atualiza na tela a QTableWidget de figuras
         """
         # linha 0 (objeto figura)
         l_oF0 = None
@@ -1538,7 +1444,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # percorre a lista de figuras
         for l_iNdx, l_oFig in enumerate(self._dctFig):
-
             # salva uma referência para a figuras se for a primeira linha da lista
             l_oF0 = l_oFig if(0 == l_iNdx) else None
 
@@ -1555,7 +1460,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
             # a figura atual é a selecionada ?
             if (( self._oFig is not None) and(id(self._oFig) == id(l_oFig))):
-
                 # marca como selecionada
                 l_oSItem = l_oItem
 
@@ -1567,7 +1471,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe uma figura selecionada ?
         if(l_oSItem is not None):
-
             # flag selecionado
             l_oSItem.setSelected(True)
 
@@ -1579,7 +1482,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # senão, não existe uma figura selecionada
         else:
-
             # seleciona a primeira figura
             self.qtwTabFig.selectRow(0)
 
@@ -1593,7 +1495,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.qtwTabFig.setSortingEnabled(True)
 
     # ---------------------------------------------------------------------------------------------
-
     def updatePNSList(self):
         """
         atualiza na tela os dados da lista de pns.
@@ -1609,12 +1510,10 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._oPNS = self.getCurrentSel(self._dctPNS, self.qtwTabPNS)
 
     # ---------------------------------------------------------------------------------------------
-
     def updatePNSWidget(self):
         """
-        atualiza na tela a QTableWidget de pns.
+        atualiza na tela a QTableWidget de pns
         """
-
         # linha 0 (objeto pns)
         l_oP0 = None
 
@@ -1646,7 +1545,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # percorre a lista de pns
         for l_iNdx, l_oPNS in self._dctPNS.iteritems ():
-
             # salva uma referência para o PNS se for a primeira linha da lista
             l_oP0 = l_oPNS if(0 == l_iNdx) else None
 
@@ -1659,7 +1557,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
             # o pns atual é o selecionado ?
             if (( self._oPNS is not None) and(id(self._oPNS) == id(l_oPNS))):
-
                 # marca como selecionado
                 l_oSItem = l_oItem
 
@@ -1683,7 +1580,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # existe um ponto selecionado ?
         if(l_oSItem is not None):
-
             # flag selecionado
             l_oSItem.setSelected(True)
 
@@ -1695,7 +1591,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # senão, não existe um ponto selecionado
         else:
-
             # seleciona o primeira ponto
             self.qtwTabPNS.selectRow(0)
 
@@ -1709,10 +1604,9 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self.qtwTabPNS.setSortingEnabled(True)
 
     # ---------------------------------------------------------------------------------------------
-
     def updatePstList(self):
         """
-        atualiza na tela os dados da lista de pistas.
+        atualiza na tela os dados da lista de pistas
         """
         # verifica condições de execução
         assert self._dctPst is not None)
@@ -1725,13 +1619,10 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
         self._oPst = self.getCurrentSel(self._dctPst, self.qtwTabPst)
 
     # ---------------------------------------------------------------------------------------------
-
     def updatePstWidget(self):
-
         """
-        atualiza na tela a QTableWidget de pistas.
+        atualiza na tela a QTableWidget de pistas
         """
-
         # linha 0 (objeto pista)
         l_oP0 = None
 
@@ -1763,7 +1654,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # percorre a lista de pistas
         for l_iNdx, l_oPst in enumerate(self._dctPst):
-
             # salva uma referência para a pista se for a primeira linha da lista
             l_oP0 = l_oPst if(0 == l_iNdx) else None
 
@@ -1775,13 +1665,11 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
             # o pista atual é a selecionada ?
             if (( self._oPst is not None) and(id(self._oPst) == id(l_oPst))):
-
                 # marca como selecionado
                 l_oSItem = l_oItem
 
         # existe uma pista selecionada ?
         if(l_oSItem is not None):
-
             # flag selecionado
             l_oSItem.setSelected(True)
 
@@ -1793,7 +1681,6 @@ class CDlgAerDataNEW(QtGui.QDialog, dlgdata.Ui_DlgAerDataNEW):
 
         # senão, não existe uma pista selecionada
         else:
-
             # seleciona a primeira pista
             self.qtwTabPst.selectRow(0)
 

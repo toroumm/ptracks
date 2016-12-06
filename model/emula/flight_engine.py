@@ -41,8 +41,7 @@ import time
 import libs.coords.coord_defs as cdefs
 
 # model
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
 
 import model.emula.cine.abort_prc as abnd
 import model.emula.cine.cine_data as cindata
@@ -55,6 +54,7 @@ import model.piloto.comando_piloto as cmdpil
 
 # control
 import control.control_debug as dbg
+import control.common.glb_defs as gdefs
 
 # < class CFlightEngine >--------------------------------------------------------------------------
 
@@ -311,15 +311,11 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # dbg.M_DBG.debug("__cmd_pil_decolagem:comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o primeiro parâmetro (aeródromo)
         lf_aer = l_cmd_pil.f_param_1
-        # dbg.M_DBG.debug("__cmd_pil_decolagem:lf_aer:[{}]".format(lf_aer))
 
         # obtém o segundo parâmetro (pista)
         lf_pst = l_cmd_pil.f_param_2
-        # dbg.M_DBG.debug("__cmd_pil_decolagem:lf_pst:[{}]".format(lf_pst))
 
         # aeródromo e pista da decolagem
         f_atv.ptr_atv_aer, f_atv.ptr_atv_pst = self.__model.airspace.get_aer_pst(lf_aer, lf_pst)
@@ -348,15 +344,12 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # dbg.M_DBG.debug("__cmd_pil_dir_fixo:comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o dicionário de fixos
         ldct_fix = self.__cine_voo.dct_fix
         assert ldct_fix is not None
 
         # obtém fixo a bloquear
         f_atv.ptr_atv_fix_prc = ldct_fix.get(l_cmd_pil.f_param_1, None)
-        # dbg.M_DBG.debug("__cmd_pil_dir_fixo:ptr_atv_fix_prc:[{}/{}]".format(f_atv.ptr_atv_fix_prc.i_fix_id, f_atv.ptr_atv_fix_prc.s_fix_desc))
 
         # status da interceptação ao fixo
         self.__cine_data.v_interceptou_fixo = False
@@ -385,16 +378,11 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # dbg.M_DBG.debug("__cmd_pil_espera:comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o primeiro parâmetro (número da espera)
         lf_param_1 = int(l_cmd_pil.f_param_1)
-        # dbg.M_DBG.debug("__cmd_pil_espera:lf_param_1:[{}]".format(lf_param_1))
 
         # procedimento e função operacional
         f_atv.ptr_trf_prc, f_atv.en_trf_fnc_ope = self.__model.airspace.get_ptr_prc("ESP{:03d}".format(lf_param_1))
-        # dbg.M_DBG.debug("__cmd_pil_espera:ptr_trf_prc...: " + str("ESP{:03d}".format(lf_param_1)))
-        # dbg.M_DBG.debug("__cmd_pil_espera:en_trf_fnc_ope: " + str(f_atv.en_trf_fnc_ope))
 
         # fase de verificar condições
         f_atv.en_atv_fase = ldefs.E_FASE_ZERO
@@ -417,15 +405,11 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # dbg.M_DBG.debug("__cmd_pil_pouso:comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o primeiro parâmetro (aeródromo)
         lf_aer = l_cmd_pil.f_param_1
-        # dbg.M_DBG.debug("__cmd_pil_pouso:lf_aer:[{}]".format(lf_aer))
 
         # obtém o segundo parâmetro (pista)
         lf_pst = l_cmd_pil.f_param_2
-        # dbg.M_DBG.debug("__cmd_pil_pouso:lf_pst:[{}]".format(lf_pst))
 
         # aeródromo e pista do pouso
         f_atv.ptr_atv_aer, f_atv.ptr_atv_pst = self.__model.airspace.get_aer_pst(lf_aer, lf_pst)
@@ -555,8 +539,6 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        dbg.M_DBG.debug("comando de pilotagem atual:[{}]".format(l_cmd_pil))
-
         # obtém o comando operacional
         len_cmd_ope = l_cmd_pil.en_cmd_ope
 
@@ -649,7 +631,6 @@ class CFlightEngine(threading.Thread):
 
         # coloca o comando na lista do tráfego
         self.__atv.lst_atv_cmd_pil.append(cmdpil.CComandoPil(fs_cmd))
-        dbg.M_DBG.debug("instruction:lst_atv_cmd_pil:[{}]".format(self.__atv.lst_atv_cmd_pil))
 
     # ---------------------------------------------------------------------------------------------
     def __move_no_solo(self, f_atv):
@@ -681,8 +662,6 @@ class CFlightEngine(threading.Thread):
         # clear to go
         assert self.__cine_data
         assert self.__cine_voo
-
-        # dbg.M_DBG.debug("__procedimentos:en_trf_fnc_ope:[{}]".format(ldefs.DCT_FNC_OPE[f_atv.en_trf_fnc_ope]))
 
         # aeronave ativa ?
         if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
@@ -801,7 +780,6 @@ class CFlightEngine(threading.Thread):
 
         # timestamp of the last turn
         self.__atv.l_atv_time_ant = self.__sim_time.obtem_hora_sim()
-        # dbg.M_DBG.debug("l_atv_time_ant:[{}]".format(self.__atv.l_atv_time_ant))
 
         # inicia o timer
         lf_call_time = time.time()

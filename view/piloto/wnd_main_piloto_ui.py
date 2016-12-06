@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './wnd_main_piloto.ui'
 #
-# Created: Mon Dec  5 11:01:01 2016
+# Created: Tue Dec  6 11:23:23 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,7 +57,7 @@ class Ui_wndMainPiloto(object):
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.lbl_icon = QtGui.QLabel(self.wid_head_lst)
         self.lbl_icon.setText(_fromUtf8(""))
-        self.lbl_icon.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/tracks/compile16.png")))
+        self.lbl_icon.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/compile16.png")))
         self.lbl_icon.setObjectName(_fromUtf8("lbl_icon"))
         self.horizontalLayout.addWidget(self.lbl_icon)
         self.lbl_title = QtGui.QLabel(self.wid_head_lst)
@@ -182,7 +182,7 @@ class Ui_wndMainPiloto(object):
         self.btn_send = QtGui.QPushButton(self.wid_cmd_line)
         self.btn_send.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/tracks/edit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/edit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_send.setIcon(icon)
         self.btn_send.setObjectName(_fromUtf8("btn_send"))
         self.horizontalLayout_4.addWidget(self.btn_send)
@@ -224,4 +224,4 @@ class Ui_wndMainPiloto(object):
         self.action_exit.setText(_translate("wndMainPiloto", "Sair", None))
         self.action_exit.setShortcut(_translate("wndMainPiloto", "Ctrl+X", None))
 
-import view.resources.resources_rc
+import resources_rc

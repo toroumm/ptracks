@@ -32,9 +32,6 @@ __date__ = "2015/12"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
 # PyQt library
 from PyQt4 import QtCore
 from PyQt4 import QtGui
@@ -42,12 +39,6 @@ from PyQt4 import QtGui
 # wizard
 import view.wizard.wizard_page_model as wpm
 import view.wizard.wpg_config_canal_ui as wcanal_ui
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CWPagConfigCanal >-----------------------------------------------------------------------
 
@@ -60,9 +51,6 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         """
         initializes the wizard
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # init super class
         super(CWPagConfigCanal, self).__init__(f_dlg_wizard)
 
@@ -84,17 +72,11 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         # configurações de conexões slot/signal
         self.setup_connects()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
     def is_complete(self):
         """
         verifica se a form está aceitável
         """
-        # logger
-        # M_LOG.info("is_complete:><")
-
         # retorna
         return not "" == self.qsbCanal.cleanText()
 
@@ -103,23 +85,17 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         """
         próxima página na seqüência do wizard
         """
-        # logger
-        # M_LOG.info("next_page:><")
-
         # salva os valores
         self.dct_config["glb.canal"] = str(self.qsbCanal.value())
 
         # retorna a próxima página
-        return self.dlg_wizard._pagTermina
+        return self.dlg_wizard.pag_termina
 
     # ---------------------------------------------------------------------------------------------
     def reset_page(self):
         """
         reseta os campos da form
         """
-        # logger
-        # M_LOG.info("reset_page:><")
-
         # reseta os campos da form
         self.qsbCanal.setValue(int(self.dct_config["glb.canal"]))
 
@@ -128,13 +104,7 @@ class CWPagConfigCanal(wpm.CWizardPageModel, wcanal_ui.Ui_WPagConfigCanal):
         """
         configura as conexões slot/signal
         """
-        # logger
-        # M_LOG.info("setup_connects:>>")
-
         self.connect(self.qsbCanal, QtCore.SIGNAL("valueChanged(QString)"),
                      self, QtCore.SIGNAL("completeStateChanged()"))
-
-        # logger
-        # M_LOG.info("setup_connects:<<")
 
 # < the end >--------------------------------------------------------------------------------------

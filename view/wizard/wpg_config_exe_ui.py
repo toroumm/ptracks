@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'wpg_config_exe.ui'
 #
-# Created: Tue Jan 26 00:48:04 2016
+# Created: Mon Dec  5 14:48:51 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -68,7 +68,7 @@ class Ui_WPagConfigExe(object):
         self.lblImg.setMinimumSize(QtCore.QSize(0, 0))
         self.lblImg.setMaximumSize(QtCore.QSize(240, 16777215))
         self.lblImg.setText(_fromUtf8(""))
-        self.lblImg.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/wpgConfigExe.jpg")))
+        self.lblImg.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/wizard/wpgConfigExe.jpg")))
         self.lblImg.setScaledContents(True)
         self.lblImg.setObjectName(_fromUtf8("lblImg"))
         self.gridLayout.addWidget(self.lblImg, 0, 0, 4, 1)
@@ -105,4 +105,4 @@ class Ui_WPagConfigExe(object):
         self.txtExeDesc.setText(_translate("WPagConfigExe", "exercício teste", None))
         self.txtTitle.setText(_translate("WPagConfigExe", "Escolha do Exercício", None))
 
-import qrc_resources_rc
+import resources_rc

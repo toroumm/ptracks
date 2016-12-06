@@ -42,9 +42,12 @@ from PyQt4 import QtCore
 import libs.coords.coord_conv as cconv
 import libs.coords.coord_defs as cdefs
 
-#import model.glb_data as gdata
-import model.piloto.defs_piloto as ldefs
+# model
+import model.common.defs_strips as ldefs
 import model.visil.aircraft_visil as anvmdl
+
+# control
+#import control.common.glb_data as gdata
 
 # < class CStripTableModel >-----------------------------------------------------------------------
 
@@ -95,7 +98,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         # display role ?
         if f_role == QtCore.Qt.DisplayRole:
-
             # icao id ?
             if l_column == ldefs.D_STP_ID:
                 # return
@@ -173,7 +175,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         ''' 
         # text color role e código transponder ?
         #elif (f_role == QtCore.Qt.TextColorRole) and (l_column == ldefs.D_STP_SSR):
-
             #if l_anv.i_ssr < 8:
                 #return QtCore.QVariant(QtGui.QColor(QtCore.Qt.black))
 
@@ -188,13 +189,11 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         # background color role ?
         # elif f_role == QtCore.Qt.BackgroundColorRole:
-
             # retorna a cor da linha
             # return QtCore.QVariant(l_anv.color)
 
         # tooltip role ?
         elif f_role == QtCore.Qt.ToolTipRole:
-
             l_msg = "<br>(minimum of 3 characters)"
 
             # icao id ?
@@ -357,7 +356,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         # for count rows...
         for l_row in xrange(f_count):
-
             # rows are prepended to any existing rows
             self.__lst_strips.insert(f_row + l_row, anvmdl.CAircraftVisil({}))
 
@@ -429,7 +427,6 @@ class CStripTableModel(QtCore.QAbstractTableModel):
         @return true if successful; otherwise returns false
         """
         if f_index.isValid() and (0 <= f_index.row() < len(self.__lst_strips)):
-
             # get anv/strip
             l_anv = self.__lst_strips[f_index.row()]
 

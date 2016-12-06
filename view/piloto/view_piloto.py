@@ -40,8 +40,8 @@ import sys
 from PyQt4 import QtCore
 
 # view
+import view.view_manager as view
 import view.common.color_manager as clrm
-import view.common.view_manager as view
 import view.piloto.wnd_main_piloto as wmain
 
 # control

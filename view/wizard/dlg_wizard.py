@@ -33,7 +33,6 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 
 # model
@@ -44,11 +43,6 @@ import view.wizard.wizard_model as model
 import view.wizard.wpg_config_canal as wcanal
 import view.wizard.wpg_config_exe as wexe
 import view.wizard.wpg_termina as wterm
-
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-# M_LOG_LVL = logging.DEBUG
 
 # < class CDlgWizard >-----------------------------------------------------------------------------
 
@@ -61,9 +55,6 @@ class CDlgWizard(model.CWizardModel):
         """
         initializes the wizard
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-                
         # inicia a super classe
         super(CDlgWizard, self).__init__(f_parent)
 
@@ -72,35 +63,29 @@ class CDlgWizard(model.CWizardModel):
         assert self.__dct_config
 
         # página de configuração do canal de comunicação
-        self._pagCanal = wcanal.CWPagConfigCanal(f_control, self)
-        assert self._pagCanal
+        self.__pag_canal = wcanal.CWPagConfigCanal(f_control, self)
+        assert self.__pag_canal
 
         # página de configuração de exercício
-        self._pagConfigExe = wexe.CWPagConfigExe(f_control, self)
-        assert self._pagConfigExe
+        self.__pag_config_exe = wexe.CWPagConfigExe(f_control, self)
+        assert self.__pag_config_exe
 
         # página de confirmação
-        self._pagTermina = wterm.CWPagTermina(f_control, self)
-        assert self._pagTermina
+        self.__pag_termina = wterm.CWPagTermina(f_control, self)
+        assert self.__pag_termina
 
         # primeira página (entry-point)
-        self.setFirstPage(self._pagConfigExe)
+        self.setFirstPage(self.__pag_config_exe)
 
         # geometria da janela
         self.setWindowTitle(self.tr(u"Gerador de Pistas [Configurador de Simulação]"))
         self.resize(660, 520)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-                
     # ---------------------------------------------------------------------------------------------
     def accept(self):
         """
         initializes the wizard
         """
-        # logger
-        # M_LOG.info("accept:>>")
-                
         # finaliza o sistema
         self.close()
 
@@ -119,7 +104,32 @@ class CDlgWizard(model.CWizardModel):
         # os.execlp("python", "python", "-OO", "newton.py", *l_args)
         os.execlp("sh", "sh", "newton", *l_args)
 
-        # logger
-        # M_LOG.info("accept:<<")
-                
+    # =============================================================================================
+    # data
+    # =============================================================================================
+            
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def pag_canal(self):
+        """
+        get page canal
+        """
+        return self.__pag_canal
+                                                        
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def pag_config_exe(self):
+        """
+        get page config exe
+        """
+        return self.__pag_config_exe
+                                                        
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def pag_termina(self):
+        """
+        get page termina
+        """
+        return self.__pag_termina
+                                                        
 # < the end >--------------------------------------------------------------------------------------

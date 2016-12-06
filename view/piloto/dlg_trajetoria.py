@@ -41,7 +41,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-from . import dlg_trajetoria_ui as dlg
+import view.piloto.dlg_trajetoria_ui as dlg
 
 # < class CDlgTrajetoria >-------------------------------------------------------------------------
 
@@ -50,7 +50,6 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
     mantém as informações sobre a dialog de trajetória
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, fsck_http, fdct_config, f_strip_cur, fdct_trj, f_parent=None):
         """
         @param fsck_http: socket de comunicação com o servidor
@@ -62,14 +61,11 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         # init super class
         super(CDlgTrajetoria, self).__init__(f_parent)
 
-        # salva o control manager localmente
-        # self.__control = f_control
-
-        # salva o socket de comunicação
+        # socket de comunicação
         self.__sck_http = fsck_http
         assert self.__sck_http
 
-        # salva o dicionário de configuração
+        # dicionário de configuração
         self.__dct_config = fdct_config
         assert self.__dct_config is not None
 
@@ -110,12 +106,6 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         # conecta spinBox
         self.cbx_trj.currentIndexChanged.connect(self.__on_cbx_currentIndexChanged)
 
-        # conecta botão Ok da edição de trajetoria
-        # self.bbx_trajetoria.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de trajetoria
-        # self.bbx_trajetoria.rejected.connect(self.__reject)
-
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
         """
@@ -137,10 +127,7 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         """
         carrega o dicionário de trajetórias
         """
-        # check input
-        # assert f_strip_cur
-
-        # check for requirements
+        # clear to go
         assert self.__sck_http is not None
         assert self.__dct_config is not None
 
@@ -151,7 +138,6 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         if not fdct_trj:
             # monta o request das trajetórias
             ls_req = "data/trj.json"
-            # dbg.M_DBG.debug("__load_trj:ls_req:[{}]".format(ls_req))
 
             # get server address
             l_srv = self.__dct_config.get("srv.addr", None)
@@ -159,12 +145,10 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
             if l_srv is not None:
                 # obtém os dados de trajetórias do servidor
                 l_data = self.__sck_http.get_data(l_srv, ls_req)
-                # dbg.M_DBG.debug("__load_trj:l_data:[{}]".format(l_data))
 
                 if l_data is not None:
-                    # salva a trajetórias no dicionário
+                    # coloca a trajetórias no dicionário
                     ldct_ans = json.loads(l_data)
-                    # dbg.M_DBG.debug("__load_trj:dct_trj:[{}]".format(ldct_ans))
 
                 # senão, não achou no servidor...
                 else:
@@ -209,11 +193,8 @@ class CDlgTrajetoria(QtGui.QDialog, dlg.Ui_CDlgTrajetoria):
         """
         # para todas as trajetórias...
         for l_key, l_trj in self.__dct_trj.iteritems():
-            # dbg.M_DBG.debug("l_key:[{}]".format(l_key))
-            # dbg.M_DBG.debug("l_trj:[{}]".format(l_trj))
-
             # é a trajetória selecionada ?
-            if unicode(self.cbx_trj.currentText()) == unicode(l_trj):
+            if self.cbx_trj.currentText() == l_trj:
                 break
 
         # inicia o comando

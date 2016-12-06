@@ -32,17 +32,8 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
-# python library
-# import logging
-
 # model
 import model.newton.defs_newton as ldefs
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CFixModel >------------------------------------------------------------------------------
 
@@ -51,14 +42,10 @@ class CFixModel(object):
     mantém as informações específicas sobre fixo
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self):
         """
         constructor
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # flag ok (bool)
         self.__v_fix_ok = False
 
@@ -79,20 +66,13 @@ class CFixModel(object):
         # Z
         self.__f_fix_z = 0.
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def copy_fix(self, f_fix):
         """
         copy constructor. Copia para este fixo os dados de um outro fixo
 
         @param f_fix: fixo a ser copiado
         """
-        # logger
-        # M_LOG.info("copy_fix:>>")
-
         # check input
         assert f_fix
 
@@ -115,9 +95,6 @@ class CFixModel(object):
         # flag ok (bool)
         self.__v_fix_ok = f_fix.v_fix_ok
 
-        # logger
-        # M_LOG.info("copy_fix:<<")
-
     # =============================================================================================
     # data
     # =============================================================================================
@@ -128,17 +105,15 @@ class CFixModel(object):
         """
         get descrição
         """
-        return self.__s_fix_desc.decode("utf-8")
+        return self.__s_fix_desc
 
     @s_fix_desc.setter
     def s_fix_desc(self, f_val):
         """
         set descrição
         """
-        self.__s_fix_desc = f_val.encode("utf-8").strip()
+        self.__s_fix_desc = f_val.strip()
         
-        # u' '.join(f_val).encode("utf-8").strip()
-
     # ---------------------------------------------------------------------------------------------
     @property
     def v_fix_dme(self):
@@ -168,14 +143,14 @@ class CFixModel(object):
         """
         get indicativo
         """
-        return self.__s_fix_indc.decode("utf-8")
+        return self.__s_fix_indc
 
     @s_fix_indc.setter
     def s_fix_indc(self, f_val):
         """
         set indicativo
         """
-        self.__s_fix_indc = f_val.encode("utf-8").strip()
+        self.__s_fix_indc = f_val.strip()
 
     # ---------------------------------------------------------------------------------------------
     @property

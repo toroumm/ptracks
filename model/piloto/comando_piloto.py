@@ -35,7 +35,7 @@ __date__ = "2016/01"
 # model
 import model.newton.defs_newton as ldefs
 
-import model.stock.instruction as inst
+import model.common.instruction as inst
 
 # < class CComandoPil >----------------------------------------------------------------------------
 

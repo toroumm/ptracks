@@ -37,7 +37,6 @@ import logging
 import math
 
 # model
-import model.glb_defs as gdefs
 import model.newton.defs_newton as ldefs
 
 import model.emula.cine.calc_proa_demanda as cpd
@@ -45,11 +44,9 @@ import model.emula.cine.cine_calc as cincalc
 import model.emula.cine.cine_model as cinmodel
 import model.emula.cine.sentido_curva as scrv
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
+# control
+import control.control_debug as dbg
+import control.common.glb_defs as gdefs
 
 # < variáveis locais >-----------------------------------------------------------------------------
 
@@ -76,7 +73,7 @@ def prc_pouso(f_atv):
     assert f_atv
 
     # active flight ?
-    if (not f_atv.v_atv_ok) or (ldefs.E_ATIVA != f_atv.en_trf_est_atv):
+    if (ldefs.E_ATIVA != f_atv.en_trf_est_atv) or (not f_atv.v_atv_ok):
         # logger
         l_log = logging.getLogger("prc_pouso")
         l_log.setLevel(logging.ERROR)
@@ -134,29 +131,29 @@ def prc_pouso(f_atv):
     if ldefs.E_FASE_ZERO == f_atv.en_atv_fase:
         # velocidade de aproximação
         f_atv.f_atv_vel_dem = f_atv.ptr_trf_prf.f_prf_vel_apx
-        # M_LOG.debug("prc_pouso:f_atv.f_atv_vel_dem:[{}]".format(f_atv.f_atv_vel_dem))
+        # cdbg.M_DBG.debug("prc_pouso:f_atv.f_atv_vel_dem:[{}]".format(f_atv.f_atv_vel_dem))
 
         # estabiliza a altitude
         f_atv.f_atv_alt_dem = f_atv.f_trf_alt_atu
-        # M_LOG.debug("prc_pouso:f_atv.f_atv_alt_dem:[{}]".format(f_atv.f_atv_alt_dem))
+        # cdbg.M_DBG.debug("prc_pouso:f_atv.f_atv_alt_dem:[{}]".format(f_atv.f_atv_alt_dem))
 
         # calcula o raio de curvatura
         assert abs(f_atv.f_atv_raz_crv) > 0
-        # M_LOG.debug("prc_pouso:f_atv.f_atv_raz_crv:[{}]".format(f_atv.f_atv_raz_crv))
+        # cdbg.M_DBG.debug("prc_pouso:f_atv.f_atv_raz_crv:[{}]".format(f_atv.f_atv_raz_crv))
 
         glb_f_raio_curva = f_atv.f_trf_vel_atu / abs(math.radians(f_atv.f_atv_raz_crv))
-        # M_LOG.debug("prc_pouso:glb_f_raio_curva:[{}]".format(glb_f_raio_curva))
+        # cdbg.M_DBG.debug("prc_pouso:glb_f_raio_curva:[{}]".format(glb_f_raio_curva))
 
         # calcula o ponto de toque
         glb_f_dst_anv_ptq_x = l_pst.f_pst_x - f_atv.f_trf_x
-        # M_LOG.debug("prc_pouso:glb_f_dst_anv_ptq_x:[{}]".format(glb_f_dst_anv_ptq_x))
+        # cdbg.M_DBG.debug("prc_pouso:glb_f_dst_anv_ptq_x:[{}]".format(glb_f_dst_anv_ptq_x))
         glb_f_dst_anv_ptq_y = l_pst.f_pst_y - f_atv.f_trf_y
-        # M_LOG.debug("prc_pouso:glb_f_dst_anv_ptq_y:[{}]".format(glb_f_dst_anv_ptq_y))
+        # cdbg.M_DBG.debug("prc_pouso:glb_f_dst_anv_ptq_y:[{}]".format(glb_f_dst_anv_ptq_y))
 
         # posição da aeronave em relação a pista (dir/esq)
         # i_pst_rumo (mlabru)
         len_pos_anv = scrv.sent_crv(l_pst.f_pst_true, cpd.calc_proa_demanda(-glb_f_dst_anv_ptq_x, -glb_f_dst_anv_ptq_y))
-        # M_LOG.debug("prc_pouso:len_pos_anv:[{}]".format(len_pos_anv))
+        # cdbg.M_DBG.debug("prc_pouso:len_pos_anv:[{}]".format(len_pos_anv))
 
         # calcula ângulo formado pela aeronave e a pista (teta)
         # i_pst_rumo (mlabru)
@@ -165,21 +162,21 @@ def prc_pouso(f_atv):
         if glb_ui_ang_teta > 180.:
             glb_ui_ang_teta = 360. - glb_ui_ang_teta
 
-        # M_LOG.debug("prc_pouso:glb_ui_ang_teta:[{}]".format(glb_ui_ang_teta))
+        # cdbg.M_DBG.debug("prc_pouso:glb_ui_ang_teta:[{}]".format(glb_ui_ang_teta))
 
         # calcula distância da aeronave ao ponto (em linha reta)
         glb_f_dst_anv_ptq = math.sqrt((glb_f_dst_anv_ptq_x ** 2) + (glb_f_dst_anv_ptq_y ** 2))
-        # M_LOG.debug("prc_pouso:glb_f_dst_anv_ptq:[{}]".format(glb_f_dst_anv_ptq))
+        # cdbg.M_DBG.debug("prc_pouso:glb_f_dst_anv_ptq:[{}]".format(glb_f_dst_anv_ptq))
 
         # calcula distância do eixo da pista
         glb_f_dst_eixo = abs(glb_f_dst_anv_ptq * math.sin(math.radians(glb_ui_ang_teta)))
-        # M_LOG.debug("prc_pouso:glb_f_dst_eixo:[{}]".format(glb_f_dst_eixo))
+        # cdbg.M_DBG.debug("prc_pouso:glb_f_dst_eixo:[{}]".format(glb_f_dst_eixo))
 
         # calcula distância da rampa
         assert abs(math.tan(math.radians(ldefs.D_DST_RAMPA))) > 0
 
         glb_f_dst_rampa = (f_atv.f_trf_alt_atu - l_aer.f_aer_elev) / math.tan(math.radians(ldefs.D_DST_RAMPA))
-        # M_LOG.debug("prc_pouso:glb_f_dst_rampa:[{}]".format(glb_f_dst_rampa))
+        # cdbg.M_DBG.debug("prc_pouso:glb_f_dst_rampa:[{}]".format(glb_f_dst_rampa))
 
         # aeronave afastada mais de 2R do eixo da pista ?
         if glb_f_dst_eixo >= (2 * glb_f_raio_curva):

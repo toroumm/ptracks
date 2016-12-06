@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-wizard_model.
+wizard_model
+
 DOCUMENT ME!
 
 This program is free software: you can redistribute it and/or modify
@@ -32,44 +33,28 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import os
 import sys
 
 # PyQt library
 from PyQt4 import QtCore, QtGui
 
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-# M_LOG_LVL = logging.DEBUG
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
-
 # < class CWizardModel >---------------------------------------------------------------------------
-
 
 class CWizardModel(QtGui.QDialog):
 
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_parent=None):
         """
-        initializes the wizard.
+        initializes the wizard
 
         @param  f_parent: DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         # inicia a super classe
         super(CWizardModel, self).__init__(f_parent)
 
         # tem uma janela superior ?
         if f_parent is not None:
-
             # salva a parent window localmente
             self._wndParent = f_parent
 
@@ -105,33 +90,19 @@ class CWizardModel(QtGui.QDialog):
 
         self.setLayout(self._vblMain)
 
-        # logger
-        # M_LOG.info("<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def accept(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         # prossegue via "accept" default
         QtGui.QDialog.accept(self)
 
-        # logger
-        # M_LOG.info("<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def btnBackClicked(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         l_pagOld = self._aoHistory.pop()
         assert l_pagOld
 
@@ -139,18 +110,11 @@ class CWizardModel(QtGui.QDialog):
 
         self.switchPage(l_pagOld)
 
-        # logger
-        # M_LOG.info("<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def btnNextClicked(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         l_pagOld = self._aoHistory[-1]
         assert l_pagOld
 
@@ -163,18 +127,11 @@ class CWizardModel(QtGui.QDialog):
 
         self.switchPage(l_pagOld)
 
-        # logger
-        # M_LOG.info("<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def completeStateChanged(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         l_pagAtu = self._aoHistory[-1]
         assert l_pagAtu
 
@@ -184,52 +141,33 @@ class CWizardModel(QtGui.QDialog):
         else:
             self._btnNext.setEnabled(l_pagAtu.is_complete())
 
-        # logger
-        # M_LOG.info("<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def historyPages(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("><")
-
         # retorna o histórico de páginas
         return self._aoHistory
 
     # ---------------------------------------------------------------------------------------------
-
     def setFirstPage(self, f_pag):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         f_pag.reset_page()
 
         self._aoHistory.append(f_pag)
 
         self.switchPage(None)
 
-        # logger
-        # M_LOG.info("<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def switchPage(self, f_pagOld):
         """
         DOCUMENT ME!
 
         @param  f_pagOld : DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info(">>")
-
         if f_pagOld is not None:
-
             f_pagOld.hide()
 
             self._vblMain.removeWidget(f_pagOld)
@@ -249,18 +187,13 @@ class CWizardModel(QtGui.QDialog):
         self._btnBack.setEnabled(len(self._aoHistory) != 1)
 
         if l_pagNew.is_last_page():
-
             self._btnNext.setEnabled(False)
             self._btnTerm.setDefault(True)
 
         else:
-
             self._btnNext.setDefault(True)
             self._btnTerm.setEnabled(False)
 
         self.completeStateChanged()
-
-        # logger
-        # M_LOG.info("<<")
 
 # < the end >--------------------------------------------------------------------------------------

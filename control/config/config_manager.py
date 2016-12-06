@@ -46,10 +46,10 @@ import os
 import libs.coords.coord_defs as cdefs
 
 # model 
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
 
 # control
+import control.common.glb_defs as gdefs
 # import control.control_debug as dbg
 
 # < class CConfigManager >-------------------------------------------------------------------------

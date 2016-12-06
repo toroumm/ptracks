@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_trajetoria.ui'
 #
-# Created: Sun Dec  4 02:45:26 2016
+# Created: Tue Dec  6 11:23:23 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -54,7 +54,7 @@ class Ui_CDlgTrajetoria(object):
         QtCore.QMetaObject.connectSlotsByName(CDlgTrajetoria)
 
     def retranslateUi(self, CDlgTrajetoria):
-        CDlgTrajetoria.setWindowTitle(_translate("CDlgTrajetoria", "Direção", None))
+        CDlgTrajetoria.setWindowTitle(_translate("CDlgTrajetoria", "Trajetória", None))
         self.gbx_trajetoria.setTitle(_translate("CDlgTrajetoria", "Trajetórias", None))
         self.lbl_comando.setText(_translate("CDlgTrajetoria", "TRJ 1001", None))
 

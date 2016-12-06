@@ -21,7 +21,7 @@
   </fixo>
 
   <fixo nFix="ARX">
-    <descricao>ARAXA</descricao>
+    <descricao>ARAXÁ</descricao>
     <coord>
       <tipo>G</tipo>
       <cpoA>1941.340S</cpoA>
@@ -96,7 +96,7 @@
   </fixo>
 
   <fixo nFix="GGT">
-    <descricao>GUARATINGUETA</descricao>
+    <descricao>GUARATINGUETÁ</descricao>
     <tipo>N</tipo>
     <frequencia>275</frequencia>
     <coord>
@@ -170,7 +170,7 @@
   </fixo>
 
   <fixo nFix="LUZIANIA">
-    <descricao>LUZIANIA</descricao>
+    <descricao>LUZIÂNIA</descricao>
     <coord>
       <tipo>G</tipo>
       <cpoA>1615.650S</cpoA>
@@ -310,7 +310,7 @@
   </fixo>
 
   <fixo nFix="RDE">
-    <indicativo>RDE</indicativo>
+    <descricao>RDE</descricao>
     <coord>
       <tipo>G</tipo>
       <cpoA>2353.680S</cpoA>
@@ -474,7 +474,6 @@
 
   <fixo nFix="VUMEV">
     <descricao>VUMEV</descricao>
-    <indicativo>VUMEV</indicativo>
     <coord>
       <tipo>G</tipo>
       <cpoA>2253.210S</cpoA>

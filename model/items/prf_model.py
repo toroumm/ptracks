@@ -80,14 +80,14 @@ class CPrfModel(object):
         """
         get descrição
         """
-        return self.__s_prf_desc.strip().decode("utf-8")
+        return self.__s_prf_desc.strip()
 
     @s_prf_desc.setter
     def s_prf_desc(self, f_val):
         """
         set descrição
         """
-        self.__s_prf_desc = f_val.strip().encode("utf-8")
+        self.__s_prf_desc = f_val.strip()
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -95,14 +95,14 @@ class CPrfModel(object):
         """
         get ID
         """
-        return self.__s_prf_id.strip().decode("utf-8")
+        return self.__s_prf_id.strip()
 
     @s_prf_id.setter
     def s_prf_id(self, f_val):
         """
         set ID
         """
-        self.__s_prf_id = f_val.strip().upper().encode("utf-8")
+        self.__s_prf_id = f_val.strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     @property

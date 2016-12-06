@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'wpg_config_canal.ui'
 #
-# Created: Tue Jan 26 00:48:04 2016
+# Created: Mon Dec  5 14:48:51 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,7 +32,7 @@ class Ui_WPagConfigCanal(object):
         self.lblImg = QtGui.QLabel(WPagConfigCanal)
         self.lblImg.setMaximumSize(QtCore.QSize(240, 16777215))
         self.lblImg.setText(_fromUtf8(""))
-        self.lblImg.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/wpgCanal.png")))
+        self.lblImg.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/wizard/wpgCanal.png")))
         self.lblImg.setScaledContents(True)
         self.lblImg.setObjectName(_fromUtf8("lblImg"))
         self.gridLayout.addWidget(self.lblImg, 0, 0, 1, 1)
@@ -76,4 +76,4 @@ class Ui_WPagConfigCanal(object):
         self.lblCanal.setText(_translate("WPagConfigCanal", "Selecione o canal:", None))
         self.qsbCanal.setSpecialValueText(_translate("WPagConfigCanal", "indefinido", None))
 
-import qrc_resources_rc
+import resources_rc

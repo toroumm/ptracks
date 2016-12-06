@@ -39,8 +39,7 @@ import threading
 import time
 
 # model
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
 
 import model.emula.emula_model as model
 import model.emula.flight_engine as engine
@@ -53,6 +52,7 @@ import model.newton.defs_newton as ldefs
 
 # control
 import control.control_debug as dbg
+import control.common.glb_defs as gdefs
 
 # < class CEmulaNewton >---------------------------------------------------------------------------
 

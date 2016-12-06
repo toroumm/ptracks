@@ -40,11 +40,11 @@ import threading
 import time
 
 # model 
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
 
 # control
 # import control.control_debug as dbg
+import control.common.glb_defs as gdefs
 import control.events.events_basic as events
 
 # < class CSimTime >-------------------------------------------------------------------------------

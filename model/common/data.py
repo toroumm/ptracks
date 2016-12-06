@@ -40,12 +40,12 @@ import os
 
 # data
 M_DATA_PY = os.path.abspath(os.path.dirname(__file__))
-M_DATA_DIR = os.path.normpath(os.path.join(M_DATA_PY, ".."))
+M_DATA_DIR = os.path.normpath(os.path.join(M_DATA_PY, "../.."))
 
 # -------------------------------------------------------------------------------------------------
 def filepath(f_filename):
     """
-    determine the path to a file in the data directory.
+    determine the path to a file in the data directory
     """
     # return
     return os.path.join(M_DATA_DIR, f_filename)
@@ -53,7 +53,7 @@ def filepath(f_filename):
 # -------------------------------------------------------------------------------------------------
 def load(f_filename, f_mode="rb"):
     """
-    open a file in the data directory.
+    open a file in the data directory
     """
     # return
     return open(os.path.join(M_DATA_DIR, f_filename), f_mode)

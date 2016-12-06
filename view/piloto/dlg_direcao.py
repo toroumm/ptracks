@@ -106,12 +106,6 @@ class CDlgDirecao(QtGui.QDialog, dlg.Ui_CDlgDirecao):
         self.sbx_dir.valueChanged.connect(self.__on_sbx_valueChanged)
         self.sbx_raz.valueChanged.connect(self.__on_sbx_valueChanged)
 
-        # conecta botão Ok da edição de direção
-        # self.bbx_direcao.accepted.connect(self.__accept)
-
-        # conecta botão Cancela da edição de direção
-        # self.bbx_direcao.rejected.connect(self.__reject)
-
     # ---------------------------------------------------------------------------------------------
     def __config_texts(self):
         """

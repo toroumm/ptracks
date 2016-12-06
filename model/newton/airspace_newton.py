@@ -44,7 +44,7 @@ import os
 import libs.coords.pos_lat_lng as pll
 
 # model
-import model.stock.airspace_basic as airs
+import model.common.airspace_basic as airs
 
 import model.items.apx_data as apxdata
 import model.items.esp_data as espdata
@@ -352,14 +352,14 @@ class CAirspaceNewton(airs.CAirspaceBasic):
     @property
     def dct_apx(self):
         """
-        get aproximação
+        get aproximações
         """
         return self.__dct_apx
 
     @dct_apx.setter
     def dct_apx(self, f_val):
         """
-        set aproximação
+        set aproximações
         """
         self.__dct_apx = f_val
 

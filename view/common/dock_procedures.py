@@ -52,7 +52,6 @@ import view.common.dock_procedures_ui as dckprc_ui
 # import control.events.events_config as evtcfg
 
 # resources
-import view.resources.icons_rc
 import view.resources.resources_rc
 
 # < class CDockProcedures >------------------------------------------------------------------------
@@ -227,16 +226,16 @@ class CDockProcedures(QtGui.QDockWidget, dckprc_ui.Ui_dck_procedures):
 
                 # seleciona o ícone pelo tipo de mapa
                 if l_key.startswith("MAP"):
-                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/Camera.png")))
+                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/images/maps.png")))
 
                 elif l_key.startswith("NDB"):
-                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/Transform.png")))
+                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/images/ndb.png")))
 
                 elif l_key.startswith("Navaids"):
-                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/Light.png")))
+                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/images/navaid.png")))
 
                 else:
-                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/Transform.png")))
+                    l_item.setIcon(0, QtGui.QIcon(QtGui.QPixmap(":/images/navaid.png")))
 
                 # expande a árvore
                 l_item.setExpanded(True)
@@ -249,7 +248,6 @@ class CDockProcedures(QtGui.QDockWidget, dckprc_ui.Ui_dck_procedures):
             '''
             # para todos os ítens na lista...
             for l_txt in f_dat:
-
                 # cria uma linha de mapa
                 l_item = QtGui.QTreeWidgetItem ( f_parent )
                 assert l_item
@@ -425,7 +423,7 @@ class CDockProcedures(QtGui.QDockWidget, dckprc_ui.Ui_dck_procedures):
             l_log.error(u"<E01: what else ?")
 
         # update radar scope
-        self.__slate_radar.repaint()
+        # self.__slate_radar.repaint()
 
     # ---------------------------------------------------------------------------------------------
     def tree_procs_changed(self, f_item, f_column):
@@ -456,7 +454,7 @@ class CDockProcedures(QtGui.QDockWidget, dckprc_ui.Ui_dck_procedures):
             l_log.error(u"<E01: what else ?")
 
         # update radar scope
-        self.__slate_radar.repaint()
+        # self.__slate_radar.repaint()
 
     # =============================================================================================
     # data

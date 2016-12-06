@@ -45,13 +45,8 @@ import model.items.fix_new as model
 import model.items.parser_utils as parser
 
 # control
+import control.control_debug as dbg
 import control.events.events_basic as events
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CFixData >-------------------------------------------------------------------------------
 
@@ -59,15 +54,14 @@ class CFixData(dict):
     """
     mantém as informações sobre o dicionário de fixos
 
-    <fixo nFix="1">
-        <descricao>BSCW1</descricao>
+    <fixo nFix="BSCW1">
         <indicativo>BSCW1</indicativo>
+        <descricao>BSCW1</descricao>
         <tipo>V</tipo>
         <coord> ... </coord>
     </fixo>
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_data=None):
         """
         cria umo dicionário de fixos
@@ -75,9 +69,6 @@ class CFixData(dict):
         @param f_model: event manager
         @param f_data: dados dos fixos
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # check input
         assert f_model
 
@@ -109,31 +100,20 @@ class CFixData(dict):
                 # carrega o dicionário de fixos de um arquivo em disco
                 self.load_file(f_data)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def load_file(self, fs_fix_pn):
         """
         carrega os dados do fixo de um arquivo em disco
 
         @param fs_fix_pn: pathname do arquivo em disco
         """
-        # logger
-        # M_LOG.info("load_file:>>")
-
         # check input
         assert fs_fix_pn
 
         # carrega o arquivo de fixo
         self.parse_fix_xml(fs_fix_pn + ".xml")
 
-        # logger
-        # M_LOG.info("load_file:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def make_fix(self, fdct_root, fdct_data):
         """
         carrega os dados de fixo a partir de um dicionário
@@ -142,9 +122,6 @@ class CFixData(dict):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("make_fix:>>")
-
         # check input
         assert fdct_root is not None
         assert fdct_data is not None
@@ -222,23 +199,16 @@ class CFixData(dict):
             # se não for, cai fora...
             return False, ls_msg
 
-        # logger
-        # M_LOG.info("make_fix:<<")
-
         # retorna Ok
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def parse_fix_xml(self, fs_fix_pn):
         """
         carrega o arquivo de fixo
 
         @param fs_fix_pn: pathname do arquivo em disco
         """
-        # logger
-        # M_LOG.info("parse_fix_xml:>>")
-
         # check input
         assert fs_fix_pn
 
@@ -340,11 +310,7 @@ class CFixData(dict):
             # carrega os dados de fixo a partir de um dicionário
             self.make_fix(ldct_root, ldct_data)
 
-        # logger
-        # M_LOG.info("parse_fix_xml:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def save2disk(self, fs_fix_pn=None):
         """
         salva os dados da fixo em um arquivo em disco
@@ -353,17 +319,11 @@ class CFixData(dict):
 
         @return flag e mensagem
         """
-        # logger
-        # M_LOG.info("save2disk:>>")
-
         # return code
         lv_ok = True
 
         # mensagem
         ls_msg = "save Ok"
-
-        # logger
-        # M_LOG.info("save2disk:<<")
 
         # retorna flag e mensagem
         return lv_ok, ls_msg

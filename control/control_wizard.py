@@ -37,7 +37,7 @@ __date__ = "2015/11"
 import model.model_wizard as model
 
 # view 
-import view.view_wizard as view
+import view.wizard.view_wizard as view
 
 # control 
 import control.control_manager as control

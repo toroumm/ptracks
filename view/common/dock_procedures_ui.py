@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dock_procedures.ui'
 #
-# Created: Mon Dec  5 01:01:32 2016
+# Created: Mon Dec  5 13:39:38 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,7 +46,7 @@ class Ui_dck_procedures(object):
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.lbl_icon = QtGui.QLabel(self.wid_tbx_head)
         self.lbl_icon.setText(_fromUtf8(""))
-        self.lbl_icon.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/tracks/compile16.png")))
+        self.lbl_icon.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/compile16.png")))
         self.lbl_icon.setObjectName(_fromUtf8("lbl_icon"))
         self.horizontalLayout.addWidget(self.lbl_icon)
         self.lbl_title = QtGui.QLabel(self.wid_tbx_head)
@@ -60,7 +60,7 @@ class Ui_dck_procedures(object):
         self.tbx_procedures = QtGui.QToolBox(self.dwc_procedures)
         self.tbx_procedures.setObjectName(_fromUtf8("tbx_procedures"))
         self.pag_procs = QtGui.QWidget()
-        self.pag_procs.setGeometry(QtCore.QRect(0, 0, 298, 296))
+        self.pag_procs.setGeometry(QtCore.QRect(0, 0, 98, 93))
         self.pag_procs.setObjectName(_fromUtf8("pag_procs"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.pag_procs)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
@@ -69,7 +69,7 @@ class Ui_dck_procedures(object):
         self.tree_procs.headerItem().setText(0, _fromUtf8("1"))
         self.verticalLayout_2.addWidget(self.tree_procs)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/tracks/execute.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/execute.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tbx_procedures.addItem(self.pag_procs, icon, _fromUtf8(""))
         self.pag_navaids = QtGui.QWidget()
         self.pag_navaids.setGeometry(QtCore.QRect(0, 0, 98, 93))
@@ -81,11 +81,11 @@ class Ui_dck_procedures(object):
         self.tree_navaids.headerItem().setText(0, _fromUtf8("1"))
         self.verticalLayout_3.addWidget(self.tree_navaids)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/tracks/run16.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/navaid.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tbx_procedures.addItem(self.pag_navaids, icon1, _fromUtf8(""))
         self.pag_runways = QtGui.QWidget()
         self.pag_runways.setEnabled(False)
-        self.pag_runways.setGeometry(QtCore.QRect(0, 0, 298, 296))
+        self.pag_runways.setGeometry(QtCore.QRect(0, 0, 298, 299))
         self.pag_runways.setObjectName(_fromUtf8("pag_runways"))
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.pag_runways)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
@@ -94,7 +94,7 @@ class Ui_dck_procedures(object):
         self.tree_runways.headerItem().setText(0, _fromUtf8("1"))
         self.verticalLayout_4.addWidget(self.tree_runways)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/visir/linepointer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/linepointer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tbx_procedures.addItem(self.pag_runways, icon2, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tbx_procedures)
         dck_procedures.setWidget(self.dwc_procedures)
@@ -109,4 +109,4 @@ class Ui_dck_procedures(object):
         self.tbx_procedures.setItemText(self.tbx_procedures.indexOf(self.pag_navaids), _translate("dck_procedures", "Navaids", None))
         self.tbx_procedures.setItemText(self.tbx_procedures.indexOf(self.pag_runways), _translate("dck_procedures", "Runways", None))
 
-import view.resources.resources_rc
+import resources_rc

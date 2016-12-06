@@ -44,8 +44,10 @@ import struct
 import time
 
 # model 
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
+
+# control
+import control.common.glb_defs as gdefs
 
 # < class CNetListener >---------------------------------------------------------------------------
 

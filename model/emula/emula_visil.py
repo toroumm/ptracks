@@ -39,20 +39,13 @@ import threading
 import time
 
 # model
-import model.glb_data as gdata
-import model.glb_defs as gdefs
-
+import model.common.glb_data as gdata
 import model.emula.emula_model as model
 import model.visil.aircraft_visil as canv
 
 # control
+import control.common.glb_defs as gdefs
 import control.events.events_flight as events
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CEmulaVisil >----------------------------------------------------------------------------
 
@@ -64,7 +57,6 @@ class CEmulaVisil (model.CEmulaModel):
     been generated it is handed by the flight engine
     """
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def __init__(self, f_model, f_control):
         """
         initializes the app and prepares everything
@@ -72,10 +64,7 @@ class CEmulaVisil (model.CEmulaModel):
         @param f_model: model manager
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parametros de entrada
+        # check input
         assert f_control
 
         # inicia a super classe
@@ -101,18 +90,11 @@ class CEmulaVisil (model.CEmulaModel):
         gdata.G_LCK_FLIGHT = threading.Lock()
         assert gdata.G_LCK_FLIGHT
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def run(self):
         """
         checks whether it's time to created another flight
         """
-        # logger
-        # M_LOG.info("run:>>")
-
         # check de colisão
         lf_tim_evnt = self.dct_config["tim.evnt"]
 
@@ -198,7 +180,7 @@ class CEmulaVisil (model.CEmulaModel):
                     # logger
                     l_log = logging.getLogger("CEmulaVisil::run")
                     l_log.setLevel(logging.WARNING)
-                    l_log.warning("<E01: Mensagem não reconhecida ou não tratada.")
+                    l_log.warning("<E01: mensagem não reconhecida ou não tratada.")
 
             # obtém o tempo final em segundos e calcula o tempo decorrido
             ll_dif = time.time() - ll_now
@@ -207,9 +189,6 @@ class CEmulaVisil (model.CEmulaModel):
             if lf_tim_evnt > ll_dif:
                 # permite o scheduler (1/10th)
                 time.sleep(lf_tim_evnt - ll_dif)
-
-        # logger
-        # M_LOG.info("run:<<")
 
     # =============================================================================================
     # data

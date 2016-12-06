@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_subida.ui'
 #
-# Created: Sun Dec  4 02:45:25 2016
+# Created: Tue Dec  6 11:23:23 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -54,7 +54,7 @@ class Ui_CDlgSubida(object):
         QtCore.QMetaObject.connectSlotsByName(CDlgSubida)
 
     def retranslateUi(self, CDlgSubida):
-        CDlgSubida.setWindowTitle(_translate("CDlgSubida", "Direção", None))
-        self.gbx_subida.setTitle(_translate("CDlgSubida", "Trajetórias", None))
-        self.lbl_comando.setText(_translate("CDlgSubida", "TRJ 1001", None))
+        CDlgSubida.setWindowTitle(_translate("CDlgSubida", "Subida", None))
+        self.gbx_subida.setTitle(_translate("CDlgSubida", "Subidas", None))
+        self.lbl_comando.setText(_translate("CDlgSubida", "SUB 234", None))
 

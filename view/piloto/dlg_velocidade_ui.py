@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_velocidade.ui'
 #
-# Created: Sun Dec  4 02:45:25 2016
+# Created: Tue Dec  6 11:23:23 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,7 +59,7 @@ class Ui_CDlgVelocidade(object):
         QtCore.QMetaObject.connectSlotsByName(CDlgVelocidade)
 
     def retranslateUi(self, CDlgVelocidade):
-        CDlgVelocidade.setWindowTitle(_translate("CDlgVelocidade", "Direção", None))
+        CDlgVelocidade.setWindowTitle(_translate("CDlgVelocidade", "Velocidade", None))
         self.gbx_velocidade.setTitle(_translate("CDlgVelocidade", "Velocidade", None))
         self.lbl_comando.setText(_translate("CDlgVelocidade", "VEL 212", None))
 

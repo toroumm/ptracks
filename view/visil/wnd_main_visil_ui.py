@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './wnd_main_visil.ui'
 #
-# Created: Mon Dec  5 01:01:32 2016
+# Created: Mon Dec  5 13:39:49 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,7 +72,7 @@ class Ui_wndMainVisil(object):
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.lbl_icon = QtGui.QLabel(self.wid_lv)
         self.lbl_icon.setText(_fromUtf8(""))
-        self.lbl_icon.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/tracks/compile16.png")))
+        self.lbl_icon.setPixmap(QtGui.QPixmap(_fromUtf8(":/images/compile16.png")))
         self.lbl_icon.setObjectName(_fromUtf8("lbl_icon"))
         self.horizontalLayout_3.addWidget(self.lbl_icon)
         self.lbl_title = QtGui.QLabel(self.wid_lv)
@@ -101,4 +101,4 @@ class Ui_wndMainVisil(object):
         self.action_exit.setText(_translate("wndMainVisil", "Sair", None))
         self.action_exit.setShortcut(_translate("wndMainVisil", "Ctrl+X", None))
 
-import view.resources.resources_rc
+import resources_rc

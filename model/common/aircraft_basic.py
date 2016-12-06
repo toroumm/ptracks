@@ -41,8 +41,8 @@ import time
 import libs.coords.pos_lat_lng as pll
 
 # model
-import model.tMath as tmath
-import model.stock.aircraft as sanv
+import model.common.tMath as tmath
+import model.common.aircraft as sanv
 
 # < class CAircraftBasic >-------------------------------------------------------------------------
 

@@ -39,7 +39,7 @@ import copy
 import libs.coords.pos_lat_lng as pll
 
 # model
-import model.stock.adiru as cadi
+import model.common.adiru as cadi
 
 # < class CAircraft >------------------------------------------------------------------------------
 

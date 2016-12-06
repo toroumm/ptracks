@@ -47,13 +47,12 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # model
-import model.glb_data as gdata
-import model.glb_defs as gdefs
+import model.common.glb_data as gdata
+import model.common.defs_strips as ldefs
+# import model.common.strip_model as mstp
+import model.common.strip_table_model as stm
 
 import model.visil.aircraft_visil as anv
-import model.piloto.defs_piloto as ldefs
-# import model.piloto.strip_model as mstp
-import model.piloto.strip_table_model as stm
 
 # view
 import view.common.dock_procedures as dckprc
@@ -64,6 +63,7 @@ import view.piloto.statusbar_piloto as statusbar
 import view.piloto.wnd_main_piloto_ui as wndmain_ui
 
 import view.piloto.dlg_altitude as dlgalt
+import view.piloto.dlg_aproximacao as dlgapx
 import view.piloto.dlg_decolagem as dlgdep
 import view.piloto.dlg_direcao as dlgdir
 import view.piloto.dlg_dir_fixo as dlgfix
@@ -75,12 +75,12 @@ import view.piloto.dlg_velocidade as dlgvel
 
 # control
 import control.control_debug as dbg
+import control.common.glb_defs as gdefs
 
 import control.events.events_basic as events
 import control.events.events_config as evtcfg
 
 # resources
-import view.resources.icons_rc
 import view.resources.resources_rc
 
 # < class CWndMainPiloto >---------------------------------------------------------------------------
@@ -112,6 +112,10 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # control manager
         self.__control = f_control
         assert self.__control
+
+        # dicionário de aproximações
+        self.__dct_apx = f_control.model.dct_apx
+        assert self.__dct_apx is not None
 
         # lista de pousos
         self.__lst_arr = f_control.model.lst_arr_dep
@@ -508,9 +512,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # get strip info
         # l_info = self.__stp_model.data(self.__stp_model.index(l_row, ldefs.D_FIX_INFO)).toString()
 
-        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_strip.s_info))
-        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_info))
-
         # return current strip
         return self.__strip_cur
 
@@ -528,23 +529,19 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # monta o request de status
         ls_req = "data/status.json?{}".format(f_strip.s_callsign)
-        # dbg.M_DBG.debug("__get_status:ls_req:[{}]".format(ls_req))
 
         # get server address
         l_srv = self.__dct_config.get("srv.addr", None)
-        dbg.M_DBG.debug("__get_status:self.__dct_config:[{}]".format(self.__dct_config))
 
         if l_srv is not None:
             # obtém os dados de status da aneronave
             l_status = self.__sck_http.get_data(l_srv, ls_req)
-            dbg.M_DBG.debug("__get_status:l_status:[{}]".format(l_status))
 
             if (l_status is not None) and (l_status != ""):
                 # obtém os dados de status
                 ldct_status = json.loads(l_status)
-                dbg.M_DBG.debug("__get_status:ldct_status:[{}]".format(ldct_status))
 
-                # salva os dados nos widgets
+                # coloca os dados nos widgets
                 self.__set_status(f_strip.s_callsign, ldct_status)
 
             # senão, não achou no servidor...
@@ -598,6 +595,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.btn_cmd_direcao.clicked.connect(self.__on_btn_cmd_direcao)
         self.btn_cmd_velocidade.clicked.connect(self.__on_btn_cmd_velocidade)
 
+        self.btn_prc_apx.clicked.connect(self.__on_btn_prc_apx)
         self.btn_prc_arr.clicked.connect(self.__on_btn_prc_arr)
         self.btn_prc_dep.clicked.connect(self.__on_btn_prc_dep)
         self.btn_prc_dir_fixo.clicked.connect(self.__on_btn_prc_dir_fixo)
@@ -651,7 +649,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         if self.__get_current_strip() is not None:
             # obtém os dados de performance
             ldct_prf = self.__dct_prf.get(self.__strip_cur.s_prf, None)
-            # dbg.M_DBG.debug("ldct_prf:[{}]".format(ldct_prf))
 
             # cria a dialog de altitude
             self.__dlg_altitude = dlgalt.CDlgAltitude(self.__strip_cur, ldct_prf, self)
@@ -661,14 +658,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if self.__dlg_altitude.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, self.__dlg_altitude.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(self.lbl_comando.text()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -686,14 +681,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if self.__dlg_direcao.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, self.__dlg_direcao.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(self.__dlg_direcao.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -705,7 +698,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         if self.__get_current_strip() is not None:
             # obtém os dados de performance
             ldat_prf = self.__dct_prf.get(self.__strip_cur.s_prf, None)
-            # dbg.M_DBG.debug("ldat_prf:[{}]".format(ldat_prf))
 
             # cria a dialog de velocidade
             self.__dlg_velocidade = dlgvel.CDlgVelocidade(self.__strip_cur, ldat_prf, self)
@@ -715,14 +707,35 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if self.__dlg_velocidade.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, self.__dlg_velocidade.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(self.__dlg_velocidade.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
+
+    # ---------------------------------------------------------------------------------------------
+    @QtCore.pyqtSlot()
+    def __on_btn_prc_apx(self):
+        """
+        callback do botão procedimento de aproximação da botoeira
+        """
+        # existe strip selecionada ?
+        if self.__get_current_strip() is not None:
+            # cria a dialog de aproximação
+            ldlg_aproximacao = dlgapx.CDlgAproximacao(self.__sck_http, self.__dct_config, self.__strip_cur, self.__dct_apx, self)
+            assert ldlg_aproximacao
+
+            # exibe a dialog de aproximação
+            if ldlg_aproximacao.exec_():
+                # coloca o comando no label
+                self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_aproximacao.get_data()))
+
+                # habilita o envio
+                self.btn_send.setEnabled(True)
+
+            # senão, <cancel>
+            else: pass
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -740,14 +753,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if ldlg_pouso.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_pouso.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(ldlg_pouso.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -765,14 +776,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if ldlg_decolagem.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_decolagem.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(ldlg_decolagem.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -782,7 +791,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
-            # cria a dialog de espera
+            # cria a dialog de direcionamento a fixo
             ldlg_dir_fixo = dlgfix.CDlgDirFixo(self.__sck_http, self.__dct_config, self.__strip_cur, self.__dct_fix, self)
             assert ldlg_dir_fixo
 
@@ -790,14 +799,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if ldlg_dir_fixo.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_dir_fixo.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(ldlg_dir_fixo.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -815,14 +822,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if ldlg_espera.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_espera.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(ldlg_espera.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -840,14 +845,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if ldlg_subida.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_subida.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(ldlg_subida.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -865,14 +868,12 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             if ldlg_trajetoria.exec_():
                 # coloca o comando no label
                 self.lbl_comando.setText("{}: {}".format(self.__strip_cur.s_callsign, ldlg_trajetoria.get_data()))
-                # dbg.M_DBG.debug("dialog data: " + str(ldlg_trajetoria.get_data()))
 
                 # habilita o envio
                 self.btn_send.setEnabled(True)
 
             # senão, <cancel>
             else: pass
-                # dbg.M_DBG.debug("dialog data: REJECTED !!!!")
 
     # ---------------------------------------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -882,13 +883,11 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         # obtém o comando do label
         ls_cmd = self.lbl_comando.text()
-        # dbg.M_DBG.debug("send command: " + str(self.lbl_comando.text()))
 
         # monta o buffer de envio
         ls_buff = str(gdefs.D_MSG_VRS) + gdefs.D_MSG_SEP + \
                   str(gdefs.D_MSG_PIL) + gdefs.D_MSG_SEP + \
                   str(ls_cmd)
-        dbg.M_DBG.debug("ls_buff: " + str(ls_buff))
 
         # envia o comando
         self.__sck_snd_cpil.send_data(ls_buff)
@@ -896,7 +895,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # coloca o comando no history
         self.qlw_history.insertItem(0, ls_cmd)
 
-        # deshabilita o envio
+        # desabilita o envio
         self.btn_send.setEnabled(False)
 
         # reset command
@@ -971,8 +970,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
             l_strip_old = self.__stp_model.lst_strips[f_index_old.row()]
             assert l_strip_old
 
-            # dbg.M_DBG.debug("old strip callsign: " + str(l_strip_old.s_callsign))
-
         # is index valid ?
         if f_index_new.isValid():
             # get new strip
@@ -993,8 +990,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
             # emit signal
             self.C_SIG_STRIP_SEL.emit(self.__strip_cur)
-
-        dbg.M_DBG.debug("strip: " + str(self.__strip_cur))
 
         # reconfig buttons
         self.__config_buttons()
@@ -1053,9 +1048,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
 
         # get strip info
         l_info = self.__stp_model.data(self.__stp_model.index(l_row, ldefs.D_FIX_INFO)).toString()
-
-        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_strip.s_info))
-        # dbg.M_DBG.debug("__on_strip_remove:l_strip.info: " + str(l_info))
 
         # ask user if it's ok
         if QtGui.QMessageBox.No == QtGui.QMessageBox.question(self, "Remove Strip",
@@ -1140,7 +1132,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         if f_evt.timerId() == self.__i_timer_fetch:
             # for all flights...
             for l_callsign, l_flight in self.__dct_flight.iteritems():
-                # dbg.M_DBG.debug("timerEvent:l_callsign: " + str(l_callsign))
 
                 # new flight ?
                 if l_flight not in self.__stp_model.lst_strips:
@@ -1193,8 +1184,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         ###
         # strips
-
-        # dbg.M_DBG.debug("e_strips:dct_flight: " + str(self.__dct_flight))
 
         # build the list widgets
         for i in xrange(10):

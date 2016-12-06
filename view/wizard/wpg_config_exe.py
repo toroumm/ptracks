@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-wpg_config_exe.
+wpg_config_exe
+
 DOCUMENT ME!
 
 This program is free software: you can redistribute it and/or modify
@@ -37,38 +38,28 @@ import os
 import sys
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
-# control / events
-import control.events.events_basic as events
-
-# view / wizard
+# view
 import view.wizard.wizard_page_model as wpm
 import view.wizard.wpg_config_exe_ui as wexe_ui
 
-# < module data >----------------------------------------------------------------------------------
+# control
+import control.events.events_basic as events
 
-# logging level
-M_LOG_LVL = logging.DEBUG
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(M_LOG_LVL)
-
-# < class CWPagConfigExe >---------------------------------------------------------------------------
-
+# < class CWPagConfigExe >-------------------------------------------------------------------------
 
 class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
     """
-    mantém as informações sobre a dialog de seleção do exercício.
+    mantém as informações sobre a dialog de seleção do exercício
     """
     # ---------------------------------------------------------------------------------------------
 
     def __init__(self, f_control, fdlg_wizard=None):
-
-        # logger
-        # M_LOG.info("__init__:>>")
-
+        """
+        constructor
+        """
         # inicia a super classe
         super(CWPagConfigExe, self).__init__(fdlg_wizard)
 
@@ -116,20 +107,13 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         # faz a carrga inicial do diretório de exercícios
         QtCore.QTimer.singleShot(0, self.load_initial)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def closeEvent(self, event):
         """
-        callback de tratamento do evento Close.
+        callback de tratamento do evento Close
 
-        @param  event : ...
+        @param event: ...
         """
-        # logger
-        # M_LOG.info("closeEvent:>>")
-
         # obtém os settings
         l_set = QtCore.QSettings("sophosoft", "merlin")
         assert l_set
@@ -138,46 +122,30 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         l_set.setValue("%s/Geometry" % (self.__txt_settings),
                        QtCore.QVariant(self.saveGeometry()))
 
-        # logger
-        # M_LOG.info("closeEvent:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def config_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
-        # logger
-        # M_LOG.info("config_connects:>>")
-
         # conecta click a seleção da linha
         self.connect(self.qtwExeTab,
                      QtCore.SIGNAL("itemSelectionChanged()"),
                      self.exeSelect)
 
-        # logger
-        # M_LOG.info("config_connects:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def exeSelect(self):
         """
-        seleciona um exercício a editar.
+        seleciona um exercício a editar
         """
-        # logger
-        # M_LOG.info("exeSelect:>>")
-
-        # verifica condições de execução
+        # clear to go
         assert self.__dct_exe is not None
         assert self.qtwExeTab is not None
 
         # obtém o número da linha selecionada da tabela
         l_iRow = self.qtwExeTab.currentRow()
-        # M_LOG.debug("l_iRow: " + str(l_iRow))
 
         # existe uma linha selecionada ?
         if l_iRow > -1:
-
             # obtém o exercício selecionado
             self.__exe = self.getCurrentSel(self.__dct_exe, self.qtwExeTab)
             assert self.__exe
@@ -191,19 +159,12 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
             # ok para prosseguir
             self.dlg_wizard.completeStateChanged()
 
-        # logger
-        # M_LOG.info("exeSelect:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def exeUpdateList(self):
         """
-        atualiza na tela os dados da lista de exercícios.
+        atualiza na tela os dados da lista de exercícios
         """
-        # logger
-        # M_LOG.info("exeUpdateList:>>")
-
-        # verifica condições de execução
+        # clear to go
         assert self.__dct_exe is not None
         assert self.qtwExeTab is not None
 
@@ -214,44 +175,28 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         self.__exe = self.getCurrentSel(self.__dct_exe, self.qtwExeTab)
         # assert(self.__exe)
 
-        # logger
-        # M_LOG.info("exeUpdateList:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def exeUpdateSel(self):
         """
-        atualiza na tela os dados do exercício selecionado.
+        atualiza na tela os dados do exercício selecionado
         """
-        # logger
-        # M_LOG.info("exeUpdateSel:>>")
-
         # exercício selecionado existe ?
         if self.__exe is not None:
-
             # identificação
             self.txtExeID.setText(self.__exe.s_exe_id)
             self.txtExeDesc.setText(self.__exe.s_exe_desc)
 
         # senão, o exercício não existe
         else:
-
             # posiciona cursor no início do formulário
             self.txtExeID.setFocus()
 
-        # logger
-        # M_LOG.info("exeUpdateSel:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def exeUpdateWidget(self):
         """
-        atualiza na tela os dados da QTableWidget de exercícios.
+        atualiza na tela os dados da QTableWidget de exercícios
         """
-        # logger
-        # M_LOG.info("exeUpdateWidget:>>")
-
-        # verifica condições de execução
+        # clear to go
         assert self.qtwExeTab is not None
         assert self.__dct_exe is not None
 
@@ -280,7 +225,6 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
 
         # para cada exercício no dicionário...
         for l_iNdx, l_sExeID in enumerate(sorted(self.__dct_exe.keys())):
-
             # indicativo do exercício
             l_twiExeID = QtGui.QTableWidgetItem(l_sExeID)
             l_twiExeID.setData(QtCore.Qt.UserRole, QtCore.QVariant(l_sExeID))
@@ -289,7 +233,6 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
 
             # é o exercício selecionado ?
             if (self.__exe is not None) and (self.__exe.s_exe_id == l_sExeID):
-
                 # salva pointer para o item selecionado
                 l_oSItem = l_twiExeID
 
@@ -304,7 +247,6 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
 
         # existe um exercício selecionado ?
         if self.__exe is not None:
-
             # seleciona o item
             self.qtwExeTab.setCurrentItem(l_oSItem)
 
@@ -316,7 +258,6 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
 
         # senão, não existe um exercício selecionado
         else:
-
             # seleciona a primeira linha
             self.qtwExeTab.selectRow(0)
 
@@ -330,143 +271,99 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         # habilita a ordenação
         self.qtwExeTab.setSortingEnabled(True)
 
-        # logger
-        # M_LOG.info("exeUpdateWidget:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def getCurrentData(self, f_qtwTab, f_iCol):
         """
         retorna os dados associados a linha selecionada.
         """
-        # logger
-        # M_LOG.info("getCurrentData:>>")
-
-        # verifica condições de execução
+        # clear to go
         assert f_qtwTab is not None
-        # M_LOG.debug("f_qtwTab: " + str(f_qtwTab))
 
         # o dado da linha selecionada
         l_sData = ""
 
         # obtém o item da linha selecionada
         l_oItem = self.getCurrentItem(f_qtwTab, f_iCol)
-        # M_LOG.debug("l_oItem: " + str(l_oItem))
 
         # existe uma linha selecionada ?
         if l_oItem is not None:
-
             # obtém o dado associado a linha
             l_sData = l_oItem.data(QtCore.Qt.UserRole).toString()
-            # M_LOG.debug("l_sData: " + str(l_sData))
-
-        # logger
-        # M_LOG.info("getCurrentData:<<")
 
         # retorna o dado associado a linha selecionada
         return l_sData
 
     # ---------------------------------------------------------------------------------------------
-
     def getCurrentItem(self, f_qtwTab, f_iCol):
         """
         retorna o item associado a linha selecionada.
         """
-        # logger
-        # M_LOG.info("getCurrentItem:>>")
-
-        # verifica condições de execução
+        # clear to go
         assert f_qtwTab is not None
-        # M_LOG.debug("f_qtwTab: " + str(f_qtwTab))
 
         # o item selecionado
         l_oItem = None
 
         # obtém o número da linha selecionada
         l_iRow = f_qtwTab.currentRow()
-        # M_LOG.debug("l_iRow: " + str(l_iRow))
 
         # existe uma linha selecionada ?
         if l_iRow > -1:
-
             # obtém o item associado
             l_oItem = f_qtwTab.item(l_iRow, f_iCol)
-            # M_LOG.debug("l_oItem: " + str(l_oItem))
             assert l_oItem
-
-        # logger
-        # M_LOG.info("getCurrentItem:<<")
 
         # retorna o item selecionado na lista
         return l_oItem
 
     # ---------------------------------------------------------------------------------------------
-
     def getCurrentSel(self, f_dct, f_qtw):
         """
-        retorna o elemento associado a linha selecionada na lista.
+        retorna o elemento associado a linha selecionada na lista
         """
-        # logger
-        # M_LOG.info("getCurrentSel:>>")
-
-        # verifica condições de execução
+        # clear to go
         assert f_dct is not None
         assert f_qtw is not None
-        # M_LOG.debug("f_dct: " + str(f_dct))
 
         # obtém o index da linha selecionada
         l_sID = self.getCurrentData(f_qtw, 0)
-        # M_LOG.debug("l_sID: " + str(l_sID))
 
         # indice válido ?
         if str(l_sID) in f_dct:
-
             # obtém o elemento selecionado se existir uma linha selecionada
             l_oSel = f_dct[str(l_sID)]
             assert l_oSel
-            # M_LOG.debug("l_oSel: " + str(l_oSel))
 
         # senão, índice inválido
         else:
-
             # não há elemento selecionado
             l_oSel = None
-
-        # logger
-        # M_LOG.info("getCurrentSel:<<")
 
         # retorna o elemento da linha selecionada na lista
         return l_oSel
 
     # ---------------------------------------------------------------------------------------------
-
     def is_complete(self):
-
-        # logger
-        # M_LOG.info("is_complete:><")
-
+        """
+        DOCUMENT ME!
+        """
         # retorna flag
         return self.dct_config["glb.exe"] is not None
 
     # ---------------------------------------------------------------------------------------------
-
     def load_initial(self):
         """
-        faz a carga inicial da tabela de exercícios.
+        faz a carga inicial da tabela de exercícios
         """
-        # logger
-        # M_LOG.info("load_initial:>>")
-
         # obtém o dicionário de exercícios
         self.__dct_exe = self.__model.dct_exe
 
         # o dicionário de exercícios não existe ?
         if self.__dct_exe is None:
-
             # logger
             l_log = logging.getLogger("CWPagConfigExe::load_initial")
-            l_log.setLevel(M_LOG_LVL)
-            l_log.critical(u"<E01: Tabela de exercícios não carregada !")
+            l_log.setLevel(logging.CRITICAL)
+            l_log.critical(u"<E01: tabela de exercícios não carregada !")
 
             # cria um evento de quit
             l_evtQuit = events.CQuit()
@@ -481,36 +378,24 @@ class CWPagConfigExe (wpm.CWizardPageModel, wexe_ui.Ui_WPagConfigExe):
         # atualiza na tela os dados da tabela de exercícios
         self.exeUpdateList()
 
-        # logger
-        # M_LOG.info("load_initial:<<")
-
     # ---------------------------------------------------------------------------------------------
-
     def next_page(self):
-
-        # logger
-        # M_LOG.info("next_page:><")
-
+        """
+        DOCUMENT ME!
+        """
         # retorna a próxima página
-        return self.dlg_wizard._pagCanal
+        return self.dlg_wizard.pag_canal
 
     # ---------------------------------------------------------------------------------------------
-
     def restore_settings(self):
         """
-        restaura as configurações salvas para esta janela.
+        restaura as configurações salvas para esta janela
         """
-        # logger
-        # M_LOG.info("restore_settings:>>")
-
         # obtém os settings
         l_set = QtCore.QSettings("sophosoft", "merlin")
         assert l_set
 
         # restaura geometria da janela
         self.restoreGeometry(l_set.value("%s/Geometry" % (self.__txt_settings)).toByteArray())
-
-        # logger
-        # M_LOG.info("restore_settings:<<")
 
 # < the end >--------------------------------------------------------------------------------------
