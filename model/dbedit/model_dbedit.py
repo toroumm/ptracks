@@ -37,6 +37,9 @@ import logging
 import os
 import sys
 
+# PyQt library
+from PyQt4 import QtCore
+
 # libs
 import libs.coords.coord_sys as coords
 
@@ -64,39 +67,40 @@ class CModelDBEdit(model.CModelManager):
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_control):
         """
-        constructor.
-        cria o model object do editor da base de dados.
+        constructor
 
-        @param f_control: control manager.
-        @param fs_dbname: pathname da base de dados.
+        @param f_control: control manager
         """
-        # verifica parâmetros de entrada
+        # check input
         assert f_control
 
         # init super class
         super(CModelDBEdit, self).__init__(f_control)
 
         # herdados de CModelManager
+        # self.app           # the application
         # self.config        # config manager
         # self.dct_config    # dicionário de configuração
         # self.control       # control manager
         # self.event         # event manager
 
+        # show message
+        self.control.splash.showMessage("creating coordinate system...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        
         # obtém as coordenadas de referência
-        lf_ref_lat = self.dct_config["map.lat"]
-        lf_ref_lng = self.dct_config["map.lng"]
-        lf_dcl_mag = self.dct_config["map.dcl"]
+        lf_ref_lat = float(self.dct_config["map.lat"])
+        lf_ref_lng = float(self.dct_config["map.lng"])
+        lf_dcl_mag = float(self.dct_config["map.dcl"])
                                 
         # coordinate system
         self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)
         assert self.__coords
                                                         
+        # show message
+        self.control.splash.showMessage("loading cenary...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+        
         # airspace
         self.__airspace = None
-
-        # obtém o event manager
-        # self.event = f_control.event
-        # assert self.event
 
         # exercício
         self.__exe = None
@@ -108,33 +112,13 @@ class CModelDBEdit(model.CModelManager):
         self.__dct_prf = {}
 
         # dicionário de sensores
-        self.__dct_sen = {}
+        # self.__dct_sen = {}
 
         # dicionário de tráfegos
         self.__dct_trf = {}
 
         # carrega as tabelas do sistema
-        self.__load_airs()
-
-        # carrega as tabelas do sistema
-        lv_ok = self.__load_tables()
-
-        # houve erro em alguma fase ?
-        if not lv_ok:
-            # logger
-            l_log = logging.getLogger("CModelDBEdit::__init__")
-            l_log.setLevel(logging.CRITICAL)
-            l_log.critical(u"<E01: Erro na carga da base de dados.")
-
-            # cria um evento de quit
-            l_evt = events.CQuit()
-            assert l_evt
-
-            # dissemina o evento
-            self._event.post(l_evt)
-
-            # termina a aplicação
-            sys.exit(1)
+        self.__load_cenario()
 
     # ---------------------------------------------------------------------------------------------
     def get_ptr_prc(self, fs_prc):
@@ -150,7 +134,6 @@ class CModelDBEdit(model.CModelManager):
 
         @return flag e mensagem
         """
-        '''
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
 
@@ -169,16 +152,54 @@ class CModelDBEdit(model.CModelManager):
         if not os.path.exists(ls_dir):
             # cria o diretório
             os.mkdir(ls_dir)
-        '''
-        # create airspace
+
+        # create airspace (aeródomos, fixos, pistas, pousos e decolagens)
         self.__airspace = airs.CAirspaceNewton(self)
         assert self.__airspace
 
-        # carrega os dicionários
+        # carrega os dicionários (aproximações, esperas, subidas e trajetórias)
         self.__airspace.load_dicts()
 
         # retorna ok
         return True, None
+
+    # ---------------------------------------------------------------------------------------------
+    def __load_cenario(self):
+        """
+        faz a carga das tabelas do sistema (airspace & landscape)
+
+        @return flag e mensagem
+        """
+        # carrega o landscape
+        # lv_ok, ls_msg = self.__load_land()
+                
+        # tudo Ok ?
+        # if lv_ok:
+
+        # carrega o airspace
+        lv_ok, ls_msg = self.__load_airs()
+
+        # ok ?
+        if lv_ok:
+            # carrega as tabelas do sistema
+            lv_ok, ls_msg = self.__load_tables()
+
+        # houve erro em alguma fase ?
+        if not lv_ok:
+            # logger
+            l_log = logging.getLogger("CModelDBEdit::__load_cenario")
+            l_log.setLevel(logging.CRITICAL)
+            l_log.critical(u"<E01: erro na carga da base de dados: {}".format(ls_msg))
+
+            # cria um evento de quit
+            l_evt = events.CQuit()
+            assert l_evt
+
+            # dissemina o evento
+            self._event.post(l_evt)
+
+            # termina a aplicação
+            sys.exit(1)
 
     # ---------------------------------------------------------------------------------------------
     def __load_tables(self):
@@ -214,33 +235,14 @@ class CModelDBEdit(model.CModelManager):
 
         # coloca a tabela de tráfegos no exercício
         self.__exe.dct_exe_trf = self.__dct_trf
-        '''
-        # carrega a tabela de aeródromos
-        lv_ok = self.load_aers()
 
-        if lv_ok:
-            # carrega a tabela de fixos
-            lv_ok = self.load_fixs()
-
-            if lv_ok:
-                # carrega a tabela de performances
-                lv_ok = self.load_prfs()
-
-                if lv_ok:
-                    # carrega a tabela de sensores
-                    lv_ok = self.load_rads()
-
-                    if lv_ok:
-                        # carrega a tabela de exercícios
-                        lv_ok = self.load_exes()
-        '''
         # retorna
-        return True  # lv_ok
+        return True, None
 
     # ---------------------------------------------------------------------------------------------
     def load_exes(self):
         """
-        faz a carga da tabela de exercícios.
+        faz a carga da tabela de exercícios
         """
         # obtém o diretório padrão de exercícios
         ls_dir = self.dct_config["dir.exe"]
@@ -366,6 +368,14 @@ class CModelDBEdit(model.CModelManager):
 
     # ---------------------------------------------------------------------------------------------
     @property
+    def dct_aer(self):
+        """
+        dicionário de aeródromos
+        """
+        return self.__airspace.dct_aer
+
+    # ---------------------------------------------------------------------------------------------
+    @property
     def airspace(self):
         """
         get airspace
@@ -410,6 +420,14 @@ class CModelDBEdit(model.CModelManager):
         dicionário de exercícios
         """
         return self.__dct_exe
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def dct_fix(self):
+        """
+        dicionário de fixos
+        """
+        return self.__airspace.dct_fix
 
     # ---------------------------------------------------------------------------------------------
     @property

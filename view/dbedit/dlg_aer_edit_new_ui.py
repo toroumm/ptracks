@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_aer_edit_new.ui'
 #
-# Created: Tue Jan 26 11:33:05 2016
+# Created: Wed Dec  7 12:55:05 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,18 +23,18 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_DlgAerEditNEW(object):
-    def setupUi(self, DlgAerEditNEW):
-        DlgAerEditNEW.setObjectName(_fromUtf8("DlgAerEditNEW"))
-        DlgAerEditNEW.setWindowModality(QtCore.Qt.WindowModal)
-        DlgAerEditNEW.resize(369, 450)
-        DlgAerEditNEW.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
-        DlgAerEditNEW.setSizeGripEnabled(True)
-        DlgAerEditNEW.setModal(True)
-        self.verticalLayout_7 = QtGui.QVBoxLayout(DlgAerEditNEW)
+class Ui_CDlgAerEditNEW(object):
+    def setupUi(self, CDlgAerEditNEW):
+        CDlgAerEditNEW.setObjectName(_fromUtf8("CDlgAerEditNEW"))
+        CDlgAerEditNEW.setWindowModality(QtCore.Qt.WindowModal)
+        CDlgAerEditNEW.resize(369, 450)
+        CDlgAerEditNEW.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
+        CDlgAerEditNEW.setSizeGripEnabled(True)
+        CDlgAerEditNEW.setModal(True)
+        self.verticalLayout_7 = QtGui.QVBoxLayout(CDlgAerEditNEW)
         self.verticalLayout_7.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
-        self.frm_id = QtGui.QFrame(DlgAerEditNEW)
+        self.frm_id = QtGui.QFrame(CDlgAerEditNEW)
         self.frm_id.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frm_id.setFrameShadow(QtGui.QFrame.Raised)
         self.frm_id.setLineWidth(1)
@@ -73,7 +73,7 @@ class Ui_DlgAerEditNEW(object):
         self.horizontalLayout_2.addWidget(self.qle_desc)
         self.verticalLayout_2.addWidget(self.wid_desc)
         self.verticalLayout_7.addWidget(self.frm_id)
-        self.gbx_dim = QtGui.QGroupBox(DlgAerEditNEW)
+        self.gbx_dim = QtGui.QGroupBox(CDlgAerEditNEW)
         self.gbx_dim.setObjectName(_fromUtf8("gbx_dim"))
         self.gridLayout = QtGui.QGridLayout(self.gbx_dim)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
@@ -100,7 +100,7 @@ class Ui_DlgAerEditNEW(object):
         self.qsb_larg.setObjectName(_fromUtf8("qsb_larg"))
         self.gridLayout.addWidget(self.qsb_larg, 3, 1, 1, 1)
         self.verticalLayout_7.addWidget(self.gbx_dim)
-        self.gbx_cntr = QtGui.QGroupBox(DlgAerEditNEW)
+        self.gbx_cntr = QtGui.QGroupBox(CDlgAerEditNEW)
         self.gbx_cntr.setObjectName(_fromUtf8("gbx_cntr"))
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.gbx_cntr)
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
@@ -126,7 +126,7 @@ class Ui_DlgAerEditNEW(object):
         self.qsb_centro_z.setObjectName(_fromUtf8("qsb_centro_z"))
         self.horizontalLayout_3.addWidget(self.qsb_centro_z)
         self.verticalLayout_7.addWidget(self.gbx_cntr)
-        self.gbx_geo = QtGui.QGroupBox(DlgAerEditNEW)
+        self.gbx_geo = QtGui.QGroupBox(CDlgAerEditNEW)
         self.gbx_geo.setObjectName(_fromUtf8("gbx_geo"))
         self.gridLayout_2 = QtGui.QGridLayout(self.gbx_geo)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
@@ -151,31 +151,31 @@ class Ui_DlgAerEditNEW(object):
         self.qsb_dif_decl.setObjectName(_fromUtf8("qsb_dif_decl"))
         self.gridLayout_2.addWidget(self.qsb_dif_decl, 1, 1, 1, 1)
         self.verticalLayout_7.addWidget(self.gbx_geo)
-        self.bbx_aer_edit = QtGui.QDialogButtonBox(DlgAerEditNEW)
+        self.bbx_aer_edit = QtGui.QDialogButtonBox(CDlgAerEditNEW)
         self.bbx_aer_edit.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.bbx_aer_edit.setObjectName(_fromUtf8("bbx_aer_edit"))
         self.verticalLayout_7.addWidget(self.bbx_aer_edit)
 
-        self.retranslateUi(DlgAerEditNEW)
-        QtCore.QMetaObject.connectSlotsByName(DlgAerEditNEW)
+        self.retranslateUi(CDlgAerEditNEW)
+        QtCore.QMetaObject.connectSlotsByName(CDlgAerEditNEW)
 
-    def retranslateUi(self, DlgAerEditNEW):
-        DlgAerEditNEW.setWindowTitle(_translate("DlgAerEditNEW", "Edição de Aeródromos", None))
-        self.lbl_ind.setText(_translate("DlgAerEditNEW", "Indicativo:", None))
-        self.lbl_desc.setText(_translate("DlgAerEditNEW", "Descrição:", None))
-        self.gbx_dim.setTitle(_translate("DlgAerEditNEW", "Dimensão", None))
-        self.lbl_comp.setText(_translate("DlgAerEditNEW", "Comprimento:", None))
-        self.lbl_larg.setText(_translate("DlgAerEditNEW", "Largura:", None))
-        self.qsb_comp.setSuffix(_translate("DlgAerEditNEW", " m", None))
-        self.qsb_larg.setSuffix(_translate("DlgAerEditNEW", " m", None))
-        self.gbx_cntr.setTitle(_translate("DlgAerEditNEW", "Centro", None))
-        self.qsb_centro_x.setSuffix(_translate("DlgAerEditNEW", " m", None))
-        self.qsb_centro_y.setSuffix(_translate("DlgAerEditNEW", " m", None))
-        self.qsb_centro_z.setSuffix(_translate("DlgAerEditNEW", " ft", None))
-        self.gbx_geo.setTitle(_translate("DlgAerEditNEW", "Geografia", None))
-        self.lbl_alt.setText(_translate("DlgAerEditNEW", "Altitude:", None))
-        self.qsb_alt.setSuffix(_translate("DlgAerEditNEW", " ft", None))
-        self.lbl_dif_decl.setText(_translate("DlgAerEditNEW", "Dif. Declinação:", None))
-        self.qsb_dif_decl.setSuffix(_translate("DlgAerEditNEW", " gr", None))
+    def retranslateUi(self, CDlgAerEditNEW):
+        CDlgAerEditNEW.setWindowTitle(_translate("CDlgAerEditNEW", "Edição de Aeródromos", None))
+        self.lbl_ind.setText(_translate("CDlgAerEditNEW", "Indicativo:", None))
+        self.lbl_desc.setText(_translate("CDlgAerEditNEW", "Descrição:", None))
+        self.gbx_dim.setTitle(_translate("CDlgAerEditNEW", "Dimensão", None))
+        self.lbl_comp.setText(_translate("CDlgAerEditNEW", "Comprimento:", None))
+        self.lbl_larg.setText(_translate("CDlgAerEditNEW", "Largura:", None))
+        self.qsb_comp.setSuffix(_translate("CDlgAerEditNEW", " m", None))
+        self.qsb_larg.setSuffix(_translate("CDlgAerEditNEW", " m", None))
+        self.gbx_cntr.setTitle(_translate("CDlgAerEditNEW", "Centro", None))
+        self.qsb_centro_x.setSuffix(_translate("CDlgAerEditNEW", " m", None))
+        self.qsb_centro_y.setSuffix(_translate("CDlgAerEditNEW", " m", None))
+        self.qsb_centro_z.setSuffix(_translate("CDlgAerEditNEW", " ft", None))
+        self.gbx_geo.setTitle(_translate("CDlgAerEditNEW", "Geografia", None))
+        self.lbl_alt.setText(_translate("CDlgAerEditNEW", "Altitude:", None))
+        self.qsb_alt.setSuffix(_translate("CDlgAerEditNEW", " ft", None))
+        self.lbl_dif_decl.setText(_translate("CDlgAerEditNEW", "Dif. Declinação:", None))
+        self.qsb_dif_decl.setSuffix(_translate("CDlgAerEditNEW", " gr", None))
 
-import qrc_resources_rc
+import resources_rc

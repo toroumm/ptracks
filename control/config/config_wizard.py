@@ -36,7 +36,7 @@ __date__ = "2015/11"
 import os
 
 # model 
-import model.data as data
+import model.common.data as data
 
 # control
 import control.config.config_manager as config
@@ -48,8 +48,7 @@ class CConfigWizard(config.CConfigManager):
     mantém as informações de configuração do wizard
     """
     # informações comuns de configuração
-    __CFG_WIZARD = {"glb.exe": None,      # exercício
-                   }  # __CFG_WIZARD
+    __CFG_WIZARD = {}  # __CFG_WIZARD
 
     # ---------------------------------------------------------------------------------------------
     def __init__(self, fs_config):

@@ -40,16 +40,16 @@ from PyQt4 import QtCore, QtGui
 import model.items.fix_new as clsFix
 
 # view
-import view.dbedit.dlg_fix_edit_new_ui as dlgFixEditNEW_ui
+import view.dbedit.dlg_fix_edit_new_ui as CDlgFixEditNEW_ui
 
 # < variáveis globais >--------------------------------------------------------------------------
 
 # logging level
 w_logLvl = logging.DEBUG
 
-# < class dlgFixEditNEW >------------------------------------------------------------------------
+# < class CDlgFixEditNEW >------------------------------------------------------------------------
 
-class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
+class CDlgFixEditNEW (QtGui.QDialog, CDlgFixEditNEW_ui.Ui_CDlgFixEditNEW):
     """
     mantém as informações sobre a dialog de edição de fixos.
     """
@@ -71,7 +71,7 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         assert (f_control)
 
         # init super class
-        super(dlgFixEditNEW, self).__init__(f_parent)
+        super(CDlgFixEditNEW, self).__init__(f_parent)
 
         # salva o control manager localmente
         self._control = f_control
@@ -324,7 +324,7 @@ class dlgFixEditNEW (QtGui.QDialog, dlgFixEditNEW_ui.Ui_dlgFixEditNEW):
         l_log.info("__init__:><")
 
         # configura títulos e mensagens
-        self._txtSettings = "dlgFixEditNEW"
+        self._txtSettings = "CDlgFixEditNEW"
 
     # -------------------------------------------------------------------------------------------
     def editingFinished(self):

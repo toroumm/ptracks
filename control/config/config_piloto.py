@@ -50,14 +50,7 @@ class CConfigPiloto(config.CConfigManager):
     mantém as informações de configuração
     """
     # informações comuns de configuração
-    __CFG_PILOTO = {"tab.aer": "tabAer",    # tabela de aeródromos
-                    "tab.apx": "tabApx",    # tabela de procedimentos de aproximação
-                    "tab.esp": "tabEsp",    # tabela de procedimentos de espera
-                    "tab.fix": "tabFix",    # tabela de fixos
-                    "tab.prf": "tabPrf",    # tabela de performances
-                    "tab.sub": "tabSub",    # tabela de procedimentos de subida
-                    "tab.trj": "tabTrj",    # tabela de procedimentos de trajetória
-                   }  # __CFG_PILOTO
+    __CFG_PILOTO = {}  # __CFG_PILOTO
 
     # ---------------------------------------------------------------------------------------------
     def __init__(self, fs_config):

@@ -134,11 +134,32 @@ D_NET_IFIN = None
 # interface de saída
 D_NET_IOUT = None
 
-# comunicação (rede)
-# D_SRV_PORT = 61000
-# D_GROUP = "224.0.0.250"
+# web server
+D_SRV_ADDR = "localhost"
+D_SRV_PORT = 61000
 
 # < tables >---------------------------------------------------------------------------------------
+
+# tabela de aeródromos
+D_TBL_AER = "tabAer"
+
+# tabela de procedimentos de aproximação
+D_TBL_APX = "tabApx"
+
+# tabela de procedimentos de espera
+D_TBL_ESP = "tabEsp"
+
+# tabela de fixos
+D_TBL_FIX = "tabFix"
+
+# tabela de performances
+D_TBL_PRF = "tabPrf"
+
+# tabela de procedimentos de subida
+D_TBL_SUB = "tabSub"
+
+# tabela de procedimentos de trajetória
+D_TBL_TRJ = "tabTrj"
 
 # colour table
 D_TBL_COLOUR = "tabColor.dat"

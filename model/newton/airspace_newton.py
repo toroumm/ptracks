@@ -74,7 +74,6 @@ class CAirspaceNewton(airs.CAirspaceBasic):
         # self.dct_aer         # dicionário de aeródromos
         # self.lst_arr_dep     # lista de pousos/decolagens
         # self.dct_fix         # dicionário de fixos
-        # self.dct_fix_indc    # dicionário de fixos por indicativo
 
         # procedimentos de aproximação
         self.__dct_apx = {}

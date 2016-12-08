@@ -44,6 +44,7 @@ import socket
 import model.common.data as data
 
 # control
+import control.common.glb_defs as gdefs
 import control.config.config_manager as config
 
 # < class CConfigNewton >--------------------------------------------------------------------------
@@ -53,19 +54,8 @@ class CConfigNewton(config.CConfigManager):
     mantém as informações de configuração
     """
     # informações comuns de configuração
-    __CFG_NEWTON = {"glb.canal": 3,     # canal
-                    "glb.exe": None,    # exercício
-
-                    "srv.addr": "localhost",    # server address
-                    "srv.port": 61000,          # server port (61244)
-
-                    "tab.aer": "tabAer",    # tabela de aeródromos
-                    "tab.apx": "tabApx",    # tabela de procedimentos de aproximação
-                    "tab.esp": "tabEsp",    # tabela de procedimentos de espera
-                    "tab.fix": "tabFix",    # tabela de fixos
-                    "tab.prf": "tabPrf",    # tabela de performances
-                    "tab.sub": "tabSub",    # tabela de procedimentos de subida
-                    "tab.trj": "tabTrj",    # tabela de procedimentos de trajetória
+    __CFG_NEWTON = {"srv.addr": gdefs.D_SRV_ADDR,    # server address
+                    "srv.port": gdefs.D_SRV_PORT     # server port (61000)
                    }  # __CFG_NEWTON
 
     # ---------------------------------------------------------------------------------------------
@@ -97,13 +87,13 @@ class CConfigNewton(config.CConfigManager):
         l_parser.add_argument("-c", "--canal",
                               dest="canal",
                               default=self.dct_config["glb.canal"],
-                              help=u"Canal de comunicação (default: {})".format(int(self.dct_config["glb.canal"])))
+                              help=u"canal de comunicação (default: {})".format(int(self.dct_config["glb.canal"])))
 
         # argumento: exercício
         l_parser.add_argument("-e", "--exe",
                               dest="exe",
                               default=self.dct_config["glb.exe"],
-                              help=u"Exercício (default: {})".format(self.dct_config["glb.exe"]))
+                              help=u"exercício (default: {})".format(self.dct_config["glb.exe"]))
 
         # faz o parser da linha de argumentos
         l_args = l_parser.parse_args()

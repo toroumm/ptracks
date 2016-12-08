@@ -125,8 +125,6 @@ class CControlManager(threading.Thread):
         self.__app.setOrganizationDomain("sophosoft.com.br")
         self.__app.setApplicationName(fs_name)
 
-        self.__app.setWindowIcon(QtGui.QIcon(":/images/logos/icon.png"))
-
         # load logo
         l_pix_logo = QtGui.QPixmap(":/images/logos/logo.png")
         assert l_pix_logo

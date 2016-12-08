@@ -36,7 +36,7 @@ __date__ = "2015/11"
 import os
 
 # model 
-import model.data as data
+import model.common.data as data
 
 # control
 import control.config.config_manager as config
@@ -48,16 +48,7 @@ class CConfigDBEdit(config.CConfigManager):
     mantém as informações de configuração do editor da base de dados
     """
     # informações comuns de configuração
-    __CFG_DBEDIT = {"glb.exe": None,    # exercício
-
-                    "tab.aer": "tabAer",    # tabela de aeródromos
-                    "tab.apx": "tabApx",    # tabela de aproximações
-                    "tab.esp": "tabEsp",    # tabela de procedimentos de espera
-                    "tab.fix": "tabFix",    # tabela de fixos
-                    "tab.prf": "tabPrf",    # tabela de performances
-                    "tab.sub": "tabSub",    # tabela de procedimentos de subida
-                    "tab.trj": "tabTrj",    # tabela de procedimentos de trajetória
-                   }  # __CFG_DBEDIT
+    __CFG_DBEDIT = {}  # __CFG_DBEDIT
 
     # ---------------------------------------------------------------------------------------------
     def __init__(self, fs_path):

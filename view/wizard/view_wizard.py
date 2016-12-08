@@ -42,7 +42,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # view
-import view.common.view_manager as view
+import view.view_manager as view
 import view.wizard.dlg_wizard as wzd
 
 # control

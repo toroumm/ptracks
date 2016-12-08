@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file './dlg_fix_edit_new.ui'
 #
-# Created: Tue Jan 26 11:33:06 2016
+# Created: Wed Dec  7 12:55:06 2016
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,17 +23,17 @@ except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class Ui_dlgFixEditNEW(object):
-    def setupUi(self, dlgFixEditNEW):
-        dlgFixEditNEW.setObjectName(_fromUtf8("dlgFixEditNEW"))
-        dlgFixEditNEW.resize(369, 388)
-        dlgFixEditNEW.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
-        dlgFixEditNEW.setSizeGripEnabled(True)
-        dlgFixEditNEW.setModal(True)
-        self.verticalLayout = QtGui.QVBoxLayout(dlgFixEditNEW)
+class Ui_CDlgFixEditNEW(object):
+    def setupUi(self, CDlgFixEditNEW):
+        CDlgFixEditNEW.setObjectName(_fromUtf8("CDlgFixEditNEW"))
+        CDlgFixEditNEW.resize(369, 396)
+        CDlgFixEditNEW.setLocale(QtCore.QLocale(QtCore.QLocale.Portuguese, QtCore.QLocale.Brazil))
+        CDlgFixEditNEW.setSizeGripEnabled(True)
+        CDlgFixEditNEW.setModal(True)
+        self.verticalLayout = QtGui.QVBoxLayout(CDlgFixEditNEW)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.frmGrpID = QtGui.QFrame(dlgFixEditNEW)
+        self.frmGrpID = QtGui.QFrame(CDlgFixEditNEW)
         self.frmGrpID.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frmGrpID.setFrameShadow(QtGui.QFrame.Raised)
         self.frmGrpID.setObjectName(_fromUtf8("frmGrpID"))
@@ -71,7 +71,7 @@ class Ui_dlgFixEditNEW(object):
         self.horizontalLayout_2.addItem(spacerItem)
         self.gridLayout.addWidget(self.widget, 1, 1, 1, 1)
         self.verticalLayout.addWidget(self.frmGrpID)
-        self.frame_3 = QtGui.QFrame(dlgFixEditNEW)
+        self.frame_3 = QtGui.QFrame(CDlgFixEditNEW)
         self.frame_3.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_3.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_3.setObjectName(_fromUtf8("frame_3"))
@@ -92,7 +92,7 @@ class Ui_dlgFixEditNEW(object):
         self.horizontalLayout.addWidget(self.ckxDME)
         self.horizontalLayout_8.addWidget(self.groupBox_2)
         self.verticalLayout.addWidget(self.frame_3)
-        self.frame_2 = QtGui.QFrame(dlgFixEditNEW)
+        self.frame_2 = QtGui.QFrame(CDlgFixEditNEW)
         self.frame_2.setFrameShape(QtGui.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
@@ -118,7 +118,7 @@ class Ui_dlgFixEditNEW(object):
         self.gridLayout_3.addItem(spacerItem1, 0, 2, 1, 1)
         self.horizontalLayout_5.addWidget(self.gbxCrd)
         self.verticalLayout.addWidget(self.frame_2)
-        self.bbxEditPrf = QtGui.QWidget(dlgFixEditNEW)
+        self.bbxEditPrf = QtGui.QWidget(CDlgFixEditNEW)
         self.bbxEditPrf.setObjectName(_fromUtf8("bbxEditPrf"))
         self.horizontalLayout_6 = QtGui.QHBoxLayout(self.bbxEditPrf)
         self.horizontalLayout_6.setMargin(0)
@@ -127,7 +127,7 @@ class Ui_dlgFixEditNEW(object):
         self.horizontalLayout_6.addItem(spacerItem2)
         self.btnCancel = QtGui.QPushButton(self.bbxEditPrf)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/images/dbedit/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnCancel.setIcon(icon)
         self.btnCancel.setObjectName(_fromUtf8("btnCancel"))
         self.horizontalLayout_6.addWidget(self.btnCancel)
@@ -143,30 +143,30 @@ class Ui_dlgFixEditNEW(object):
         self.lblLat.setBuddy(self.qleLat)
         self.lblLng.setBuddy(self.qleLng)
 
-        self.retranslateUi(dlgFixEditNEW)
-        QtCore.QMetaObject.connectSlotsByName(dlgFixEditNEW)
-        dlgFixEditNEW.setTabOrder(self.qleNome, self.qleIndc)
-        dlgFixEditNEW.setTabOrder(self.qleIndc, self.ckxVOR)
-        dlgFixEditNEW.setTabOrder(self.ckxVOR, self.ckxNDB)
-        dlgFixEditNEW.setTabOrder(self.ckxNDB, self.ckxDME)
-        dlgFixEditNEW.setTabOrder(self.ckxDME, self.qleLat)
-        dlgFixEditNEW.setTabOrder(self.qleLat, self.qleLng)
-        dlgFixEditNEW.setTabOrder(self.qleLng, self.btnCancel)
-        dlgFixEditNEW.setTabOrder(self.btnCancel, self.btnOk)
+        self.retranslateUi(CDlgFixEditNEW)
+        QtCore.QMetaObject.connectSlotsByName(CDlgFixEditNEW)
+        CDlgFixEditNEW.setTabOrder(self.qleNome, self.qleIndc)
+        CDlgFixEditNEW.setTabOrder(self.qleIndc, self.ckxVOR)
+        CDlgFixEditNEW.setTabOrder(self.ckxVOR, self.ckxNDB)
+        CDlgFixEditNEW.setTabOrder(self.ckxNDB, self.ckxDME)
+        CDlgFixEditNEW.setTabOrder(self.ckxDME, self.qleLat)
+        CDlgFixEditNEW.setTabOrder(self.qleLat, self.qleLng)
+        CDlgFixEditNEW.setTabOrder(self.qleLng, self.btnCancel)
+        CDlgFixEditNEW.setTabOrder(self.btnCancel, self.btnOk)
 
-    def retranslateUi(self, dlgFixEditNEW):
-        dlgFixEditNEW.setWindowTitle(_translate("dlgFixEditNEW", "TrackS - Edição de Fixos", None))
-        self.lblNome.setText(_translate("dlgFixEditNEW", "Nome:", None))
-        self.lblDesc.setText(_translate("dlgFixEditNEW", "Indicativo:", None))
-        self.qleIndc.setInputMask(_translate("dlgFixEditNEW", ">AAA; ", None))
-        self.groupBox_2.setTitle(_translate("dlgFixEditNEW", "Navaids", None))
-        self.ckxVOR.setText(_translate("dlgFixEditNEW", "VOR", None))
-        self.ckxNDB.setText(_translate("dlgFixEditNEW", "NDB", None))
-        self.ckxDME.setText(_translate("dlgFixEditNEW", "DME", None))
-        self.gbxCrd.setTitle(_translate("dlgFixEditNEW", "Posicão", None))
-        self.lblLat.setText(_translate("dlgFixEditNEW", "Latitude:", None))
-        self.lblLng.setText(_translate("dlgFixEditNEW", "Longitude:", None))
-        self.btnCancel.setText(_translate("dlgFixEditNEW", "Cancela", None))
-        self.btnOk.setText(_translate("dlgFixEditNEW", "Ok", None))
+    def retranslateUi(self, CDlgFixEditNEW):
+        CDlgFixEditNEW.setWindowTitle(_translate("CDlgFixEditNEW", "Edição de Fixos", None))
+        self.lblNome.setText(_translate("CDlgFixEditNEW", "Nome:", None))
+        self.lblDesc.setText(_translate("CDlgFixEditNEW", "Indicativo:", None))
+        self.qleIndc.setInputMask(_translate("CDlgFixEditNEW", ">AAA; ", None))
+        self.groupBox_2.setTitle(_translate("CDlgFixEditNEW", "Navaids", None))
+        self.ckxVOR.setText(_translate("CDlgFixEditNEW", "VOR", None))
+        self.ckxNDB.setText(_translate("CDlgFixEditNEW", "NDB", None))
+        self.ckxDME.setText(_translate("CDlgFixEditNEW", "DME", None))
+        self.gbxCrd.setTitle(_translate("CDlgFixEditNEW", "Posicão", None))
+        self.lblLat.setText(_translate("CDlgFixEditNEW", "Latitude:", None))
+        self.lblLng.setText(_translate("CDlgFixEditNEW", "Longitude:", None))
+        self.btnCancel.setText(_translate("CDlgFixEditNEW", "Cancela", None))
+        self.btnOk.setText(_translate("CDlgFixEditNEW", "Ok", None))
 
-import qrc_resources_rc
+import resources_rc

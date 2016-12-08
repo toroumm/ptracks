@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-CDlgFixDataNEW
+dlg_fix_data_new
 
 mantém as informações sobre a dialog de edição da tabela de fixos
 
@@ -30,38 +30,30 @@ __date__ = "2014/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
 import os
 import sys
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # model
-import model.items.fix_data as dctFix
+import model.newton.defs_newton as ldefs
+import model.items.fix_data as dctfix
 
 # view
-import view.dbedit.dlg_fix_edit_new as dlgFixEditNEW
-import view.dbedit.dlg_fix_data_new_ui as CDlgFixDataNEW_ui
+import view.dbedit.dlg_fix_edit_new as dlgfix
+import view.dbedit.dlg_fix_data_new_ui as dlgfix_ui
 
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
+# < class CDlgFixDataNEW >-------------------------------------------------------------------------
 
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
-
-# < class CDlgFixDataNEW >---------------------------------------------------------------------------
-
-class CDlgFixDataNEW (QtGui.QDialog, CDlgFixDataNEW_ui.Ui_CDlgFixDataNEW):
+class CDlgFixDataNEW (QtGui.QDialog, dlgfix_ui.Ui_CDlgFixDataNEW):
     """
     mantém as informações sobre a dialog de edição da tabela de fixos
     """
-    # galileu dbus service server
-    # cSRV_Path = "org.documentroot.Galileu"
-
     # ---------------------------------------------------------------------------------------------
     def __init__(self, f_control, f_parent=None):
         """
@@ -71,395 +63,308 @@ class CDlgFixDataNEW (QtGui.QDialog, CDlgFixDataNEW_ui.Ui_CDlgFixDataNEW):
         @param f_control: control manager do editor da base de dados
         @param f_parent: janela vinculada
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica parâmetros de entrada
-        assert (f_control)
+        # check input
+        assert f_control
 
         # init super class
         super(CDlgFixDataNEW, self).__init__(f_parent)
 
-        # salva o control manager localmente
-        self._control = f_control
+        # control manage
+        self.__control = f_control
 
-        # obtém o event manager
-        self._event = f_control.oEvent
-        assert (self._event)
+        # event manager
+        self.__event = f_control.event
+        assert self.__event
 
-        # obtém o gerente de configuração
-        self._config = f_control.oConfig
-        assert (self._config)
+        # gerente de configuração
+        self.__config = f_control.config
+        assert self.__config
 
-        # obtém o dicionário de configuração
-        self._dctConfig = self._config.dctConfig
-        assert (self._dctConfig)
+        # dicionário de configuração
+        self.__dct_config = self.__config.dct_config
+        assert self.__dct_config
 
-        # obtém o model manager
-        self._model = f_control.oModel
-        assert (self._model)
+        # model manager
+        self.__model = f_control.model
+        assert self.__model
 
-        # salva a parent window localmente
-        self._parent = f_parent
+        # parent window
+        self.__parent = f_parent
 
         # existe uma parent window ?
-        if (self._parent is not None):
+        if self.__parent is not None:
             # esconde a parent window
-            self._parent.setVisible(False)
+            self.__parent.setVisible(False)
 
-        # pointer para os itens correntes
-        self._oFix = None
+        # pointer para o item corrente
+        self.__fix = None
 
-        # pointer para os dicionários a editar
-        self._dctFix = None
+        # pointer para o dicionário a editar
+        self.__dct_fix = None
 
         # monta a dialog
         self.setupUi(self)
 
         # configurações de conexões slot/signal
-        self.configConnects()
+        self.__config_connects()
 
         # configurações de títulos e mensagens da janela de edição
-        self.configTexts()
+        self.__config_texts()
 
         # restaura as configurações da janela de edição
-        self.restoreSettings()
+        self.__restore_settings()
 
         # configura título da dialog
-        self.setWindowTitle(u"TrackS [ Edição de Fixos ]")
+        self.setWindowTitle(u"Edição de Fixos")
 
         # faz a carrga inicial do diretório de fixos
-        QtCore.QTimer.singleShot(0, self.loadInitial)
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        QtCore.QTimer.singleShot(0, self.__load_initial)
 
     # ---------------------------------------------------------------------------------------------
     def accept(self):
         """
-        callback de btnOk da dialog de edição
-        faz o accept da dialog
+        callback de btnOk da dialog de edição. faz o accept da dialog
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # ok para continuar ?
-        if (self.okToContinue()):
+        if self.__ok2continue():
             # faz o "accept"
             QtGui.QDialog.accept(self)
 
             # fecha a janela de edição
             self.close()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    def closeEvent(self, event):
+    def closeEvent(self, f_evt):
         """
         callback de tratamento do evento Close
 
-        @param  event : ...
+        @param f_evt: evento
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # ok para continuar ?
-        if (self.okToContinue()):
+        if self.__ok2continue():
             # obtém os settings
             l_set = QtCore.QSettings()
-            assert (l_set)
+            assert l_set
 
             # salva geometria da janela
-            l_set.setValue("%s/Geometry" % (self._txtSettings),
-                           QtCore.QVariant(self.saveGeometry()))
+            l_set.setValue("%s/Geometry" % (self.__txt_settings), QtCore.QVariant(self.saveGeometry()))
 
             # existe a parent window ?
-            if (self._parent is not None):
+            if self.__parent is not None:
                 # exibe a parent window
-                self._parent.setVisible(True)
+                self.__parent.setVisible(True)
 
         # senão, ignora o request
         else:
             # ignora o evento
-            event.ignore()
-
-        # logger
-        # M_LOG.info("__init__:<<")
+            f_evt.ignore()
 
     # ---------------------------------------------------------------------------------------------
-    def configConnects(self):
+    def __config_connects(self):
         """
         configura as conexões slot/signal
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # fixo
 
         # conecta click a remoção de fixo
-        self.connect(self.btnDel,
-                     QtCore.SIGNAL("clicked()"), self.fixDel)
+        self.btn_del.clicked.connect(self.__fix_del)
         '''
         # conecta click a edição de fixo
-        self.connect ( self.btnEdit,
-                       QtCore.SIGNAL ( "clicked()" ), self.fixEdit )
+        self.btnEdit.clicked.connect(self.fixEdit)
         '''
         # conecta click a inclusão de fixo
-        self.connect(self.btnNew,
-                     QtCore.SIGNAL("clicked()"), self.fixNew)
+        self.btn_new.clicked.connect(self.__fix_new)
 
         # conecta click a seleção da linha
-        self.connect(self.qtwFixTab,
-                     QtCore.SIGNAL("itemSelectionChanged()"), self.fixSelect)
+        self.qtw_fixos.itemSelectionChanged.connect(self.__fix_select)
 
         # conecta botão Ok
-        self.connect(self.bbxFixTab,
-                     QtCore.SIGNAL("accepted()"), self.accept)
+        self.dbb_fixos.accepted.connect(self.accept)
 
         # conecta botão Cancela
-        self.connect(self.bbxFixTab,
-                     QtCore.SIGNAL("rejected()"), self.reject)
+        self.dbb_fixos.rejected.connect(self.reject)
 
         # configura botões
-        self.bbxFixTab.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancela")
-        self.bbxFixTab.button(QtGui.QDialogButtonBox.Ok).setFocus()
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.dbb_fixos.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancela")
+        self.dbb_fixos.button(QtGui.QDialogButtonBox.Ok).setFocus()
 
     # ---------------------------------------------------------------------------------------------
-    def configTexts(self):
+    def __config_texts(self):
         """
         configura títulos e mensagens
         """
-        # logger
-        # M_LOG.info("__init__:>>")
+        self.__txt_settings = "CDlgFixDataNEW"
 
-        self._txtSettings = "CDlgFixDataNEW"
+        # self.__txt_continue_tit = u"Alterações pendentes"
+        # self.__txt_continue_msg = u"Salva alterações pendentes ?"
 
-        # self._txtContinueTit = u"TrackS - Alterações pendentes"
-        # self._txtContinueMsg = u"Salva alterações pendentes ?"
-
-        self._txtDelFixTit = u"TrackS - Apaga fixo"
-        self._txtDelFixMsg = u"Apaga fixo {0} ?"
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.__txt_del_tit = u"Apaga fixo"
+        self.__txt_del_msg = u"Apaga fixo {0} ?"
 
     # ---------------------------------------------------------------------------------------------
-    def fixDel(self):
+    def __fix_del(self):
         """
-        callback de btnDel da dialog de edição
-        deleta um fixo da lista
+        callback de btnDel da dialog de edição. deleta um fixo da lista
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert self.qtwFixTab is not None
-        assert self._dctFix is not None
+        # clear to go
+        assert self.qtw_fixos is not None
+        assert self.__dct_fix is not None
 
         # obtém o fixo selecionado
-        self._oFix = self.getCurrentSel(self._dctFix, self.qtwFixTab)
+        self.__fix = self.__get_current_sel(self.__dct_fix, self.qtw_fixos)
 
-        if (self._oFix is not None):
+        if self.__fix is not None:
             # apaga o fixo atual ?
-            if (QtGui.QMessageBox.Yes == QtGui.QMessageBox.question(self, self._txtDelFixTit,
-                                             self._txtDelFixMsg.format(self._oFix.sFixID), 
-                                             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)):
+            if QtGui.QMessageBox.Yes == QtGui.QMessageBox.question(self, self.__txt_del_tit,
+                                            self.__txt_del_msg.format(self.__fix.s_fix_indc), 
+                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No):
 
                 # apaga o fixo
-                self.fixRemove(self._oFix)
+                self.__fix_remove(self.__fix)
 
-        # logger
-        # M_LOG.info("__init__:<<")
-    '''
     # ---------------------------------------------------------------------------------------------
+    '''
     def fixEdit ( self ):
         """
-        callback de btnEdit da dialog de edição.
-        edita um fixo da QTableWidget.
+        callback de btnEdit da dialog de edição. edita um fixo da QTableWidget
         """
-        # logger
-        # M_LOG.debug ( ">>" )
-
-        # verifica condições de execução
-        assert ( self.qtwFixTab is not None )
-        assert ( self._dctFix is not None )
+        # clear to go
+        assert self.qtw_fixos is not None
+        assert self.__dct_fix is not None
 
         # obtém o fixo selecionado
-        self._oFix = self.getCurrentSel ( self._dctFix, self.qtwFixTab )
+        self.__fix = self.__get_current_sel(self.__dct_fix, self.qtw_fixos)
 
-        if ( self._oFix is not None ):
-
+        if self.__fix is not None:
             # cria a dialog de edição de fixos
-            l_Dlg = dlgFixEditNEW.dlgFixEditNEW ( self._control, self._oFix, self )
-            assert ( l_Dlg )
+            l_dlg = CDlgFixEditNEW.CDlgFixEditNEW(self.__control, self.__fix, self)
+            assert l_dlg
 
             # processa a dialog de edição de fixos (modal)
-            if ( l_Dlg.exec_ ()):
-
+            if l_dlg.exec_():
                 # salva em disco as alterações no fixo
-                # self._oFix.save2Disk ( self._oFix._sPN )
+                # self.__fix.save2Disk(self.__fix._sPN)
 
                 # se ok, atualiza a QTableWidget de fixos
-                self.fixUpdateWidget ()
-
-        # logger
-        # M_LOG.debug ( "<<" )
+                self.__fix_update_widget()
     '''
     # ---------------------------------------------------------------------------------------------
-    def fixNew(self):
+    def __fix_new(self):
         """
-        callback de btnNew da dialog de edição
-        cria um novo fixo na lista
+        callback de btnNew da dialog de edição. cria um novo fixo na lista
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # cria a dialog de edição de fixos
-        l_Dlg = dlgFixEditNEW.dlgFixEditNEW(self._control, None, self)
-        assert (l_Dlg)
+        l_dlg = dlgfix.CDlgFixEditNEW(self.__control, None, self)
+        assert l_dlg
 
         # processa a dialog de edição de fixos (modal)
-        if (l_Dlg.exec_()):
+        if l_dlg.exec_():
             # obtém os dados da edição
-            self._oFix = l_Dlg.getData()
+            self.__fix = l_dlg.get_data()
 
             # fixo existente ?
-            if ((self._oFix is not None) and (self._dctFix is not None)):
+            if (self.__fix is not None) and (self.__dct_fix is not None):
                 # insere o fixo na lista
-                self._dctFix.append(self._oFix)
+                self.__dct_fix.append(self.__fix)
 
                 # salva o arquivo no disco
-                # self._oFix.save2Disk ( l_sPath )
+                # self.__fix.save2Disk(ls_path)
 
                 # se ok, atualiza a QTableWidget de fixos
-                self.fixUpdateWidget()
-
-        # logger
-        # M_LOG.info("__init__:<<")
+                self.__fix_update_widget()
 
     # ---------------------------------------------------------------------------------------------
-    def fixRemove(self, f_oFix):
+    def __fix_remove(self, fo_fix):
         """
         remove o fixo selecionado
 
-        @param f_oFix: pointer para o fixo a remover
+        @param fo_fix: pointer para o fixo a remover
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (f_oFix is not None)
-
-        # M_LOG.info("f_oFix: " + str(f_oFix))
+        # clear to go
+        assert fo_fix is not None
 
         # remove a linha da widget
-        self.qtwFixTab.removeRow(self.qtwFixTab.currentRow())
+        self.qtw_fixos.removeRow(self.qtw_fixos.currentRow())
 
         # remove o fixo da lista
-        self._dctFix.remove(f_oFix)
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.__dct_fix.remove(fo_fix)
 
     # ---------------------------------------------------------------------------------------------
-    def fixSelect(self):
+    def __fix_select(self):
         """
-        seleciona um fixo a editar
+        seleciona o fixo a editar
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (self._dctFix is not None)
-        assert (self.qtwFixTab is not None)
+        # clear to go
+        assert self.__dct_fix is not None
+        assert self.qtw_fixos is not None
 
         # obtém o fixo selecionado
-        self._oFix = self.getCurrentSel(self._dctFix, self.qtwFixTab)
-        assert (self._oFix)
+        self.__fix = self.__get_current_sel(self.__dct_fix, self.qtw_fixos)
+        assert self.__fix
 
         # atualiza a área de dados do fixo selecionado
-        self.fixUpdateSel()
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.__fix_update_sel()
 
     # ---------------------------------------------------------------------------------------------
-    def fixUpdateList(self):
+    def __fix_update_list(self):
         """
-        atualiza na tela os dados da lista de fixos.
+        atualiza na tela os dados da lista de fixos
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (self._dctFix is not None)
-        assert (self.qtwFixTab is not None)
+        # clear to go
+        assert self.__dct_fix is not None
+        assert self.qtw_fixos is not None
 
         # atualiza a QTableWidget de fixos
-        self.fixUpdateWidget()
+        self.__fix_update_widget()
 
         # obtém o fixo selecionado
-        self._oFix = self.getCurrentSel(self._dctFix, self.qtwFixTab)
-        # assert ( self._oFix )
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.__fix = self.__get_current_sel(self.__dct_fix, self.qtw_fixos)
 
     # ---------------------------------------------------------------------------------------------
-    def fixUpdateSel(self):
+    def __fix_update_sel(self):
         """
-        atualiza na tela os dados do fixo selecionado.
+        atualiza na tela os dados do fixo selecionado
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # fixo selecionado existe ?
-        if (self._oFix is not None):
-
+        if self.__fix is not None:
             # indicativo do fixo
-            l_sFixID = self._oFix.sFixID
-
-            # atualiza a visualização do fixo
-            # self._oSrv.configFix ( l_sFixID, dbus_interface = self.cSRV_Path )
+            ls_fix_indc = self.__fix.s_fix_indc
 
             # identificação
-            self.txtFixID.setText(self._oFix.sFixID)
-            self.qleFixDesc.setText(self._oFix.sFixDesc)
+            self.txt_indc.setText(self.__fix.s_fix_indc)
+            self.qle_desc.setText(self.__fix.s_fix_desc)
 
             # tipo de fixo
 
             # VOR
-            if (self._oFix.vFixVOR):
-                self.ckxVOR.setCheckState(QtCore.Qt.Checked)
+            if ldefs.E_VOR == self.__fix.en_fix_tipo:
+                self.ckx_vor.setCheckState(QtCore.Qt.Checked)
 
             else:
-                self.ckxVOR.setCheckState(QtCore.Qt.Unchecked)
+                self.ckx_vor.setCheckState(QtCore.Qt.Unchecked)
 
             # NDB
-            if (self._oFix.vFixNDB):
-                self.ckxNDB.setCheckState(QtCore.Qt.Checked)
+            if ldefs.E_NDB == self.__fix.en_fix_tipo:
+                self.ckx_ndb.setCheckState(QtCore.Qt.Checked)
 
             else:
-                self.ckxNDB.setCheckState(QtCore.Qt.Unchecked)
+                self.ckx_ndb.setCheckState(QtCore.Qt.Unchecked)
 
             # DME
-            if (self._oFix.vFixDME):
-                self.ckxDME.setCheckState(QtCore.Qt.Checked)
+            if ldefs.E_DME == self.__fix.en_fix_tipo:
+                self.ckx_dme.setCheckState(QtCore.Qt.Checked)
 
             else:
-                self.ckxDME.setCheckState(QtCore.Qt.Unchecked)
+                self.ckx_dme.setCheckState(QtCore.Qt.Unchecked)
 
             # freqüência
-            self.dsbFreq.setValue(self._oFix.fFixFreq)
+            self.dsb_freq.setValue(self.__fix.f_fix_freq)
 
             # posição
-            self._oFix.oFixPos = None
+            self.__fix.f_fix_lat = None
+            self.__fix.f_fix_lng = None
 
-            # l_iX, l_iY = self._oFix.oCentro.getPto ()
+            # l_iX, l_iY = self.__fix.oCentro.getPto ()
 
             # self.txtCntrX.setText ( str ( l_iX ))
             # self.txtCntrY.setText ( str ( l_iY ))
@@ -467,249 +372,197 @@ class CDlgFixDataNEW (QtGui.QDialog, CDlgFixDataNEW_ui.Ui_CDlgFixDataNEW):
         # senão, o fixo não existe
         else:
             # posiciona cursor no início do formulário
-            self.txtFixID.setFocus()
-
-        # logger
-        # M_LOG.info("__init__:<<")
+            self.txt_indc.setFocus()
 
     # ---------------------------------------------------------------------------------------------
-    def fixUpdateWidget(self):
+    def __fix_update_widget(self):
         """
         atualiza na tela os dados da QTableWidget de fixos
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (self.qtwFixTab is not None)
-        assert (self._dctFix is not None)
+        # clear to go
+        assert self.qtw_fixos is not None
+        assert self.__dct_fix is not None
 
         # limpa a QTableWidget
-        self.qtwFixTab.clear()
+        self.qtw_fixos.clear()
 
         # seta o número de linhas da QTableWidget para o tamanho da lista
-        self.qtwFixTab.setRowCount(len(self._dctFix))
+        self.qtw_fixos.setRowCount(len(self.__dct_fix))
 
         # seta número de colunas e cabeçalho das colunas
-        self.qtwFixTab.setColumnCount(2)
-        self.qtwFixTab.setHorizontalHeaderLabels([u"Indicativo", u"Descrição"])
+        self.qtw_fixos.setColumnCount(2)
+        self.qtw_fixos.setHorizontalHeaderLabels([u"Indicativo", u"Descrição"])
 
         # seta QTableWidget
-        self.qtwFixTab.setAlternatingRowColors(True)
-        self.qtwFixTab.setEditTriggers(QtGui.QTableWidget.NoEditTriggers)
-        self.qtwFixTab.setSelectionBehavior(QtGui.QTableWidget.SelectRows)
-        self.qtwFixTab.setSelectionMode(QtGui.QTableWidget.SingleSelection)
-        self.qtwFixTab.setSortingEnabled(False)
+        self.qtw_fixos.setAlternatingRowColors(True)
+        self.qtw_fixos.setEditTriggers(QtGui.QTableWidget.NoEditTriggers)
+        self.qtw_fixos.setSelectionBehavior(QtGui.QTableWidget.SelectRows)
+        self.qtw_fixos.setSelectionMode(QtGui.QTableWidget.SingleSelection)
+        self.qtw_fixos.setSortingEnabled(False)
 
         # linha 0 (objeto fixo)
-        l_oA0 = None
+        lo_A0 = None
 
         # linha selecionada (objeto fixo)
-        l_oSItem = None
+        lo_sel_item = None
 
         # para cada fixo no dicionário...
-        for l_iNdx, l_sFixID in enumerate(sorted(self._dctFix.keys())):
+        for li_ndx, ls_fix_indc in enumerate(sorted(self.__dct_fix.keys())):
             # indicativo do fixo
-            l_twiFixID = QtGui.QTableWidgetItem(l_sFixID)
-            l_twiFixID.setData(QtCore.Qt.UserRole, QtCore.QVariant(l_sFixID))
+            ltwi_fix_indc = QtGui.QTableWidgetItem(ls_fix_indc)
+            ltwi_fix_indc.setData(QtCore.Qt.UserRole, QtCore.QVariant(ls_fix_indc))
 
-            self.qtwFixTab.setItem(l_iNdx, 0, l_twiFixID)
+            self.qtw_fixos.setItem(li_ndx, 0, ltwi_fix_indc)
 
             # é o fixo selecionado ?
-            if ((self._oFix is not None) and (self._oFix.sFixID == l_sFixID)):
+            if (self.__fix is not None) and (self.__fix.s_fix_indc == ls_fix_indc):
                 # salva pointer para o item selecionado
-                l_oSItem = l_twiFixID
+                lo_sel_item = ltwi_fix_indc
 
             # obtém o fixo
-            l_oFix = self._dctFix[l_sFixID]
-            assert (l_oFix)
+            lo_fix = self.__dct_fix[ls_fix_indc]
+            assert lo_fix
 
             # descrição
-            l_twiFixDesc = QtGui.QTableWidgetItem(l_oFix.sFixDesc)
+            ltwi_fix_desc = QtGui.QTableWidgetItem(lo_fix.s_fix_desc)
 
-            self.qtwFixTab.setItem(l_iNdx, 1, l_twiFixDesc)
+            self.qtw_fixos.setItem(li_ndx, 1, ltwi_fix_desc)
 
         # existe um fixo selecionado ?
-        if (self._oFix is not None):
+        if self.__fix is not None:
             # seleciona o item
-            self.qtwFixTab.setCurrentItem(l_oSItem)
+            self.qtw_fixos.setCurrentItem(lo_sel_item)
 
             # posiciona no item selecionado
-            self.qtwFixTab.scrollToItem(l_oSItem)
+            self.qtw_fixos.scrollToItem(lo_sel_item)
 
             # marca que existe seleção
-            l_oSItem.setSelected(True)
+            lo_sel_item.setSelected(True)
 
         # senão, não existe um fixo selecionado
         else:
             # seleciona a primeira linha
-            self.qtwFixTab.selectRow(0)
+            self.qtw_fixos.selectRow(0)
 
             # obtém o fixo atual
-            self._oFix = self.getCurrentSel(self._dctFix, self.qtwFixTab)
-            # assert ( self._oFix )
+            self.__fix = self.__get_current_sel(self.__dct_fix, self.qtw_fixos)
 
         # ajusta o tamanho das colunas pelo conteúdo
-        self.qtwFixTab.resizeColumnsToContents()
+        self.qtw_fixos.resizeColumnsToContents()
 
         # habilita a ordenação
-        self.qtwFixTab.setSortingEnabled(True)
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.qtw_fixos.setSortingEnabled(True)
 
     # ---------------------------------------------------------------------------------------------
-    def getCurrentData(self, f_qtwTab, f_iCol):
+    def __get_current_data(self, fqtw_tab, fi_col):
         """
         retorna os dados associados a linha selecionada
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (f_qtwTab is not None)
-        # M_LOG.info("f_qtwTab: " + str(f_qtwTab))
+        # clear to go
+        assert fqtw_tab is not None
 
         # o dado da linha selecionada
-        l_sData = ""
+        ls_data = ""
 
         # obtém o item da linha selecionada
-        l_oItem = self.getCurrentItem(f_qtwTab, f_iCol)
-        # M_LOG.info("l_oItem: " + str(l_oItem))
+        lo_item = self.__get_current_item(fqtw_tab, fi_col)
 
         # existe uma linha selecionada ?
-        if (l_oItem is not None):
-
+        if lo_item is not None:
             # obtém o dado associado a linha
-            l_sData = l_oItem.data(QtCore.Qt.UserRole).toString()
-            # M_LOG.info("l_sData: " + str(l_sData))
-
-        # logger
-        # M_LOG.info("__init__:<<")
+            ls_data = lo_item.data(QtCore.Qt.UserRole).toString()
 
         # retorna o dado associado a linha selecionada
-        return l_sData
+        return ls_data
 
     # ---------------------------------------------------------------------------------------------
-    def getCurrentItem(self, f_qtwTab, f_iCol):
+    def __get_current_item(self, fqtw_tab, fi_col):
         """
         retorna o item associado a linha selecionada
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (f_qtwTab is not None)
-        # M_LOG.info("f_qtwTab: " + str(f_qtwTab))
+        # clear to go
+        assert fqtw_tab is not None
 
         # o item selecionado
-        l_oItem = None
+        lo_item = None
 
         # obtém o número da linha selecionada
-        l_iRow = f_qtwTab.currentRow()
-        # M_LOG.info("l_iRow: " + str(l_iRow))
+        li_row = fqtw_tab.currentRow()
 
         # existe uma linha selecionada ?
-        if (l_iRow > -1):
+        if li_row > -1:
             # obtém o item associado
-            l_oItem = f_qtwTab.item(l_iRow, f_iCol)
-            # M_LOG.info("l_oItem: " + str(l_oItem))
-            assert (l_oItem)
-
-        # logger
-        # M_LOG.info("__init__:<<")
+            lo_item = fqtw_tab.item(li_row, fi_col)
+            assert lo_item
 
         # retorna o item selecionado na lista
-        return l_oItem
+        return lo_item
 
     # ---------------------------------------------------------------------------------------------
-    def getCurrentSel(self, f_dct, f_qtw):
+    def __get_current_sel(self, f_dct, f_qtw):
         """
-        retorna o elemento associado a linha selecionada na lista.
+        retorna o elemento associado a linha selecionada na lista
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # verifica condições de execução
-        assert (f_dct is not None)
-        assert (f_qtw is not None)
-        # # M_LOG.info ( "f_dct: " + str ( f_dct ))
+        # clear to go
+        assert f_dct is not None
+        assert f_qtw is not None
 
         # obtém o index da linha selecionada
-        l_sID = self.getCurrentData(f_qtw, 0)
-        # # M_LOG.info ( "l_sID: " + str ( l_sID ))
+        ls_indc = str(self.__get_current_data(f_qtw, 0))
 
         # indice válido ?
-        if (str(l_sID) in f_dct):
+        if ls_indc in f_dct:
             # obtém o elemento selecionado se existir uma linha selecionada
-            l_oSel = f_dct[str(l_sID)]
-            assert (l_oSel)
-            # # M_LOG.info ( "l_oSel: " + str ( l_oSel ))
+            lo_sel = f_dct[ls_indc]
+            assert lo_sel
 
         # senão, índice inválido
         else:
             # não há elemento selecionado
-            l_oSel = None
-
-        # logger
-        # M_LOG.info("__init__:<<")
+            lo_sel = None
 
         # retorna o elemento da linha selecionada na lista
-        return l_oSel
+        return lo_sel
 
     # ---------------------------------------------------------------------------------------------
-    def loadInitial(self):
+    def __load_initial(self):
         """
         faz a carga inicial da tabela de fixos
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # obtém o dicionário de fixos
-        self._dctFix = self._model.dctFix
+        # dicionário de fixos
+        self.__dct_fix = self.__model.dct_fix
 
         # o dicionário de fixos não existe ?
-        if (self._dctFix is None):
-            # logger
-            # M_LOG.critical(u"<E01: Tabela de fixos não carregada !")
-
+        if self.__dct_fix is None:
             # cria um evento de quit
-            l_evtQuit = events.Quit()
-            assert (l_evtQuit)
+            l_evt = events.CQuit()
+            assert l_evt
 
             # dissemina o evento
-            self._event.post(l_evtQuit)
+            self.__event.post(l_evt)
 
             # cai fora...
             sys.exit(1)
 
         # atualiza na tela os dados da tabela de fixos
-        self.fixUpdateList()
-
-        # logger
-        # M_LOG.info("__init__:<<")
+        self.__fix_update_list()
 
     # ---------------------------------------------------------------------------------------------
-    def okToContinue(self):
+    def __ok2continue(self):
         """
         cria uma messageBox
 
         @return True se tratou a resposta, senão False
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # resposta
-        l_bAns = True
+        lv_ans = True
         '''
-        # M_LOG.info ( "self._bChanged: " + str ( self._bChanged ))
-
         # flag de alterações setado ?
-        if ( self._bChanged ):
+        if ( self.__bChanged ):
 
             # questiona sobre alterações pendentes
-            l_Resp = QtGui.QMessageBox.question ( self, self._txtContinueTit,
-                                                        self._txtContinueMsg,
+            l_Resp = QtGui.QMessageBox.question ( self, self.__txt_continue_tit,
+                                                        self.__txt_continue_msg,
                                                         QtGui.QMessageBox.Yes |
                                                         QtGui.QMessageBox.No |
                                                         QtGui.QMessageBox.Cancel )
@@ -717,64 +570,51 @@ class CDlgFixDataNEW (QtGui.QDialog, CDlgFixDataNEW_ui.Ui_CDlgFixDataNEW):
             # cancela ?
             if ( QtGui.QMessageBox.Cancel == l_Resp ):
                 # não sai
-                l_bAns = False
+                lv_ans = False
 
             # salva ?
             elif ( QtGui.QMessageBox.Yes == l_Resp ):
                 # salva as pendências e sai
-                l_bAns = True
+                lv_ans = True
 
             # não salva ?
            else:
                # reseta o flag de alterações...
-               self._bChanged = False
-               # M_LOG.info ( "self._bChanged: " + str ( self._bChanged ))
+               self.__bChanged = False
 
                # ...e sai
-               l_bAns = True
+               lv_ans = True
         '''
-        # logger
-        # M_LOG.info("__init__:<<")
-
         # retorna a resposta
-        return l_bAns
+        return lv_ans
 
     # ---------------------------------------------------------------------------------------------
     def reject(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        self._oFix = None
+        # fixo em edição
+        self.__fix = None
 
         # faz o "reject"
         QtGui.QDialog.reject(self)
 
+        # close dialog
         self.close()
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    def restoreSettings(self):
+    def __restore_settings(self):
         """
         restaura as configurações salvas para esta janela
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
         # obtém os settings
         l_set = QtCore.QSettings()
-        assert (l_set)
+        assert l_set
 
         # restaura geometria da janela
-        self.restoreGeometry(l_set.value("%s/Geometry" % (self._txtSettings)).toByteArray())
+        self.restoreGeometry(l_set.value("%s/Geometry" % (self.__txt_settings)).toByteArray())
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
+        # return
         return True
 
 # < the end >--------------------------------------------------------------------------------------

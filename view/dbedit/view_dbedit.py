@@ -37,10 +37,11 @@ import os
 import sys
 
 # PyQt library
-from PyQt4 import QtGui
+from PyQt4 import QtCore
 
 # view
-import view.common.view_manager as view
+import view.view_manager as view
+import view.common.color_manager as clrm
 
 import view.dbedit.wnd_main_dbedit as wmain
 
@@ -51,7 +52,7 @@ import control.events.events_basic as events
 
 class CViewDBEdit(view.CViewManager):
     """
-    módulo view do editor da base de dados.  É a classe de interface.  Trata as interações com o
+    módulo view do editor da base de dados. É a classe de interface. Trata as interações com o
     usuário
     """
     # ---------------------------------------------------------------------------------------------
@@ -75,26 +76,12 @@ class CViewDBEdit(view.CViewManager):
         # self.event         # event manager
         # self.model         # model manager
 
-        # cria a aplicação
-        self.__app = QtGui.QApplication(sys.argv)
-        assert self.__app
-
-        # parâmetros
-        self.__app.setOrganizationName("sophosoft")
-        self.__app.setOrganizationDomain("sophosoft.com.br")
-        self.__app.setApplicationName("dbEdit")
-        self.__app.setWindowIcon(QtGui.QIcon(os.path.join(self.dct_config["dir.img"], "icon.png")))
-
-        # cria o menu principal
-        self.__wmain = wmain.CWndMainDBEdit(f_control)
-        assert self.__wmain
-
-        # configura estado inicial
-        # self._szState = "intro"
-
-        # flag started
-        # self._bStarted = False
-
+        # show message
+        self.control.splash.showMessage("loading colour table...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
+                
+        # color manager 
+        self.__colors = clrm.CColorManager(self.config)
+                
     # ---------------------------------------------------------------------------------------------
     def notify(self, f_event):
         """
@@ -111,16 +98,23 @@ class CViewDBEdit(view.CViewManager):
     # ---------------------------------------------------------------------------------------------
     def run(self):
         """
-        executa a aplicação
+        exec application
         """
         # clear to go
-        assert self.__app
-        assert self.__wmain
+        assert self.control
+        assert self.app
 
-        # exibe o menu principal
-        self.__wmain.show()
+        # create main window
+        l_wmain = wmain.CWndMainDBEdit(self.control)
+        assert l_wmain
 
-        # processa a aplicação
-        self.__app.exec_()
+        # show main window
+        l_wmain.show()
+
+        # dismiss splash screen
+        self.control.splash.finish(l_wmain)
+
+        # exec application
+        self.app.exec_()
 
 # < the end >--------------------------------------------------------------------------------------

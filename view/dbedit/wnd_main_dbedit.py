@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-wnd_main_dbedit.
+wnd_main_dbedit
 
-janela principal do editor da base de dados.
+janela principal do editor da base de dados
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,195 +33,139 @@ __date__ = "2014/11"
 # < import >---------------------------------------------------------------------------------------
 
 # python library
-import logging
 import os
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
 # view
 import view.dbedit.dlg_aer_data_new as dlgaer
 import view.dbedit.dlg_exe_data_new as dlgexe
 import view.dbedit.dlg_fix_data_new as dlgfix
 import view.dbedit.dlg_prf_data_new as dlgprf
-# import view.dbedit.dlg_rad_data_new as dlgrad
 
 import view.dbedit.wnd_main_dbedit_ui as wmain_ui
 
 # control
 import control.events.events_basic as events
 
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(logging.DEBUG)
-
 # < class CWndMainDBEdit >-------------------------------------------------------------------------
 
-class CWndMainDBEdit(QtGui.QMainWindow, wmain_ui.Ui_wndMainDBEdit):
+class CWndMainDBEdit(QtGui.QMainWindow, wmain_ui.Ui_CWndMainDBEdit):
     """
-    janela principal do editor da base de dados.
+    janela principal do editor da base de dados
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_parent=None):
         """
-        @param f_control: control manager.
-        @param f_parent: janela vinculada ou None.
+        constructor
+
+        @param f_control: control manager
+        @param f_parent: parent widget
         """
         # init super class
-        super(CWndMainDBEdit, self).__init__()
+        super(CWndMainDBEdit, self).__init__(f_parent)
 
-        # verifica parâmetros de entrada
+        # check input
         assert f_control
 
-        # salva o control manager localmente
-        self._control = f_control
-        assert self._control
+        # control manager
+        self.__control = f_control
+        assert self.__control
 
-        # obtém o event manager
-        self._event = f_control.event
-        assert self._event
-
-        # registra a sí próprio como recebedor de eventos
-        # self._event.register_listener(self)
+        # event manager
+        self.__event = f_control.event
+        assert self.__event
 
         # create main menu ui
         self.setupUi(self)
 
         # create connections
-        self.connect(self.btnAer, QtCore.SIGNAL("clicked()"), self.cbk_aerodromos)
-        self.connect(self.btnExe, QtCore.SIGNAL("clicked()"), self.cbk_exercicios)
-        self.connect(self.btnFix, QtCore.SIGNAL("clicked()"), self.cbk_fixos)
-        self.connect(self.btnPrf, QtCore.SIGNAL("clicked()"), self.cbk_performances)
-        self.connect(self.btnPrc, QtCore.SIGNAL("clicked()"), self.cbk_procedimentos)
-        # self.connect(self.btnRad, QtCore.SIGNAL("clicked()"), self.cbk_radares)
-        self.connect(self.btnSai, QtCore.SIGNAL("clicked()"), self.cbk_sair)
+        self.btn_aer.clicked.connect(self.cbk_aerodromos)
+        self.btn_exe.clicked.connect(self.cbk_exercicios)
+        self.btn_fix.clicked.connect(self.cbk_fixos)
+        self.btn_prf.clicked.connect(self.cbk_performances)
+        self.btn_sai.clicked.connect(self.cbk_sair)
 
         # dialogs
-        self._dlg_aer = None
-        self._dlg_exe = None
-        self._dlg_fix = None
-        self._dlg_prf = None
-        self._dlg_prc = None
-        # self._dlg_rad = None
+        self.__dlg_aer = None
+        self.__dlg_exe = None
+        self.__dlg_fix = None
+        self.__dlg_prf = None
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSlot()
     def cbk_aerodromos(self):
         """
-        callback da opção edição de aeródromos da janela principal.
+        callback da opção edição de aeródromos da janela principal
         """
         # já existe a dialog de edição da tabela de aeródromos ?
-        if self._dlg_aer is None:
-
+        if self.__dlg_aer is None:
             # cria a dialog de edição da tabela de aeródromos
-            self._dlg_aer = dlgaer.CDlgAerDataNEW(self._control, self)
-            assert self._dlg_aer
+            self.__dlg_aer = dlgaer.CDlgAerDataNEW(self.__control, self)
+            assert self.__dlg_aer
 
         # exibe a dialog de edição da tabela de aeródromos
-        self._dlg_aer.show()
+        self.__dlg_aer.show()
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSlot()
     def cbk_exercicios(self):
         """
-        callback da opção edição de exercícios da janela principal.
+        callback da opção edição de exercícios da janela principal
         """
         # já existe a dialog de edição da tabela de exercícios ?
-        if self._dlg_exe is None:
-
+        if self.__dlg_exe is None:
             # cria a dialog de edição da tabela de exercícios
-            self._dlg_exe = dlgexe.CDlgExeDataNEW(self._control, self)
-            assert self._dlg_exe
+            self.__dlg_exe = dlgexe.CDlgExeDataNEW(self.__control, self)
+            assert self.__dlg_exe
 
         # exibe a dialog de edição da tabela de exercícios
-        self._dlg_exe.show()
+        self.__dlg_exe.show()
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSlot()
     def cbk_fixos(self):
         """
-        callback da opção edição de fixos da janela principal.
+        callback da opção edição de fixos da janela principal
         """
         # já existe a dialog de edição da tabela de fixos ?
-        if self._dlg_fix is None:
-
+        if self.__dlg_fix is None:
             # cria a dialog de edição da tabela de fixos
-            self._dlg_fix = dlgfix.CDlgFixDataNEW(self._control, self)
-            assert self._dlg_fix
+            self.__dlg_fix = dlgfix.CDlgFixDataNEW(self.__control, self)
+            assert self.__dlg_fix
 
         # exibe a dialog de edição da tabela de fixos
-        self._dlg_fix.show()
+        self.__dlg_fix.show()
 
     # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSlot()
     def cbk_performances(self):
         """
-        callback da opção edição de performances da janela principal.
+        callback da opção edição de performances da janela principal
         """
         # já existe a dialog de edição da tabela de performances ?
-        if self._dlg_prf is None:
-
+        if self.__dlg_prf is None:
             # cria a dialog de edição da tabela de performances
-            self._dlg_prf = dlgprf.CDlgPrfDataNEW(self._control, self)
-            assert self._dlg_prf
+            self.__dlg_prf = dlgprf.CDlgPrfDataNEW(self.__control, self)
+            assert self.__dlg_prf
 
         # exibe a dialog de edição da tabela de performances
-        self._dlg_prf.show()
+        self.__dlg_prf.show()
 
     # ---------------------------------------------------------------------------------------------
-
-    @QtCore.pyqtSlot()
-    def cbk_procedimentos(self):
-        """
-        callback da opção edição de procedimentos da janela principal.
-        """
-        # já existe a dialog de edição da tabela de procedimentos ?
-        # if self._dlg_prc is None:
-
-            # cria a dialog de edição da tabela de procedimentos
-            # self._dlg_prc = dlgprc.CDlgPrcDataNEW(self._control, self)
-            # assert self._dlg_prc
-
-        # exibe a dialog de edição da tabela de procedimentos
-        # self._dlg_prc.show()
-
-    # ---------------------------------------------------------------------------------------------
-
-    @QtCore.pyqtSlot()
-    def cbk_radares(self):
-        """
-        callback da opção edição de radares da janela principal.
-        """
-        # já existe a dialog de edição da tabela de radares ?
-        if self._dlg_rad is None:
-
-            # cria a dialog de edição da tabela de radares
-            self._dlg_rad = dlgrad.CDlgRadDataNEW(self._control, self)
-            assert self._dlg_rad
-
-        # exibe a dialog de edição da tabela de radares
-        self._dlg_rad.show()
-
-    # ---------------------------------------------------------------------------------------------
-
     @QtCore.pyqtSlot()
     def cbk_sair(self):
         """
-        callback da opção sair da janela principal.
+        callback da opção sair da janela principal
         """
         # cria um evento de quit
         l_evt = events.CQuit()
         assert l_evt
 
         # dissemina o evento
-        self._event.post(l_evt)
+        self.__event.post(l_evt)
 
         # finaliza o sistema
         self.close()

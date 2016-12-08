@@ -33,41 +33,30 @@ __date__ = "2015/12"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-import logging
 import os
 
 # PyQt library
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 
-# model / items
+# model
 import model.items.aer_new as model
 
-# view / dbedit
+# view
 import view.dbedit.dlg_aer_edit_new_ui as dlg
-
-# < module data >----------------------------------------------------------------------------------
-
-# logging level
-M_LOG_LVL = logging.DEBUG
-
-# logger
-M_LOG = logging.getLogger(__name__)
-M_LOG.setLevel(M_LOG_LVL)
 
 # < class CDlgAerEditNEW >-------------------------------------------------------------------------
 
-
-class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
+class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_CDlgAerEditNEW):
     """
-    mantém as informações sobre a dialog de edição de aeródromos.
+    mantém as informações sobre a dialog de edição de aeródromos
     """
     # ---------------------------------------------------------------------------------------------
-
     def __init__(self, f_control, f_aer=None, f_parent=None):
         """
-        @param f_control: control manager.
-        @param f_aer: aeródromo.
-        @param f_parent:  janela pai.
+        @param f_control: control manager
+        @param f_aer: aeródromo
+        @param f_parent: janela pai
         """
         # verifica parâmetros de entrada
         assert f_control
@@ -75,7 +64,7 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         # init super class
         super(CDlgAerEditNEW, self).__init__(f_parent)
 
-        # salva o control manager localmente
+        # control manager
         #self._control = f_control
 
         # obtém o gerente de configuração
@@ -86,10 +75,10 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         #self._dct_config = self._config.dct_config
         #assert self._dct_config
 
-        # salva a parent window localmente
+        # salva a parent window
         self._parent = f_parent
 
-        # salva os parâmetros localmente
+        # salva os parâmetros
         self._aer = f_aer
 
         # pathnames
@@ -121,20 +110,17 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         self.on_qleInd_textEdited(QtCore.QString())
 
     # ---------------------------------------------------------------------------------------------
-
     def accept(self):
         """
         DOCUMENT ME!
         """
         # aeródromo existe ?
         if self._aer is not None:
-
             # salva edição do aeródromo
             self.accept_edit()
 
         # senão, aeródromo não existe
         else:
-
             # salva novo aeródromo
             self.accept_new()
 
@@ -142,7 +128,6 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         QtGui.QDialog.accept(self)
 
     # ---------------------------------------------------------------------------------------------
-
     def accept_edit(self):
         """
         DOCUMENT ME!
@@ -158,15 +143,11 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         if self._aer.s_ind != ls_ind:
             ldct_alt["Ind"] = ls_ind
 
-        M_LOG.debug("ls_ind: " + str(ls_ind))
-
         # descrição
         ls_desc = str(self.qleDsc.text()).strip()
 
         if self._aer.s_desc != ls_desc:
             ldct_alt["Dsc"] = ls_desc
-
-        M_LOG.debug("ls_desc: " + str(ls_desc))
 
         # área
 
@@ -176,23 +157,17 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         if self._aer.f_comp != lf_comp:
             ldct_alt["Comp"] = lf_comp
 
-        M_LOG.debug("_fComp: " + str(lf_comp))
-
         # largura
         l_fLarg = self.qsbLarg.value()
 
         if self._aer.f_larg != l_fLarg:
             ldct_alt["Larg"] = l_fLarg
 
-        M_LOG.debug("_fLarg: " + str(l_fLarg))
-
         # altitude
         l_uiAlt = self.qsbAlt.value()
 
         if self._aer.ui_alt != l_uiAlt:
             ldct_alt["Alt"] = l_uiAlt
-
-        M_LOG.debug("_uiAlt: " + str(l_uiAlt))
 
         # centro
         l_fCentroX = self.qsbCentroX.value()
@@ -201,26 +176,16 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         if (self._aer.centro.get_pto()[0] != l_fCentroX) or (self._aer.centro.get_pto()[1] != l_fCentroY):
             ldct_alt["Centro"] = (l_fCentroX, l_fCentroY)
 
-        M_LOG.debug("_oCentro: %02d x %02d" % (l_fCentroX, l_fCentroY))
-
         # diferença de declinação magnética
         l_iDifDecl = self.qsbDifDecl.value()
 
         if self._aer.i_dif_decl != l_iDifDecl:
             ldct_alt["DifDecl"] = l_iDifDecl
 
-        M_LOG.debug("_iDifDecl: " + str(l_iDifDecl))
-
-        # lista de aeronaves do aeródromo
-        # self._oFigTab = None #self.qwtTabAnv.getAnvTab()
-
         # atualiza o aeródromo
         self._aer.updateAer(ldct_alt)
 
-        M_LOG.debug("self._aer(editado): " + str(self._aer))
-
     # ---------------------------------------------------------------------------------------------
-
     def accept_new(self):
         """
         DOCUMENT ME!
@@ -233,34 +198,27 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
 
         # indicativo
         ls_ind = str(self.qleInd.text()).strip().upper()
-        M_LOG.debug("_sInd: " + str(ls_ind))
 
         # descrição
         ls_desc = str(self.qleDsc.text()).strip()
-        M_LOG.debug("_sDsc: " + str(ls_desc))
 
         # geografia
 
         # comprimento
         lf_comp = self.qsbComp.value()
-        M_LOG.debug("_fComp: " + str(lf_comp))
 
         # largura
         lf_larg = self.qsbLarg.value()
-        M_LOG.debug("_fLarg: " + str(lf_larg))
 
         # altitude
         lui_alt = self.qsbAlt.value()
-        M_LOG.debug("_uiAlt: " + str(lui_alt))
 
         # centro
         lf_centro_X = self.qsbCentroX.value()
         lf_centro_Y = self.qsbCentroY.value()
-        M_LOG.debug("_oCentro: %02d x %02d" % (lf_centro_X, lf_centro_Y))
 
         # diferença de declinação magnética
         li_dif_decl = self.qsbDifDecl.value()
-        M_LOG.debug("_iDifDecl: " + str(li_dif_decl))
 
         # atualiza o pathname
         if self._s_pn is not None:
@@ -272,10 +230,9 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
                                  (lf_centro_X, lf_centro_Y), li_dif_decl])  # , self._oFigTab)
 
     # ---------------------------------------------------------------------------------------------
-
     def config_connects(self):
         """
-        configura as conexões slot/signal.
+        configura as conexões slot/signal
         """
         # conecta botão Ok da edição de aeródromo
         self.connect(self.bbxEditAer, QtCore.SIGNAL("accepted()"), self.accept)
@@ -287,14 +244,13 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         self.connect(self.qleInd, QtCore.SIGNAL("editingFinished()"), self.editingFinished)
 
     # ---------------------------------------------------------------------------------------------
-
     def config_texts(self):
-
+        """
+        """
         # configura títulos e mensagens
         self._txtSettings = "CDlgAerEditNEW"
 
     # ---------------------------------------------------------------------------------------------
-
     def editingFinished(self):
         """
         DOCUMENT ME!
@@ -319,20 +275,16 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
 
         # checa se digitou uma chave válida para o aeródromo
 #       if l_bEnable:
-
-            # salva o pathname do arquivo de aeródromo
+            # pathname do arquivo de aeródromo
 #           self._s_pn = os.path.join(self._cfgs [ "dir.exe" ], ls_ind + ".xrc")
-#           M_LOG.debug("self._s_pn(Aer): " + str(self._s_pn))
 
-            # salva o pathname da tabela de aeronaves do aeródromo
+            # pathname da tabela de aeronaves do aeródromo
 #           self._sTabPath = os.path.join(self._cfgs [ "dir.anv" ], ls_ind + ".anv")
-#           M_LOG.debug("self._sTabPath(Tab): " + str(self._sTabPath))
 
         # return
         return
 
     # ---------------------------------------------------------------------------------------------
-
     def get_data(self):
         """
         DOCUMENT ME!
@@ -340,7 +292,6 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         return self._aer
 
     # ---------------------------------------------------------------------------------------------
-
     def reject(self):
         """
         DOCUMENT ME!
@@ -351,7 +302,6 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         QtGui.QDialog.reject(self)
 
     # ---------------------------------------------------------------------------------------------
-
     def restore_settings(self):
         """
         restaura as configurações salvas para esta janela
@@ -367,14 +317,12 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
         return True
 
     # ---------------------------------------------------------------------------------------------
-
     def update_data(self):
         """
-        atualiza na tela os a área de dados do aeródromo selecionado.
+        atualiza na tela os a área de dados do aeródromo selecionado
         """
         # aeródromo existe ?
         if self._aer is not None:
-
             # identificação
             self.qleInd.setText(self._aer.s_ind)
             self.qleDsc.setText(self._aer.s_desc)
@@ -401,11 +349,6 @@ class CDlgAerEditNEW(QtGui.QDialog, dlg.Ui_DlgAerEditNEW):
 
         # senão, é um novo aeródromo
         else:
-
-            # cria uma nova tabela de figuras
-            # self._oFigTab = clsTabelaFig.clsTabelaFig()
-            # assert self._oFigTab is not None
-
             # posiciona cursor no início do formulário
             self.qleInd.setFocus()
 

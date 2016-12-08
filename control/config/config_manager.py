@@ -50,7 +50,6 @@ import model.common.glb_data as gdata
 
 # control
 import control.common.glb_defs as gdefs
-# import control.control_debug as dbg
 
 # < class CConfigManager >-------------------------------------------------------------------------
 
@@ -59,21 +58,21 @@ class CConfigManager(object):
     mantém as informações comuns de configuração
     """
     # informações comuns de configuração
-    __CFG_COMMON = {"dir.air": gdefs.D_DIR_AIR,    # diretório de airspaces
-                    "dir.dat": gdefs.D_DIR_DAT,    # diretório de dados
-                    "dir.exe": gdefs.D_DIR_EXE,    # diretório de exercícios
-                    "dir.img": gdefs.D_DIR_IMG,    # diretório de imagens
-                    "dir.map": gdefs.D_DIR_MAP,    # diretório de mapas
-                    "dir.prc": gdefs.D_DIR_PRC,    # diretório de procedimentos
-                    "dir.snd": gdefs.D_DIR_SND,    # diretório de sons
-                    "dir.tab": gdefs.D_DIR_TAB,    # diretório de tabelas
-                    "dir.trf": gdefs.D_DIR_TRF,    # diretório de tráfegos
+    __CFG_COMMON = {"dir.air": gdefs.D_DIR_AIR,      # diretório de airspaces
+                    "dir.dat": gdefs.D_DIR_DAT,      # diretório de dados
+                    "dir.exe": gdefs.D_DIR_EXE,      # diretório de exercícios
+                    "dir.img": gdefs.D_DIR_IMG,      # diretório de imagens
+                    "dir.map": gdefs.D_DIR_MAP,      # diretório de mapas
+                    "dir.prc": gdefs.D_DIR_PRC,      # diretório de procedimentos
+                    "dir.snd": gdefs.D_DIR_SND,      # diretório de sons
+                    "dir.tab": gdefs.D_DIR_TAB,      # diretório de tabelas
+                    "dir.trf": gdefs.D_DIR_TRF,      # diretório de tráfegos
 
-                    "glb.canal": gdata.G_CANAL,    # canal de comunicação
+                    "glb.canal": gdata.G_CANAL,      # canal de comunicação
 
-                    "map.lat": cdefs.M_REF_LAT,    # latitude de referência do mapa
-                    "map.lng": cdefs.M_REF_LNG,    # longitude de referência do mapa
-                    "map.dcl": cdefs.M_DCL_MAG,    # declinação magnética na referência
+                    "map.lat": cdefs.M_REF_LAT,      # latitude de referência do mapa
+                    "map.lng": cdefs.M_REF_LNG,      # longitude de referência do mapa
+                    "map.dcl": cdefs.M_DCL_MAG,      # declinação magnética na referência
 
                     "net.addr": gdefs.D_NET_ADDR,    # endereço default
                     "net.cnfg": gdefs.D_NET_CNFG,    # endereço multicast de configuração
@@ -85,6 +84,15 @@ class CConfigManager(object):
                     "net.voip": gdefs.D_NET_VOIP,    # endereço multicast de voip
                     "net.port": gdefs.D_NET_PORT,    # porta de comunicação
                     "net.vers": gdefs.D_MSG_VRS,     # versão do protocolo
+
+                    "tab.aer": gdefs.D_TBL_AER,      # tabela de aeródromos
+                    "tab.fix": gdefs.D_TBL_FIX,      # tabela de fixos
+                    "tab.prf": gdefs.D_TBL_PRF,      # tabela de performances
+
+                    "tab.apx": gdefs.D_TBL_APX,      # tabela de procedimentos de aproximação
+                    "tab.esp": gdefs.D_TBL_ESP,      # tabela de procedimentos de espera
+                    "tab.sub": gdefs.D_TBL_SUB,      # tabela de procedimentos de subida
+                    "tab.trj": gdefs.D_TBL_TRJ,      # tabela de procedimentos de trajetória
 
                     "tab.clr": gdefs.D_TBL_COLOUR,   # color table
                     "tab.fnt": gdefs.D_TBL_FONT,     # font table
@@ -146,7 +154,7 @@ class CConfigManager(object):
         """
         config manager data dictionary
         """
-        # verifica parâmetros de entrada
+        # check input
         assert f_val is not None
 
         # save a shallow copy

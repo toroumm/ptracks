@@ -36,7 +36,7 @@ __date__ = "2015/12"
 import os
 
 # model
-import model.glb_data as gdata
+import model.common.glb_data as gdata
 
 # wizard
 import view.wizard.wizard_model as model

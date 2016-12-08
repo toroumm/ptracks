@@ -48,7 +48,6 @@ import model.model_manager as model
 
 import model.emula.emula_visil as emula
 import model.visil.airspace_visil as airs
-# import model.visil.landscape_visil as lands
 
 # control
 import control.common.glb_defs as gdefs
@@ -77,6 +76,7 @@ class CModelVisil(model.CModelManager):
         # self.control       # control manager
         # self.event         # event manager
 
+        # show message
         self.control.splash.showMessage("creating coordinate system...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
         
         # obtém as coordenadas de referência
@@ -92,10 +92,9 @@ class CModelVisil(model.CModelManager):
 
         # variáveis de instância
         self.__airspace = None
-        # self.__landscape = None
 
         # carrega as tabelas do sistema
-        self.__load_cenario("SBSP")
+        self.__load_cenario()
 
         self.control.splash.showMessage("creating emulation model...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
 
@@ -104,11 +103,9 @@ class CModelVisil(model.CModelManager):
         assert self.__emula_model
 
     # ---------------------------------------------------------------------------------------------
-    def __load_air(self, fs_cena):
+    def __load_air(self):
         """
         faz a carga do airspace
-
-        @param fs_cena: cenário
 
         @return flag e mensagem
         """
@@ -131,22 +128,20 @@ class CModelVisil(model.CModelManager):
             # cria o diretório
             os.mkdir(ls_dir)
 
-        # create airspace
+        # create airspace (aeródomos, fixos, pistas, pousos e decolagens)
         self.__airspace = airs.CAirspaceVisil(self)
         assert self.__airspace
 
-        # carrega os dicionários
+        # carrega os dicionários (aproximações, esperas, subidas e trajetórias)
         self.__airspace.load_dicts()
 
         # retorna ok
         return True, None
 
     # ---------------------------------------------------------------------------------------------
-    def __load_cenario(self, fs_cena):
+    def __load_cenario(self):
         """
-        abre/cria as tabelas do sistema
-
-        @param fs_cena: cenário
+        carrega as tabelas do sistema
 
         @return flag e mensagem
         """
@@ -176,44 +171,6 @@ class CModelVisil(model.CModelManager):
             # termina a aplicação
             sys.exit(1)
 
-    # ---------------------------------------------------------------------------------------------
-    '''def __load_land(self, fs_cena):
-        """
-        faz a carga do landscape
-
-        @param fs_cena: cenário
-
-        @return flag e mensagem
-        """
-        # obtém o diretório padrão de landscapes
-        ls_dir = self.dct_config["dir.map"]
-
-        # nome do diretório vazio ?
-        if ls_dir is None:
-            # diretório padrão de landscapes
-            self.dct_config["dir.map"] = gdefs.D_DIR_MAP
-
-            # diretório padrão de landscapes
-            ls_dir = gdefs.D_DIR_MAP
-
-        # expand user (~)
-        ls_dir = os.path.expanduser(ls_dir)
-
-        # diretório não existe ?
-        if not os.path.exists(ls_dir):
-            # cria o diretório
-            os.mkdir(ls_dir)
-
-        # create landscape
-        self.__landscape = lands.CLandscapeVisil(self, ls_dir, fs_cena)
-        assert self.__landscape
-
-        # carrega os dicionários
-        self.__landscape.load_dicts()
-
-        # retorna ok
-        return True, None
-    '''
     # ---------------------------------------------------------------------------------------------
     def notify(self, f_evt):
         """

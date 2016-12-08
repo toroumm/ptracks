@@ -34,7 +34,7 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # model 
-import model.model_wizard as model
+import model.wizard.model_wizard as model
 
 # view 
 import view.wizard.view_wizard as view

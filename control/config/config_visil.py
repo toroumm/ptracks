@@ -49,13 +49,7 @@ class CConfigVisil(config.CConfigManager):
     mantém as informações de configuração
     """
     # informações comuns de configuração
-    __CFG_VISIL = {"tab.aer": "tabAer",    # tabela de aeródromos
-                   "tab.apx": "tabApx",    # tabela de aproximações
-                   "tab.esp": "tabEsp",    # tabela de esperas
-                   "tab.fix": "tabFix",    # tabela de fixos
-                   "tab.sub": "tabSub",    # tabela de subidas
-                   "tab.trj": "tabTrj",    # tabela de trajetórias
-                  }  # __CFG_VISIL
+    __CFG_VISIL = {}  # __CFG_VISIL
 
     # ---------------------------------------------------------------------------------------------
     def __init__(self, fs_cnfg):

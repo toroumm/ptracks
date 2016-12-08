@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------------------------------------------------------
-dlgPrfEditNEW
+CDlgPrfEditNEW
 
 mantém as informações sobre a dialog de edição de performances
 
@@ -40,17 +40,17 @@ from PyQt4 import QtCore, QtGui
 import model.items.prf_new as dctPrf
 
 # view
-import view.dbedit.dlg_prf_edit_new_ui as dlgPrfEditNEW_ui
+import view.dbedit.dlg_prf_edit_new_ui as CDlgPrfEditNEW_ui
 
 # < variáveis globais >--------------------------------------------------------------------------
 
 # logging level
 w_logLvl = logging.DEBUG
 
-# < class dlgPrfEditNEW >------------------------------------------------------------------------
+# < class CDlgPrfEditNEW >------------------------------------------------------------------------
 
 
-class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
+class CDlgPrfEditNEW (QtGui.QDialog, CDlgPrfEditNEW_ui.Ui_CDlgPrfEditNEW):
     """
     mantém as informações sobre a dialog de edição de performances.
     """
@@ -72,7 +72,7 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         assert (f_control)
 
         # init super class
-        super(dlgPrfEditNEW, self).__init__(f_parent)
+        super(CDlgPrfEditNEW, self).__init__(f_parent)
 
         # salva o control manager localmente
         self._control = f_control
@@ -325,7 +325,7 @@ class dlgPrfEditNEW (QtGui.QDialog, dlgPrfEditNEW_ui.Ui_dlgPrfEditNEW):
         l_log.info("__init__:><")
 
         # configura títulos e mensagens
-        self._txtSettings = "dlgPrfEditNEW"
+        self._txtSettings = "CDlgPrfEditNEW"
 
     # -------------------------------------------------------------------------------------------
 

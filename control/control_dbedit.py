@@ -32,8 +32,11 @@ __date__ = "2015/11"
 
 # < imports >--------------------------------------------------------------------------------------
 
+# PyQt library
+from PyQt4 import QtCore
+
 # model 
-import model.model_dbedit as model
+import model.dbedit.model_dbedit as model
 
 # view 
 import view.dbedit.view_dbedit as view
@@ -70,16 +73,18 @@ class CControlDBEdit(control.CControlManager):
         self.config = config.CConfigDBEdit("tracks.cfg")
         assert self.config
 
-        # obtém o dicionário de configuração
-        # self.__dct_config = self.config.dct_config
-        # assert self.__dct_config
-
         # create application
         self.create_app("dbedit")
+
+        # show message
+        self.splash.showMessage("creating model...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
 
         # instancia o model
         self.model = model.CModelDBEdit(self)
         assert self.model
+
+        # show message
+        self.splash.showMessage("creating view...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
 
         # instancia a view
         self.view = view.CViewDBEdit(self)
