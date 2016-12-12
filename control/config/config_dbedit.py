@@ -69,27 +69,6 @@ class CConfigDBEdit(config.CConfigManager):
                 self.dct_config[l_key] = self.__CFG_DBEDIT[l_key]
 
         # load dirs section
-        self.__load_dirs()
-
-    # ---------------------------------------------------------------------------------------------
-    def __load_dirs(self):
-        """
-        carrega as configurações de diretórios
-        """
-        # monta o diretório de exercícios
-        self.dct_config["dir.exe"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.exe"]))
-
-        # monta o diretório de procedimentos
-        self.dct_config["dir.prc"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.prc"]))
-
-        # monta o diretório de tabelas
-        self.dct_config["dir.tab"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.tab"]))
-
-        # monta o diretório de tráfegos
-        self.dct_config["dir.trf"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.trf"]))
+        self.load_dirs()
 
 # < the end >--------------------------------------------------------------------------------------

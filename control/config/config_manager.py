@@ -47,6 +47,7 @@ import libs.coords.coord_defs as cdefs
 
 # model 
 import model.common.glb_data as gdata
+import model.common.data as fdata
 
 # control
 import control.common.glb_defs as gdefs
@@ -137,6 +138,39 @@ class CConfigManager(object):
                 for l_option in l_cp.options(l_section):
                     self.__dct_config[str(l_section.lower() + '.' + l_option.lower())] = l_cp.get(l_section, l_option)
         
+    # ---------------------------------------------------------------------------------------------
+    def load_dirs(self):
+        """
+        carrega as configurações de diretórios
+        """
+        # monta o diretório de airspaces
+        self.dct_config["dir.air"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.air"]))
+
+        # monta o diretório de exercícios
+        self.dct_config["dir.exe"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.exe"]))
+
+        # monta o diretório de imagens
+        self.dct_config["dir.img"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.img"]))
+
+        # monta o diretório de landscapes
+        self.dct_config["dir.map"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.map"]))
+
+        # monta o diretório de procedimentos
+        self.dct_config["dir.prc"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.prc"]))
+
+        # monta o diretório de tabelas
+        self.dct_config["dir.tab"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.tab"]))
+
+        # monta o diretório de tráfegos
+        self.dct_config["dir.trf"] = fdata.filepath(os.path.join(self.dct_config["dir.dat"],
+                                                                 self.dct_config["dir.trf"]))
+
     # =============================================================================================
     # data
     # =============================================================================================

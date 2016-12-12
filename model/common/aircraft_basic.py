@@ -268,9 +268,6 @@ class CAircraftBasic(sanv.CAircraft):
         """
         get new radar position, and push old one into history
         """
-        # check input
-        # assert f_control
-
         # obtém a última posção conhecida
         l_last_pos = pll.CPosLatLng(self.pos)
         assert l_last_pos is not None

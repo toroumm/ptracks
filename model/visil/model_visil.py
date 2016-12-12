@@ -123,11 +123,6 @@ class CModelVisil(model.CModelManager):
         # expand user (~)
         ls_dir = os.path.expanduser(ls_dir)
 
-        # diretório não existe ?
-        if not os.path.exists(ls_dir):
-            # cria o diretório
-            os.mkdir(ls_dir)
-
         # create airspace (aeródomos, fixos, pistas, pousos e decolagens)
         self.__airspace = airs.CAirspaceVisil(self)
         assert self.__airspace
@@ -146,13 +141,13 @@ class CModelVisil(model.CModelManager):
         @return flag e mensagem
         """
         # carrega o landscape
-        # lv_ok, ls_msg = self.__load_land(fs_cena)
+        # lv_ok, ls_msg = self.__load_land()
 
         # tudo Ok ?
         # if lv_ok:
         
         # carrega o airspace
-        lv_ok, ls_msg = self.__load_air(fs_cena)
+        lv_ok, ls_msg = self.__load_air()
 
         # houve erro em alguma fase ?
         if not lv_ok:
@@ -224,14 +219,6 @@ class CModelVisil(model.CModelManager):
         """
         return self.__airspace.dct_esp
 
-    # ---------------------------------------------------------------------------------------------
-    '''@property
-    def landscape(self):
-        """
-        get landscape
-        """
-        return self.__landscape
-    '''
     # ---------------------------------------------------------------------------------------------
     @property
     def dct_sub(self):

@@ -131,11 +131,6 @@ class CModelNewton(model.CModelManager):
 
         # expand user (~)
         ls_dir = os.path.expanduser(ls_dir)
-
-        # diretório não existe ?
-        if not os.path.exists(ls_dir):
-            # cria o diretório
-            os.mkdir(ls_dir)
         '''
         # create airspace
         self.__airspace = airs.CAirspaceNewton(self)

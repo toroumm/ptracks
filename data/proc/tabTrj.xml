@@ -562,6 +562,75 @@
     </breakpoint>
   </trajetoria>
 
+  <!-- teste 1961 -->
+  <trajetoria nTrj="1961">
+    <descricao>teste 1961.1</descricao>
+    <star>N</star>
+
+    <breakpoint nBrk="1">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>CPN</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="2">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MOXEP</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="3">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>GGT</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="4">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>MULOD</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="5">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>OPREV</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="6">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>ILTAB</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+    </breakpoint>
+
+    <breakpoint nBrk="7">
+      <coord>
+        <tipo>F</tipo>
+        <cpoA>IMBID</cpoA>
+      </coord>
+      <altitude>39000</altitude>
+      <velocidade>430</velocidade>
+      <procedimento>TRJ1961</procedimento>
+    </breakpoint>
+
   <!-- Exercicio Operacional -->
   <trajetoria nTrj="1100">
     <descricao>SBBR-SBGR</descricao>

@@ -68,17 +68,11 @@ class CModelWizard(model.CModelManager):
         # self.config        # config manager
         # self.dct_config    # dicionário de configuração
 
-        # obtém o event manager
-        # self.event = f_control.event
-        # assert self.event
-
         # inicia variáveis de instância
         self.__dct_exe = {}
 
         # carrega as tabelas do sistema
         lv_ok = self.__load_tables()
-
-        # M_LOG.debug("dct_exe:[{}]".format(self.__dct_exe))
 
         # houve erro em alguma fase ?
         if not lv_ok:
@@ -130,8 +124,8 @@ class CModelWizard(model.CModelManager):
 
         # diretório não existe ?
         if not os.path.exists(ls_dir):
-            # cria o diretório
-            os.mkdir(ls_dir)
+            # diretório não existe. cai fora...
+            return False
 
         # percorre o diretório
         for ls_file in os.listdir(ls_dir):

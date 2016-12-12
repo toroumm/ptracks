@@ -69,19 +69,6 @@ class CConfigWizard(config.CConfigManager):
                 self.dct_config[l_key] = self.__CFG_WIZARD[l_key]
 
         # load dirs section
-        self.__load_dirs()
-
-    # ---------------------------------------------------------------------------------------------
-    def __load_dirs(self):
-        """
-        carrega as configurações de diretórios
-        """
-        # monta o diretório de imagens
-        self.dct_config["dir.exe"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.exe"]))
-
-        # monta o diretório de imagens
-        self.dct_config["dir.img"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.img"]))
+        self.load_dirs()
 
 # < the end >--------------------------------------------------------------------------------------

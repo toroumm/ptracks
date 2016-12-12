@@ -88,27 +88,6 @@ class CConfigPiloto(config.CConfigManager):
         self.dct_config["glb.canal"] = int(l_args.canal)
 
         # load dirs section
-        self.__load_dirs()
-
-    # ---------------------------------------------------------------------------------------------
-    def __load_dirs(self):
-        """
-        carrega as configurações de diretórios
-        """
-        # monta o diretório de aeródromos
-        self.dct_config["dir.aer"] = data.filepath(os.path.join(self.dct_config["dir.dat"], 
-                                                                self.dct_config["dir.aer"]))
-
-        # monta o diretório de airspaces 
-        self.dct_config["dir.air"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.air"]))
-                                                                                
-        # monta o diretório de procedimentos
-        self.dct_config["dir.prc"] = data.filepath(os.path.join(self.dct_config["dir.dat"],
-                                                                self.dct_config["dir.prc"]))
-
-        # monta o diretório de tabelas
-        self.dct_config["dir.tab"] = data.filepath(os.path.join(self.dct_config["dir.dat"], 
-                                                                self.dct_config["dir.tab"]))
+        self.load_dirs()
 
 # < the end >--------------------------------------------------------------------------------------
