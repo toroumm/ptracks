@@ -34,6 +34,7 @@ __date__ = "2015/11"
 
 # python library
 import os
+import urllib2
 
 import SimpleHTTPServer
 
@@ -41,6 +42,9 @@ import SimpleHTTPServer
 import view.visweb.generate_anv_json as anvjson
 import view.visweb.generate_prf_json as prfjson
 import view.visweb.generate_status_json as sttjson
+
+# control
+import control.control_debug as cdbg
 
 # < defines >--------------------------------------------------------------------------------------
 
@@ -74,8 +78,24 @@ class CViewHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         try:
             lv_send_reply = False
 
+            # comando de pilotagem ?
+            if "/cmd" == self.path: 
+                # trata o comando de pilotagem
+                ls_cmd = str(urllib2.unquote(llst_path[1])).strip().upper()
+
+                self.server.emula.parse_msg_pil(ls_cmd)
+                cdbg.M_DBG.debug("command: [{}/{}]".format(ls_cmd, ls_cmd[:7]))
+
+                # create and send headers
+                self.send_response(200)
+                self.send_header("Content-type", D_MODES_CONTENT_TYPE_JSON)
+                self.end_headers()
+
+                # create and send json file
+                self.wfile.write(sttjson.generate_status_json(self.server.dct_flight, ls_cmd[:7]))
+
             # json file ?
-            if self.path.endswith(".json"):
+            elif self.path.endswith(".json"):
                 # aircraft ?
                 if "/data/aircraft.json" == self.path:
                     self.send_response(200)

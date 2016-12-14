@@ -152,10 +152,10 @@ class CComandoPil(inst.CInstruction):
         llst_param = flst_tok[0].split('/')
 
         # aeródromo
-        self.f_param_1 = str(llst_param[0].strip())  # .upper())
+        self.f_param_1 = str(llst_param[0]).strip()  # .upper())
 
         # pista
-        self.f_param_2 = str(llst_param[1].strip())  # .upper())
+        self.f_param_2 = str(llst_param[1]).strip()  # .upper())
 
     # ---------------------------------------------------------------------------------------------
     def __cmd_graus(self, flst_tok):
@@ -191,6 +191,26 @@ class CComandoPil(inst.CInstruction):
         if "RAZ" == flst_tok[1]:
             # parse command
             self.__cmd_razao(flst_tok[2:])
+
+    # ---------------------------------------------------------------------------------------------
+    def __cmd_pouso(self, flst_tok):
+        """
+        DOCUMENT ME!
+        """
+        # check input
+        assert flst_tok
+
+        # comando
+        self.en_cmd_ope = ldefs.E_POUSO
+
+        # aeródromo/pista (AAAA/PPP)
+        llst_param = flst_tok[0].split('/')
+
+        # aeródromo
+        self.f_param_1 = str(llst_param[0]).strip().upper()
+
+        # pista
+        self.f_param_2 = str(llst_param[1]).strip().upper()
 
     # ---------------------------------------------------------------------------------------------
     def __cmd_proa(self, flst_tok):

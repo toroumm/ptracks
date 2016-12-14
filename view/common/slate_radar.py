@@ -97,7 +97,7 @@ class CSlateRadar(QtGui.QWidget):
         self.__event.register_listener(self)
 
         # save flight model
-        # self.__emula_model = l_model.emula_model
+        # self.__emula = l_model.emula
 
         self.__f_radar_vector = 0.
         self.__i_lateral_mode = self.C_LMODE_APP
@@ -107,7 +107,7 @@ class CSlateRadar(QtGui.QWidget):
         self.__s_approach = ""
 
         # flight dictionary
-        self.__dct_flight = l_model.emula_model.dct_flight
+        self.__dct_flight = l_model.emula.dct_flight
                         
         # save airspace
         self.__airspace = l_model.airspace

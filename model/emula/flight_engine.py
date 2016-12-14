@@ -53,7 +53,7 @@ import model.newton.defs_newton as ldefs
 import model.piloto.comando_piloto as cmdpil
 
 # control
-import control.control_debug as dbg
+# import control.control_debug as cdbg
 import control.common.glb_defs as gdefs
 
 # < class CFlightEngine >--------------------------------------------------------------------------
@@ -75,27 +75,27 @@ class CFlightEngine(threading.Thread):
         # inicia a super classe
         super(CFlightEngine, self).__init__()
 
-        # salva o control manager localmente
+        # control manager
         self.__control = f_control
         assert self.__control
 
-        # obtém o event manager
+        # event manager
         # self.__event = f_control.event
         # assert self.__event
 
-        # obtém o relógio da simulação
+        # relógio da simulação
         self.__sim_time = f_control.sim_time
         assert self.__sim_time
 
-        # obtém o model manager
+        # model manager
         self.__model = f_control.model
         assert self.__model
 
-        # obtém o exercício
+        # exercício
         self.__exe = self.__model.exe
         assert self.__exe
 
-        # salva os dados da aeronave
+        # dados da aeronave
         self.__atv = f_atv
 
         # context stack
@@ -105,11 +105,11 @@ class CFlightEngine(threading.Thread):
         self.__cine_data = cindata.CCineData()
         assert self.__cine_data
 
-        # cria a cinemática de solo
+        # cinemática de solo
         # self.__cine_solo = cinsolo.CineSolo(self, self._aer)
         # assert self.__cine_solo
 
-        # cria a cinemática de vôo
+        # cinemática de vôo
         self.__cine_voo = cinvoo.CCineVoo(self, f_control)
         assert self.__cine_voo
 
@@ -121,7 +121,7 @@ class CFlightEngine(threading.Thread):
         # check input
         assert f_atv
 
-        # obtém o comando de pilotagem atual
+        # comando de pilotagem atual
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
@@ -130,7 +130,7 @@ class CFlightEngine(threading.Thread):
 
         # comando ainda não está em execução ?
         if not l_cmd_pil.v_running:
-            # obtém a altitude desejada (demanda)
+            # altitude desejada (demanda)
             if ldefs.E_ALT == len_cmd_ope:
                 # ajusta demanda pelo primeiro parâmetro (altitude)
                 f_atv.f_atv_alt_dem = l_cmd_pil.f_param_1 * cdefs.D_CNV_FT2M
@@ -405,10 +405,10 @@ class CFlightEngine(threading.Thread):
         l_cmd_pil = f_atv.lst_atv_cmd_pil[0]
         assert l_cmd_pil
 
-        # obtém o primeiro parâmetro (aeródromo)
+        # primeiro parâmetro (aeródromo)
         lf_aer = l_cmd_pil.f_param_1
 
-        # obtém o segundo parâmetro (pista)
+        # segundo parâmetro (pista)
         lf_pst = l_cmd_pil.f_param_2
 
         # aeródromo e pista do pouso

@@ -57,7 +57,7 @@ import model.visil.aircraft_visil as anv
 # view
 import view.common.dock_procedures as dckprc
 import view.common.slate_radar as sltrdr
-import view.common.strip_basic as strips
+# import view.common.strip_basic as strips
 
 import view.piloto.statusbar_piloto as statusbar
 import view.piloto.wnd_main_piloto_ui as wndmain_ui
@@ -74,7 +74,7 @@ import view.piloto.dlg_trajetoria as dlgtrj
 import view.piloto.dlg_velocidade as dlgvel
 
 # control
-import control.control_debug as dbg
+# import control.control_debug as cdbg
 import control.common.glb_defs as gdefs
 
 import control.events.events_basic as events
@@ -149,7 +149,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         self.__airspace = f_control.model.airspace
 
         # dicionário de aeronaves
-        self.__dct_flight = f_control.model.emula_model.dct_flight
+        self.__dct_flight = f_control.model.emula.dct_flight
         assert self.__dct_flight is not None
 
         # dicionário de configuração
@@ -1109,10 +1109,10 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         """
         DOCUMENT ME!
         """
-        # obtém a função operacional atual
+        # função operacional atual
         ls_fnc_ope = fdct_status.get("fnc_ope", None)
 
-        # obtém o número do procedimento
+        # número do procedimento
         ls_prc_id = fdct_status.get("prc_id", None)
 
         # get anv
@@ -1132,7 +1132,6 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         if f_evt.timerId() == self.__i_timer_fetch:
             # for all flights...
             for l_callsign, l_flight in self.__dct_flight.iteritems():
-
                 # new flight ?
                 if l_flight not in self.__stp_model.lst_strips:
                     # insert flight on model

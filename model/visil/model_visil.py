@@ -42,6 +42,7 @@ from PyQt4 import QtCore
 
 # libs
 import libs.coords.coord_sys as coords
+import libs.geomag.geomag.geomag.geomag as gm
 
 # model
 import model.model_manager as model
@@ -88,6 +89,10 @@ class CModelVisil(model.CModelManager):
         self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)
         assert self.__coords
 
+        # create magnectic converter
+        self.__geomag = gm.GeoMag("data/tabs/WMM.COF")
+        assert self.__geomag
+
         self.control.splash.showMessage("loading cenary...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
 
         # variáveis de instância
@@ -99,8 +104,8 @@ class CModelVisil(model.CModelManager):
         self.control.splash.showMessage("creating emulation model...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
 
         # create emula model
-        self.__emula_model = emula.CEmulaVisil(self, f_control)
-        assert self.__emula_model
+        self.__emula = emula.CEmulaVisil(self, f_control)
+        assert self.__emula
 
     # ---------------------------------------------------------------------------------------------
     def __load_air(self):
@@ -205,11 +210,11 @@ class CModelVisil(model.CModelManager):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def emula_model(self):
+    def emula(self):
         """
         get emula model
         """
-        return self.__emula_model
+        return self.__emula
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -218,6 +223,14 @@ class CModelVisil(model.CModelManager):
         get esperas
         """
         return self.__airspace.dct_esp
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def geomag(self):
+        """
+        get geomag
+        """
+        return self.__geomag
 
     # ---------------------------------------------------------------------------------------------
     @property

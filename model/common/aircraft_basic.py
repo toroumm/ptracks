@@ -44,6 +44,9 @@ import libs.coords.pos_lat_lng as pll
 import model.common.tMath as tmath
 import model.common.aircraft as sanv
 
+# control
+import control.control_debug as cdbg
+
 # < class CAircraftBasic >-------------------------------------------------------------------------
 
 class CAircraftBasic(sanv.CAircraft):
@@ -71,9 +74,11 @@ class CAircraftBasic(sanv.CAircraft):
         # herdado de CADIRU
         # self.adiru.f_alt             # altitude
         # self.adiru.f_ias             # instrument air speed
-        # self.adiru.f_proa            # proa em relação ao norte magnético
         # self.adiru.f_true_heading    # proa em relação ao norte verdadeiro
         # self.adiru.f_vel             # velocidade
+
+        # emulation model
+        self.__emula = f_emula
 
         # import foreign objects
         self.__airspace = f_emula.model.airspace
@@ -103,7 +108,6 @@ class CAircraftBasic(sanv.CAircraft):
                 self.adiru.f_alt = 10000.
                 self.adiru.f_ias = 230.
                 self.adiru.f_vel = 230.
-                self.adiru.f_proa = 0.
                 self.adiru.f_true_heading = 0.
 
     # ---------------------------------------------------------------------------------------------
@@ -138,7 +142,7 @@ class CAircraftBasic(sanv.CAircraft):
         # check input
         assert f_data is not None
 
-        # inicia o índice de dados
+        # índice de dados
         li_ndx = 0
 
         # identificacao da aeronave
@@ -187,7 +191,6 @@ class CAircraftBasic(sanv.CAircraft):
         lf_pro = float(f_data[li_ndx])
         li_ndx += 1
 
-        self.adiru.f_proa = lf_pro
         self.adiru.f_true_heading = lf_pro
 
         # callsign
@@ -207,6 +210,7 @@ class CAircraftBasic(sanv.CAircraft):
         """
         determine groundspeed from radar history
         """
+        # clear to go ?
         if len(self.__lst_trail) < 3:
             # return
             return 0
@@ -222,20 +226,28 @@ class CAircraftBasic(sanv.CAircraft):
         """
         determine magnetic track from radar history
         """
+        # clear to go ?
         if len(self.__lst_trail) < 3:
             # return
             return 0
 
-        # determine magnetic track
-        l_tr = round(tmath.track(self.__lst_trail[-1], self.pos) + self.__airspace.f_variation, 0)
+        # calculate position magnectic declination 
+        lf_dcl_mag = self.__emula.model.geomag.GeoMag(self.pos.f_lat, self.pos.f_lng)
+        assert lf_dcl_mag
 
-        # need normalize ?
-        if l_tr < 0:
-            # normalize angle
-            l_tr += 360
+        # cdbg.M_DBG.debug("lf_dcl_mag.dec:[{}]".format(lf_dcl_mag.dec))
+                        
+        # determine magnetic track from radar history
+        # li_mag_trk = round(tmath.track(self.__lst_trail[-1], self.pos) + self.__airspace.f_variation, 0)
+ 
+        # cdbg.M_DBG.debug("self.adiru.f_true_heading:[{}]".format(self.adiru.f_true_heading))
+
+        # determine magnetic track from radar history
+        li_mag_trk = (round(tmath.track(self.__lst_trail[-1], self.pos) + lf_dcl_mag.dec, 0) + 360) % 360
+        # cdbg.M_DBG.debug("li_mag_trk (2):[{}]".format(li_mag_trk))
 
         # return
-        return l_tr
+        return li_mag_trk
 
     # ---------------------------------------------------------------------------------------------
     def trail(self, fi_ndx):
@@ -268,7 +280,7 @@ class CAircraftBasic(sanv.CAircraft):
         """
         get new radar position, and push old one into history
         """
-        # obtém a última posção conhecida
+        # última posção conhecida
         l_last_pos = pll.CPosLatLng(self.pos)
         assert l_last_pos is not None
 
@@ -276,9 +288,9 @@ class CAircraftBasic(sanv.CAircraft):
         self.__lst_trail.append(l_last_pos)
 
         # atualiza a posição da aeronave
-        # self.pos = self.pos
+        self.pos = self.adiru.pos
 
-        # salva o intervalo do rastro
+        # intervalo do rastro
         self.__f_trail_interval = ff_tim
 
     # =============================================================================================
@@ -329,6 +341,23 @@ class CAircraftBasic(sanv.CAircraft):
         set razão de descida/subida
         """
         self.__f_raz = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def f_rumo_mag(self):
+        """
+        get rumo magnético
+        """
+        # calculate position magnectic declination 
+        lf_dcl_mag = self.__emula.model.geomag.GeoMag(self.pos.f_lat, self.pos.f_lng)
+        assert lf_dcl_mag
+
+        # determine magnetic track
+        lf_mag_trk = (self.adiru.f_true_heading + lf_dcl_mag.dec + 360.) % 360.
+        # cdbg.M_DBG.debug("li_mag_trk (1):[{}]".format(li_mag_trk))
+
+        # return
+        return lf_mag_trk
 
     # ---------------------------------------------------------------------------------------------
     @property

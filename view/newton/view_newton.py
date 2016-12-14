@@ -170,6 +170,14 @@ class CViewServer(SocketServer.TCPServer):
                                             
     # ---------------------------------------------------------------------------------------------
     @property
+    def emula(self):
+        """
+        get emulation model
+        """
+        return self.__model.emula
+                                            
+    # ---------------------------------------------------------------------------------------------
+    @property
     def model(self):
         """
         get model manager
@@ -182,7 +190,7 @@ class CViewServer(SocketServer.TCPServer):
         """
         get dicionário de flight engines
         """
-        return self.__model.emula_model.dct_flight 
+        return self.__model.emula.dct_flight 
                                             
     # ---------------------------------------------------------------------------------------------
     @property

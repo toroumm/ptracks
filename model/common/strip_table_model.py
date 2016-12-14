@@ -103,7 +103,7 @@ class CStripTableModel(QtCore.QAbstractTableModel):
                 # return
                 return QtCore.QVariant(l_anv.s_icao_addr)
 
-            # indicativo ?
+            # callsign ?
             elif l_column == ldefs.D_STP_IND:
                 # return
                 return QtCore.QVariant(l_anv.s_callsign)
@@ -131,17 +131,17 @@ class CStripTableModel(QtCore.QAbstractTableModel):
             # altitude ?
             elif l_column == ldefs.D_STP_ALT:
                 # return
-                return QtCore.QVariant(int(l_anv.f_alt))
+                return QtCore.QVariant(int(round(l_anv.f_alt, 0)))
 
             # proa ?
             elif l_column == ldefs.D_STP_PROA:
                 # return
-                return QtCore.QVariant(int(l_anv.f_proa))
+                return QtCore.QVariant(int(round(l_anv.f_rumo_mag, 0)))
 
             # velocidade ?
             elif l_column == ldefs.D_STP_VEL:
                 # return
-                return QtCore.QVariant(int(l_anv.f_vel))
+                return QtCore.QVariant(int(round(l_anv.f_vel, 0)))
 
             # razão descida/subida ?
             elif l_column == ldefs.D_STP_RAZ:
@@ -160,7 +160,7 @@ class CStripTableModel(QtCore.QAbstractTableModel):
 
         # text alignment role ?
         elif f_role == QtCore.Qt.TextAlignmentRole:
-            # indicativo ?
+            # callsign ?
             if l_column == ldefs.D_STP_IND:
                 # return
                 return QtCore.QVariant(int(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter))
@@ -478,7 +478,7 @@ class CStripTableModel(QtCore.QAbstractTableModel):
                 f_value, lv_ok = f_value.toFloat()
 
                 if lv_ok:
-                    l_anv.f_proa = f_value
+                    l_anv.f_rumo_mag = f_value
 
             # velocidade ?
             elif l_column == ldefs.D_STP_VEL:

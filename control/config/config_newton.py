@@ -54,9 +54,7 @@ class CConfigNewton(config.CConfigManager):
     mantém as informações de configuração
     """
     # informações comuns de configuração
-    __CFG_NEWTON = {"srv.addr": gdefs.D_SRV_ADDR,    # server address
-                    "srv.port": gdefs.D_SRV_PORT     # server port (61000)
-                   }  # __CFG_NEWTON
+    __CFG_NEWTON = {}  # __CFG_NEWTON
 
     # ---------------------------------------------------------------------------------------------
     def __init__(self, fs_config):

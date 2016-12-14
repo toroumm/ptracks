@@ -77,23 +77,23 @@ class CEmulaPiloto(model.CEmulaModel):
         # self.dct_flight    # dictionary for active flights
         # self.model         # model manager
 
-        # obtém a queue de dados
+        # queue de dados
         self.__q_rcv_trks = f_control.q_rcv_trks
         assert self.__q_rcv_trks
 
-        # obtém o data listener
+        # data listener
         self.__sck_rcv_trks = f_control.sck_rcv_trks
         assert self.__sck_rcv_trks
 
-        # obtém o http server listener
+        # http server listener
         self.__sck_http = f_control.sck_http
         assert self.__sck_http
 
-        # obtém o relógio da simulação
+        # relógio da simulação
         self.__sim_time = f_control.sim_time
         assert self.__sim_time
 
-        # obtém o dicionário de performances
+        # dicionário de performances
         self.__dct_prf = f_model.dct_prf
         assert self.__dct_prf is not None
 
@@ -114,7 +114,7 @@ class CEmulaPiloto(model.CEmulaModel):
         assert self.dct_flight is not None
         assert self.__dct_prf is not None
                 
-        # obtém o callsign da aeronave
+        # callsign da aeronave
         ls_callsign = flst_data[10]
                             
         # trava a lista de vôos
@@ -136,12 +136,11 @@ class CEmulaPiloto(model.CEmulaModel):
             # libera a lista de vôos
             gdata.G_LCK_FLIGHT.release()
 
-        # obtém o indicativo da performance
+        # indicativo da performance
         ls_prf_ind = flst_data[11]
                             
         # performance não está no dicionário ?
         if self.__dct_prf.get(ls_prf_ind, None) is None:
-
             # monta o request da performance
             ls_req = "data/prf.json?{}".format(ls_prf_ind)
 
@@ -149,7 +148,7 @@ class CEmulaPiloto(model.CEmulaModel):
             l_srv = self.dct_config.get("srv.addr", None)
             
             if l_srv is not None:
-                # obtém os dados de performance do servidor
+                # dados de performance do servidor
                 l_prf = self.__sck_http.get_data(l_srv, ls_req)
 
                 if (l_prf is not None) and (l_prf != ""):
@@ -193,12 +192,12 @@ class CEmulaPiloto(model.CEmulaModel):
         # inicia o recebimento de mensagens de pista
         self.__sck_rcv_trks.start()
 
-        # obtém o tempo inicial em segundos
+        # tempo inicial em segundos
         lf_now = time.time()
 
         # loop
         while gdata.G_KEEP_RUN:
-            # obtém um item da queue de entrada
+            # item da queue de entrada
             llst_data = self.__q_rcv_trks.get()
 
             # queue tem dados ?
@@ -242,10 +241,10 @@ class CEmulaPiloto(model.CEmulaModel):
             # salva o tempo anterior
             lf_ant = lf_now
 
-            # obtém o tempo atual em segundos
+            # tempo atual em segundos
             lf_now = time.time()
                                     
-            # obtém o tempo final em segundos e calcula o tempo decorrido
+            # tempo final em segundos e calcula o tempo decorrido
             lf_dif = lf_now - lf_ant
                                                                             
             # está adiantado ?

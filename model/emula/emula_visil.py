@@ -78,11 +78,11 @@ class CEmulaVisil (model.CEmulaModel):
         # self.dct_flight    # dictionary for all active flights
         # self.model         # model manager
 
-        # obtém a queue de dados
+        # queue de dados
         self.__q_rcv_trks = f_control.q_rcv_trks
         assert self.__q_rcv_trks
 
-        # obtém o data listener
+        # data listener
         self.__sck_rcv_trks = f_control.sck_rcv_trks
         assert self.__sck_rcv_trks
 
@@ -108,19 +108,20 @@ class CEmulaVisil (model.CEmulaModel):
 
         # loop
         while gdata.G_KEEP_RUN:
-            # obtém o tempo inicial em segundos
+            # tempo inicial em segundos
             ll_now = time.time()
 
-            # obtém um item da queue de entrada
+            # item da queue de entrada
             llst_data = self.__q_rcv_trks.get()
-            # M_LOG.debug("llst_data: (%s)" % str(llst_data))
+            # cdbg.M_DBG.debug("llst_data: (%s)" % str(llst_data))
 
             # queue tem dados ?
             if llst_data:
                 # mensagem de status de aeronave ?
                 if gdefs.D_MSG_NEW == int(llst_data[0]):
+                    # callsign
                     ls_callsign = llst_data[10]
-                    # M_LOG.debug("run:callsign:[{}]".format(llst_data[10]))
+                    # cdbg.M_DBG.debug("run:callsign:[{}]".format(llst_data[10]))
 
                     # trava a lista de vôos
                     gdata.G_LCK_FLIGHT.acquire()
@@ -152,7 +153,7 @@ class CEmulaVisil (model.CEmulaModel):
                 # elif gdefs.D_MSG_KLL == int(llst_data[0]):
                     '''
                     # coloca a mensagem na queue
-                    # M_LOG.debug("Elimina: (%s)" % str(ls_callsign))
+                    # cdbg.M_DBG.debug("Elimina: (%s)" % str(ls_callsign))
 
                     # trava a lista de vôos
                     gdata.G_LCK_FLIGHT.acquire()
@@ -170,7 +171,7 @@ class CEmulaVisil (model.CEmulaModel):
                     # cria um evento de eliminação de aeronave
                     l_evt = events.CFlightKill(ls_callsign)
                     assert l_evt
-                    # M_LOG.debug("l_evt: " + str(l_evt))
+                    # cdbg.M_DBG.debug("l_evt: " + str(l_evt))
 
                     # dissemina o evento
                     self.event.post(l_evt)'''
@@ -182,7 +183,7 @@ class CEmulaVisil (model.CEmulaModel):
                     l_log.setLevel(logging.WARNING)
                     l_log.warning("<E01: mensagem não reconhecida ou não tratada.")
 
-            # obtém o tempo final em segundos e calcula o tempo decorrido
+            # tempo final em segundos e calcula o tempo decorrido
             ll_dif = time.time() - ll_now
 
             # esta adiantado ?

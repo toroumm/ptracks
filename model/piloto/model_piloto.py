@@ -42,6 +42,7 @@ from PyQt4 import QtCore
 
 # libs
 import libs.coords.coord_sys as coords
+import libs.geomag.geomag.geomag.geomag as gm
 
 # model
 import model.model_manager as model
@@ -92,6 +93,10 @@ class CModelPiloto(model.CModelManager):
         self.__coords = coords.CCoordSys(lf_ref_lat, lf_ref_lng, lf_dcl_mag)
         assert self.__coords
 
+        # create magnectic converter
+        self.__geomag = gm.GeoMag("data/tabs/WMM.COF")
+        assert self.__geomag
+
         # variáveis de instância
         self.__airspace = None
 
@@ -104,8 +109,8 @@ class CModelPiloto(model.CModelManager):
         self.control.splash.showMessage("creating emulation model...", QtCore.Qt.AlignHCenter | QtCore.Qt.AlignBottom, QtCore.Qt.white)
                         
         # create emula model
-        self.__emula_model = emula.CEmulaPiloto(self, f_control)
-        assert self.__emula_model
+        self.__emula = emula.CEmulaPiloto(self, f_control)
+        assert self.__emula
                         
     # ---------------------------------------------------------------------------------------------
     def __load_air(self, fs_cena):
@@ -224,11 +229,11 @@ class CModelPiloto(model.CModelManager):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def emula_model(self):
+    def emula(self):
         """
         flight model
         """
-        return self.__emula_model
+        return self.__emula
 
     # ---------------------------------------------------------------------------------------------
     @property
@@ -245,6 +250,14 @@ class CModelPiloto(model.CModelManager):
         get dicionário de fixos
         """
         return self.__airspace.dct_fix
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def geomag(self):
+        """
+        get geomag
+        """
+        return self.__geomag
 
     # ---------------------------------------------------------------------------------------------
     @property

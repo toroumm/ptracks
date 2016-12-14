@@ -71,6 +71,7 @@ class CModelNewton(model.CModelManager):
         super(CModelNewton, self).__init__(f_control)
  
         # herdados de CModelManager
+        # self.app           # application
         # self.config        # config manager
         # self.dct_config    # dicionário de configuração
         # self.control       # control manager
@@ -104,11 +105,11 @@ class CModelNewton(model.CModelManager):
         self.__load_dicts()
 
         # create flight emulation model
-        self.__emula_model = emula.CEmulaNewton(self, f_control)
-        assert self.__emula_model
+        self.__emula = emula.CEmulaNewton(self, f_control)
+        assert self.__emula
 
         # set as daemon
-        self.__emula_model.daemon = True
+        self.__emula.daemon = True
 
     # ---------------------------------------------------------------------------------------------
     def __load_air(self):
@@ -117,7 +118,6 @@ class CModelNewton(model.CModelManager):
 
         @return flag e mensagem
         """
-        '''
         # obtém o diretório padrão de airspaces
         ls_dir = self.dct_config["dir.air"]
 
@@ -131,7 +131,7 @@ class CModelNewton(model.CModelManager):
 
         # expand user (~)
         ls_dir = os.path.expanduser(ls_dir)
-        '''
+
         # create airspace
         self.__airspace = airs.CAirspaceNewton(self)
         assert self.__airspace
@@ -231,11 +231,11 @@ class CModelNewton(model.CModelManager):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def emula_model(self):
+    def emula(self):
         """
         get emula model
         """
-        return self.__emula_model
+        return self.__emula
 
     # ---------------------------------------------------------------------------------------------
     @property

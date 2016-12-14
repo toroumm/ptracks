@@ -48,7 +48,7 @@ class CAircraft(object):
     mantém as informações específicas sobre uma aeronave
     """
     # ---------------------------------------------------------------------------------------------
-    def __init__(self, fs_id="ABCDEF"):
+    def __init__(self, fs_id="NOADDR"):
         """
         @param  fs_id: identificação da aeronave
         """
@@ -131,6 +131,21 @@ class CAircraft(object):
 
     # ---------------------------------------------------------------------------------------------
     @property
+    def f_ias(self):
+        """
+        get ias (instrument air speed)
+        """
+        return self.__adiru.f_ias
+
+    @f_ias.setter
+    def f_ias(self, f_val):
+        """
+        set ias (instrument air speed)
+        """
+        self.__adiru.f_ias = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
     def s_icao_addr(self):
         """
         get ICAO address
@@ -188,21 +203,6 @@ class CAircraft(object):
         set position
         """
         self.__pos = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
-    def f_proa(self):
-        """
-        get proa
-        """
-        return self.__adiru.f_proa
-
-    @f_proa.setter
-    def f_proa(self, f_val):
-        """
-        set proa
-        """
-        self.__adiru.f_proa = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

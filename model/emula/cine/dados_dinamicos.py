@@ -46,7 +46,7 @@ import model.newton.defs_newton as ldefs
 import model.emula.cine.calc_proa_demanda as cpd
 
 # control
-import control.control_debug as dbg
+import control.control_debug as cdbg
 
 # -------------------------------------------------------------------------------------------------
 def __atualiza_altitude(f_atv, fl_delta_t, ff_vel_med):

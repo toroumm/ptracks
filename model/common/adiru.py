@@ -35,9 +35,6 @@ __date__ = "2016/01"
 # python library
 import copy
 
-# libs
-import libs.coords.pos_lat_lng as pll
-
 # < class CADIRU >---------------------------------------------------------------------------------
 
 class CADIRU(object):
@@ -57,9 +54,6 @@ class CADIRU(object):
 
         # instrument air speed
         self.__f_ias = 0.
-
-        # proa em relação ao norte magnético
-        self.__f_proa = 0.
 
         # proa em relação ao norte verdadeiro
         self.__f_true_heading = 0.
@@ -111,25 +105,6 @@ class CADIRU(object):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def f_proa(self):
-        """
-        get proa
-        """
-        return self.__f_proa
-
-    @f_proa.setter
-    def f_proa(self, f_val):
-        """
-        set proa
-        """
-        # check input
-        assert 0. <= f_val <= 360.
-
-        # save proa
-        self.__f_proa = f_val
-
-    # ---------------------------------------------------------------------------------------------
-    @property
     def f_true_heading(self):
         """
         get true heading
@@ -144,7 +119,7 @@ class CADIRU(object):
         # check input
         assert 0. <= f_val <= 360.
 
-        # save true heading
+        # true heading
         self.__f_true_heading = f_val
 
     # ---------------------------------------------------------------------------------------------

@@ -51,7 +51,7 @@ import model.items.trf_new as trf
 import model.newton.defs_newton as ldefs
 
 # control
-import control.control_debug as dbg
+import control.control_debug as cdbg
 import control.common.glb_defs as gdefs
 
 # < class CEmulaNewton >---------------------------------------------------------------------------
@@ -84,39 +84,39 @@ class CEmulaNewton(model.CEmulaModel):
         # self.dct_flight    # dictionary of active flights
         # self.model         # model manager
 
-        # obtém o MPI Comm World
+        # MPI Comm World
         self.__mpi_comm = f_control.mpi_comm
         assert self.__mpi_comm
 
-        # obtém o MPI rank
+        # MPI rank
         self.__mpi_rank = f_control.mpi_rank
         assert self.__mpi_rank > -1
 
-        # obtém o MPI size
+        # MPI size
         self.__mpi_size = f_control.mpi_size
         assert self.__mpi_size > -1
 
-        # obtém o sender de ccc
+        # sender de ccc
         self.__sck_snd_cnfg = f_control.sck_snd_cnfg
         assert self.__sck_snd_cnfg
 
-        # obtém a queue de ccc
+        # a queue de ccc
         self.__q_snd_cnfg = f_control.q_snd_cnfg
         assert self.__q_snd_cnfg
 
-        # obtém o receiver de comandos de pilotagem
+        # receiver de comandos de pilotagem
         self.__sck_rcv_cpil = f_control.sck_rcv_cpil
         assert self.__sck_rcv_cpil
 
-        # obtém o queue de comandos de pilotagem
+        # queue de comandos de pilotagem
         self.__q_rcv_cpil = f_control.q_rcv_cpil
         assert self.__q_rcv_cpil
 
-        # obtém o relógio da simulação
+        # relógio da simulação
         self.__sim_time = f_control.sim_time
         assert self.__sim_time
 
-        # obtém o exercício
+        # exercício
         self.__exe = f_model.exe
         assert self.__exe
 
@@ -138,7 +138,7 @@ class CEmulaNewton(model.CEmulaModel):
         # check input
         assert f_trf
 
-        # checks
+        # clear to go
         assert self.control
 
         # cria uma nova aeronave ativa a partir de um tráfego
@@ -171,16 +171,16 @@ class CEmulaNewton(model.CEmulaModel):
         # check input
         assert f_trf
 
-        # checks
+        # clear to go
         assert self.__sim_time
 
-        # obtém a hora da simulação
+        # a hora da simulação
         lb_h, lb_m, lb_s, _ = self.__sim_time.obtem_hora()
 
         # calcula o tempo da simulação
         li_sim = (((lb_h * 60) + lb_m) * 60) + lb_s
 
-        # obtém a hora de ativação da aeronave
+        # a hora de ativação da aeronave
         lt_hatv = f_trf.t_trf_hor_atv
 
         # calcula o tempo da ativação
@@ -190,7 +190,7 @@ class CEmulaNewton(model.CEmulaModel):
         return li_atv <= li_sim
 
     # ---------------------------------------------------------------------------------------------
-    def __parse_msg_pil(self, fs_msg):
+    def parse_msg_pil(self, fs_msg):
         """
         faz o parse da mensagem de pilotagem recebida
 
@@ -199,28 +199,28 @@ class CEmulaNewton(model.CEmulaModel):
         # check input
         assert fs_msg
 
-        # obtém o indicativo do tráfego (callsign)
+        # indicativo do tráfego (callsign)
         llst_tok = fs_msg.split(':')
-        dbg.M_DBG.debug("llst_tok: " + str(llst_tok))
+        cdbg.M_DBG.debug("llst_tok: " + str(llst_tok))
 
-        # obtém a aeronave ativa
+        # a aeronave ativa
         l_atv = self.dct_flight.get(llst_tok[0].strip().upper())
 
         if l_atv is None:
             # logger
-            l_log = logging.getLogger("CEmulaNewton::__parse_msg_pil")
+            l_log = logging.getLogger("CEmulaNewton::parse_msg_pil")
             l_log.setLevel(logging.ERROR)
             l_log.error(u"<E01: tráfego [{}] não existe.".format(llst_tok[0].strip().upper()))
 
             # callsign não existe. cai fora...
             return
 
-        # obtém o flight engine da aeronave
+        # flight engine da aeronave
         l_fe = l_atv.atv_fe
 
         if l_fe is None:
             # logger
-            l_log = logging.getLogger("CEmulaNewton::__parse_msg_pil")
+            l_log = logging.getLogger("CEmulaNewton::parse_msg_pil")
             l_log.setLevel(logging.ERROR)
             l_log.error(u"<E02: flight engine de [{}] não existe.".format(llst_tok[0]))
 
@@ -235,7 +235,7 @@ class CEmulaNewton(model.CEmulaModel):
         """
         checks whether it's time to created another flight
         """
-        # checks
+        # clear to go
         assert self.__exe
 
         # enquanto não inicia...
@@ -304,22 +304,23 @@ class CEmulaNewton(model.CEmulaModel):
                 continue
 
             try:
-                # obtém um item da queue de pilotagem (nowait)
+                # um item da queue de pilotagem (nowait)
                 llst_data = self.__q_rcv_cpil.get(False)
+                cdbg.M_DBG.debug("llst_data: " + str(llst_data))
 
                 # queue tem dados ?
                 if llst_data:
                     # mensagem de pilotagem ?
                     if gdefs.D_MSG_PIL == int(llst_data[0]):
                         # faz o parser do comando de pilotagem recebido
-                        self.__parse_msg_pil(llst_data[1])
+                        self.parse_msg_pil(llst_data[1])
 
             # em caso de não haver mensagens...
             except Queue.Empty, ls_err:
                 # não faz nada...
                 pass
 
-            # obtém o tempo atual em segundos
+            # tempo atual em segundos
             lf_now = time.time()
 
             # round robin (.1s)
@@ -345,7 +346,7 @@ class CEmulaNewton(model.CEmulaModel):
         """
         checks whether it's time to created another flight
         """
-        # checks
+        # clear to go
         assert self.__exe
 
         # inicia o timer de check de ativação (30s)
@@ -393,7 +394,7 @@ class CEmulaNewton(model.CEmulaModel):
                             # aeronave aguardando um piloto
                             # l_trf.en_trf_est_atv = ldefs.E_QUEUED
 
-            # obtém o tempo atual em segundos
+            # tempo atual em segundos
             lf_now = time.time()
 
             # check de ativação (30s)
@@ -419,7 +420,7 @@ class CEmulaNewton(model.CEmulaModel):
         """
         checks whether it's time to created another flight
         """
-        # checks
+        # clear to go
         assert self.__exe
         assert self.__sck_snd_cnfg
 
@@ -431,7 +432,7 @@ class CEmulaNewton(model.CEmulaModel):
             # envia os dados de exercício
             self.__exe.send_exe(self.__sck_snd_cnfg)
 
-            # obtém o tempo atual em segundos
+            # tempo atual em segundos
             lf_now = time.time()
 
             # check de configuração (5s)
@@ -457,7 +458,7 @@ class CEmulaNewton(model.CEmulaModel):
         """
         checks whether it's time to created another flight
         """
-        # checks
+        # clear to go
         assert self.__sck_snd_cnfg
         assert self.__sim_time
         assert self.__s_srv_addr
@@ -473,7 +474,7 @@ class CEmulaNewton(model.CEmulaModel):
             # envia os dados de hora
             self.__sim_time.send_hora(self.__sck_snd_cnfg)
 
-            # obtém o tempo atual em segundos
+            # tempo atual em segundos
             lf_now = time.time()
 
             # check de hora (1s)
@@ -514,11 +515,11 @@ class CEmulaNewton(model.CEmulaModel):
                 # verifica aeronave
                 assert isinstance(l_atv1, atv.CAtvNEW)
 
-                # obtém a posição do vôo
+                # a posição do vôo
                 lf_x1 = l_atv1.f_trf_x
                 lf_y1 = l_atv1.f_trf_y
 
-                # obtém a altitude do vôo em metros
+                # a altitude do vôo em metros
                 ld_alt1 = l_atv1.f_trf_alt_atu
 
                 # reset proximity alert
@@ -534,11 +535,11 @@ class CEmulaNewton(model.CEmulaModel):
                         # vai para o próximo vôo
                         continue
 
-                    # obtém a posição do vôo
+                    # a posição do vôo
                     lf_x2 = l_atv2.f_trf_x
                     lf_y2 = l_atv2.f_trf_y
 
-                    # obtém a altitude do vôo em metros
+                    # a altitude do vôo em metros
                     ld_alt2 = l_atv2.f_trf_alt_atu
 
                     # calcula a distância euclidiana entre eles
@@ -547,7 +548,7 @@ class CEmulaNewton(model.CEmulaModel):
                     # calcula a separação vertical em metros entre eles
                     lf_vrt = abs(ld_alt1 - ld_alt2)
 
-                    # dbg.M_DBG.debug(u"distâncias: H[%f] V[%f]" % (lf_hrz, lf_vrt))
+                    # cdbg.M_DBG.debug(u"distâncias: H[%f] V[%f]" % (lf_hrz, lf_vrt))
 
                     # as duas estão em vôo ?
                     if (not l_atv1.v_atv_solo) and (not l_atv2.v_atv_solo):
@@ -611,7 +612,7 @@ class CEmulaNewton(model.CEmulaModel):
                             # emite o aviso sonoro
                             # self._snd_alert.play()
 
-            # obtém o tempo atual em segundos
+            # tempo atual em segundos
             lf_now = time.time()
 
             # check de colisão (1s)

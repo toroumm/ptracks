@@ -41,9 +41,6 @@ from PyQt4 import QtGui
 
 # < variáveis globais >----------------------------------------------------------------------------
 
-# logging level
-w_logLvl = logging.DEBUG
-
 # callsign
 g_Callsign = ["AAL9717", "AZU8112", "BGR6707", "FWK6313", "GOL7883", "JAL3922", "QNT9974", "TAM9261", ]
 

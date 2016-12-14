@@ -55,7 +55,7 @@ import model.piloto.model_piloto as model
 import view.piloto.view_piloto as view
 
 # control 
-import control.control_debug as dbg
+# import control.control_debug as cdbg
 import control.control_basic as control
 
 import control.common.glb_defs as gdefs
@@ -158,8 +158,8 @@ class CControlPiloto(control.CControlBasic):
         assert self.model
 
         # get flight model
-        self.__emula_model = self.model.emula_model
-        assert self.__emula_model
+        self.__emula = self.model.emula
+        assert self.__emula
 
         # create view manager
         self.view = view.CViewPiloto(self, self.model)
@@ -177,7 +177,7 @@ class CControlPiloto(control.CControlBasic):
 
         # clear to go
         assert self.event
-        assert self.__emula_model
+        assert self.__emula
         assert self.__q_rcv_cnfg
         assert self.__sck_rcv_cnfg
 
@@ -194,7 +194,7 @@ class CControlPiloto(control.CControlBasic):
         self.__sck_rcv_cnfg.start()
 
         # starts flight model
-        self.__emula_model.start()
+        self.__emula.start()
 
         # obtém o tempo inicial em segundos
         lf_now = time.time()
@@ -301,18 +301,18 @@ class CControlPiloto(control.CControlBasic):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def emula_model(self):
+    def emula(self):
         """
         get flight model
         """
-        return self.__emula_model
+        return self.__emula
 
-    @emula_model.setter
-    def emula_model(self, f_val):
+    @emula.setter
+    def emula(self, f_val):
         """
         set flight model
         """
-        self.__emula_model = f_val
+        self.__emula = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

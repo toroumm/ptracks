@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 ---------------------------------------------------------------------------------------------------
-defs_newton.
-defines e constantes válidas localmente.
+defs_newton
+
+defines e constantes válidas localmente
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

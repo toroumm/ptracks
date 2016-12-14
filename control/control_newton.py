@@ -43,8 +43,6 @@ from mpi4py import MPI
 
 # model 
 import model.common.glb_data as gdata
-import control.common.glb_defs as gdefs
-
 import model.newton.model_newton as model
 
 # view 
@@ -52,9 +50,10 @@ import view.newton.view_newton as view
 
 # control 
 import control.control_basic as control
+# import control.control_debug as cdbg
 
+import control.common.glb_defs as gdefs
 import control.config.config_newton as config
-
 import control.events.events_basic as events
 
 import control.network.get_address as gaddr
@@ -78,7 +77,7 @@ class CControlNewton(control.CControlBasic):
         super(CControlNewton, self).__init__()
 
         # herdados de CControlManager
-        # self.app       # the application itself
+        # self.app       # the application
         # self.event     # event manager
         # self.config    # opções de configuração
         # self.model     # model manager
@@ -106,7 +105,7 @@ class CControlNewton(control.CControlBasic):
         self.__q_snd_cnfg = multiprocessing.Queue()
         assert self.__q_snd_cnfg
 
-        # obtém o endereço de envio
+        # endereço de envio
         lt_ifce, ls_addr, li_port = gaddr.get_address(self.config, "net.cnfg")
 
         # cria o socket de envio de comando/controle/configuração
@@ -117,7 +116,7 @@ class CControlNewton(control.CControlBasic):
         self.__q_snd_trks = multiprocessing.Queue()
         assert self.__q_snd_trks
 
-        # obtém o endereço de envio
+        # endereço de envio
         lt_ifce, ls_addr, li_port = gaddr.get_address(self.config, "net.trks")
 
         # cria o socket de envio de pistas
@@ -128,7 +127,7 @@ class CControlNewton(control.CControlBasic):
         self.__q_rcv_cnfg = multiprocessing.Queue()
         assert self.__q_rcv_cnfg
 
-        # obtém o endereço de recebimento
+        # endereço de recebimento
         lt_ifce, ls_addr, li_port = gaddr.get_address(self.config, "net.cnfg")
 
         # cria o socket de recebimento de comando/controle/configuração
@@ -142,7 +141,7 @@ class CControlNewton(control.CControlBasic):
         self.__q_rcv_cpil = multiprocessing.Queue()
         assert self.__q_rcv_cpil
 
-        # obtém o endereço de recebimento
+        # endereço de recebimento
         lt_ifce, ls_addr, li_port = gaddr.get_address(self.config, "net.cpil")
 
         # cria o socket de recebimento de comandos de pilotagem
@@ -160,8 +159,8 @@ class CControlNewton(control.CControlBasic):
         assert self.model
 
         # get flight emulation model
-        self.__emula_model = self.model.emula_model
-        assert self.__emula_model
+        self.__emula = self.model.emula
+        assert self.__emula
 
         # create view manager
         self.view = view.CViewNewton(self.model, self)
@@ -172,7 +171,7 @@ class CControlNewton(control.CControlBasic):
         """
         termina a aplicação
         """
-        # checks
+        # clear to go
         assert self.event
 
         # cria um evento de fim de execução
@@ -236,7 +235,7 @@ class CControlNewton(control.CControlBasic):
         assert self.event
         assert self.__q_rcv_cnfg
         assert self.__sck_rcv_cnfg
-        assert self.__emula_model
+        assert self.__emula
 
         # temporização de scheduler
         lf_tim_rrbn = self.config.dct_config["tim.rrbn"]
@@ -248,7 +247,7 @@ class CControlNewton(control.CControlBasic):
         self.__sck_rcv_cnfg.start()
 
         # starts flight model
-        self.__emula_model.start()
+        self.__emula.start()
 
         # starts web server
         self.view.start()
@@ -256,7 +255,7 @@ class CControlNewton(control.CControlBasic):
         # keep things running
         gdata.G_KEEP_RUN = True
 
-        # obtém o tempo inicial em segundos
+        # tempo inicial em segundos
         lf_now = time.time()
 
         # application loop
@@ -273,19 +272,19 @@ class CControlNewton(control.CControlBasic):
                         self.cbk_termina()
 
                     # mensagem de aceleração ?
-                    # elif gdefs.D_MSG_ACC == int(llst_data[0]):
+                    elif gdefs.D_MSG_ACC == int(llst_data[0]):
                         # acelera/desacelera a aplicação
-                        # pass  # self.cbk_acelera(float(llst_data[1]))
+                        self.sim_time.cbk_acelera(float(llst_data[1]))
 
                     # mensagem de congelamento ?
-                    # elif gdefs.D_MSG_FRZ == int(llst_data[0]):
+                    elif gdefs.D_MSG_FRZ == int(llst_data[0]):
                         # salva a hora atual
-                        # pass  # self.sim_time.cbk_congela()
+                        self.sim_time.cbk_congela()
 
                     # mensagem de descongelamento ?
-                    # elif gdefs.D_MSG_UFZ == int(llst_data[0]):
+                    elif gdefs.D_MSG_UFZ == int(llst_data[0]):
                         # restaura a hora
-                        # pass  # self.sim_time.cbk_descongela()
+                        self.sim_time.cbk_descongela()
 
                     # senão, mensagem não reconhecida ou não tratavél
                     else:
@@ -296,11 +295,10 @@ class CControlNewton(control.CControlBasic):
 
             # em caso de não haver mensagens...
             except Queue.Empty:
-
                 # salva o tempo anterior
                 lf_ant = lf_now
 
-                # obtém o tempo atual em segundos
+                # tempo atual em segundos
                 lf_now = time.time()
 
                 # calcula o tempo decorrido
@@ -326,15 +324,15 @@ class CControlNewton(control.CControlBasic):
         """
         DOCUMENT ME!
         """
-        # checks
+        # clear to go
         assert self.model
         assert self.sim_time
 
-        # obtém o exercício
+        # exercício
         l_exe = self.model.exe
         assert l_exe
 
-        # obtém a hora de início do exercício
+        # hora de início do exercício
         lt_hora = l_exe.t_exe_hor_ini
 
         # inicia o relógio da simulação
@@ -346,18 +344,18 @@ class CControlNewton(control.CControlBasic):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def emula_model(self):
+    def emula(self):
         """
         get flight emulation model
         """
-        return self.__emula_model
+        return self.__emula
 
-    @emula_model.setter
-    def emula_model(self, f_val):
+    @emula.setter
+    def emula(self, f_val):
         """
         set flight emulation model
         """
-        self.__emula_model = f_val
+        self.__emula = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

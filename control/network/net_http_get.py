@@ -58,10 +58,10 @@ class CNetHttpGet(object):
         # inicializa a super class
         super(CNetHttpGet, self).__init__()
 
-        # salva o event manager
+        # event manager
         # self.__event = f_event
 
-        # salva o config manager
+        # config manager
         # self.__config = f_config
 
     # ---------------------------------------------------------------------------------------------

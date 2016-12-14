@@ -55,7 +55,7 @@ import model.visil.model_visil as model
 import view.visil.view_visil as view
 
 # control 
-import control.control_debug as dbg
+# import control.control_debug as cdbg
 import control.control_basic as control
 
 import control.common.glb_defs as gdefs
@@ -63,6 +63,7 @@ import control.config.config_visil as config
 import control.events.events_config as events
 
 import control.network.get_address as gaddr
+import control.network.net_http_get as httpsrv
 import control.network.net_listener as listener
 
 import control.simula.sim_time as stime
@@ -136,13 +137,17 @@ class CControlVisil(control.CControlBasic):
         self.__sck_rcv_trks = listener.CNetListener(lt_ifce, ls_addr, li_port, self.__q_rcv_trks)
         assert self.__sck_rcv_trks
 
+        # cria o socket de acesso ao servidor
+        self.__sck_http = httpsrv.CNetHttpGet(self.event, self.config)
+        assert self.__sck_http
+
         # instancia o modelo
         self.model = model.CModelVisil(self)
         assert self.model
 
         # get flight model
-        self.__emula_model = self.model.emula_model
-        assert self.__emula_model
+        self.__emula = self.model.emula
+        assert self.__emula
 
         # create view manager
         self.view = view.CViewVisil(self, self.model)
@@ -155,7 +160,7 @@ class CControlVisil(control.CControlBasic):
         """
         # verifica condições de execução (I)
         assert self.event
-        assert self.__emula_model
+        assert self.__emula
         assert self.__q_rcv_cnfg
         assert self.__sck_rcv_cnfg
 
@@ -169,7 +174,7 @@ class CControlVisil(control.CControlBasic):
         self.__sck_rcv_cnfg.start()
 
         # starts flight model
-        self.__emula_model.start()
+        self.__emula.start()
 
         # keep things running
         gdata.G_KEEP_RUN = True
@@ -291,14 +296,14 @@ class CControlVisil(control.CControlBasic):
 
     # ---------------------------------------------------------------------------------------------
     @property
-    def emula_model(self):
+    def emula(self):
         """
         get flight model
         """
-        return self.__emula_model
+        return self.__emula
 
-    @emula_model.setter
-    def emula_model(self, f_val):
+    @emula.setter
+    def emula(self, f_val):
         """
         set flight model
         """
@@ -306,7 +311,22 @@ class CControlVisil(control.CControlBasic):
         assert f_val
 
         # save flight model
-        self.__emula_model = f_val
+        self.__emula = f_val
+
+    # ---------------------------------------------------------------------------------------------
+    @property
+    def sck_http(self):
+        """
+        get http server listener
+        """
+        return self.__sck_http
+                                            
+    @sck_http.setter
+    def sck_http(self, f_val):
+        """
+        set http server listener
+        """
+        self.__sck_http = f_val
 
     # ---------------------------------------------------------------------------------------------
     @property

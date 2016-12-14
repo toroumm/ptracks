@@ -4,8 +4,7 @@
 ---------------------------------------------------------------------------------------------------
 airspace_newton
 
-basic model manager
-load from one configuration file all configured tables
+basic airspace. Load from one configuration file all configured tables
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

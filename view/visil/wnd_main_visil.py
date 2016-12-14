@@ -100,6 +100,10 @@ class CWndMainVisil(QtGui.QMainWindow, wndmain_ui.Ui_wndMainVisil):
         self.__dct_config = f_control.config.dct_config
         assert self.__dct_config
                         
+        # socket de recebimento
+        self.__sck_http = f_control.sck_http
+        assert self.__sck_http
+                        
         # register as event listener
         self.__event.register_listener(self)
 
@@ -111,7 +115,7 @@ class CWndMainVisil(QtGui.QMainWindow, wndmain_ui.Ui_wndMainVisil):
             gdata.G_DCT_COLORS[l_key] = QtGui.QColor(l_val[1][0], l_val[1][1], l_val[1][2])
 
         # flights dictionary
-        self.__dct_flight = f_control.model.emula_model.dct_flight  
+        self.__dct_flight = f_control.model.emula.dct_flight  
         assert self.__dct_flight is not None
                         
         # current strip

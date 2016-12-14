@@ -33,14 +33,7 @@ __date__ = "2015/11"
 # < imports >--------------------------------------------------------------------------------------
 
 # python library
-# import logging
 import threading
-
-# < module data >----------------------------------------------------------------------------------
-
-# logger
-# M_LOG = logging.getLogger(__name__)
-# M_LOG.setLevel(logging.DEBUG)
 
 # < class CEmulaModel >----------------------------------------------------------------------------
 
@@ -55,39 +48,29 @@ class CEmulaModel(threading.Thread):
         """
         @param f_control: control manager
         """
-        # logger
-        # M_LOG.info("__init__:>>")
-
-        # check input parameters
+        # check input
         assert f_control
         assert f_model
 
         # init super class
         super(CEmulaModel, self).__init__()
 
-        # salva o control manager localmente
+        # control manager
         self.__control = f_control
         assert self.__control
 
-        # salva o model manager localmente
+        # model manager
         self.__model = f_model
         assert self.__model
 
         # initialize the dictionary for all active flights
         self.__dct_flight = {}
 
-        # logger
-        # M_LOG.info("__init__:<<")
-
     # ---------------------------------------------------------------------------------------------
-    # void (?)
     def run(self):
         """
         DOCUMENT ME!
         """
-        # logger
-        # M_LOG.info("run:><")
-
         # return
         return False
 

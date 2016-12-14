@@ -37,6 +37,7 @@ from PyQt4 import QtCore
 from PyQt4 import QtGui
 
 # libs
+# import libs.coords.coord_defs as cdefs
 import libs.coords.pos_lat_lng as pll
 
 # model
@@ -68,14 +69,14 @@ class CPaintEngine(object):
         # check input
         assert fo_widget
 
-        # obtém a posição do aeródromo
+        # posição do aeródromo
         l_pos = fo_widget.viewport.translate_pos(pll.CPosLatLng(f_aer.f_aer_lat, f_aer.f_aer_lng))
 
         # X/Y do aeródromo
         lf_x = l_pos.f_x
         lf_y = l_pos.f_y
 
-        # obtém o blip size
+        # blip size
         lf_blip_size = fo_widget.viewport.f_blip_size
 
         # cria um QPainter
@@ -98,7 +99,7 @@ class CPaintEngine(object):
 
         # para todas as pistas do aeródromo...
         for l_pis in f_aer.dct_aer_pistas.values():
-            # obtém a posição da cabeceira da pista
+            # posição da cabeceira da pista
             l_cab = fo_widget.viewport.translate_pos(pll.CPosLatLng(l_pis.f_pst_lat, l_pis.f_pst_lng))
 
             # obtém a posição da cabeceira oposta da pista
@@ -178,7 +179,7 @@ class CPaintEngine(object):
         # check input
         assert fo_widget
 
-        # get blip size
+        # blip size
         lf_blip_size = fo_widget.viewport.f_blip_size
 
         # create painter
@@ -217,7 +218,7 @@ class CPaintEngine(object):
             # desenha o texto (indicativo do breakpoint)
             lo_painter.drawText(int(l_pos.f_x - lf_blip_size * 2), int(l_pos.f_y - lf_blip_size), ls_id)
 
-            # salva a posição anterior
+            # posição anterior
             l_pos_ant = l_pos
             
         # remove o painter
@@ -257,7 +258,7 @@ class CPaintEngine(object):
         lo_painter.setFont(QtGui.QFont("Arial", int(lf_blip_size * 1.5)))
 
         # draw text (indicativo)
-        lo_painter.drawText(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2), "ARP")
+        lo_painter.drawText(int(lf_x + lf_blip_size), int(lf_y + lf_blip_size * 2), "CTR")
 
         # free QPainter
         del lo_painter
@@ -342,9 +343,9 @@ class CPaintEngine(object):
 
         # paint blip
         lo_painter.drawArc(int(lf_x - lf_blip_size * 0.7),
-                          int(lf_y - lf_blip_size * 0.7),
-                          int(lf_blip_size * 1.4),
-                          int(lf_blip_size * 1.4), 0, 16 * 360)
+                           int(lf_y - lf_blip_size * 0.7),
+                           int(lf_blip_size * 1.4),
+                           int(lf_blip_size * 1.4), 0, 16 * 360)
 
         # paint lide
         lo_painter.drawLine(int(lf_x + lf_blip_size),
@@ -357,17 +358,17 @@ class CPaintEngine(object):
 
         # paint callsign
         l_rect_cs = lo_painter.drawText(int(lf_x + lf_blip_size * 6),
-                                       int(lf_y - lf_blip_size * 7),
-                                       int(lf_blip_size * 20), 
-                                       int(lf_blip_size * 2),
-                                       QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop, "{}".format(f_anv.s_callsign))
+                                        int(lf_y - lf_blip_size * 7),
+                                        int(lf_blip_size * 20), 
+                                        int(lf_blip_size * 2),
+                                        QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop, "{}".format(f_anv.s_callsign))
 
         # move drawing rect down (next line)
         l_rect_cs.setTop(int(l_rect_cs.y() + lf_blip_size * 2))
         l_rect_cs.setBottom(int(l_rect_cs.bottom() + lf_blip_size * 2))
 
         # nível
-        l_str = "{:d}".format(int(f_anv.f_altitude / 100.))
+        l_str = "{:d}".format(int(round(f_anv.f_alt / 100., 0)))
         l_rect_niv = lo_painter.drawText(l_rect_cs, QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop, l_str)
                         
         # move drawing rect down (next line)
@@ -375,13 +376,13 @@ class CPaintEngine(object):
         l_rect_cs.setBottom(int(l_rect_cs.bottom() + lf_blip_size * 2))
 
         # magnetic track
-        # l_str = "{:03d}".format(f_anv.radar_magnetic_track())
-        l_str = "{:03d}".format(int(f_anv.f_true_heading))
+        # l_str = "{:03d}".format(round(f_anv.f_true_heading, 0))
+        l_str = "{:03d}".format(int(round(f_anv.f_rumo_mag, 0)))
         l_rect_pro = lo_painter.drawText(l_rect_cs, QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop, l_str)
                                 
         # groundspeed
         # l_str = "{:d}".format(f_anv.radar_ground_speed())
-        l_str = "{:d}".format(int(f_anv.f_ias))
+        l_str = "{:d}".format(int(round(f_anv.f_ias, 0)))
         l_rect_ias = lo_painter.drawText(l_rect_cs, QtCore.Qt.AlignRight | QtCore.Qt.AlignTop, l_str)
 
         # arrow
@@ -448,7 +449,7 @@ class CPaintEngine(object):
                 l_pos = fo_widget.viewport.translate_pos(fo_widget._airspace.getPosition(rt._aoItem[i + 1].s_name))
 
                 lo_painter.drawLine(tMath.round(lf_x, 0), tMath.round(lf_y, 0),
-                                   tMath.round(l_pos.f_x, 0), tMath.round(l_pos.f_y, 0))
+                                    tMath.round(l_pos.f_x, 0), tMath.round(l_pos.f_y, 0))
 
             del lo_painter
 

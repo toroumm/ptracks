@@ -86,6 +86,9 @@ class CConfigManager(object):
                     "net.port": gdefs.D_NET_PORT,    # porta de comunicação
                     "net.vers": gdefs.D_MSG_VRS,     # versão do protocolo
 
+                    "srv.addr": gdefs.D_SRV_ADDR,    # server address
+                    "srv.port": gdefs.D_SRV_PORT,    # server port (61000)
+
                     "tab.aer": gdefs.D_TBL_AER,      # tabela de aeródromos
                     "tab.fix": gdefs.D_TBL_FIX,      # tabela de fixos
                     "tab.prf": gdefs.D_TBL_PRF,      # tabela de performances
