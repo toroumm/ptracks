@@ -190,17 +190,17 @@ class CEmulaNewton(model.CEmulaModel):
         return li_atv <= li_sim
 
     # ---------------------------------------------------------------------------------------------
-    def parse_msg_pil(self, fs_msg):
+    def __parse_cmd_pil(self, fs_cmd):
         """
-        faz o parse da mensagem de pilotagem recebida
+        faz o parse do comando de pilotagem
 
-        @param fs_msg: mensagem
+        @param fs_cmd: comando
         """
         # check input
-        assert fs_msg
+        assert fs_cmd
 
         # indicativo do tráfego (callsign)
-        llst_tok = fs_msg.split(':')
+        llst_tok = fs_cmd.split(':')
         cdbg.M_DBG.debug("llst_tok: " + str(llst_tok))
 
         # a aeronave ativa
@@ -229,6 +229,27 @@ class CEmulaNewton(model.CEmulaModel):
 
         # envia o comando a aeronave
         l_fe.instruction(llst_tok[1].strip().upper())
+
+    # ---------------------------------------------------------------------------------------------
+    def parse_msg_pil(self, fs_msg):
+        """
+        faz o parse da mensagem de pilotagem recebida
+
+        @param fs_msg: mensagem
+        """
+        # check input
+        assert fs_msg
+
+        # comando de pilotagem
+        llst_cmd = fs_msg.split(';')
+        cdbg.M_DBG.debug("llst_cmd: " + str(llst_cmd))
+
+        # para todos os comandos na mensagem...
+        for ls_cmd in llst_cmd:
+            # comando existe ?
+            if (ls_cmd is not None) and (len(ls_cmd) > 10):
+                # executa o comando...
+                self.__parse_cmd_pil(ls_cmd.strip().upper())
 
     # ---------------------------------------------------------------------------------------------
     def run(self):
