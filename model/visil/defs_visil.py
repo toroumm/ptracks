@@ -1,1 +1,0 @@
-../piloto/defs_piloto.py
