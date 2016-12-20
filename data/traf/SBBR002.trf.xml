@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE trafegos>
+<trafegos VERSION="0001" CODE="1961" FORMAT="NEWTON">
+
+    <trafego nTrf="1">
+        <designador>B737</designador>
+        <ssr>0101</ssr>
+        <indicativo>TAM9261</indicativo>
+        <origem>SBBR</origem>
+        <destino>SBGR</destino>
+        <temptrafego>0</temptrafego>
+        <coord>
+            <tipo>D</tipo>
+            <cpoA>NITBU</cpoA>
+            <cpoB>2</cpoB>
+            <cpoC>180</cpoC>
+        </coord>
+        <velocidade>430</velocidade>
+        <altitude>40000</altitude>
+        <procedimento>TRJ1100</procedimento>
+    </trafego>
+
+    <trafego nTrf="2">
+        <designador>B737</designador>
+        <ssr>0102</ssr>
+        <indicativo>GOL1234</indicativo>
+        <origem>SBBR</origem>
+        <destino>SBGR</destino>
+        <temptrafego>0</temptrafego>
+        <!--
+        <coord>
+            <tipo>D</tipo>
+            <cpoA>NITBU</cpoA>
+            <cpoB>2</cpoB>
+            <cpoC>180</cpoC>
+        </coord>
+        -->
+        <procedimento>SUB1100</procedimento>
+    </trafego>
+
+</trafegos>
