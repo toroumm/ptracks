@@ -55,7 +55,7 @@ class CNetHttpGet(object):
         assert f_event
         assert f_config
 
-        # inicializa a super class
+        # init super class
         super(CNetHttpGet, self).__init__()
 
         # event manager
@@ -71,7 +71,7 @@ class CNetHttpGet(object):
         @param fs_msg: DOCUMENT ME!
         """
         try:
-            # envia o request
+            # send request
             l_resp = urllib2.urlopen("http://{}/{}".format(fs_srv, fs_msg))
 
         # em caso de error...
@@ -84,7 +84,7 @@ class CNetHttpGet(object):
             # return
             return None
 
-        # return data
+        # data
         return l_resp.read()
 
 # < the end >--------------------------------------------------------------------------------------

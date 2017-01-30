@@ -61,13 +61,13 @@ class CNetSender(multiprocessing.Process):
         assert fi_port
         assert f_queue
 
-        # inicializa a super class
+        # init super class
         super(CNetSender, self).__init__()
 
-        # salva o event manager localmente
+        # data queue
         self.__queue = f_queue
 
-        # salva tupla endereço e porta
+        # tupla endereço e porta
         self.__t_addr = (fs_addr, fi_port)
 
         # cria o socket de envio
@@ -87,10 +87,10 @@ class CNetSender(multiprocessing.Process):
         """
         @param fs_msg: DOCUMENT ME!
         """
-        # checks
+        # clear to go
         assert self.__fd_send
 
-        # envia a mensagem
+        # send message
         self.__fd_send.sendto(fs_msg, self.__t_addr)
 
 # < the end >--------------------------------------------------------------------------------------

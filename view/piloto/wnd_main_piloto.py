@@ -674,7 +674,7 @@ class CWndMainPiloto(QtGui.QMainWindow, wndmain_ui.Ui_wndMainPiloto):
         # existe strip selecionada ?
         if self.__get_current_strip() is not None:
             # cria a dialog de direção
-            self.__dlg_direcao = dlgdir.CDlgDirecao(self.__strip_cur.f_proa, self)
+            self.__dlg_direcao = dlgdir.CDlgDirecao(self.__strip_cur.f_rumo_mag, self)
             assert self.__dlg_direcao
 
             # exibe a dialog de direção

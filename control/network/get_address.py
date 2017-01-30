@@ -41,15 +41,15 @@ def get_address(f_config, fs_addr_key):
     @param f_config: gerente de configuração (config manager)
     @param fs_addr_key: address key
     """
-    # check input parameters
+    # check input
     assert f_config
     assert fs_addr_key
 
-    # obtém o dicionário de configuração
+    # dicionário de configuração
     ldct_config = f_config.dct_config
     assert ldct_config is not None
 
-    # obtém o canal de comunicação (3)
+    # canal de comunicação (3)
     li_canal = int(ldct_config.get("glb.canal", 3))
 
     assert (li_canal > 2) and (li_canal < 200)
@@ -58,20 +58,20 @@ def get_address(f_config, fs_addr_key):
     ls_addr = "{}.{}".format(ldct_config.get(fs_addr_key, "235.0.0"), str(li_canal))
     assert ls_addr
 
-    # configura a porta (1961)
+    # porta (1961)
     li_port = int(ldct_config.get("net.port", 1961))
 
     # lista de interfaces disponíveis
     llst_iface = os.listdir("/sys/class/net/")
     assert llst_iface is not None
 
-    # obtém a interface de entrada (None)
+    # interface de entrada (None)
     ls_ifce_in = ldct_config.get("net.ifin", None)
 
     if ls_ifce_in not in llst_iface:
         ls_ifce_in = None
 
-    # obtém a interface de saída (None)
+    # interface de saída (None)
     ls_ifce_out = ldct_config.get("net.iout", None)
 
     if ls_ifce_out not in llst_iface:

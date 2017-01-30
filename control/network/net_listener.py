@@ -73,7 +73,7 @@ class CNetListener(multiprocessing.Process):
         # init super class
         super(CNetListener, self).__init__()
 
-        # salva a queue de dados localmente
+        # queue de dados
         self.__q_queue = f_queue
 
         # cria o socket de recebimento
@@ -100,7 +100,7 @@ class CNetListener(multiprocessing.Process):
             l_log.warning("<E01: some systems don't support SO_REUSEPORT:[{}]".format(ls_err))
 
         # set some options to make it multicast-friendly
-        # self.__fd_recv.setsockopt ( socket.SOL_IP, socket.IP_MULTICAST_TTL, 20 )
+        # self.__fd_recv.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_TTL, 20)
         self.__fd_recv.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_LOOP, 1)
 
         # bind udp port. Better use:
@@ -122,7 +122,7 @@ class CNetListener(multiprocessing.Process):
         """
         drive application
         """
-        # check requirements
+        # clear to go
         assert self.__fd_recv
 
         # enquanto não inicia...
@@ -132,15 +132,11 @@ class CNetListener(multiprocessing.Process):
 
         # application loop
         while gdata.G_KEEP_RUN:
-            # M_LOG.debug("net_listener.run: wait recvfrom.")
-
             # aguarda receber uma mensagem (de até 512 bytes)
             l_data, l_addr = self.__fd_recv.recvfrom(512)
-            # M_LOG.debug("Msg [{}] recebida de [{}]: ".format(l_data, l_addr))
 
             # divide a mensagem em seus componentes
             llst_data = l_data.split(gdefs.D_MSG_SEP)
-            # M_LOG.debug("Msg [{}] em partes [{}]: ".format(l_data, llst_data))
 
             # versão da mensagem não reconhecida ?
             if gdefs.D_MSG_VRS != int(llst_data[0]):
@@ -152,12 +148,12 @@ class CNetListener(multiprocessing.Process):
                 # coloca a mensagem na queue
                 self.__q_queue.put(llst_data[1:])
 
-            # otherwise, mensagem não reconhecida ou inválida
+            # mensagem não reconhecida ou inválida
             else:
                 # logger
                 l_log = logging.getLogger("CNetListener::run")
                 l_log.setLevel(logging.WARNING)
-                l_log.warning("<E01: Unknow:[{}].".format(llst_data[2:]))
+                l_log.warning("<E01: unknow:[{}].".format(llst_data[2:]))
 
     # =============================================================================================
     # data
@@ -173,11 +169,10 @@ class CNetListener(multiprocessing.Process):
 
         # fila tem dados ?
         if self.__q_queue:
-            # obtém o primeiro item da fila
+            # primeiro item da fila
             llst_data = self.__q_queue.pop(0)
-            # M_LOG.debug("llst_data: " + str(llst_data))
 
-        # retorna o dado recebido
+        # dado recebido
         return llst_data
 
     # ---------------------------------------------------------------------------------------------
