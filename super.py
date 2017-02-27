@@ -42,24 +42,27 @@ sip.setapi('QString', 2)
 # PyQt4
 from PyQt4 import QtGui
 
-# view
-import view.super.dlg_config as dcfg
+# control
+import control.control_super as control
 
 # -------------------------------------------------------------------------------------------------
 def main():
     """
     initalize and kick off the main loop
     """
-    # instancia a aplicação
-    l_app = QtGui.QApplication(sys.argv)
-    assert l_app
-
-    # instancia a dialog
-    ldlg_cnfg = dcfg.CDlgConfig()
-    assert ldlg_cnfg
-
-    # ativa a dialog
-    sys.exit(ldlg_cnfg.exec_())
+    # instancia o controller
+    l_control = control.CControlSuper()
+    assert l_control
+            
+    # ativa o controller
+    l_control.start()
+                    
+    # obtém a view  
+    l_view = l_control.view
+    assert l_view
+                                
+    # ativa a viewer
+    l_view.run()
 
 # -------------------------------------------------------------------------------------------------
 # this is the bootstrap process

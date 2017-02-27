@@ -55,43 +55,51 @@ class CDlgConfig(QtGui.QDialog):
     DOCUMENT ME!
     """
     # ---------------------------------------------------------------------------------------------
-    def __init__(self, f_parent=None):
+    def __init__(self, f_control, f_parent=None):
         """
         initializes the wizard
         """
+        # check input
+        assert f_control
+        
         # init super class
         super(CDlgConfig, self).__init__(f_parent)
 
-        self.__wdg_contents = QtGui.QListWidget()
-        assert self.__wdg_contents
+        # create list widget
+        self.__qlw_contents = QtGui.QListWidget()
+        assert self.__qlw_contents
         
-        self.__wdg_contents.setViewMode(QtGui.QListView.IconMode)
-        self.__wdg_contents.setIconSize(QtCore.QSize(96, 84))
-        self.__wdg_contents.setMovement(QtGui.QListView.Static)
-        self.__wdg_contents.setMaximumWidth(128)
-        self.__wdg_contents.setSpacing(12)
+        self.__qlw_contents.setViewMode(QtGui.QListView.IconMode)
+        self.__qlw_contents.setIconSize(QtCore.QSize(96, 84))
+        self.__qlw_contents.setMovement(QtGui.QListView.Static)
+        self.__qlw_contents.setMaximumWidth(128)
+        self.__qlw_contents.setSpacing(12)
 
-        self.__wdg_pages = QtGui.QStackedWidget()
-        assert self.__wdg_pages
+        # create stacked pages
+        self.__qsw_pages = QtGui.QStackedWidget()
+        assert self.__qsw_pages
         
-        self.__wdg_pages.addWidget(pcfg.CPagConfig())
-        self.__wdg_pages.addWidget(pupd.CPagUpdate())
-        self.__wdg_pages.addWidget(pqry.CPagQuery())
+        self.__qsw_pages.addWidget(pcfg.CPagConfig())
+        self.__qsw_pages.addWidget(pupd.CPagUpdate())
+        self.__qsw_pages.addWidget(pqry.CPagQuery())
 
+        # create close button
         lbtn_close = QtGui.QPushButton("Close")
         assert lbtn_close
 
         lbtn_close.clicked.connect(self.close)
 
+        # load icons
         self.__create_icons()
 
-        self.__wdg_contents.setCurrentRow(0)
+        # list positioning
+        self.__qlw_contents.setCurrentRow(0)
 
         lhlo_horizontal = QtGui.QHBoxLayout()
         assert lhlo_horizontal
         
-        lhlo_horizontal.addWidget(self.__wdg_contents)
-        lhlo_horizontal.addWidget(self.__wdg_pages, 1)
+        lhlo_horizontal.addWidget(self.__qlw_contents)
+        lhlo_horizontal.addWidget(self.__qsw_pages, 1)
 
         lhlo_buttons = QtGui.QHBoxLayout()
         assert lhlo_buttons
@@ -109,9 +117,11 @@ class CDlgConfig(QtGui.QDialog):
 
         self.setLayout(lvlo_main)
 
-        self.setWindowTitle("Config Dialog")
+        # dialog title
+        self.setWindowTitle(self.tr("Super 0.1 [Supervisor]", None))
 
     # ---------------------------------------------------------------------------------------------
+    # (QListWidgetItem *, QListWidgetItem *)
     def __change_page(self, f_current, f_previous):
         """
         DOCUMENT ME!
@@ -119,14 +129,15 @@ class CDlgConfig(QtGui.QDialog):
         if not f_current:
             f_current = f_previous
 
-        self.__wdg_pages.setCurrentIndex(self.__wdg_contents.row(f_current))
+        self.__qsw_pages.setCurrentIndex(self.__qlw_contents.row(f_current))
 
     # ---------------------------------------------------------------------------------------------
     def __create_icons(self):
         """
         DOCUMENT ME!
         """
-        lbtn_config = QtGui.QListWidgetItem(self.__wdg_contents)
+        # config button
+        lbtn_config = QtGui.QListWidgetItem(self.__qlw_contents)
         assert lbtn_config
         
         lbtn_config.setIcon(QtGui.QIcon(':/images/config.png'))
@@ -134,7 +145,8 @@ class CDlgConfig(QtGui.QDialog):
         lbtn_config.setTextAlignment(QtCore.Qt.AlignHCenter)
         lbtn_config.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
-        lbtn_update = QtGui.QListWidgetItem(self.__wdg_contents)
+        # update button
+        lbtn_update = QtGui.QListWidgetItem(self.__qlw_contents)
         assert lbtn_update
 
         lbtn_update.setIcon(QtGui.QIcon(':/images/update.png'))
@@ -142,7 +154,8 @@ class CDlgConfig(QtGui.QDialog):
         lbtn_update.setTextAlignment(QtCore.Qt.AlignHCenter)
         lbtn_update.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
-        lbtn_query = QtGui.QListWidgetItem(self.__wdg_contents)
+        # query button
+        lbtn_query = QtGui.QListWidgetItem(self.__qlw_contents)
         assert lbtn_query
 
         lbtn_query.setIcon(QtGui.QIcon(':/images/query.png'))
@@ -150,6 +163,7 @@ class CDlgConfig(QtGui.QDialog):
         lbtn_query.setTextAlignment(QtCore.Qt.AlignHCenter)
         lbtn_query.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
-        self.__wdg_contents.currentItemChanged.connect(self.__change_page)
+        # connect
+        self.__qlw_contents.currentItemChanged.connect(self.__change_page)
 
 # < the end >--------------------------------------------------------------------------------------
