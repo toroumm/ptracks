@@ -440,7 +440,7 @@ if "__main__" == __name__:
     # logger
     logging.basicConfig()
         
-    cm = CColorManager(None, "../data/colors.dat")
+    cm = CColorManager("../data/colors.dat", None)
 
     print cm.get_color("sel_menu_default_bkgrnd")
     print cm.get_color_by_no(5)
