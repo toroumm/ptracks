@@ -1,0 +1,26 @@
+#!/bin/sh
+
+INSTALL_DIR=/usr/local/lib/python2.7/dist-packages
+PTRACKS=ptracks
+
+if [ -d $INSTALL_DIR/$PTRACKS ]; then
+	rm -fv /usr/local/lib/python2.7/dist-packages/ptracks
+fi
+
+#
+# /etc/ptracks
+#
+if [ -d /etc/$PTRACKS ]; then
+	rm -rfv /etc/ptracks
+fi
+
+#
+# /etc/init.d/ptracks
+#
+rm -rf /etc/init.d/ptracks
+rm -rf /etc/init.d/ptracks-net
+
+#
+# System binaries
+#
+rm -fv /usr/local/bin/ptracks*

@@ -1,0 +1,8 @@
+#!/bin/sh
+if [ -z "$PTRACKS_CONF" ]
+    then PTRACKS_CONF="/etc/ptracks"
+fi
+
+cd $PTRACKS_CONF
+
+python -m ptracks.newton $@
